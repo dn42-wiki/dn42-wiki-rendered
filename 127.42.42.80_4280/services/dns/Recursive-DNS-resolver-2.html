@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<!-- Mirrored from 127.42.42.80:4280/howto/IPsecWithPublicKeys/RacoonExample by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:54:41 GMT -->
+<!-- Mirrored from 127.42.42.80:4280/services/dns/Recursive-DNS-resolver.md by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:55:15 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
 <head>
   <meta http-equiv="Content-type" content="text/html;charset=utf-8">
@@ -23,14 +23,14 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'howto/IPsecWithPublicKeys/RacoonExample.md';
+	  var pageFullPath = 'services/dns/Recursive-DNS-resolver.md';
     var pageFormat   = 'markdown';
 
   </script>
   <script src="../../gollum/assets/app-f05401ee374f0c7f48fc2bc08e30b4f4db705861fd5895ed70998683b383bfb5.js" type="text/javascript"></script>
   
 
-  <title>RacoonExample</title>
+  <title>Recursive-DNS-resolver</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -54,12 +54,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>RacoonExample</div>
+            <div>Recursive-DNS-resolver</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="/gollum/history/howto/IPsecWithPublicKeys/RacoonExample.md"
+              href="/gollum/history/services/dns/Recursive-DNS-resolver.md"
               role="menuitem"
             >
               <span>History</span>
@@ -130,7 +130,7 @@
     <div class="BtnGroup d-flex">
         <a
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          href="/gollum/history/howto/IPsecWithPublicKeys/RacoonExample.md/"
+          href="/gollum/history/services/dns/Recursive-DNS-resolver.md/"
           id="minibutton-history"
         >
           History
@@ -145,11 +145,11 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    RacoonExample
+    Recursive-DNS-resolver
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
-<li class="breadcrumb-item"><a href="../../gollum/overview/howto/index.html">howto</a></li>
-<li class="breadcrumb-item"><a href="../../gollum/overview/howto/IPsecWithPublicKeys/index.html">IPsecWithPublicKeys</a></li>
+<li class="breadcrumb-item"><a href="../../gollum/overview/services/index.html">services</a></li>
+<li class="breadcrumb-item"><a href="../../gollum/overview/services/dns/index.html">dns</a></li>
 </ol></nav></div>
 
 	<div class="has-header has-footer has-sidebar has-rightbar">
@@ -163,91 +163,114 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>Quote from #dn42: <code>hexa: nobody runs racoon on their free will :)</code>.</p>
+	        <p>If you want to run your own recursive DNS server, you must find upstream servers that are authoritative for the dn42 zones.</p>
 
-<p>See also <a href="strongSwan5Example.html">strongSwan</a></p>
+<p>You may use some servers listed in the <a href="Providing-Anycast-DNS.html#Persons-providing-anycast-DNS">table of anycast servers</a>, or just use <code>172.22.119.160</code> and <code>172.22.119.163</code> (ns{1,2}.fritz.dn42).</p>
 
-<p>The keys are generated with plainrsa-gen.</p>
+<h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
 
-<p></p><pre class="highlight"><code>Usage: plainrsa-gen [options]
+<h3><a class="anchor" id="unbound" href="#unbound"></a>Unbound</h3>
 
-  -b bits       Generate &lt;bits&gt; long RSA key (default=1024)
-  -e pubexp     Public exponent to use (default=0x3)
-  -f filename   Filename to store the key to (default=stdout)
-  -i filename   Input source for format conversion
-  -h            Help</code></pre>
-I'd probably go with 4096 bits.
+<p>Configuration for <code>unbound.conf</code></p>
 
-<p>in your racoon.conf:
-</p><pre class="highlight"><code>path certificate "/etc/racoon/keys";
+<pre class="highlight"><code>server:
+        local-zone: "22.172.in-addr.arpa." nodefault
+        local-zone: "23.172.in-addr.arpa." nodefault
 
-listen {
-  isakmp 192.168.255.1[500];
-}
+stub-zone:
+        name: "dn42"
+        stub-prime: yes
+        stub-addr: 172.22.119.160
+        stub-addr: 172.22.119.163
 
-remote 192.168.255.2 {
-  exchange_mode main;
-  certificate_type plain_rsa "local.priv.key";
-  peers_certfile plain_rsa "remote.pub.key";
-  proposal {
-    authentication_method rsasig;
-    lifetime time 8 hour;
-    encryption_algorithm aes256;
-    hash_algorithm sha256;
-    dh_group modp1024;
-  }
-}</code></pre>
+stub-zone:
+        name: "22.172.in-addr.arpa"
+        stub-prime: yes
+        stub-addr: 172.22.119.160
+        stub-addr: 172.22.119.163
 
-<h2><a class="anchor" id="se-also" href="#se-also"></a>Se also</h2>
+stub-zone:
+        name: "23.172.in-addr.arpa"
+        stub-prime: yes
+        stub-addr: 172.22.119.160
+        stub-addr: 172.22.119.163</code></pre>
 
-<p><a href="GRE-plus-IPsec-Debian.html">Debian specific configuration</a></p>
+<h3><a class="anchor" id="unbound-with-root-hints" href="#unbound-with-root-hints"></a>Unbound with root-hints</h3>
+<p>Alternatively you can put dn42 root servers in the root-hints file for recursive resolving.</p>
+
+<pre class="highlight"><code># /etc/unbound/unbound.conf.d/dn42.conf 
+server:
+        # DNSSEC validation will fail
+        val-permissive-mode: yes
+        # recursive queries for everyone
+        access-control: 0.0.0.0/0 allow
+        # dn42 root servers
+        root-hints: /etc/unbound/dn42.hints
+	# enable IPv6
+	do-ip6: yes
+	# allow reverse lookup of rfc1918 space, which includes the DN42 address space
+	unblock-lan-zones: yes
+	insecure-lan-zones: yes
+
+remote-control:
+        control-enable: no</code></pre>
+
+<p>The <code>/etc/unbound/dn42.hints</code> file:
+</p><pre class="highlight"><code>.                                         NS    a.root-servers.dn42.
+a.root-servers.dn42.           3600000    A     172.22.177.6
+.                                         NS    m.root-servers.dn42.
+m.root-servers.dn42.           3600000    A     172.23.67.67
+.                                         NS    t.root-servers.dn42.
+t.root-servers.dn42.           3600000    A     172.22.102.141
+.                                         NS    x.root-servers.dn42.
+x.root-servers.dn42.           3600000    A     172.22.141.1</code></pre>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
 	          <ul>
   <li><a href="../../Home.html" rel="nofollow">Home</a></li>
-  <li><a href="../Getting-Started.html" rel="nofollow">Getting Started</a></li>
-  <li><a href="../Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-  <li><a href="../Address-Space.html" rel="nofollow">Address Space</a></li>
-  <li><a href="../Bird-communities.html" rel="nofollow">BGP communities</a></li>
+  <li><a href="../../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
+  <li><a href="../../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+  <li><a href="../../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
+  <li><a href="../../howto/Bird-communities.html" rel="nofollow">BGP communities</a></li>
   <li>
     <p><a href="../../FAQ.html" rel="nofollow">FAQ</a></p>
   </li>
   <li>How-To
     <ul>
-      <li><a href="../wireguard.html" rel="nofollow">Wireguard</a></li>
-      <li><a href="../openvpn.html" rel="nofollow">Openvpn</a></li>
-      <li><a href="../IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-      <li><a href="../tinc.html" rel="nofollow">Tinc</a></li>
-      <li><a href="../GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-      <li><a href="../GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-      <li><a href="../IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+      <li><a href="../../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
+      <li><a href="../../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
+      <li><a href="../../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+      <li><a href="../../howto/tinc.html" rel="nofollow">Tinc</a></li>
+      <li><a href="../../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+      <li><a href="../../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+      <li><a href="../../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
       <li>
-<a href="../Bird.html" rel="nofollow">Bird</a> / <a href="../Bird2.html" rel="nofollow">Bird2</a>
+<a href="../../howto/Bird.html" rel="nofollow">Bird</a> / <a href="../../howto/Bird2.html" rel="nofollow">Bird2</a>
 </li>
-      <li><a href="../Quagga.html" rel="nofollow">Quagga</a></li>
-      <li><a href="../OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-      <li><a href="../mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-      <li><a href="../EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-      <li><a href="../Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-      <li><a href="../networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-      <li><a href="../vyos.html" rel="nofollow">VyOS</a></li>
-      <li><a href="../nixos.html" rel="nofollow">NixOS</a></li>
+      <li><a href="../../howto/Quagga.html" rel="nofollow">Quagga</a></li>
+      <li><a href="../../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+      <li><a href="../../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+      <li><a href="../../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+      <li><a href="../../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+      <li><a href="../../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+      <li><a href="../../howto/vyos.html" rel="nofollow">VyOS</a></li>
+      <li><a href="../../howto/nixos.html" rel="nofollow">NixOS</a></li>
     </ul>
   </li>
   <li>Services
     <ul>
-      <li><a href="../../services/IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="../../services/Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="../../services/DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="../../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="../../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="../../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="../../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="../../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="../../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="../../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="../IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="../Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="../DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="../Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="../Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="../Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="../Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="../Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="../Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="../Route-Collector.html" rel="nofollow">Route Collector</a></li>
     </ul>
   </li>
   <li>Internal
@@ -295,13 +318,13 @@ remote 192.168.255.2 {
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/IPsecWithPublicKeys/RacoonExample.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="services/dns/Recursive-DNS-resolver.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="/gollum/rename/howto/IPsecWithPublicKeys/RacoonExample.md">
+<form name="rename" method="POST" action="/gollum/rename/services/dns/Recursive-DNS-resolver.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
@@ -310,5 +333,5 @@ remote 192.168.255.2 {
 </div>
 </body>
 
-<!-- Mirrored from 127.42.42.80:4280/howto/IPsecWithPublicKeys/RacoonExample by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:54:43 GMT -->
+<!-- Mirrored from 127.42.42.80:4280/services/dns/Recursive-DNS-resolver.md by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:55:15 GMT -->
 </html>

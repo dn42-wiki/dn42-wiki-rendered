@@ -1,54 +1,28 @@
-HTTrack3.49-2+libhtsjava.so.2 launched on Mon, 15 Aug 2022 18:12:49 at http://127.42.42.80:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/*
-(httrack http://127.42.42.80:4280 -%! -iC2 -O /srv/dn42-wiki/dn42-wiki-rendered -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/* )
+HTTrack3.49-2+libhtsjava.so.2 launched on Mon, 15 Aug 2022 20:53:37 at http://127.42.42.80:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/*
+(httrack http://127.42.42.80:4280 -iC2 -O /srv/dn42-wiki/dn42-wiki-rendered -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/* )
 
 Information, Warnings and Errors reported for this mirror:
 note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
 	such as username/password authentication for websites mirrored in this project
 	do not share these files/folders if you want these information to remain private
 
-18:12:49	Warning: 	* security warning: !!! BYPASSING SECURITY LIMITS - MONITOR THIS SESSION WITH EXTREME CARE !!!
-18:12:51	Warning: 	Found for 127.42.42.80:4280/
-18:12:51	Warning: 	File has moved from 127.42.42.80:4280/ to http://127.42.42.80:4280/Home
-18:13:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-16px.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-18:13:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-18:13:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-18:13:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-18:13:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-18:13:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-18:13:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32-EAF2F5.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-18:13:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Regular.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-18:13:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Medium.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-18:13:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Bold.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-18:13:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/gollum/images/icon-sprite.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-18:14:00	Error: 	"Not Found" (404) at link 127.42.42.80:4280/DNS (from 127.42.42.80:4280/services/Whois)
-18:14:04	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/howto/Registry-Authentication (from 127.42.42.80:4280/services/Whois)
-18:14:08	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/Getting-started (from 127.42.42.80:4280/FAQ)
-18:14:16	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Whois (from 127.42.42.80:4280/contact)
-18:14:16	Error: 	"Not Found" (404) at link 127.42.42.80:4280/IRC (from 127.42.42.80:4280/contact)
-18:14:18	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/bgp-on-extreme-summit1i (from 127.42.42.80:4280/howto/Getting-Started)
-18:14:18	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/bird (from 127.42.42.80:4280/howto/Getting-Started)
-18:14:18	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/BGP-on-Extreme-Summit1i (from 127.42.42.80:4280/howto/Getting-Started)
-18:14:18	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Services/DNS (from 127.42.42.80:4280/howto/Getting-Started)
-18:14:18	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Getting-Started (from 127.42.42.80:4280/howto/EdgeOS-Config)
-18:14:18	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Old-Hierarchical-DNS (from 127.42.42.80:4280/services/DNS)
-18:14:18	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Original-DNS-(deprecated) (from 127.42.42.80:4280/services/DNS)
-18:14:18	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Distributed-Wiki (from 127.42.42.80:4280/services/Distributed-Wiki)
-18:14:29	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/IPsecWithPublicKeys/howto/IPsecWithPublicKeys/strongSwan5Example (from 127.42.42.80:4280/howto/IPsecWithPublicKeys/RacoonExample)
-18:14:29	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/IPsecWithPublicKeys/IPsecWithPublicKeys/GRE plus IPsec Debian (from 127.42.42.80:4280/howto/IPsecWithPublicKeys/RacoonExample)
-18:14:29	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/gre-on-freebsd (from 127.42.42.80:4280/howto/GRE-plus-IPsec)
-18:14:29	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/ipsec-on-freebsd (from 127.42.42.80:4280/howto/GRE-plus-IPsec)
-18:14:29	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/gre-plus-ipsec-debian (from 127.42.42.80:4280/howto/GRE-plus-IPsec)
-18:14:29	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/anon@git.dn42:dn42/ca-client (from 127.42.42.80:4280/services/Automatic-CA)
-18:14:29	Error: 	"Not Found" (404) at link 127.42.42.80:4280/TODO (from 127.42.42.80:4280/services/New-DNS)
-18:14:29	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/GettingStarted (from 127.42.42.80:4280/howto/IPv6.md)
-18:14:29	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/whois.dn42 (from 127.42.42.80:4280/howto/IPv6.md)
-18:14:30	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/Providing-Anycast-DNS (from 127.42.42.80:4280/services/IPv6-Anycast.md)
-18:14:30	Error: 	"Not Found" (404) at link 127.42.42.80:4280/New DNS (from 127.42.42.80:4280/services/Old-Hierarchical-DNS.md)
-18:14:30	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/dns/Recursive DNS resolver (from 127.42.42.80:4280/services/Original-DNS-(deprecated).md)
-18:14:30	Error: 	"Not Found" (404) at link 127.42.42.80:4280/External DNS (from 127.42.42.80:4280/services/Original-DNS-(deprecated).md)
-18:14:30	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Providing Anycast DNS (from 127.42.42.80:4280/services/Original-DNS-(deprecated).md)
-18:14:30	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Old Hierarchical DNS (from 127.42.42.80:4280/services/Original-DNS-(deprecated).md)
-18:14:30	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Providing-Anycast-DNS (from 127.42.42.80:4280/services/dns/Recursive-DNS-resolver.md)
+20:53:39	Warning: 	Found for 127.42.42.80:4280/
+20:53:39	Warning: 	File has moved from 127.42.42.80:4280/ to http://127.42.42.80:4280/Home
+20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-16px.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32-EAF2F5.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Regular.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Medium.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Bold.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/gollum/images/icon-sprite.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+20:55:03	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/BGP-on-Extreme-Summit1i (from 127.42.42.80:4280/howto/Getting-Started)
+20:55:15	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/anon@git.dn42:dn42/ca-client (from 127.42.42.80:4280/services/Automatic-CA)
+20:55:15	Error: 	"Not Found" (404) at link 127.42.42.80:4280/TODO (from 127.42.42.80:4280/services/New-DNS)
+20:55:15	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/whois.dn42 (from 127.42.42.80:4280/howto/IPv6.md)
 
-HTTrack Website Copier/3.49-2 mirror complete in 1 minutes 41 seconds : 208 links scanned, 166 files written (3174961 bytes overall), 159 files updated [2631585 bytes received at 26055 bytes/sec], 52.0 requests per connection
-(40 errors, 3 warnings, 0 messages)
+HTTrack Website Copier/3.49-2 mirror complete in 1 minutes 40 seconds : 189 links scanned, 172 files written (3256739 bytes overall), 168 files updated [3207475 bytes received at 32074 bytes/sec], 37.8 requests per connection
+(15 errors, 2 warnings, 0 messages)

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<!-- Mirrored from 127.42.42.80:4280/howto/Static-routes-on-Windows by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:54:23 GMT -->
+<!-- Mirrored from 127.42.42.80:4280/howto/IPsec-on-FreeBSD by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:55:15 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
 <head>
   <meta http-equiv="Content-type" content="text/html;charset=utf-8">
@@ -23,14 +23,14 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'howto/Static-routes-on-Windows.md';
+	  var pageFullPath = 'howto/IPsec-on-FreeBSD.md';
     var pageFormat   = 'markdown';
 
   </script>
   <script src="../gollum/assets/app-f05401ee374f0c7f48fc2bc08e30b4f4db705861fd5895ed70998683b383bfb5.js" type="text/javascript"></script>
   
 
-  <title>Static-routes-on-Windows</title>
+  <title>IPsec-on-FreeBSD</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -54,12 +54,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>Static-routes-on-Windows</div>
+            <div>IPsec-on-FreeBSD</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="/gollum/history/howto/Static-routes-on-Windows.md"
+              href="/gollum/history/howto/IPsec-on-FreeBSD.md"
               role="menuitem"
             >
               <span>History</span>
@@ -130,7 +130,7 @@
     <div class="BtnGroup d-flex">
         <a
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          href="/gollum/history/howto/Static-routes-on-Windows.md/"
+          href="/gollum/history/howto/IPsec-on-FreeBSD.md/"
           id="minibutton-history"
         >
           History
@@ -145,7 +145,7 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    Static-routes-on-Windows
+    IPsec-on-FreeBSD
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
 <li class="breadcrumb-item"><a href="../gollum/overview/howto/index.html">howto</a></li>
@@ -162,67 +162,76 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>Modern versions of Windows do not support OSPF and manually adding static routes every time after a reboot is annoying. Below is a batch script you can edit and run to help make adding routes easier. This script assumes that your BGP router and Windows computer are on the same LAN.</p>
+	        <h1><a class="anchor" id="ipsec-on-freebsd" href="#ipsec-on-freebsd"></a>IPsec on FreeBSD</h1>
 
-<pre class="highlight"><code>@echo off
-REM fill in YOUR network information
-REM right click and RUN AS ADMIN
+<p>These instructions are for IPsec in transport mode not IPsec in tunnel mode. IPsec in tunnel mode requires a too tight coupling with the routing table for dynamic routing because the policies can only be specified based on source/destination address and protocol not based on interfaces.</p>
 
-REM our entire private network address space
-set networkv4=172.20.0.0
-set networkv4mask=255.252.0.0
-set networkv6=fd00::/8
+<h2><a class="anchor" id="requirements" href="#requirements"></a>Requirements</h2>
+<ul>
+  <li>Root access to both endpoints.</li>
+  <li>Static IPv4 addresses for both endpoints unless you want to write a small shell script as hook for racoon.</li>
+  <li>At least one static IPv4 on at least one endpoint unless you hate yourself.</li>
+</ul>
 
-REM our IPv4 subnet info
-set subnetv4=172.20.184.240
-set subnetv4mask=255.255.255.248
-set gateway4=172.20.184.241
+<h2><a class="anchor" id="kernel-configuration" href="#kernel-configuration"></a>Kernel configuration</h2>
+<p>The FreeBSD GENERIC kernel lacks support for in-kernel IPsec processing. Add this two lines to your kernel config and (re-)build your own kernel.
+If you're new to FreeBSD check Chapters <a href="http://www.freebsd.org/doc/handbook/ipsec.html">15.9.1</a> and <a href="http://www.freebsd.org/doc/handbook/kernelconfig.html">9</a> of the FreeBSD handbook.
+</p><pre class="highlight"><code>options   IPSEC        #IP security
+device    crypto</code></pre>
+Reboot into your new kernel.
 
-REM our IPv6 subnet info
-set subnetv6=fd43:6d1:3ee2::/48
-set gateway6=fd43:6d1:3ee2:1000::1
+<h2><a class="anchor" id="userland-configuration" href="#userland-configuration"></a>Userland configuration</h2>
 
-REM our address for this machine
-set yournetaddr=172.20.184.242
-set yournetaddr6=fd43:6d1:3ee2:1000::2/128
+<p>Install the racoon daemon. It's included in the <a href="http://www.freshports.org/security/ipsec-tools/">security/ipsec-tools</a> port.
+Racoon is pain in the ass to configure the first time because it's error messages aren't helping and the complexity of IPsec. Don't let this stop you.
+</p><pre class="highlight"><code>path    pre_shared_key  "/usr/local/etc/racoon/psk";
+path    certificate     "/usr/local/etc/racoon/certs";
+log     info;
 
-REM add IPs
-REM if different change wlan0 to YOUR interface name
-REM first line here is for my LAN. Ignore it.
-netsh interface ipv4 add address "wlan0" 192.168.2.254 255.255.255.0
-netsh interface ipv4 add address "wlan0" %yournetaddr% %subnetv4mask%
-netsh interface ipv6 add address "wlan0" %yournetaddr6%
+listen {
+        isakmp          a.b.c.d [500];
+        isakmp_natt     a.b.c.d [4500];
+}
 
-REM add IPv4 routes
-route -4 add %subnetv4% mask %subnetv4mask% %gateway4%
-route -4 add %networkv4% mask %networkv4mask% %gateway4%
+padding {
+        strict_check    on;
+}
 
-REM add IPv6 routes
-route -6 add %gateway6% ::
-route -6 add %subnetv6% %gateway6%
-REM this last route wasn't working without manually filling in the info.
-REM I don't know why.. Broken line commented out.
-REM route -6 add %networkv6% %gateway6%
-route -6 add fd00::/8 fd43:6d1:3ee2:1000::1
+timer {
+        natt_keepalive   5 sec;
+        interval         3 sec;
+        phase1          45 sec; # give embedded CPUs time to finish RSA operations
+        phase2          45 sec;
+}
 
-echo Press enter to check your IPv4 routing table
-echo Do not forget to add static routes to this computer on your BGP router!
-echo Example: "root@router:~# ip route add 172.20.184.242 dev wlan0"
-echo Example: "root@router:~# ip route add fd43:6d1:3ee2:1000::2/128 dev wlan0"
-pause
-cls
-route -4 print
-echo Press enter to check your IPv6 routing table
-pause
-cls
-route -6 print
-echo Press enter to try to ping gateway
-pause
-cls
-ping %gateway4%
-pause
-ping %gateway6%
-pause</code></pre>
+remote b.c.d.e [500] {
+        exchange_mode           main;
+        proposal_check          strict;
+        my_identifier           asn1dn;
+        peers_identifier        asn1dn;
+        lifetime                time 1 hour;
+        certificate_type        x509 "self.crt" "self.key";
+        peers_certfile          x509 "peer.crt";
+        ca_type                 x509 "ca.crt";
+        verify_cert             on;
+        send_cert               off; # neither send
+        send_cr                 off; # nor request a crt to be send
+
+        proposal {
+                encryption_algorithm    aes 256;
+                hash_algorithm          sha256;
+                authentication_method   rsasig;
+                dh_group                modp4096;
+        }
+}
+
+sainfo (address a.b.c.d gre address b.c.d.e gre) {
+        pfs_group                       modp4096;
+        lifetime                        time 1 hour;
+        encryption_algorithm            aes 256;
+        authentication_algorithm        hmac_sha1;
+}
+</code></pre>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -317,13 +326,13 @@ pause</code></pre>
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/Static-routes-on-Windows.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/IPsec-on-FreeBSD.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="/gollum/rename/howto/Static-routes-on-Windows.md">
+<form name="rename" method="POST" action="/gollum/rename/howto/IPsec-on-FreeBSD.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
@@ -332,5 +341,5 @@ pause</code></pre>
 </div>
 </body>
 
-<!-- Mirrored from 127.42.42.80:4280/howto/Static-routes-on-Windows by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:54:23 GMT -->
+<!-- Mirrored from 127.42.42.80:4280/howto/IPsec-on-FreeBSD by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:55:15 GMT -->
 </html>

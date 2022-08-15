@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<!-- Mirrored from 127.42.42.80:4280/internal/Interconnections by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:54:27 GMT -->
+<!-- Mirrored from 127.42.42.80:4280/services/Original-DNS-(deprecated).md by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:55:15 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
 <head>
   <meta http-equiv="Content-type" content="text/html;charset=utf-8">
@@ -23,14 +23,14 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'internal/Interconnections.md';
+	  var pageFullPath = 'services/Original-DNS-%28deprecated%29.md';
     var pageFormat   = 'markdown';
 
   </script>
   <script src="../gollum/assets/app-f05401ee374f0c7f48fc2bc08e30b4f4db705861fd5895ed70998683b383bfb5.js" type="text/javascript"></script>
   
 
-  <title>Interconnections</title>
+  <title>Original-DNS-(deprecated)</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -54,12 +54,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>Interconnections</div>
+            <div>Original-DNS-(deprecated)</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="/gollum/history/internal/Interconnections.md"
+              href="/gollum/history/services/Original-DNS-(deprecated).md"
               role="menuitem"
             >
               <span>History</span>
@@ -130,7 +130,7 @@
     <div class="BtnGroup d-flex">
         <a
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          href="/gollum/history/internal/Interconnections.md/"
+          href="/gollum/history/services/Original-DNS-(deprecated).md/"
           id="minibutton-history"
         >
           History
@@ -145,10 +145,10 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    Interconnections
+    Original-DNS-(deprecated)
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
-<li class="breadcrumb-item"><a href="../gollum/overview/internal/index.html">internal</a></li>
+<li class="breadcrumb-item"><a href="../gollum/overview/services/index.html">services</a></li>
 </ol></nav></div>
 
 	<div class="has-header has-footer has-sidebar has-rightbar">
@@ -162,42 +162,52 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p><strong>This page lists the external Overlay Networks DN42 is connected to</strong></p>
+	        <h1><a class="anchor" id="original-dns-deprecated" href="#original-dns-deprecated"></a>Original DNS (deprecated)</h1>
+<p>This information is now <strong>deprecated</strong>. Please check <a href="New-DNS.html">New DNS</a> for the current architecture.</p>
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Network</th>
-      <th style="text-align:left;">v4</th>
-      <th style="text-align:left;">v6</th>
-      <th style="text-align:left;">TLDs</th>
-      <th style="text-align:left;">Remarks</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;"><a href="https://github.com/NeoCloud/NeoNetwork">NeoNetwork</a></td>
-      <td style="text-align:left;">X</td>
-      <td style="text-align:left;">X</td>
-      <td style="text-align:left;">.neo</td>
-      <td style="text-align:left;"> </td>
-    </tr>
-    <tr>
-      <td style="text-align:left;"><a href="https://github.com/freifunk/icvpn">ICVPN</a></td>
-      <td style="text-align:left;">X</td>
-      <td style="text-align:left;">X</td>
-      <td style="text-align:left;">see ICVPN-Meta</td>
-      <td style="text-align:left;">ICVPN ("Inter City Vpn") is where many <strong>Freifunk</strong> communities interconnect with each other</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;"><a href="https://wiki.hamburg.ccc.de/ChaosVPN">ChaosVPN</a></td>
-      <td style="text-align:left;">X</td>
-      <td style="text-align:left;"> </td>
-      <td style="text-align:left;">.hack</td>
-      <td style="text-align:left;">Partially Broken</td>
-    </tr>
-  </tbody>
-</table>
+<hr />
+
+<p><em>(tl;dr)</em> We have a TLD for dn42, which is <code>.dn42</code>. The anycast resolver for <code>.dn42</code> runs on <code>172.20.0.53</code> and <code>fd42:d42:d42:54::1</code>.</p>
+
+<p><strong>DNS is build from <a href="Whois.html">whois database</a>. So please edit your DNS-records there.</strong></p>
+
+<h2><a class="anchor" id="using-the-dns-service" href="#using-the-dns-service"></a>Using the DNS service</h2>
+
+<p>Below are several ways to use the <code>dn42</code> DNS service, from easiest to more challenging. The recommended method is the second one.</p>
+
+<h3><a class="anchor" id="using-the-anycast-resolver-directly" href="#using-the-anycast-resolver-directly"></a>Using the anycast resolver directly</h3>
+
+<p>Please be aware that this method sends <strong>all</strong> your DNS queries (e.g. <code>google.com</code>) to a random DNS server inside dn42. The server could fake the result and point you towards the russian mafia. They probably won't, but think about what you are doing. At the end of the day, your ISP could be evil as well, so it always boils down to a question of trust.</p>
+
+<p>To do this, just use <code>172.20.0.53</code> or <code>fd42:d42:d42:54::1</code> as your resolver, for instance in <code>/etc/resolv.conf</code>.</p>
+
+<h3><a class="anchor" id="forwarding-dn42-queries-to-the-anycast-resolver" href="#forwarding-dn42-queries-to-the-anycast-resolver"></a>Forwarding <code>.dn42</code> queries to the anycast resolver</h3>
+
+<p>If you run your own resolver (<code>unbound</code>, <code>dnsmasq</code>, <code>bind</code>), you can configure it to forward dn42 queries to the anycast DNS resolver. See <a href="dns/Configuration.html">DNS forwarder configuration</a>.</p>
+
+<h3><a class="anchor" id="recursive-resolver" href="#recursive-resolver"></a>Recursive resolver</h3>
+
+<p>You may also want to configure your resolver to recursively resolve dn42 domains. For this, you need to find authoritative DNS servers for the <code>dn42</code> zone (and for the reverse zones). See <a href="dns/Recursive-DNS-resolver.html">services/dns/Recursive DNS resolver</a>.</p>
+
+<h3><a class="anchor" id="building-the-dn42-zones-from-the-registry" href="#building-the-dn42-zones-from-the-registry"></a>Building the dn42 zones from the registry</h3>
+
+<p>Finally, you may want to host your own authoritative DNS server for the <code>dn42</code> zone and the reverse zones. The zone files are built from the monotone repository: scripts are provided in the repository itself.</p>
+
+<h2><a class="anchor" id="register-a-dn42-domain-name" href="#register-a-dn42-domain-name"></a>Register a <code>.dn42</code> domain name</h2>
+
+<p>The root zone for <code>dn42.</code> is built from the <a href="Whois.html">whois registry</a>. If you want to register a domain name, you need to add it to the registry (of course, you also need one or two authoritative nameservers).</p>
+
+<h2><a class="anchor" id="dns-services-for-other-networks" href="#dns-services-for-other-networks"></a>DNS services for other networks</h2>
+
+<p>Other networks are interconnected with dn42 (ChaosVPN, Freifunk, etc). Some of them also provide DNS service, you can configure your resolver to use it. See <a href="dns/External-DNS.html">External DNS</a>.</p>
+
+<h2><a class="anchor" id="providing-dns-services" href="#providing-dns-services"></a>Providing DNS services</h2>
+
+<p>See <a href="dns/Providing-Anycast-DNS.html">Providing Anycast DNS</a>.</p>
+
+<h2><a class="anchor" id="old-hierarchical-dns" href="#old-hierarchical-dns"></a><a href="Old-Hierarchical-DNS.html">Old Hierarchical DNS</a></h2>
+
+<p>This is a new effort to build a DNS system that mirrors how DNS was designed to work in clearnet.</p>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -235,25 +245,25 @@
   </li>
   <li>Services
     <ul>
-      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="Route-Collector.html" rel="nofollow">Route Collector</a></li>
     </ul>
   </li>
   <li>Internal
     <ul>
-      <li><a href="Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="Historical-Services.html" rel="nofollow">Historical services</a></li>
+      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
     </ul>
   </li>
   <li>External Tools
@@ -292,13 +302,13 @@
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="internal/Interconnections.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="services/Original-DNS-%28deprecated%29.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="/gollum/rename/internal/Interconnections.md">
+<form name="rename" method="POST" action="/gollum/rename/services/Original-DNS-(deprecated).md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
@@ -307,5 +317,5 @@
 </div>
 </body>
 
-<!-- Mirrored from 127.42.42.80:4280/internal/Interconnections by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:54:27 GMT -->
+<!-- Mirrored from 127.42.42.80:4280/services/Original-DNS-(deprecated).md by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:55:15 GMT -->
 </html>

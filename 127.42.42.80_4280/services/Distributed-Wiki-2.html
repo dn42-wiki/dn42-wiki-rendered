@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<!-- Mirrored from 127.42.42.80:4280/services/Distributed-Wiki.md by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 16:14:26 GMT -->
+<!-- Mirrored from 127.42.42.80:4280/services/Distributed-Wiki.md by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:55:14 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
 <head>
   <meta http-equiv="Content-type" content="text/html;charset=utf-8">
@@ -165,7 +165,7 @@
 	        <h1><a class="anchor" id="this-page-is-outdated-and-need-update" href="#this-page-is-outdated-and-need-update"></a>this page is outdated and need update</h1>
 
 <p>The idea is to deploy mirrors across dn42 using <a href="https://en.wikipedia.org/wiki/Anycast">anycast</a> addressing (BGP), thus providing redundancy, load-balancing and improved access times to the wiki. Sites are powered by <a href="https://github.com/gollum/gollum">gollum</a> which has no native SSL support, so Nginx acts as a reverse proxy and handles the encryption.
-The local webserver is monitored with a simple <a href="../Distributed-Wiki.html#exabgp_watchdog-script">shell script</a> working <a href="../Distributed-Wiki.html#exabgp">in conjunction</a> with <a href="https://github.com/Exa-Networks/exabgp">ExaBGP</a>, announcing/withdrawing the assigned route if the service is up/down.</p>
+The local webserver is monitored with a simple <a href="Distributed-Wiki.html#exabgp_watchdog-script">shell script</a> working <a href="Distributed-Wiki.html#exabgp">in conjunction</a> with <a href="https://github.com/Exa-Networks/exabgp">ExaBGP</a>, announcing/withdrawing the assigned route if the service is up/down.</p>
 
 <h2><a class="anchor" id="prerequisites" href="#prerequisites"></a>Prerequisites</h2>
 
@@ -662,5 +662,5 @@ stop<span class="o">(){</span>
 </div>
 </body>
 
-<!-- Mirrored from 127.42.42.80:4280/services/Distributed-Wiki.md by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 16:14:26 GMT -->
+<!-- Mirrored from 127.42.42.80:4280/services/Distributed-Wiki.md by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Aug 2022 18:55:14 GMT -->
 </html>
