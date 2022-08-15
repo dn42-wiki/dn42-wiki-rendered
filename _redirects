@@ -1,7 +1,8 @@
 / /Home
 /gollum/latest_changes https://hist.dn42.wiki/gollum/latest_changes
-/gollum/commit/* https://hist.dn42.wiki/gollum/commit/:splat
 /gollum/history/index.html https://hist.dn42.wiki/gollum/history/
+/gollum/history/Home.html https://hist.dn42.wiki/gollum/history/
+/gollum/commit/* https://hist.dn42.wiki/gollum/commit/:splat
 /gollum/history/:a/index.html https://hist.dn42.wiki/gollum/history/:a/
 /gollum/history/:a/:b/index.html https://hist.dn42.wiki/gollum/history/:a/:b/
 /gollum/history/:a/:b/:c/index.html https://hist.dn42.wiki/gollum/history/:a/:b/:c/
@@ -9,7 +10,6 @@
 /gollum/history/:a/:b/:c/:d/:e/index.html https://hist.dn42.wiki/gollum/history/:a/:b/:c/:d/:e/
 /gollum/history/:a/:b/:c/:d/:e/:f/index.html https://hist.dn42.wiki/gollum/history/:a/:b/:c/:d/:e/:f/
 /gollum/history/:a/:b/:c/:d/:e/:f/:g/index.html https://hist.dn42.wiki/gollum/history/:a/:b/:c/:d/:e/:f/:g/
-/gollum/history/Home.html https://hist.dn42.wiki/gollum/history/
 /gollum/history/:a/Home.html https://hist.dn42.wiki/gollum/history/:a/
 /gollum/history/:a/:b/Home.html https://hist.dn42.wiki/gollum/history/:a/:b/
 /gollum/history/:a/:b/:c/Home.html https://hist.dn42.wiki/gollum/history/:a/:b/:c/
