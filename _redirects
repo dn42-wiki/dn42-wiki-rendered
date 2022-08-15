@@ -1,3 +1,4 @@
+/ /Home
 /gollum/latest_changes https://dn42.tk/gollum/latest_changes
 /gollum/commit/* https://dn42.tk/gollum/commit/:splat
 /gollum/history/:a/index.html https://dn42.tk/gollum/history/:a/
