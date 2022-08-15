@@ -1,18 +1,54 @@
-HTTrack3.49-2+libhtsjava.so.2 launched on Mon, 15 Aug 2022 16:17:19 at http://127.0.0.1:56789 -/gollum/history/ -/gollum/commit/ -/gollum/latest_changes.html
-(httrack http://127.0.0.1:56789 -%! -iC2 -O /srv/dn42-wiki/dn42-wiki-rendered -/gollum/history/ -/gollum/commit/ -/gollum/latest_changes.html )
+HTTrack3.49-2+libhtsjava.so.2 launched on Mon, 15 Aug 2022 17:07:12 at http://127.42.42.80:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/*
+(httrack http://127.42.42.80:4280 -%! -iC2 -O /srv/dn42-wiki/dn42-wiki-rendered -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/* )
 
 Information, Warnings and Errors reported for this mirror:
 note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
 	such as username/password authentication for websites mirrored in this project
 	do not share these files/folders if you want these information to remain private
 
-16:17:19	Warning: 	* security warning: !!! BYPASSING SECURITY LIMITS - MONITOR THIS SESSION WITH EXTREME CARE !!!
-16:17:19	Warning: 	Unexpected socket error during pre-loop
-16:17:20	Error: 	"Receive Error" (-4) after 2 retries at link 127.0.0.1:56789/robots.txt (from primary/primary)
-16:17:20	Warning: 	Unexpected socket error during pre-loop
-16:17:21	Warning: 	Retry after error -4 (Receive Error) at link 127.0.0.1:56789/ (from primary/primary)
-16:17:21	Warning: 	Unexpected socket error during pre-loop
-16:17:22	Warning: 	Retry after error -4 (Receive Error) at link 127.0.0.1:56789/ (from primary/primary)
-16:17:22	Warning: 	Unexpected socket error during pre-loop
-16:17:23	Error: 	"Receive Error" (-4) after 2 retries at link 127.0.0.1:56789/ (from primary/primary)
-16:17:23	Warning: 	No data seems to have been transferred during this session! : restoring previous one!
+17:07:12	Warning: 	* security warning: !!! BYPASSING SECURITY LIMITS - MONITOR THIS SESSION WITH EXTREME CARE !!!
+17:07:14	Warning: 	Found for 127.42.42.80:4280/
+17:07:14	Warning: 	File has moved from 127.42.42.80:4280/ to http://127.42.42.80:4280/Home
+17:08:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-16px.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+17:08:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+17:08:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+17:08:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+17:08:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+17:08:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+17:08:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32-EAF2F5.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+17:08:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Regular.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+17:08:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Medium.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+17:08:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Bold.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+17:08:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/gollum/images/icon-sprite.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+17:08:25	Error: 	"Not Found" (404) at link 127.42.42.80:4280/DNS (from 127.42.42.80:4280/services/Whois)
+17:08:29	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/howto/Registry-Authentication (from 127.42.42.80:4280/services/Whois)
+17:08:33	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/Getting-started (from 127.42.42.80:4280/FAQ)
+17:08:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Whois (from 127.42.42.80:4280/contact)
+17:08:39	Error: 	"Not Found" (404) at link 127.42.42.80:4280/IRC (from 127.42.42.80:4280/contact)
+17:08:40	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/bgp-on-extreme-summit1i (from 127.42.42.80:4280/howto/Getting-Started)
+17:08:40	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/bird (from 127.42.42.80:4280/howto/Getting-Started)
+17:08:40	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/BGP-on-Extreme-Summit1i (from 127.42.42.80:4280/howto/Getting-Started)
+17:08:40	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Services/DNS (from 127.42.42.80:4280/howto/Getting-Started)
+17:08:41	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Getting-Started (from 127.42.42.80:4280/howto/EdgeOS-Config)
+17:08:41	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Old-Hierarchical-DNS (from 127.42.42.80:4280/services/DNS)
+17:08:41	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Original-DNS-(deprecated) (from 127.42.42.80:4280/services/DNS)
+17:08:41	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Distributed-Wiki (from 127.42.42.80:4280/services/Distributed-Wiki)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/IPsecWithPublicKeys/howto/IPsecWithPublicKeys/strongSwan5Example (from 127.42.42.80:4280/howto/IPsecWithPublicKeys/RacoonExample)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/IPsecWithPublicKeys/IPsecWithPublicKeys/GRE plus IPsec Debian (from 127.42.42.80:4280/howto/IPsecWithPublicKeys/RacoonExample)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/gre-on-freebsd (from 127.42.42.80:4280/howto/GRE-plus-IPsec)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/ipsec-on-freebsd (from 127.42.42.80:4280/howto/GRE-plus-IPsec)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/gre-plus-ipsec-debian (from 127.42.42.80:4280/howto/GRE-plus-IPsec)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/anon@git.dn42:dn42/ca-client (from 127.42.42.80:4280/services/Automatic-CA)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/TODO (from 127.42.42.80:4280/services/New-DNS)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/GettingStarted (from 127.42.42.80:4280/howto/IPv6.md)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/whois.dn42 (from 127.42.42.80:4280/howto/IPv6.md)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/Providing-Anycast-DNS (from 127.42.42.80:4280/services/IPv6-Anycast.md)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/New DNS (from 127.42.42.80:4280/services/Old-Hierarchical-DNS.md)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/dns/Recursive DNS resolver (from 127.42.42.80:4280/services/Original-DNS-(deprecated).md)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/External DNS (from 127.42.42.80:4280/services/Original-DNS-(deprecated).md)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Providing Anycast DNS (from 127.42.42.80:4280/services/Original-DNS-(deprecated).md)
+17:08:52	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Old Hierarchical DNS (from 127.42.42.80:4280/services/Original-DNS-(deprecated).md)
+17:08:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/Providing-Anycast-DNS (from 127.42.42.80:4280/services/dns/Recursive-DNS-resolver.md)
+
+HTTrack Website Copier/3.49-2 mirror complete in 1 minutes 41 seconds : 208 links scanned, 166 files written (3174729 bytes overall), 159 files updated [2631353 bytes received at 26053 bytes/sec], 52.0 requests per connection
+(40 errors, 3 warnings, 0 messages)
