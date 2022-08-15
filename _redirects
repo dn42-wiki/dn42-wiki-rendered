@@ -17,3 +17,4 @@
 /gollum/history/:a/:b/:c/:d/:e/Home.html https://hist.dn42.wiki/gollum/history/:a/:b/:c/:d/:e/
 /gollum/history/:a/:b/:c/:d/:e/:f/Home.html https://hist.dn42.wiki/gollum/history/:a/:b/:c/:d/:e/:f/
 /gollum/history/:a/:b/:c/:d/:e/:f/:g/Home.html https://hist.dn42.wiki/gollum/history/:a/:b/:c/:d/:e/:f/:g/
+/gollum/history/* https://hist.dn42.wiki/gollum/history/:splat
