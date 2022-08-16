@@ -1,28 +1,17 @@
-HTTrack3.49-2+libhtsjava.so.2 launched on Mon, 15 Aug 2022 20:53:37 at http://127.42.42.80:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/*
-(httrack http://127.42.42.80:4280 -iC2 -O /srv/dn42-wiki/dn42-wiki-rendered -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/* )
+HTTrack3.49-2+libhtsjava.so.2 launched on Tue, 16 Aug 2022 06:37:36 at http://127.42.42.8:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/*
+(httrack http://127.42.42.8:4280 -iC2 -%F  -O /srv/dn42-wiki/dn42-wiki-rendered -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/* )
 
 Information, Warnings and Errors reported for this mirror:
 note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
 	such as username/password authentication for websites mirrored in this project
 	do not share these files/folders if you want these information to remain private
 
-20:53:39	Warning: 	Found for 127.42.42.80:4280/
-20:53:39	Warning: 	File has moved from 127.42.42.80:4280/ to http://127.42.42.80:4280/Home
-20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-16px.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32-EAF2F5.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Regular.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Medium.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Bold.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-20:54:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/gollum/images/icon-sprite.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-20:55:03	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/BGP-on-Extreme-Summit1i (from 127.42.42.80:4280/howto/Getting-Started)
-20:55:15	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/anon@git.dn42:dn42/ca-client (from 127.42.42.80:4280/services/Automatic-CA)
-20:55:15	Error: 	"Not Found" (404) at link 127.42.42.80:4280/TODO (from 127.42.42.80:4280/services/New-DNS)
-20:55:15	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/whois.dn42 (from 127.42.42.80:4280/howto/IPv6.md)
-
-HTTrack Website Copier/3.49-2 mirror complete in 1 minutes 40 seconds : 189 links scanned, 172 files written (3256739 bytes overall), 168 files updated [3207475 bytes received at 32074 bytes/sec], 37.8 requests per connection
-(15 errors, 2 warnings, 0 messages)
+06:37:37	Warning: 	Unexpected socket error during pre-loop
+06:37:38	Error: 	"Receive Error" (-4) after 2 retries at link 127.42.42.8:4280/robots.txt (from primary/primary)
+06:37:38	Warning: 	Unexpected socket error during pre-loop
+06:37:39	Warning: 	Retry after error -4 (Receive Error) at link 127.42.42.8:4280/ (from primary/primary)
+06:37:39	Warning: 	Unexpected socket error during pre-loop
+06:37:40	Warning: 	Retry after error -4 (Receive Error) at link 127.42.42.8:4280/ (from primary/primary)
+06:37:40	Warning: 	Unexpected socket error during pre-loop
+06:37:41	Error: 	"Receive Error" (-4) after 2 retries at link 127.42.42.8:4280/ (from primary/primary)
+06:37:41	Warning: 	No data seems to have been transferred during this session! : restoring previous one!
