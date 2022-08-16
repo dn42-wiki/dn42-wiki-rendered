@@ -173,6 +173,7 @@
 <p>To properly assign the right community to your peer, please reference the table below. If you are running your own network and peering internally, please also apply the communities inside your network.</p>
 
 <h2><a class="anchor" id="bgp-community-criteria" href="#bgp-community-criteria"></a>BGP community criteria</h2>
+
 <p></p><pre class="highlight"><code>(64511, 1) :: latency \in (0, 2.7ms]
 (64511, 2) :: latency \in (2.7ms, 7.3ms]
 (64511, 3) :: latency \in (7.3ms, 20ms]
@@ -217,9 +218,11 @@ $ ruby bgp-community.rb -6 dn42-2.higgsboson.tk 1000 pfs
   export where dn42_export_filter(3,25,34);</code></pre>
 
 <h3><a class="anchor" id="route-origin" href="#route-origin"></a>Route Origin</h3>
+
 <p>There are two type of route origin: <code>region</code> and <code>country</code></p>
 
 <h4><a class="anchor" id="region" href="#region"></a>Region</h4>
+
 <p>The range <code>41-70</code> is assigned to the region property.
 The communities for route origin region were first defined in <a href="https://lists.nox.tf/pipermail/dn42/2015-December/001259.html">December 2015</a> and further extended in <a href="https://groups.io/g/dn42/topic/91226190">May 2022</a>:</p>
 
@@ -242,6 +245,7 @@ The communities for route origin region were first defined in <a href="https://l
 (64511, 57) :: Central Asia (AF,UZ,KZ)</code></pre>
 
 <h4><a class="anchor" id="country" href="#country"></a>Country</h4>
+
 <p>The range <code>1000-1999</code> is assigned to the country property. Here we use <a href="https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/blob/master/all/all.csv">ISO-3166-1 numeric</a> country codes, adding <code>1000</code> to each value to get the country origin community:</p>
 
 <pre class="highlight"><code>(64511, 1124) :: Canada
@@ -262,20 +266,23 @@ The communities for route origin region were first defined in <a href="https://l
 # https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/blob/master/all/all.csv</code></pre>
 
 <p>You need to add following lines to your config(s):</p>
+
 <ul>
-  <li>
+<li>
 <code>define DN42_REGION = $VALUE_FROM_ABOVE</code> to your node's config (where OWNAS and OWNIP are set)</li>
-  <li>
+<li>
 <code>if source = RTS_STATIC then bgp_community.add((64511, DN42_REGION));</code>
 just above <code>update_flags</code> in <code>dn42_export_filter</code> function</li>
-  <li>Unlike the other community values, <strong>the DN42_REGION community should only be set on routes originating from your network!</strong> (This is what the <code>source = RTS_STATIC</code> check does).
-    <ul>
-      <li>Otherwise, if you export routes across multiple regions within your network, you may be sending incorrect origin information to other peers.</li>
-    </ul>
-  </li>
+<li>Unlike the other community values, <strong>the DN42_REGION community should only be set on routes originating from your network!</strong> (This is what the <code>source = RTS_STATIC</code> check does).
+
+<ul>
+<li>Otherwise, if you export routes across multiple regions within your network, you may be sending incorrect origin information to other peers.</li>
+</ul>
+</li>
 </ul>
 
 <h2><a class="anchor" id="example-configurations" href="#example-configurations"></a>Example configurations</h2>
+
 <p></p><pre class="highlight"><code># /etc/bird/peers4/tombii.conf
 protocol bgp tombii from dnpeers {
   neighbor 172.23.102.x as 4242420321;
@@ -367,69 +374,84 @@ include "/etc/bird/community_filters.conf";</code></pre>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
 	          <ul>
-  <li><a href="../Home.html" rel="nofollow">Home</a></li>
-  <li><a href="Getting-Started.html" rel="nofollow">Getting Started</a></li>
-  <li><a href="Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-  <li><a href="Address-Space.html" rel="nofollow">Address Space</a></li>
-  <li><a href="Bird-communities.html" rel="nofollow">BGP communities</a></li>
-  <li>
-    <p><a href="../FAQ.html" rel="nofollow">FAQ</a></p>
-  </li>
-  <li>How-To
-    <ul>
-      <li><a href="wireguard.html" rel="nofollow">Wireguard</a></li>
-      <li><a href="openvpn.html" rel="nofollow">Openvpn</a></li>
-      <li><a href="IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-      <li><a href="tinc.html" rel="nofollow">Tinc</a></li>
-      <li><a href="GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-      <li><a href="GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-      <li><a href="IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
-      <li>
+<li>
+<a href="../Home.html" rel="nofollow">Home</a>
+
+<ul>
+<li><a href="Getting-Started.html" rel="nofollow">Getting Started</a></li>
+<li><a href="Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+<li><a href="Address-Space.html" rel="nofollow">Address Space</a></li>
+<li><a href="Bird-communities.html" rel="nofollow">BGP communities</a></li>
+<li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
+</ul>
+</li>
+</ul>
+
+<ul>
+<li>
+<p>How-To</p>
+
+<ul>
+<li><a href="wireguard.html" rel="nofollow">Wireguard</a></li>
+<li><a href="openvpn.html" rel="nofollow">Openvpn</a></li>
+<li><a href="IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+<li><a href="tinc.html" rel="nofollow">Tinc</a></li>
+<li><a href="GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+<li><a href="GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+<li><a href="IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+<li>
 <a href="Bird.html" rel="nofollow">Bird</a> / <a href="Bird2.html" rel="nofollow">Bird2</a>
 </li>
-      <li><a href="Quagga.html" rel="nofollow">Quagga</a></li>
-      <li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-      <li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-      <li><a href="EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-      <li><a href="Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-      <li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-      <li><a href="vyos.html" rel="nofollow">VyOS</a></li>
-      <li><a href="nixos.html" rel="nofollow">NixOS</a></li>
-    </ul>
-  </li>
-  <li>Services
-    <ul>
-      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
-    </ul>
-  </li>
-  <li>Internal
-    <ul>
-      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
-    </ul>
-  </li>
-  <li>External Tools
-    <ul>
-      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
-      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
-    </ul>
-  </li>
+<li><a href="Quagga.html" rel="nofollow">Quagga</a></li>
+<li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+<li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+<li><a href="EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+<li><a href="Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+<li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+<li><a href="vyos.html" rel="nofollow">VyOS</a></li>
+<li><a href="nixos.html" rel="nofollow">NixOS</a></li>
+</ul>
+</li>
+<li>
+<p>Services</p>
+
+<ul>
+<li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
+<li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
+<li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
+<li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+<li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+<li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+<li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+<li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+<li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+<li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+</ul>
+</li>
+<li>
+<p>Internal</p>
+
+<ul>
+<li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+<li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+<li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+<li>
+<a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a><br />
+</li>
+<li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+</ul>
+</li>
+<li>
+<p>External Tools</p>
+
+<ul>
+<li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+<li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+</ul>
+</li>
 </ul>
 
 <hr />
-
 
 	        </div>
 	      </div>
@@ -437,16 +459,7 @@ include "/etc/bird/community_filters.conf";</code></pre>
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <table>
-  <tbody>
-    <tr>
-      <td>Hosted by: <a href="mailto:xuu@sour.is" rel="nofollow">xuu</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">nurtic-vibe</a>, <a href="mailto:tom@xcv.vc" rel="nofollow">toBee</a>, <a href="mailto:dn42@burble.com" rel="nofollow">burble</a>
-</td>
-      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>
-</td>
-    </tr>
-  </tbody>
-</table>
+	      <p>Hosted by: <a href="mailto:xuu@sour.is" rel="nofollow">xuu</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">nurtic-vibe</a>, <a href="mailto:tom@xcv.vc" rel="nofollow">toBee</a>, <a href="mailto:dn42@burble.com" rel="nofollow">burble</a> | Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a></p>
 
 	    </div>
 	  </div>

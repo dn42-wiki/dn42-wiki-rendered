@@ -166,9 +166,10 @@
 </code></pre>
 
 <h2><a class="anchor" id="links" href="#links"></a>Links</h2>
+
 <ul>
-  <li><a href="https://github.com/fritz0705/lglass">Fritz Gihub repo</a></li>
-  <li><a href="http://lglass.flonet.dn42/">lglass Manual</a></li>
+<li><a href="https://github.com/fritz0705/lglass">Fritz Gihub repo</a></li>
+<li><a href="http://lglass.flonet.dn42/">lglass Manual</a></li>
 </ul>
 
 <h2><a class="anchor" id="running-your-own-whois-daemon" href="#running-your-own-whois-daemon"></a>Running your own Whois daemon</h2>
@@ -180,9 +181,12 @@
 
 <p>without the configfile:</p>
 
-<pre><code>$ ./bin/lglass-regtool whoisd -H $HOST -p $PORT .
+<pre><code>$ ./bin/lglass-regtool whoisd -H $HOST -p $PORT
+</code></pre>
 
-usage: lglass-whoisd [-h] [-4] [-6] [--host HOST] [--port PORT]
+<p>.</p>
+
+<pre><code>usage: lglass-whoisd [-h] [-4] [-6] [--host HOST] [--port PORT]
                              [--cidr] [--no-cidr] [--inverse] [--no-inverse]
 
 optional arguments:
@@ -243,133 +247,149 @@ Simple web interface</p>
 <p>The configuration file format is JSON and allows configuration of the database chain, the listen parameters, the custom messages and the process management.</p>
 
 <table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th style="text-align:left;">Meaning</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>listen.host</td>
-      <td style="text-align:left;">IP address for listening socket (Default: ::)</td>
-    </tr>
-    <tr>
-      <td>listen.port</td>
-      <td style="text-align:left;">TCP port for listening socket (Default: 4343)</td>
-    </tr>
-    <tr>
-      <td>listen.protocol</td>
-      <td style="text-align:left;">Protocol for listening socket (4 or 6, by default 6)</td>
-    </tr>
-    <tr>
-      <td>database</td>
-      <td style="text-align:left;">Array of database URLs to initialize database chain</td>
-    </tr>
-    <tr>
-      <td>database.types</td>
-      <td style="text-align:left;">Array of object types in database (Default: undefined)<br />Default chain:<br />[<br />  "whois+lglass.database.file+file:.",<br />  "whois+lglass.database.cidr+cidr:",<br />  "whois+lglass.database.schema+schema:",<br />  "whois+lglass.database.cache+cached:"<br />]</td>
-    </tr>
-    <tr>
-      <td>messages.preamble</td>
-      <td style="text-align:left;">String preamble for whois responses</td>
-    </tr>
-    <tr>
-      <td>messages.help</td>
-      <td style="text-align:left;">String help message for help requests</td>
-    </tr>
-    <tr>
-      <td>process.user</td>
-      <td style="text-align:left;">User to change after initialization</td>
-    </tr>
-    <tr>
-      <td>process.group</td>
-      <td style="text-align:left;">Group to change after initialization</td>
-    </tr>
-    <tr>
-      <td>process.pidfile</td>
-      <td style="text-align:left;">Path to PID file</td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<th>Option</th>
+<th align="left">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>listen.host</td>
+<td align="left">IP address for listening socket (Default: ::)</td>
+</tr>
+<tr>
+<td>listen.port</td>
+<td align="left">TCP port for listening socket (Default: 4343)</td>
+</tr>
+<tr>
+<td>listen.protocol</td>
+<td align="left">Protocol for listening socket (4 or 6, by default 6)</td>
+</tr>
+<tr>
+<td>database</td>
+<td align="left">Array of database URLs to initialize database chain</td>
+</tr>
+<tr>
+<td>database.types</td>
+<td align="left">Array of object types in database (Default: undefined)<br />Default chain:<br />[<br />  "whois+lglass.database.file+file:.",<br />  "whois+lglass.database.cidr+cidr:",<br />  "whois+lglass.database.schema+schema:",<br />  "whois+lglass.database.cache+cached:"<br />]</td>
+</tr>
+<tr>
+<td>messages.preamble</td>
+<td align="left">String preamble for whois responses</td>
+</tr>
+<tr>
+<td>messages.help</td>
+<td align="left">String help message for help requests</td>
+</tr>
+<tr>
+<td>process.user</td>
+<td align="left">User to change after initialization</td>
+</tr>
+<tr>
+<td>process.group</td>
+<td align="left">Group to change after initialization</td>
+</tr>
+<tr>
+<td>process.pidfile</td>
+<td align="left">Path to PID file</td>
+</tr>
+</tbody>
 </table>
 
 <h2><a class="anchor" id="rpsl" href="#rpsl"></a>RPSL</h2>
+
 <ul>
-  <li>Routing Policy Specification Language <a href="https://tools.ietf.org/html/rfc2622">RFC2622</a>
+<li>Routing Policy Specification Language <a href="https://tools.ietf.org/html/rfc2622">RFC2622</a>
 </li>
-  <li>Routing Policy Specification Language next generation (RPSLng) <a href="https://tools.ietf.org/html/rfc4012">RFC4012</a>
+<li>Routing Policy Specification Language next generation (RPSLng) <a href="https://tools.ietf.org/html/rfc4012">RFC4012</a>
 </li>
-  <li><a href="http://www.ripe.net/data-tools/db/rpsl">http://www.ripe.net/data-tools/db/rpsl</a></li>
-  <li><a href="http://www.ripe.net/data-tools/db/rpsl/transition-to-rpsl-version-of-the-ripe-database">http://www.ripe.net/data-tools/db/rpsl/transition-to-rpsl-version-of-the-ripe-database</a></li>
+<li><a href="http://www.ripe.net/data-tools/db/rpsl">http://www.ripe.net/data-tools/db/rpsl</a></li>
+<li><a href="http://www.ripe.net/data-tools/db/rpsl/transition-to-rpsl-version-of-the-ripe-database">http://www.ripe.net/data-tools/db/rpsl/transition-to-rpsl-version-of-the-ripe-database</a></li>
 </ul>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
 	          <ul>
-  <li><a href="../Home.html" rel="nofollow">Home</a></li>
-  <li><a href="../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
-  <li><a href="../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-  <li><a href="../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
-  <li><a href="../howto/Bird-communities.html" rel="nofollow">BGP communities</a></li>
-  <li>
-    <p><a href="../FAQ.html" rel="nofollow">FAQ</a></p>
-  </li>
-  <li>How-To
-    <ul>
-      <li><a href="../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
-      <li><a href="../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
-      <li><a href="../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-      <li><a href="../howto/tinc.html" rel="nofollow">Tinc</a></li>
-      <li><a href="../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-      <li><a href="../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-      <li><a href="../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
-      <li>
+<li>
+<a href="../Home.html" rel="nofollow">Home</a>
+
+<ul>
+<li><a href="../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
+<li><a href="../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+<li><a href="../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
+<li><a href="../howto/Bird-communities.html" rel="nofollow">BGP communities</a></li>
+<li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
+</ul>
+</li>
+</ul>
+
+<ul>
+<li>
+<p>How-To</p>
+
+<ul>
+<li><a href="../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
+<li><a href="../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
+<li><a href="../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+<li><a href="../howto/tinc.html" rel="nofollow">Tinc</a></li>
+<li><a href="../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+<li><a href="../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+<li><a href="../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+<li>
 <a href="../howto/Bird.html" rel="nofollow">Bird</a> / <a href="../howto/Bird2.html" rel="nofollow">Bird2</a>
 </li>
-      <li><a href="../howto/Quagga.html" rel="nofollow">Quagga</a></li>
-      <li><a href="../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-      <li><a href="../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-      <li><a href="../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-      <li><a href="../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-      <li><a href="../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-      <li><a href="../howto/vyos.html" rel="nofollow">VyOS</a></li>
-      <li><a href="../howto/nixos.html" rel="nofollow">NixOS</a></li>
-    </ul>
-  </li>
-  <li>Services
-    <ul>
-      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
-    </ul>
-  </li>
-  <li>Internal
-    <ul>
-      <li><a href="Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="Historical-Services.html" rel="nofollow">Historical services</a></li>
-    </ul>
-  </li>
-  <li>External Tools
-    <ul>
-      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
-      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
-    </ul>
-  </li>
+<li><a href="../howto/Quagga.html" rel="nofollow">Quagga</a></li>
+<li><a href="../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+<li><a href="../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+<li><a href="../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+<li><a href="../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+<li><a href="../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+<li><a href="../howto/vyos.html" rel="nofollow">VyOS</a></li>
+<li><a href="../howto/nixos.html" rel="nofollow">NixOS</a></li>
+</ul>
+</li>
+<li>
+<p>Services</p>
+
+<ul>
+<li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
+<li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
+<li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
+<li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+<li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+<li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+<li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+<li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+<li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+<li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+</ul>
+</li>
+<li>
+<p>Internal</p>
+
+<ul>
+<li><a href="Internal-Services.html" rel="nofollow">Internal services</a></li>
+<li><a href="Interconnections.html" rel="nofollow">Interconnections</a></li>
+<li><a href="APIs.html" rel="nofollow">APIs</a></li>
+<li>
+<a href="ShowAndTell.html" rel="nofollow">Show and Tell</a><br />
+</li>
+<li><a href="Historical-Services.html" rel="nofollow">Historical services</a></li>
+</ul>
+</li>
+<li>
+<p>External Tools</p>
+
+<ul>
+<li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+<li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+</ul>
+</li>
 </ul>
 
 <hr />
-
 
 	        </div>
 	      </div>
@@ -377,16 +397,7 @@ Simple web interface</p>
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <table>
-  <tbody>
-    <tr>
-      <td>Hosted by: <a href="mailto:xuu@sour.is" rel="nofollow">xuu</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">nurtic-vibe</a>, <a href="mailto:tom@xcv.vc" rel="nofollow">toBee</a>, <a href="mailto:dn42@burble.com" rel="nofollow">burble</a>
-</td>
-      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>
-</td>
-    </tr>
-  </tbody>
-</table>
+	      <p>Hosted by: <a href="mailto:xuu@sour.is" rel="nofollow">xuu</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">nurtic-vibe</a>, <a href="mailto:tom@xcv.vc" rel="nofollow">toBee</a>, <a href="mailto:dn42@burble.com" rel="nofollow">burble</a> | Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a></p>
 
 	    </div>
 	  </div>

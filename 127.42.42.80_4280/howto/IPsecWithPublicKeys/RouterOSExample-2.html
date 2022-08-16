@@ -162,7 +162,9 @@
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
 	        <h1><a class="anchor" id="ipsec-with-public-key-authentication-on-mikrotik-routeros" href="#ipsec-with-public-key-authentication-on-mikrotik-routeros"></a>IPsec with public key authentication on Mikrotik RouterOS</h1>
+
 <h2><a class="anchor" id="setup" href="#setup"></a>Setup</h2>
+
 <h3><a class="anchor" id="generate-an-rsa-keypair" href="#generate-an-rsa-keypair"></a>Generate an RSA keypair</h3>
 
 <pre><code>[admin@mtk1] &gt; /ip ipsec key
@@ -175,109 +177,109 @@ Flags: P - private-key, R - rsa
 </code></pre>
 
 <h2><a class="anchor" id="exchange-public-keys-with-your-peer" href="#exchange-public-keys-with-your-peer"></a>Exchange public keys with your peer</h2>
+
 <ol>
-  <li>
-    <p>Export the public key to a file.</p>
+<li>
+<p>Export the public key to a file.</p>
 
-    <pre><code> [admin@mtk1] /ip ipsec key&gt; export-pub-key mykey file-name=mykey.pub
+<pre><code>[admin@mtk1] /ip ipsec key&gt; export-pub-key mykey file-name=mykey.pub
 
- [admin@mtk1] /ip ipsec key&gt; /file print where name=mykey.pub
-  # NAME                   TYPE                        SIZE CREATION-TIME
-  2 mykey.pub              ssh key                      451 jul/20/2014 12:35:33
+[admin@mtk1] /ip ipsec key&gt; /file print where name=mykey.pub
+ # NAME                   TYPE                        SIZE CREATION-TIME
+ 2 mykey.pub              ssh key                      451 jul/20/2014 12:35:33
 </code></pre>
-  </li>
-  <li>
-    <p>Copy the file to your workstation and send it to your peer. The contents of the file should look like this:</p>
+</li>
+<li>
+<p>Copy the file to your workstation and send it to your peer. The contents of the file should look like this:</p>
 
-    <pre><code> -----BEGIN PUBLIC KEY-----
- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv4RHohMZP4F5qTJKqoSL
- TqefoZZRt1RVI5dOocjV1pJZnqcXMtHfQ/5+O+igUCAX+yBv0hie+U32FWcy5cQO
- +xaohZW1zFzvlRWVqOpTwdk/993Zmy070T1FzK4kFShsNtxYrtYNheCnakgfXgMg
- 23w/35zcof64/ewzF6RuqkTzmccIFCWDuv2IobXTOYAk7G3PGN4xWscvFIroIy5s
- 4E8oOmKWVoFErQA6XetJzI+X+knzI3J/6/Pff4Tz7TLxu1m2I0InFaBv1G0+BXnh
- QOvIM7fvs5s0YWaUdT+vz8F0SHtb6Q/IdWc4JJPH/Q2t4HKTkk7FUnvvub2GxVbs
- 8QIDAQAB
- -----END PUBLIC KEY-----
+<pre><code>-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv4RHohMZP4F5qTJKqoSL
+TqefoZZRt1RVI5dOocjV1pJZnqcXMtHfQ/5+O+igUCAX+yBv0hie+U32FWcy5cQO
++xaohZW1zFzvlRWVqOpTwdk/993Zmy070T1FzK4kFShsNtxYrtYNheCnakgfXgMg
+23w/35zcof64/ewzF6RuqkTzmccIFCWDuv2IobXTOYAk7G3PGN4xWscvFIroIy5s
+4E8oOmKWVoFErQA6XetJzI+X+knzI3J/6/Pff4Tz7TLxu1m2I0InFaBv1G0+BXnh
+QOvIM7fvs5s0YWaUdT+vz8F0SHtb6Q/IdWc4JJPH/Q2t4HKTkk7FUnvvub2GxVbs
+8QIDAQAB
+-----END PUBLIC KEY-----
 </code></pre>
-  </li>
-  <li>
-    <p>Convert your peer's public key to the PEM format using the <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl" title="Public key conversion script">pubkey-converter</a> script, if necessary.</p>
-  </li>
+</li>
+<li><p>Convert your peer's public key to the PEM format using the <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl" title="Public key conversion script">pubkey-converter</a> script, if necessary.</p></li>
 </ol>
 
 <h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
+
 <h3><a class="anchor" id="configure-the-phase-1-ike-parameters" href="#configure-the-phase-1-ike-parameters"></a>Configure the phase 1 IKE parameters</h3>
+
 <p>In this example, we'll use the following settings:</p>
 
 <table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Key</th>
-      <th style="text-align:left;">Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">Encryption</td>
-      <td style="text-align:left;">AES-128</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Hash</td>
-      <td style="text-align:left;">HMAC-SHA1</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">DH Group</td>
-      <td style="text-align:left;">5 (modp1536)</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Lifetime</td>
-      <td style="text-align:left;">28800 seconds</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Peer address</td>
-      <td style="text-align:left;">192.0.2.2</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Local address</td>
-      <td style="text-align:left;">192.0.2.1</td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<th align="left">Key</th>
+<th align="left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Encryption</td>
+<td align="left">AES-128</td>
+</tr>
+<tr>
+<td align="left">Hash</td>
+<td align="left">HMAC-SHA1</td>
+</tr>
+<tr>
+<td align="left">DH Group</td>
+<td align="left">5 (modp1536)</td>
+</tr>
+<tr>
+<td align="left">Lifetime</td>
+<td align="left">28800 seconds</td>
+</tr>
+<tr>
+<td align="left">Peer address</td>
+<td align="left">192.0.2.2</td>
+</tr>
+<tr>
+<td align="left">Local address</td>
+<td align="left">192.0.2.1</td>
+</tr>
+</tbody>
 </table>
 
 <ol>
-  <li>
-    <p>Copy your peer's PEM-encoded public key to the router and import it. (Hit enter when it asks for a passphrase)</p>
+<li>
+<p>Copy your peer's PEM-encoded public key to the router and import it. (Hit enter when it asks for a passphrase)</p>
 
-    <pre><code> [admin@mtk1] /ip ipsec key&gt; import peer-key.pub name=peer-key
- passphrase:
+<pre><code>[admin@mtk1] /ip ipsec key&gt; import peer-key.pub name=peer-key
+passphrase:
 
- [admin@mtk1] /ip ipsec key&gt; print
- Flags: P - private-key, R - rsa
-  #    NAME                                                             KEY-SIZE
-  0 PR mykey                                                            4096-bit
-  1  R peer-key                                                         4096-bit
+[admin@mtk1] /ip ipsec key&gt; print
+Flags: P - private-key, R - rsa
+ #    NAME                                                             KEY-SIZE
+ 0 PR mykey                                                            4096-bit
+ 1  R peer-key                                                         4096-bit
 </code></pre>
-  </li>
-  <li>
-    <p>Configure your peer definition to use the public key</p>
+</li>
+<li>
+<p>Configure your peer definition to use the public key</p>
 
-    <pre><code> [admin@mtk1] /ip ipsec peer&gt; add address=192.0.2.2 local-address=192.0.2.1 enc-algorithm=aes-128 hash-algorithm=sha1 dh-group=modp1536 lifetime=28800 key=mykey remote-key=peer-key auth-method=rsa-key
- [admin@mtk1] /ip ipsec peer&gt; print
- Flags: X - disabled
-  0   address=192.0.2.2/32 local-address=192.0.2.1 passive=no port=500
-      auth-method=rsa-key key=mykey remote-key=peer-key generate-policy=no
-      exchange-mode=main send-initial-contact=yes nat-traversal=no
-      proposal-check=obey hash-algorithm=sha1 enc-algorithm=aes-128
-      dh-group=modp1536 lifetime=8h lifebytes=0 dpd-interval=2m
-      dpd-maximum-failures=5
+<pre><code>[admin@mtk1] /ip ipsec peer&gt; add address=192.0.2.2 local-address=192.0.2.1 enc-algorithm=aes-128 hash-algorithm=sha1 dh-group=modp1536 lifetime=28800 key=mykey remote-key=peer-key auth-method=rsa-key
+[admin@mtk1] /ip ipsec peer&gt; print
+Flags: X - disabled
+ 0   address=192.0.2.2/32 local-address=192.0.2.1 passive=no port=500
+     auth-method=rsa-key key=mykey remote-key=peer-key generate-policy=no
+     exchange-mode=main send-initial-contact=yes nat-traversal=no
+     proposal-check=obey hash-algorithm=sha1 enc-algorithm=aes-128
+     dh-group=modp1536 lifetime=8h lifebytes=0 dpd-interval=2m
+     dpd-maximum-failures=5
 </code></pre>
-  </li>
-  <li>
-    <p>All done! Configure the phase 2 parameters as you otherwise would.</p>
-  </li>
+</li>
+<li><p>All done! Configure the phase 2 parameters as you otherwise would.</p></li>
 </ol>
 
 <h2><a class="anchor" id="full-gre-ipsec-example" href="#full-gre-ipsec-example"></a>Full GRE/IPsec example</h2>
+
 <pre><code># jul/20/2014 13:00:04 by RouterOS 6.15
 # software id = HBCA-0B2J
 #
@@ -300,69 +302,84 @@ add dst-address=192.0.2.2/32 protocol=gre sa-dst-address=192.0.2.2 \
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
 	          <ul>
-  <li><a href="../../Home.html" rel="nofollow">Home</a></li>
-  <li><a href="../Getting-Started.html" rel="nofollow">Getting Started</a></li>
-  <li><a href="../Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-  <li><a href="../Address-Space.html" rel="nofollow">Address Space</a></li>
-  <li><a href="../Bird-communities.html" rel="nofollow">BGP communities</a></li>
-  <li>
-    <p><a href="../../FAQ.html" rel="nofollow">FAQ</a></p>
-  </li>
-  <li>How-To
-    <ul>
-      <li><a href="../wireguard.html" rel="nofollow">Wireguard</a></li>
-      <li><a href="../openvpn.html" rel="nofollow">Openvpn</a></li>
-      <li><a href="../IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-      <li><a href="../tinc.html" rel="nofollow">Tinc</a></li>
-      <li><a href="../GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-      <li><a href="../GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-      <li><a href="../IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
-      <li>
+<li>
+<a href="../../Home.html" rel="nofollow">Home</a>
+
+<ul>
+<li><a href="../Getting-Started.html" rel="nofollow">Getting Started</a></li>
+<li><a href="../Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+<li><a href="../Address-Space.html" rel="nofollow">Address Space</a></li>
+<li><a href="../Bird-communities.html" rel="nofollow">BGP communities</a></li>
+<li><a href="../../FAQ.html" rel="nofollow">FAQ</a></li>
+</ul>
+</li>
+</ul>
+
+<ul>
+<li>
+<p>How-To</p>
+
+<ul>
+<li><a href="../wireguard.html" rel="nofollow">Wireguard</a></li>
+<li><a href="../openvpn.html" rel="nofollow">Openvpn</a></li>
+<li><a href="../IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+<li><a href="../tinc.html" rel="nofollow">Tinc</a></li>
+<li><a href="../GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+<li><a href="../GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+<li><a href="../IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+<li>
 <a href="../Bird.html" rel="nofollow">Bird</a> / <a href="../Bird2.html" rel="nofollow">Bird2</a>
 </li>
-      <li><a href="../Quagga.html" rel="nofollow">Quagga</a></li>
-      <li><a href="../OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-      <li><a href="../mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-      <li><a href="../EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-      <li><a href="../Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-      <li><a href="../networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-      <li><a href="../vyos.html" rel="nofollow">VyOS</a></li>
-      <li><a href="../nixos.html" rel="nofollow">NixOS</a></li>
-    </ul>
-  </li>
-  <li>Services
-    <ul>
-      <li><a href="../../services/IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="../../services/Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="../../services/DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="../../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="../../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="../../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="../../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="../../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="../../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="../../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
-    </ul>
-  </li>
-  <li>Internal
-    <ul>
-      <li><a href="../../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="../../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="../../internal/APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="../../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="../../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
-    </ul>
-  </li>
-  <li>External Tools
-    <ul>
-      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
-      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
-    </ul>
-  </li>
+<li><a href="../Quagga.html" rel="nofollow">Quagga</a></li>
+<li><a href="../OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+<li><a href="../mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+<li><a href="../EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+<li><a href="../Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+<li><a href="../networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+<li><a href="../vyos.html" rel="nofollow">VyOS</a></li>
+<li><a href="../nixos.html" rel="nofollow">NixOS</a></li>
+</ul>
+</li>
+<li>
+<p>Services</p>
+
+<ul>
+<li><a href="../../services/IRC.html" rel="nofollow">IRC</a></li>
+<li><a href="../../services/Whois.html" rel="nofollow">Whois registry</a></li>
+<li><a href="../../services/DNS.html" rel="nofollow">DNS</a></li>
+<li><a href="../../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+<li><a href="../../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+<li><a href="../../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+<li><a href="../../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+<li><a href="../../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+<li><a href="../../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+<li><a href="../../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+</ul>
+</li>
+<li>
+<p>Internal</p>
+
+<ul>
+<li><a href="../../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+<li><a href="../../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+<li><a href="../../internal/APIs.html" rel="nofollow">APIs</a></li>
+<li>
+<a href="../../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a><br />
+</li>
+<li><a href="../../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+</ul>
+</li>
+<li>
+<p>External Tools</p>
+
+<ul>
+<li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+<li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+</ul>
+</li>
 </ul>
 
 <hr />
-
 
 	        </div>
 	      </div>
@@ -370,16 +387,7 @@ add dst-address=192.0.2.2/32 protocol=gre sa-dst-address=192.0.2.2 \
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <table>
-  <tbody>
-    <tr>
-      <td>Hosted by: <a href="mailto:xuu@sour.is" rel="nofollow">xuu</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">nurtic-vibe</a>, <a href="mailto:tom@xcv.vc" rel="nofollow">toBee</a>, <a href="mailto:dn42@burble.com" rel="nofollow">burble</a>
-</td>
-      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>
-</td>
-    </tr>
-  </tbody>
-</table>
+	      <p>Hosted by: <a href="mailto:xuu@sour.is" rel="nofollow">xuu</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">nurtic-vibe</a>, <a href="mailto:tom@xcv.vc" rel="nofollow">toBee</a>, <a href="mailto:dn42@burble.com" rel="nofollow">burble</a> | Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a></p>
 
 	    </div>
 	  </div>

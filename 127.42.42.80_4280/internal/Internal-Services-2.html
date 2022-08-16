@@ -177,171 +177,177 @@
 <p>n0emis maintains an <a href="https://acme.dn42/">ACME server</a> (with accompanying CA), compatible with any LetsEncrypt client like Certbot, Dehydrated or Caddy.</p>
 
 <h2><a class="anchor" id="network-related" href="#network-related"></a>Network-related</h2>
+
 <ul>
-  <li>See <a href="../services/Looking-Glasses.html">Looking Glasses</a> for more network diagnostic tools</li>
-  <li>Realtime network map: <a href="http://map.dn42/">map.dn42</a> (DN42) or <a href="https://map42.0x7f.cc/">map42.0x7f.cc</a>, <a href="https://map.kuu.moe/">map.kuu.moe</a> (IANA) <em>(Note: This is a direct copy of nixnodes map with some fixes and new functions since original map is no longer get maintained. This map is currently using MRT dump from GRC as source. We will pull new dumps from GRC every 15 minutes.)</em>
+<li>See <a href="../services/Looking-Glasses.html">Looking Glasses</a> for more network diagnostic tools</li>
+<li>Realtime network map: <a href="http://map.dn42/">map.dn42</a> (DN42) or <a href="https://map42.0x7f.cc/">map42.0x7f.cc</a>, <a href="https://map.kuu.moe/">map.kuu.moe</a> (IANA) <em>(Note: This is a direct copy of nixnodes map with some fixes and new functions since original map is no longer get maintained. This map is currently using MRT dump from GRC as source. We will pull new dumps from GRC every 15 minutes.)</em>
 </li>
-  <li>IP base network map: <a href="https://jh0project.dn42/map">map.jh0project.dn42</a> (DN42) or <a href="https://dn42.jh0project.com/map">dn42.jh0project.com</a> (IANA) <em>(uses ping and traceroute the whole DN42's ipv4 addresss block.)</em>
+<li>IP base network map: <a href="https://jh0project.dn42/map">map.jh0project.dn42</a> (DN42) or <a href="https://dn42.jh0project.com/map">dn42.jh0project.com</a> (IANA) <em>(uses ping and traceroute the whole DN42's ipv4 addresss block.)</em>
 </li>
-  <li>Network Information Service: <a href="http://info.nia.dn42/">info.nia.dn42</a> (DN42) or <a href="https://bgp42.strexp.net/">bgp42.strexp.net</a> (IANA). Main functions including <em>network information</em>, <em>network map (from map.dn42, require WebGL)</em>, <em>network ranking (based on centrality)</em>, <em>ROA alerting</em> and <em>path finder</em>.</li>
-  <li>Yet Another network map: <a href="https://map.jerry.dn42/">map.jerry.dn42</a> (DN42) or <a href="https://map.meson.cc/">map.meson.cc</a> (via clearnet) <em>(uses MRT dump as source, updated every 15 minutes.)</em>
+<li>Network Information Service: <a href="http://info.nia.dn42/">info.nia.dn42</a> (DN42) or <a href="https://bgp42.strexp.net/">bgp42.strexp.net</a> (IANA). Main functions including <em>network information</em>, <em>network map (from map.dn42, require WebGL)</em>, <em>network ranking (based on centrality)</em>, <em>ROA alerting</em> and <em>path finder</em>.</li>
+<li>Yet Another network map: <a href="https://map.jerry.dn42/">map.jerry.dn42</a> (DN42) or <a href="https://map.meson.cc/">map.meson.cc</a> (via clearnet) <em>(uses MRT dump as source, updated every 15 minutes.)</em>
 </li>
-  <li>Nixnodes original Map of the network: <a href="http://map.nixnodes.net/">map.nixnodes.net</a>
+<li>Nixnodes original Map of the network: <a href="http://map.nixnodes.net/">map.nixnodes.net</a>
 </li>
-  <li>DN42 IP address lookup tool: <a href="https://dn42.g-load.eu/ip/">dn42.g-load.eu/ip</a>
+<li>DN42 IP address lookup tool: <a href="https://dn42.g-load.eu/ip/">dn42.g-load.eu/ip</a>
 </li>
-  <li>New DNS System monitoring: <a href="https://grafana.burble.com/d/E4iCaHoWk/dn42-dns-status?orgId=1&amp;refresh=1m">grafana.burble.com/d/E4iCaHoWk/dn42-dns-status</a>
+<li>New DNS System monitoring: <a href="https://grafana.burble.com/d/E4iCaHoWk/dn42-dns-status?orgId=1&amp;refresh=1m">grafana.burble.com/d/E4iCaHoWk/dn42-dns-status</a>
 </li>
 </ul>
 
 <h3><a class="anchor" id="geoip-services" href="#geoip-services"></a>GeoIP Services</h3>
+
 <p><a href="http://map.dn42/">Map.dn42</a> provides a simple GeoIP service. This service uses rDNS records and country field in aut-num objects as a reference, currently designed for fun :P</p>
 
 <h4><a class="anchor" id="api" href="#api"></a>API</h4>
-<p>Results are in JSON format.</p>
 
-<p>http://ipip.map.dn42/whois?ip=[DN42_IP]&amp;lang=en<br />
-http://ipip.map.dn42/whois?asn=AS[DN42_ASN]</p>
+<p>Results are in JSON format. </p>
+
+<p><a href="http://ipip.map.dn42/whois?ip=%5BDN42_IP%5D&amp;lang=en">http://ipip.map.dn42/whois?ip=[DN42_IP]&amp;lang=en</a><br />
+<a href="http://ipip.map.dn42/whois?asn=AS%5BDN42_ASN%5D">http://ipip.map.dn42/whois?asn=AS[DN42_ASN]</a></p>
 
 <h4><a class="anchor" id="client" href="#client"></a>Client</h4>
+
 <p>There is a client software using above apis to provide GeoIP-based traceroute. 
 It is a modified IPIP.NET Best Trace software with DN42 support injection.</p>
 
-<p>Windows only, no virus scan report available, but our DLL source is provided with the modified client. It's highly recommended to run this tool in a sandbox.</p>
+<p>Windows only, no virus scan report available, but our DLL source is provided with the modified client. It's highly recommended to run this tool in a sandbox. </p>
 
 <p>** Since the original software is not open source, so use it at your own risk. **</p>
 
-<p>Preview: http://img.dn42/images/GEOTRACE42.jpg<br />
-Link: http://map.dn42/BestTrace42.zip</p>
+<p>Preview: <a href="http://img.dn42/images/GEOTRACE42.jpg">http://img.dn42/images/GEOTRACE42.jpg</a><br />
+Link: <a href="http://map.dn42/BestTrace42.zip">http://map.dn42/BestTrace42.zip</a></p>
 
 <h3><a class="anchor" id="asn-authentication-solution" href="#asn-authentication-solution"></a>ASN Authentication Solution</h3>
+
 <p>Authenticate your users by having them verify their ASN ownership with KIOUBIT-MNT using their registry-provided methods in an automated way. An example of this is the automatic peering system for the Kioubit Network.
 To use the service, please message Kioubit on IRC to have your domain activated and receive the required documentation.</p>
 
 <h2><a class="anchor" id="irc" href="#irc"></a>IRC</h2>
 
 <table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Hostname / IP</th>
-      <th style="text-align:left;">SSL</th>
-      <th style="text-align:left;">Remarks</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">irc.hackint.dn42</td>
-      <td style="text-align:left;">Yes</td>
-      <td style="text-align:left;">DN42</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">irc.hackint.hack/dn42</td>
-      <td style="text-align:left;">Yes</td>
-      <td style="text-align:left;">ChaosVPN</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">irc.dn42</td>
-      <td style="text-align:left;">Yes</td>
-      <td style="text-align:left;">Internal IRC</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">172.22.69.1 / fda7:3ae7:e04d::1</td>
-      <td style="text-align:left;">Yes</td>
-      <td style="text-align:left;">BonoboNET</td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<th align="left">Hostname / IP</th>
+<th align="left">SSL</th>
+<th align="left">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">irc.hackint.dn42</td>
+<td align="left">Yes</td>
+<td align="left">DN42</td>
+</tr>
+<tr>
+<td align="left">irc.hackint.hack/dn42</td>
+<td align="left">Yes</td>
+<td align="left">ChaosVPN</td>
+</tr>
+<tr>
+<td align="left">irc.dn42</td>
+<td align="left">Yes</td>
+<td align="left">Internal IRC</td>
+</tr>
+<tr>
+<td align="left">172.22.69.1 / fda7:3ae7:e04d::1</td>
+<td align="left">Yes</td>
+<td align="left">BonoboNET</td>
+</tr>
+</tbody>
 </table>
 
 <h3><a class="anchor" id="clients" href="#clients"></a>Clients</h3>
 
 <table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Hostname / IP</th>
-      <th style="text-align:left;">Remarks</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">https://lounge.burble.dn42</td>
-      <td style="text-align:left;">
+<thead>
+<tr>
+<th align="left">Hostname / IP</th>
+<th align="left">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><a href="https://lounge.burble.dn42/">https://lounge.burble.dn42</a></td>
+<td align="left">
 <a href="https://thelounge.chat/">thelounge</a> for lurking on #dn42, see <a href="https://dn42.burble.com/home/burble-dn42-services">burble.dn42 services</a>.</td>
-    </tr>
-  </tbody>
+</tr>
+</tbody>
 </table>
 
 <h2><a class="anchor" id="images-e-books-videos-and-other-media" href="#images-e-books-videos-and-other-media"></a>Images, E-Books, Videos and other Media</h2>
 
 <table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Hostname / IP</th>
-      <th style="text-align:left;">Remarks</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">http://j.munsternet.dn42</td>
-      <td style="text-align:left;">Jellyfin instance with movies and TV shows (test).</td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<th align="left">Hostname / IP</th>
+<th align="left">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><a href="http://j.munsternet.dn42/">http://j.munsternet.dn42</a></td>
+<td align="left">Jellyfin instance with movies and TV shows (test).</td>
+</tr>
+</tbody>
 </table>
 
 <h2><a class="anchor" id="radio-and-video-streaming" href="#radio-and-video-streaming"></a>Radio and Video Streaming</h2>
 
 <table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Hostname / IP</th>
-      <th style="text-align:left;">Remarks</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">https://live.jerry.dn42/</td>
-      <td style="text-align:left;">Live audio stream powered by mpd</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">http://deep.radio.unknownts.dn42/</td>
-      <td style="text-align:left;">Internet radio playing random music</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">https://dn42:dn42@tv.munsternet.dn42/playlist</td>
-      <td style="text-align:left;">TV Channels Streaming</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">http://icy.jones.dn42</td>
-      <td style="text-align:left;">Home grown Icecast Radio covering a number of genres (HLS &amp; Player coming soon [ish]!)</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">http://rickroll.dn42</td>
-      <td style="text-align:left;">Play Rickroll Video</td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<th align="left">Hostname / IP</th>
+<th align="left">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><a href="https://live.jerry.dn42/">https://live.jerry.dn42/</a></td>
+<td align="left">Live audio stream powered by mpd</td>
+</tr>
+<tr>
+<td align="left"><a href="http://deep.radio.unknownts.dn42/">http://deep.radio.unknownts.dn42/</a></td>
+<td align="left">Internet radio playing random music</td>
+</tr>
+<tr>
+<td align="left">https://dn42:dn42@tv.munsternet.dn42/playlist</td>
+<td align="left">TV Channels Streaming</td>
+</tr>
+<tr>
+<td align="left"><a href="http://icy.jones.dn42/">http://icy.jones.dn42</a></td>
+<td align="left">Home grown Icecast Radio covering a number of genres (HLS &amp; Player coming soon [ish]!)</td>
+</tr>
+<tr>
+<td align="left"><a href="http://rickroll.dn42/">http://rickroll.dn42</a></td>
+<td align="left">Play Rickroll Video</td>
+</tr>
+</tbody>
 </table>
 
 <h2><a class="anchor" id="file-sharing" href="#file-sharing"></a>File Sharing</h2>
 
 <h3><a class="anchor" id="direct-connect" href="#direct-connect"></a>Direct Connect</h3>
+
 <p>Some <a href="https://en.wikipedia.org/wiki/Advanced_Direct_Connect">Advanced Direct Connect</a> Hubs are being run DN42 internally. Choose a <a href="https://en.wikipedia.org/wiki/Comparison_of_ADC_software#Client_software">client</a> and connect to exchange files.</p>
 
 <table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Address</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">adcs://hub.dcpp.dn42:1511</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">dchub://hub.dcpp.dn42:2780</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">dchub://dcpp.grmml.dn42:4111</td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<th align="left">Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">adcs://hub.dcpp.dn42:1511</td>
+</tr>
+<tr>
+<td align="left">dchub://hub.dcpp.dn42:2780</td>
+</tr>
+<tr>
+<td align="left">dchub://dcpp.grmml.dn42:4111</td>
+</tr>
+</tbody>
 </table>
 
 <h3><a class="anchor" id="ftp-http" href="#ftp-http"></a>FTP / HTTP</h3>
@@ -349,33 +355,35 @@ To use the service, please message Kioubit on IRC to have your domain activated 
 <p><strong>FIXME</strong>: Please add info about (approximate) bandwidth of the servers.</p>
 
 <table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Hostname / IP</th>
-      <th style="text-align:left;">Space</th>
-      <th style="text-align:left;">Speed</th>
-      <th style="text-align:left;">Remarks</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">http://files.nop.dn42</td>
-      <td style="text-align:left;"> </td>
-      <td style="text-align:left;">max 1Mbit/s</td>
-      <td style="text-align:left;">download only</td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<th align="left">Hostname / IP</th>
+<th align="left">Space</th>
+<th align="left">Speed</th>
+<th align="left">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><a href="http://files.nop.dn42/">http://files.nop.dn42</a></td>
+<td align="left"></td>
+<td align="left">max 1Mbit/s</td>
+<td align="left">download only</td>
+</tr>
+</tbody>
 </table>
 
 <h2><a class="anchor" id="vpn" href="#vpn"></a>VPN</h2>
 
 <p>DN42 Network Access over Automatic Wireguard VPN Service (IPv6 only, fd00::/8)
-provided by TheQ at https://dn42.0011.de/vpnusers</p>
+provided by TheQ at <a href="https://dn42.0011.de/vpnusers">https://dn42.0011.de/vpnusers</a> </p>
 
 <h2><a class="anchor" id="proxies" href="#proxies"></a>Proxies</h2>
-<p>See http://wiki.hamburg.ccc.de/ChaosVPN:Proxy</p>
+
+<p>See <a href="http://wiki.hamburg.ccc.de/ChaosVPN:Proxy">http://wiki.hamburg.ccc.de/ChaosVPN:Proxy</a></p>
 
 <h3><a class="anchor" id="telegram" href="#telegram"></a>Telegram</h3>
+
 <p>A MTProxy server is available at <a href="https://t.me/proxy?server=mtp.jerry.dn42&amp;port=8044&amp;secret=ee1419944c0a129dbba2beb2636fcf361a616e64726f69642e676f6f676c65736f757263652e636f6d">mtp.jerry.dn42:8044</a>.</p>
 
 <h2><a class="anchor" id="tor" href="#tor"></a>Tor</h2>
@@ -385,35 +393,35 @@ provided by TheQ at https://dn42.0011.de/vpnusers</p>
 <h2><a class="anchor" id="ntp" href="#ntp"></a>NTP</h2>
 
 <table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Hostname / IP</th>
-      <th style="text-align:left;">Remarks</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">ntp.martin89.dn42</td>
-      <td style="text-align:left;">more than one A records/server</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">tick.gotroot.dn42 (172.20.14.247)</td>
-      <td style="text-align:left;">Stratum 1, GPS, Vancouver Canada</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">tock.gotroot.dn42 (172.20.14.250)</td>
-      <td style="text-align:left;">Stratum 2, Anycast on each node</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">*.burble.dn42</td>
-      <td style="text-align:left;">All burble.dn42 nodes provide NTP over clearnet and DN42. See also <a href="https://dn42.burble.com/services/public/">burble.dn42 public services</a>
+<thead>
+<tr>
+<th align="left">Hostname / IP</th>
+<th align="left">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">ntp.martin89.dn42</td>
+<td align="left">more than one A records/server</td>
+</tr>
+<tr>
+<td align="left">tick.gotroot.dn42 (172.20.14.247)</td>
+<td align="left">Stratum 1, GPS, Vancouver Canada</td>
+</tr>
+<tr>
+<td align="left">tock.gotroot.dn42 (172.20.14.250)</td>
+<td align="left">Stratum 2, Anycast on each node</td>
+</tr>
+<tr>
+<td align="left">*.burble.dn42</td>
+<td align="left">All burble.dn42 nodes provide NTP over clearnet and DN42. See also <a href="https://dn42.burble.com/services/public/">burble.dn42 public services</a>
 </td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">ntp.yuetau.dn42 (172.21.68.50)</td>
-      <td style="text-align:left;">Anycast on all node</td>
-    </tr>
-  </tbody>
+</tr>
+<tr>
+<td align="left">ntp.yuetau.dn42 (172.21.68.50)</td>
+<td align="left">Anycast on all node</td>
+</tr>
+</tbody>
 </table>
 
 <h2><a class="anchor" id="os-mirror-repository-s" href="#os-mirror-repository-s"></a>OS Mirror/Repository's</h2>
@@ -423,81 +431,81 @@ provided by TheQ at https://dn42.0011.de/vpnusers</p>
 <h2><a class="anchor" id="gaming" href="#gaming"></a>Gaming</h2>
 
 <table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Hostname / IP</th>
-      <th style="text-align:left;">Game</th>
-      <th style="text-align:left;">Remarks</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">hulk.mhm.dn42 (172.23.67.1)</td>
-      <td style="text-align:left;">Tetrinet</td>
-      <td style="text-align:left;"> </td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">mc.nia.dn42 (172.20.168.137, fd01:1926:817:7::)</td>
-      <td style="text-align:left;">Minecraft</td>
-      <td style="text-align:left;">Latest Stable, Optimized for CN , Map available on mc-map.nia.dn42</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">yuan.nia.dn42 (172.20.168.244)</td>
-      <td style="text-align:left;">Genshi Impact (Unofficial)</td>
-      <td style="text-align:left;">Latest development branch, Scripts included, Optimized for CN, Not stable yet</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">mc.nico.dn42</td>
-      <td style="text-align:left;">Minecraft</td>
-      <td style="text-align:left;">1.16.5, <a href="https://bbs.dn42/d/17-modded-116-minecraft-server">Forge Modded</a>, IPv4 &amp; IPv6, Central US Server</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">mc.jerry.dn42 &amp; jerry.dn42</td>
-      <td style="text-align:left;">Minecraft</td>
-      <td style="text-align:left;">latest, IPv4 &amp; IPv6</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">mc.northrend.dn42 (172.20.222.240)</td>
-      <td style="text-align:left;">Minecraft</td>
-      <td style="text-align:left;">latest, IPv4 only</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">redtrap.northrend.dn42 (172.20.222.252)</td>
-      <td style="text-align:left;">Minecraft</td>
-      <td style="text-align:left;">RedTrap DN42 Bridge, 1.8.8 - 1.19, IPv4 only</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">ttd.jerry.dn42</td>
-      <td style="text-align:left;">OpenTTD</td>
-      <td style="text-align:left;">latest, IPv4 &amp; IPv6</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">stk.jerry.dn42:2759, stk.jerry.neo:2759</td>
-      <td style="text-align:left;">SuperTuxKart</td>
-      <td style="text-align:left;">latest, IPv4 only</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">ns1.deltaman.dn42 (172.22.134.131, fd1b:7f7d:dd55:4600:219:ff:fe00:fafe)</td>
-      <td style="text-align:left;">OpenTTD</td>
-      <td style="text-align:left;">1.10.3, Hosted in NL</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">terraria.pebkac.dn42:7777 (IPv4 only/TCP)</td>
-      <td style="text-align:left;"><a href="https://terraria.org/">Terraria</a></td>
-      <td style="text-align:left;">Ask <a href="https://explorer.dn42.pebkac.gr/?#/person/TOMKAP-DN42">TOMKAP-DN42</a> for password/whitelisting</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">factorio.catgirls.dn42 (IPv6 only)</td>
-      <td style="text-align:left;">factorio</td>
-      <td style="text-align:left;">Still in testing, expect downtime</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">The burble.dn42 shell servers include a number of classic text games, see <a href="https://dn42.burble.com/services/shell/#classic-games">shell access</a>
+<thead>
+<tr>
+<th align="left">Hostname / IP</th>
+<th align="left">Game</th>
+<th align="left">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">hulk.mhm.dn42 (172.23.67.1)</td>
+<td align="left">Tetrinet</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">mc.nia.dn42 (172.20.168.137, fd01:1926:817:7::)</td>
+<td align="left">Minecraft</td>
+<td align="left">Latest Stable, Optimized for CN , Map available on mc-map.nia.dn42</td>
+</tr>
+<tr>
+<td align="left">yuan.nia.dn42 (172.20.168.244)</td>
+<td align="left">Genshi Impact (Unofficial)</td>
+<td align="left">Latest development branch, Scripts included, Optimized for CN, Not stable yet</td>
+</tr>
+<tr>
+<td align="left">mc.nico.dn42</td>
+<td align="left">Minecraft</td>
+<td align="left">1.16.5, <a href="https://bbs.dn42/d/17-modded-116-minecraft-server">Forge Modded</a>, IPv4 &amp; IPv6, Central US Server</td>
+</tr>
+<tr>
+<td align="left">mc.jerry.dn42 &amp; jerry.dn42</td>
+<td align="left">Minecraft</td>
+<td align="left">latest, IPv4 &amp; IPv6</td>
+</tr>
+<tr>
+<td align="left">mc.northrend.dn42 (172.20.222.240)</td>
+<td align="left">Minecraft</td>
+<td align="left">latest, IPv4 only</td>
+</tr>
+<tr>
+<td align="left">redtrap.northrend.dn42 (172.20.222.252)</td>
+<td align="left">Minecraft</td>
+<td align="left">RedTrap DN42 Bridge, 1.8.8 - 1.19, IPv4 only</td>
+</tr>
+<tr>
+<td align="left">ttd.jerry.dn42</td>
+<td align="left">OpenTTD</td>
+<td align="left">latest, IPv4 &amp; IPv6</td>
+</tr>
+<tr>
+<td align="left">stk.jerry.dn42:2759, stk.jerry.neo:2759</td>
+<td align="left">SuperTuxKart</td>
+<td align="left">latest, IPv4 only</td>
+</tr>
+<tr>
+<td align="left">ns1.deltaman.dn42 (172.22.134.131, fd1b:7f7d:dd55:4600:219:ff:fe00:fafe)</td>
+<td align="left">OpenTTD</td>
+<td align="left">1.10.3, Hosted in NL</td>
+</tr>
+<tr>
+<td align="left">terraria.pebkac.dn42:7777 (IPv4 only/TCP)</td>
+<td align="left"><a href="https://terraria.org/">Terraria</a></td>
+<td align="left">Ask <a href="https://explorer.dn42.pebkac.gr/?#/person/TOMKAP-DN42">TOMKAP-DN42</a> for password/whitelisting</td>
+</tr>
+<tr>
+<td align="left">factorio.catgirls.dn42 (IPv6 only)</td>
+<td align="left">factorio</td>
+<td align="left">Still in testing, expect downtime</td>
+</tr>
+<tr>
+<td align="left">The burble.dn42 shell servers include a number of classic text games, see <a href="https://dn42.burble.com/services/shell/#classic-games">shell access</a>
 </td>
-      <td style="text-align:left;">Various</td>
-      <td style="text-align:left;">Log in to the shell servers for more</td>
-    </tr>
-  </tbody>
+<td align="left">Various</td>
+<td align="left">Log in to the shell servers for more</td>
+</tr>
+</tbody>
 </table>
 
 <h2><a class="anchor" id="challenges" href="#challenges"></a>Challenges</h2>
@@ -505,18 +513,18 @@ provided by TheQ at https://dn42.0011.de/vpnusers</p>
 <p>Test out your skills with online challenges</p>
 
 <table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Start here</th>
-      <th style="text-align:left;">Remarks</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">https://burble.dn42/services/ping/</td>
-      <td style="text-align:left;">burble.dn42 ping challenge</td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<th align="left">Start here</th>
+<th align="left">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><a href="https://burble.dn42/services/ping/">https://burble.dn42/services/ping/</a></td>
+<td align="left">burble.dn42 ping challenge</td>
+</tr>
+</tbody>
 </table>
 
 <h2><a class="anchor" id="shell" href="#shell"></a>Shell</h2>
@@ -524,39 +532,39 @@ provided by TheQ at https://dn42.0011.de/vpnusers</p>
 <p>Providers of shell access:</p>
 
 <table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Person</th>
-      <th style="text-align:left;">Hostname</th>
-      <th style="text-align:left;">Net</th>
-      <th style="text-align:left;">Description</th>
-      <th style="text-align:left;">Contact</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">mc36</td>
-      <td style="text-align:left;">telnet test.nop.dn42</td>
-      <td style="text-align:left;">dn42 only</td>
-      <td style="text-align:left;">looking glass</td>
-      <td style="text-align:left;">-</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">JerryXiao</td>
-      <td style="text-align:left;">ssh lg@lg.jerry.dn42</td>
-      <td style="text-align:left;">dn42 and icvpn</td>
-      <td style="text-align:left;">looking glass</td>
-      <td style="text-align:left;">-</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">burble</td>
-      <td style="text-align:left;">ssh @shell.fr-rbx1.burble.dn42 <br /> ssh @shell.ca-bhs2.burble.dn42
+<thead>
+<tr>
+<th align="left">Person</th>
+<th align="left">Hostname</th>
+<th align="left">Net</th>
+<th align="left">Description</th>
+<th align="left">Contact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">mc36</td>
+<td align="left">telnet test.nop.dn42</td>
+<td align="left">dn42 only</td>
+<td align="left">looking glass</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">JerryXiao</td>
+<td align="left">ssh lg@lg.jerry.dn42</td>
+<td align="left">dn42 and icvpn</td>
+<td align="left">looking glass</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">burble</td>
+<td align="left">ssh @shell.fr-rbx1.burble.dn42 <br /> ssh @shell.ca-bhs2.burble.dn42
 </td>
-      <td style="text-align:left;">dn42</td>
-      <td style="text-align:left;">Full shell account</td>
-      <td style="text-align:left;">See below</td>
-    </tr>
-  </tbody>
+<td align="left">dn42</td>
+<td align="left">Full shell account</td>
+<td align="left">See below</td>
+</tr>
+</tbody>
 </table>
 
 <h3><a class="anchor" id="burble-dn42-shell-access" href="#burble-dn42-shell-access"></a>burble.dn42 shell access</h3>
@@ -569,53 +577,57 @@ constructed using the MNTNER name, lowercased and without the '-MNT' suffix. SSH
 <h2><a class="anchor" id="misc" href="#misc"></a>Misc</h2>
 
 <table>
-  <thead>
-    <tr>
-      <th>Hostname / IP</th>
-      <th>Remarks</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
+<thead>
+<tr>
+<th>Hostname / IP</th>
+<th>Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
 <a href="https://bbs.dn42/">https://bbs.dn42</a>, <a href="https://dn42bbs.0b1.me/">https://dn42bbs.0b1.me</a> via Clearnet</td>
-      <td>A general BBS powered by Flarum for virtually any topics. Maintained by nicholascw.</td>
-    </tr>
-    <tr>
-      <td>http://www.nop.dn42/</td>
-      <td>Basic "whatismyip" service</td>
-    </tr>
-    <tr>
-      <td>http://freerouter.nop.dn42/</td>
-      <td>freeRouter main site</td>
-    </tr>
-    <tr>
-      <td>http://rtros.nop.dn42/</td>
-      <td>freeRouter distribution</td>
-    </tr>
-    <tr>
-      <td>http://wiki.dn42, http://internal.dn42</td>
-      <td>This wiki!  Git Repo hosted on git.dn42</td>
-    </tr>
-    <tr>
-      <td>http://jack.pyropeter.eu/dn42/routecount/</td>
-      <td>Statistics about the number of v4/v6 routes seen by AS76115 (Since Aug. 2014)</td>
-    </tr>
-    <tr>
-      <td>https://p.pebkac.dn42/</td>
-      <td>PasteBin Service (Netcat/Bash CLI Client)</td>
-    </tr>
-    <tr>
-      <td>https://sdr.pebkac.dn42/</td>
-      <td>OpenWebRX SDR Receiver, FM/VHF/UHF Analog &amp; Digital</td>
-    </tr>
-  </tbody>
+<td>A general BBS powered by Flarum for virtually any topics. Maintained by nicholascw.</td>
+</tr>
+<tr>
+<td><a href="http://www.nop.dn42/">http://www.nop.dn42/</a></td>
+<td>Basic "whatismyip" service</td>
+</tr>
+<tr>
+<td><a href="http://freerouter.nop.dn42/">http://freerouter.nop.dn42/</a></td>
+<td>freeRouter main site</td>
+</tr>
+<tr>
+<td><a href="http://rtros.nop.dn42/">http://rtros.nop.dn42/</a></td>
+<td>freeRouter distribution</td>
+</tr>
+<tr>
+<td>
+<a href="http://wiki.dn42/">http://wiki.dn42</a>, <a href="http://internal.dn42/">http://internal.dn42</a>
+</td>
+<td>This wiki!  Git Repo hosted on git.dn42</td>
+</tr>
+<tr>
+<td><a href="http://jack.pyropeter.eu/dn42/routecount/">http://jack.pyropeter.eu/dn42/routecount/</a></td>
+<td>Statistics about the number of v4/v6 routes seen by AS76115 (Since Aug. 2014)</td>
+</tr>
+<tr>
+<td><a href="https://p.pebkac.dn42/">https://p.pebkac.dn42/</a></td>
+<td>PasteBin Service (Netcat/Bash CLI Client)</td>
+</tr>
+<tr>
+<td><a href="https://sdr.pebkac.dn42/">https://sdr.pebkac.dn42/</a></td>
+<td>OpenWebRX SDR Receiver, FM/VHF/UHF Analog &amp; Digital</td>
+</tr>
+</tbody>
 </table>
 
 <h3><a class="anchor" id="usenet-servers-news" href="#usenet-servers-news"></a>Usenet Servers / News</h3>
+
 <p>There are some News Servers available <a href="../services/News.html">here</a></p>
 
 <h2><a class="anchor" id="e-mail" href="#e-mail"></a>E-Mail</h2>
+
 <p>There is a list of E-Mail providers <a href="../services/E-Mail-Providers.html">here</a></p>
 
 <h1><a class="anchor" id="other-networks" href="#other-networks"></a>Other networks</h1>
@@ -625,78 +637,93 @@ constructed using the MNTNER name, lowercased and without the '-MNT' suffix. SSH
 <h2><a class="anchor" id="public-internet" href="#public-internet"></a>Public Internet</h2>
 
 <ul>
-  <li>https://mirror.frubar.net 100MBit</li>
-  <li>https://frucman.frubar.net</li>
+<li>
+<a href="https://mirror.frubar.net/">https://mirror.frubar.net</a> 100MBit</li>
+<li><a href="https://frucman.frubar.net/">https://frucman.frubar.net</a></li>
 </ul>
-
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
 	          <ul>
-  <li><a href="../Home.html" rel="nofollow">Home</a></li>
-  <li><a href="../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
-  <li><a href="../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-  <li><a href="../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
-  <li><a href="../howto/Bird-communities.html" rel="nofollow">BGP communities</a></li>
-  <li>
-    <p><a href="../FAQ.html" rel="nofollow">FAQ</a></p>
-  </li>
-  <li>How-To
-    <ul>
-      <li><a href="../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
-      <li><a href="../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
-      <li><a href="../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-      <li><a href="../howto/tinc.html" rel="nofollow">Tinc</a></li>
-      <li><a href="../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-      <li><a href="../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-      <li><a href="../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
-      <li>
+<li>
+<a href="../Home.html" rel="nofollow">Home</a>
+
+<ul>
+<li><a href="../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
+<li><a href="../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+<li><a href="../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
+<li><a href="../howto/Bird-communities.html" rel="nofollow">BGP communities</a></li>
+<li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
+</ul>
+</li>
+</ul>
+
+<ul>
+<li>
+<p>How-To</p>
+
+<ul>
+<li><a href="../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
+<li><a href="../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
+<li><a href="../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+<li><a href="../howto/tinc.html" rel="nofollow">Tinc</a></li>
+<li><a href="../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+<li><a href="../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+<li><a href="../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+<li>
 <a href="../howto/Bird.html" rel="nofollow">Bird</a> / <a href="../howto/Bird2.html" rel="nofollow">Bird2</a>
 </li>
-      <li><a href="../howto/Quagga.html" rel="nofollow">Quagga</a></li>
-      <li><a href="../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-      <li><a href="../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-      <li><a href="../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-      <li><a href="../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-      <li><a href="../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-      <li><a href="../howto/vyos.html" rel="nofollow">VyOS</a></li>
-      <li><a href="../howto/nixos.html" rel="nofollow">NixOS</a></li>
-    </ul>
-  </li>
-  <li>Services
-    <ul>
-      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
-    </ul>
-  </li>
-  <li>Internal
-    <ul>
-      <li><a href="Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="Historical-Services.html" rel="nofollow">Historical services</a></li>
-    </ul>
-  </li>
-  <li>External Tools
-    <ul>
-      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
-      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
-    </ul>
-  </li>
+<li><a href="../howto/Quagga.html" rel="nofollow">Quagga</a></li>
+<li><a href="../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+<li><a href="../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+<li><a href="../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+<li><a href="../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+<li><a href="../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+<li><a href="../howto/vyos.html" rel="nofollow">VyOS</a></li>
+<li><a href="../howto/nixos.html" rel="nofollow">NixOS</a></li>
+</ul>
+</li>
+<li>
+<p>Services</p>
+
+<ul>
+<li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
+<li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
+<li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
+<li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+<li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+<li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+<li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+<li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+<li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+<li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+</ul>
+</li>
+<li>
+<p>Internal</p>
+
+<ul>
+<li><a href="Internal-Services.html" rel="nofollow">Internal services</a></li>
+<li><a href="Interconnections.html" rel="nofollow">Interconnections</a></li>
+<li><a href="APIs.html" rel="nofollow">APIs</a></li>
+<li>
+<a href="ShowAndTell.html" rel="nofollow">Show and Tell</a><br />
+</li>
+<li><a href="Historical-Services.html" rel="nofollow">Historical services</a></li>
+</ul>
+</li>
+<li>
+<p>External Tools</p>
+
+<ul>
+<li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+<li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+</ul>
+</li>
 </ul>
 
 <hr />
-
 
 	        </div>
 	      </div>
@@ -704,16 +731,7 @@ constructed using the MNTNER name, lowercased and without the '-MNT' suffix. SSH
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <table>
-  <tbody>
-    <tr>
-      <td>Hosted by: <a href="mailto:xuu@sour.is" rel="nofollow">xuu</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">nurtic-vibe</a>, <a href="mailto:tom@xcv.vc" rel="nofollow">toBee</a>, <a href="mailto:dn42@burble.com" rel="nofollow">burble</a>
-</td>
-      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>
-</td>
-    </tr>
-  </tbody>
-</table>
+	      <p>Hosted by: <a href="mailto:xuu@sour.is" rel="nofollow">xuu</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">nurtic-vibe</a>, <a href="mailto:tom@xcv.vc" rel="nofollow">toBee</a>, <a href="mailto:dn42@burble.com" rel="nofollow">burble</a> | Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a></p>
 
 	    </div>
 	  </div>

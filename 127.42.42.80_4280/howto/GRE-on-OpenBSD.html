@@ -161,14 +161,17 @@
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
 	        <h1><a class="anchor" id="point-to-point-layer-3-gre-tunnel-interface" href="#point-to-point-layer-3-gre-tunnel-interface"></a>Point-to-Point Layer 3 GRE tunnel interface</h1>
+
 <p>This guide describes how to establish an unencrypted and unauthenticated IPv6-over-IPv6 tunnel on <a href="https://openbsd.org/">OpenBSD</a>, see <a href="http://man.openbsd.org/gre.4#Point-to-Point_Layer_3_GRE_tunnel_interfaces_(gre)_example">gre(4) EXAMPLES</a> for similar setups.</p>
 
 <h1><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h1>
+
 <p>Let <em>A</em> be the local OpenBSD host and <em>D</em> the remote peer, assume public DNS names and IPv6 reachability.</p>
 
 <p>Let <code>fd42::</code> and <code>fd42::1</code> be the IPs of <em>A</em> and <em>D</em> respectively where both are allocated as <code>/127</code> subnet from one of the peer's DN42 prefix.</p>
 
 <h2><a class="anchor" id="pseudo-interface" href="#pseudo-interface"></a>pseudo interface</h2>
+
 <p>Populate <a href="https://man.openbsd.org/hostname.if.5"><code>/etc/hostname.gre0</code></a> with:
 </p><pre class="highlight"><code>tunnel A.example.com D.example.net
 inet6 fd42::/127</code></pre>
@@ -179,12 +182,14 @@ This will resolve FQDNs at parse time, set <em>A</em>'s and <em>D</em>'s IPs as 
 <p>Reboot or run <a href="https://man.openbsd.org/netstart.8"><code>sh /etc/netstart gre0</code></a> to bring up the tunnel.</p>
 
 <h2><a class="anchor" id="miscellaneous" href="#miscellaneous"></a>miscellaneous</h2>
+
 <p>Populate <code>/etc/sysctl.conf</code> with:
 </p><pre class="highlight"><code>net.inet.gre.allow=1</code></pre>
 Reboot or run <code>sysctl net.inet.gre.allow=1</code> to allow GRE packet processing.
 
-<p>-
-At this point, <code>gre0</code> will be administratively <em>UP</em>:
+<h2></h2>
+
+<p>At this point, <code>gre0</code> will be administratively <em>UP</em>:
 </p><pre class="highlight"><code>$ ifconfig gre0
 gre0: flags=8051&lt;UP,POINTOPOINT,RUNNING,MULTICAST&gt; mtu 1476
         index 22 priority 0 llprio 6
@@ -219,75 +224,91 @@ destination: fd42::1
     3181         0         0 </code></pre>
 
 <h1><a class="anchor" id="security" href="#security"></a>Security</h1>
+
 <p>GRE may be protected with IPsec to encrypt and authenticate traffic, <a href="http://www.openiked.org/">OpenIKED</a> can be used to establish an IKEv2 session between <em>A</em> and <em>D</em>.</p>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
 	          <ul>
-  <li><a href="../Home.html" rel="nofollow">Home</a></li>
-  <li><a href="Getting-Started.html" rel="nofollow">Getting Started</a></li>
-  <li><a href="Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-  <li><a href="Address-Space.html" rel="nofollow">Address Space</a></li>
-  <li><a href="Bird-communities.html" rel="nofollow">BGP communities</a></li>
-  <li>
-    <p><a href="../FAQ.html" rel="nofollow">FAQ</a></p>
-  </li>
-  <li>How-To
-    <ul>
-      <li><a href="wireguard.html" rel="nofollow">Wireguard</a></li>
-      <li><a href="openvpn.html" rel="nofollow">Openvpn</a></li>
-      <li><a href="IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-      <li><a href="tinc.html" rel="nofollow">Tinc</a></li>
-      <li><a href="GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-      <li><a href="GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-      <li><a href="IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
-      <li>
+<li>
+<a href="../Home.html" rel="nofollow">Home</a>
+
+<ul>
+<li><a href="Getting-Started.html" rel="nofollow">Getting Started</a></li>
+<li><a href="Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+<li><a href="Address-Space.html" rel="nofollow">Address Space</a></li>
+<li><a href="Bird-communities.html" rel="nofollow">BGP communities</a></li>
+<li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
+</ul>
+</li>
+</ul>
+
+<ul>
+<li>
+<p>How-To</p>
+
+<ul>
+<li><a href="wireguard.html" rel="nofollow">Wireguard</a></li>
+<li><a href="openvpn.html" rel="nofollow">Openvpn</a></li>
+<li><a href="IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+<li><a href="tinc.html" rel="nofollow">Tinc</a></li>
+<li><a href="GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+<li><a href="GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+<li><a href="IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+<li>
 <a href="Bird.html" rel="nofollow">Bird</a> / <a href="Bird2.html" rel="nofollow">Bird2</a>
 </li>
-      <li><a href="Quagga.html" rel="nofollow">Quagga</a></li>
-      <li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-      <li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-      <li><a href="EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-      <li><a href="Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-      <li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-      <li><a href="vyos.html" rel="nofollow">VyOS</a></li>
-      <li><a href="nixos.html" rel="nofollow">NixOS</a></li>
-    </ul>
-  </li>
-  <li>Services
-    <ul>
-      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
-    </ul>
-  </li>
-  <li>Internal
-    <ul>
-      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
-    </ul>
-  </li>
-  <li>External Tools
-    <ul>
-      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
-      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
-    </ul>
-  </li>
+<li><a href="Quagga.html" rel="nofollow">Quagga</a></li>
+<li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+<li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+<li><a href="EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+<li><a href="Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+<li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+<li><a href="vyos.html" rel="nofollow">VyOS</a></li>
+<li><a href="nixos.html" rel="nofollow">NixOS</a></li>
+</ul>
+</li>
+<li>
+<p>Services</p>
+
+<ul>
+<li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
+<li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
+<li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
+<li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+<li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+<li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+<li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+<li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+<li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+<li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+</ul>
+</li>
+<li>
+<p>Internal</p>
+
+<ul>
+<li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+<li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+<li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+<li>
+<a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a><br />
+</li>
+<li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+</ul>
+</li>
+<li>
+<p>External Tools</p>
+
+<ul>
+<li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+<li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+</ul>
+</li>
 </ul>
 
 <hr />
-
 
 	        </div>
 	      </div>
@@ -295,16 +316,7 @@ destination: fd42::1
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <table>
-  <tbody>
-    <tr>
-      <td>Hosted by: <a href="mailto:xuu@sour.is" rel="nofollow">xuu</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">nurtic-vibe</a>, <a href="mailto:tom@xcv.vc" rel="nofollow">toBee</a>, <a href="mailto:dn42@burble.com" rel="nofollow">burble</a>
-</td>
-      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>
-</td>
-    </tr>
-  </tbody>
-</table>
+	      <p>Hosted by: <a href="mailto:xuu@sour.is" rel="nofollow">xuu</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">nurtic-vibe</a>, <a href="mailto:tom@xcv.vc" rel="nofollow">toBee</a>, <a href="mailto:dn42@burble.com" rel="nofollow">burble</a> | Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a></p>
 
 	    </div>
 	  </div>
