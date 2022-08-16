@@ -1,17 +1,40 @@
-HTTrack3.49-2+libhtsjava.so.2 launched on Tue, 16 Aug 2022 06:37:36 at http://127.42.42.8:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/*
-(httrack http://127.42.42.8:4280 -iC2 -%F  -O /srv/dn42-wiki/dn42-wiki-rendered -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/* )
+HTTrack3.49-2+libhtsjava.so.2 launched on Tue, 16 Aug 2022 06:47:58 at http://127.42.42.80:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/*
+(httrack http://127.42.42.80:4280 -iC2 -%F  -O /srv/dn42-wiki/dn42-wiki-rendered -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes* -*/*.md/* )
 
 Information, Warnings and Errors reported for this mirror:
 note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
 	such as username/password authentication for websites mirrored in this project
 	do not share these files/folders if you want these information to remain private
 
-06:37:37	Warning: 	Unexpected socket error during pre-loop
-06:37:38	Error: 	"Receive Error" (-4) after 2 retries at link 127.42.42.8:4280/robots.txt (from primary/primary)
-06:37:38	Warning: 	Unexpected socket error during pre-loop
-06:37:39	Warning: 	Retry after error -4 (Receive Error) at link 127.42.42.8:4280/ (from primary/primary)
-06:37:39	Warning: 	Unexpected socket error during pre-loop
-06:37:40	Warning: 	Retry after error -4 (Receive Error) at link 127.42.42.8:4280/ (from primary/primary)
-06:37:40	Warning: 	Unexpected socket error during pre-loop
-06:37:41	Error: 	"Receive Error" (-4) after 2 retries at link 127.42.42.8:4280/ (from primary/primary)
-06:37:41	Warning: 	No data seems to have been transferred during this session! : restoring previous one!
+06:47:58	Warning: 	Cache: damaged cache, trying to repair
+06:47:58	Warning: 	Cache: 0 bytes successfully recovered in 0 entries
+06:47:58	Warning: 	Cache: error trying to open the cache
+06:47:59	Warning: 	HTML file (737 bytes) retransferred due to lack of cache: 127.42.42.80:4280/
+06:48:00	Warning: 	Found for 127.42.42.80:4280/
+06:48:00	Warning: 	File has moved from 127.42.42.80:4280/ to http://127.42.42.80:4280/Home
+06:48:48	Warning: 	HTML file (25755 bytes) retransferred due to lack of cache: 127.42.42.80:4280/gollum/overview/howto/
+06:48:49	Warning: 	HTML file (10334 bytes) retransferred due to lack of cache: 127.42.42.80:4280/gollum/overview/internal/
+06:48:50	Warning: 	HTML file (22148 bytes) retransferred due to lack of cache: 127.42.42.80:4280/gollum/overview/services/
+06:49:38	Warning: 	HTML file (10079 bytes) retransferred due to lack of cache: 127.42.42.80:4280/gollum/overview/howto/IPsecWithPublicKeys/
+06:49:38	Warning: 	HTML file (5355 bytes) retransferred due to lack of cache: 127.42.42.80:4280/gollum/overview/howto/images/
+06:49:38	Warning: 	HTML file (5357 bytes) retransferred due to lack of cache: 127.42.42.80:4280/gollum/overview/howto/mikrotik/
+06:50:21	Warning: 	HTML file (5497 bytes) retransferred due to lack of cache: 127.42.42.80:4280/gollum/overview/services/Certificate-Authority/
+06:50:21	Warning: 	HTML file (7338 bytes) retransferred due to lack of cache: 127.42.42.80:4280/gollum/overview/services/dns/
+06:50:49	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/BGP-on-Extreme-Summit1i (from 127.42.42.80:4280/howto/Getting-Started)
+06:50:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-16px.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:50:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:50:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:50:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:50:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:50:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:50:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32-EAF2F5.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:50:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Regular.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:50:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Medium.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:50:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Bold.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:50:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/gollum/images/icon-sprite.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:51:09	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/anon@git.dn42:dn42/ca-client (from 127.42.42.80:4280/services/Automatic-CA)
+06:51:09	Error: 	"Not Found" (404) at link 127.42.42.80:4280/TODO (from 127.42.42.80:4280/services/New-DNS)
+06:51:10	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/whois.dn42 (from 127.42.42.80:4280/howto/IPv6.md)
+
+HTTrack Website Copier/3.49-2 mirror complete in 3 minutes 12 seconds : 190 links scanned, 172 files written (3256739 bytes overall) [3072988 bytes received at 16005 bytes/sec], 10.5 requests per connection
+(15 errors, 14 warnings, 0 messages)
