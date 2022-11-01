@@ -475,6 +475,32 @@ More information can be found <a href="Bird-communities.html">here</a>. </p>
 
 <pre class="highlight"><code>mkdir -p /var/lib/bird/</code></pre>
 
+<p>Or use a systemd timer: (check the commands before copy-pasting)</p>
+
+<pre class="highlight"><code># /etc/systemd/system/dn42-roa.service
+[Unit]
+Description=Update DN42 ROA
+
+[Service]
+Type=oneshot
+ExecStart=curl -sfSLR -o /etc/bird/roa_dn42.conf -z /etc/bird/roa_dn42.conf https://dn42.burble.com/roa/dn42_roa_bird2_4.conf
+ExecStart=curl -sfSLR -o /etc/bird/roa_dn42_v6.conf -z /etc/bird/roa_dn42_v6.conf https://dn42.burble.com/roa/dn42_roa_bird2_6.conf
+ExecStart=birdc configure</code></pre>
+
+<pre class="highlight"><code># /etc/systemd/system/dn42-roa.timer
+[Unit]
+Description=Update DN42 ROA periodically
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=15m
+AccuracySec=1m
+
+[Install]
+WantedBy=timers.target</code></pre>
+
+<p>then enable and start the timer with <code>systemctl enable --now dn42-roa.timer</code>.</p>
+
 <h3><a class="anchor" id="use-rpki-roa-in-bird2" href="#use-rpki-roa-in-bird2"></a>Use RPKI ROA in bird2</h3>
 
 <ul>
