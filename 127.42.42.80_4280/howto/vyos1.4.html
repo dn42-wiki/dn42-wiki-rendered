@@ -268,7 +268,12 @@ set firewall ipv6-name Tunnels_Local_v6 rule 99 log 'enable'</code></pre>
 #Output example:
 Private key: SOoPQdMdmXE3ssp0/vwwoIMhQqvcQls+DhDjmaLw03U=
 Public key: ArkXeK1c0pCWCouePcRRBCQpXfi4ZIvRFFwTxO60dxs=</code></pre>
-<em>In any case you'll have to take note of the generated keys, because they won't be saved into the system after generation and you'll need them later. The public key will be shared with your peers. Keep secret the secret key!</em>  
+To retrieve keys later
+<pre class="highlight"><code>show wireguard keypairs pubkey [key name]
+
+Example:
+show wireguard keypairs pubkey default
+ArkXeK1c0pCWCouePcRRBCQpXfi4ZIvRFFwTxO60dxs=</code></pre>
 
 <h3><a class="anchor" id="configure-first-peer" href="#configure-first-peer"></a>Configure First Peer</h3>
 
