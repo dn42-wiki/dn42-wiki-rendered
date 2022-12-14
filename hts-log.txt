@@ -1,4 +1,4 @@
-HTTrack3.49-2+libhtsjava.so.2 launched on Tue, 13 Dec 2022 11:00:45 at http://127.42.42.80:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes?* -*/*.md/*
+HTTrack3.49-2+libhtsjava.so.2 launched on Wed, 14 Dec 2022 06:12:48 at http://127.42.42.80:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes?* -*/*.md/*
 (httrack http://127.42.42.80:4280 -iC2 -%F  -O /srv/dn42-wiki/dn42-wiki-rendered -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes?* -*/*.md/* )
 
 Information, Warnings and Errors reported for this mirror:
@@ -6,75 +6,75 @@ note:	the hts-log.txt file, and hts-cache folder, may contain sensitive informat
 	such as username/password authentication for websites mirrored in this project
 	do not share these files/folders if you want these information to remain private
 
-11:00:47	Warning: 	Found for 127.42.42.80:4280/
-11:00:47	Warning: 	File has moved from 127.42.42.80:4280/ to http://127.42.42.80:4280/Home
-11:00:48	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/dn42.png: Is a directory
-11:00:48	Warning: 	file not stored in cache due to bogus state (broken size, expected 2363 got 0): 127.42.42.80:4280/dn42.png
-11:00:55	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/custom.css: Is a directory
-11:00:57	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/favicon.ico: Is a directory
-11:00:57	Warning: 	file not stored in cache due to bogus state (broken size, expected 318 got 0): 127.42.42.80:4280/favicon.ico
-11:01:01	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 2363 expected)) at link 127.42.42.80:4280/dn42.png (from 127.42.42.80:4280/Home)
-11:01:18	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/dn42.svg: Is a directory
-11:01:24	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/howto/images/PolicyMap.png: Is a directory
-11:01:24	Warning: 	file not stored in cache due to bogus state (broken size, expected 126423 got 0): 127.42.42.80:4280/howto/images/PolicyMap.png
-11:01:35	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/dn42.png: Is a directory
-11:01:35	Warning: 	file not stored in cache due to bogus state (broken size, expected 2363 got 0): 127.42.42.80:4280/dn42.png
-11:01:53	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/ircdun.png: Is a directory
-11:01:53	Warning: 	file not stored in cache due to bogus state (broken size, expected 58246 got 0): 127.42.42.80:4280/internal/images/ircdun.png
-11:01:55	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-16px.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-11:01:55	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-11:01:55	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-11:01:55	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-11:01:55	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-11:01:55	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-11:01:55	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32-EAF2F5.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-11:01:55	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Regular.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-11:01:55	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Medium.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-11:01:55	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Bold.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-11:01:55	Error: 	"Not Found" (404) at link 127.42.42.80:4280/gollum/images/icon-sprite.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
-11:01:55	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/win98dun.png: Is a directory
-11:01:55	Warning: 	file not stored in cache due to bogus state (broken size, expected 427092 got 0): 127.42.42.80:4280/internal/images/win98dun.png
-11:02:03	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 318 expected)) at link 127.42.42.80:4280/favicon.ico (from 127.42.42.80:4280/gollum/overview)
-11:02:04	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 2363 expected)) at link 127.42.42.80:4280/dn42.png (from 127.42.42.80:4280/Home)
-11:02:23	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/BGP-on-Extreme-Summit1i (from 127.42.42.80:4280/howto/Getting-Started)
-11:02:29	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 126423 expected)) at link 127.42.42.80:4280/howto/images/PolicyMap.png (from 127.42.42.80:4280/howto/Address-Space)
-11:02:37	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 58246 expected)) at link 127.42.42.80:4280/internal/images/ircdun.png (from 127.42.42.80:4280/internal/ShowAndTell)
-11:02:38	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 427092 expected)) at link 127.42.42.80:4280/internal/images/win98dun.png (from 127.42.42.80:4280/internal/ShowAndTell)
-11:02:51	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/dn42.png: Is a directory
-11:02:51	Warning: 	file not stored in cache due to bogus state (broken size, expected 2363 got 0): 127.42.42.80:4280/dn42.png
-11:02:51	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/favicon.ico: Is a directory
-11:02:51	Warning: 	file not stored in cache due to bogus state (broken size, expected 318 got 0): 127.42.42.80:4280/favicon.ico
-11:02:53	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/howto/images/PolicyMap.png: Is a directory
-11:02:53	Warning: 	file not stored in cache due to bogus state (broken size, expected 126423 got 0): 127.42.42.80:4280/howto/images/PolicyMap.png
-11:02:55	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/ircdun.png: Is a directory
-11:02:55	Warning: 	file not stored in cache due to bogus state (broken size, expected 58246 got 0): 127.42.42.80:4280/internal/images/ircdun.png
-11:02:57	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/win98dun.png: Is a directory
-11:02:57	Warning: 	file not stored in cache due to bogus state (broken size, expected 427092 got 0): 127.42.42.80:4280/internal/images/win98dun.png
-11:03:05	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 318 expected)) at link 127.42.42.80:4280/favicon.ico (from 127.42.42.80:4280/gollum/overview)
-11:03:05	Error: 	"Incorrect length (0 Bytes, 2363 expected)" (-4) after 2 retries at link 127.42.42.80:4280/dn42.png (from 127.42.42.80:4280/Home)
-11:03:05	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/dn42.png: Is a directory
-11:03:05	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/anon@git.dn42:dn42/ca-client (from 127.42.42.80:4280/services/Automatic-CA)
-11:03:05	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 126423 expected)) at link 127.42.42.80:4280/howto/images/PolicyMap.png (from 127.42.42.80:4280/howto/Address-Space)
-11:03:06	Error: 	"Not Found" (404) at link 127.42.42.80:4280/TODO (from 127.42.42.80:4280/services/New-DNS)
-11:03:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/favicon.ico: Is a directory
-11:03:06	Warning: 	file not stored in cache due to bogus state (broken size, expected 318 got 0): 127.42.42.80:4280/favicon.ico
-11:03:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/howto/images/PolicyMap.png: Is a directory
-11:03:06	Warning: 	file not stored in cache due to bogus state (broken size, expected 126423 got 0): 127.42.42.80:4280/howto/images/PolicyMap.png
-11:03:07	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 58246 expected)) at link 127.42.42.80:4280/internal/images/ircdun.png (from 127.42.42.80:4280/internal/ShowAndTell)
-11:03:07	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 427092 expected)) at link 127.42.42.80:4280/internal/images/win98dun.png (from 127.42.42.80:4280/internal/ShowAndTell)
-11:03:08	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/whois.dn42 (from 127.42.42.80:4280/howto/IPv6.md)
-11:03:08	Error: 	"Incorrect length (0 Bytes, 318 expected)" (-4) after 2 retries at link 127.42.42.80:4280/favicon.ico (from 127.42.42.80:4280/gollum/overview)
-11:03:08	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/favicon.ico: Is a directory
-11:03:08	Error: 	"Incorrect length (0 Bytes, 126423 expected)" (-4) after 2 retries at link 127.42.42.80:4280/howto/images/PolicyMap.png (from 127.42.42.80:4280/howto/Address-Space)
-11:03:08	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/howto/images/PolicyMap.png: Is a directory
-11:03:08	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/ircdun.png: Is a directory
-11:03:08	Warning: 	file not stored in cache due to bogus state (broken size, expected 58246 got 0): 127.42.42.80:4280/internal/images/ircdun.png
-11:03:08	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/win98dun.png: Is a directory
-11:03:08	Warning: 	file not stored in cache due to bogus state (broken size, expected 427092 got 0): 127.42.42.80:4280/internal/images/win98dun.png
-11:03:08	Error: 	"Incorrect length (0 Bytes, 58246 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/ircdun.png (from 127.42.42.80:4280/internal/ShowAndTell)
-11:03:08	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/ircdun.png: Is a directory
-11:03:08	Error: 	"Incorrect length (0 Bytes, 427092 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/win98dun.png (from 127.42.42.80:4280/internal/ShowAndTell)
-11:03:08	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/win98dun.png: Is a directory
+06:12:52	Warning: 	Found for 127.42.42.80:4280/
+06:12:52	Warning: 	File has moved from 127.42.42.80:4280/ to http://127.42.42.80:4280/Home
+06:12:53	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/dn42.png: Is a directory
+06:12:53	Warning: 	file not stored in cache due to bogus state (broken size, expected 2363 got 0): 127.42.42.80:4280/dn42.png
+06:13:02	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/custom.css: Is a directory
+06:13:04	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/favicon.ico: Is a directory
+06:13:04	Warning: 	file not stored in cache due to bogus state (broken size, expected 318 got 0): 127.42.42.80:4280/favicon.ico
+06:13:09	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 2363 expected)) at link 127.42.42.80:4280/dn42.png (from 127.42.42.80:4280/Home)
+06:13:24	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/dn42.svg: Is a directory
+06:13:28	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/howto/images/PolicyMap.png: Is a directory
+06:13:28	Warning: 	file not stored in cache due to bogus state (broken size, expected 126423 got 0): 127.42.42.80:4280/howto/images/PolicyMap.png
+06:13:40	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/dn42.png: Is a directory
+06:13:40	Warning: 	file not stored in cache due to bogus state (broken size, expected 2363 got 0): 127.42.42.80:4280/dn42.png
+06:13:58	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/ircdun.png: Is a directory
+06:13:58	Warning: 	file not stored in cache due to bogus state (broken size, expected 58246 got 0): 127.42.42.80:4280/internal/images/ircdun.png
+06:14:00	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-16px.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:14:00	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:14:00	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:14:00	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:14:00	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:14:00	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error@2x.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:14:00	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32-EAF2F5.gif (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:14:00	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Regular.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:14:00	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Medium.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:14:00	Error: 	"Not Found" (404) at link 127.42.42.80:4280/fonts/Inter-Bold.woff (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:14:00	Error: 	"Not Found" (404) at link 127.42.42.80:4280/gollum/images/icon-sprite.png (from 127.42.42.80:4280/gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css)
+06:14:00	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/win98dun.png: Is a directory
+06:14:00	Warning: 	file not stored in cache due to bogus state (broken size, expected 427092 got 0): 127.42.42.80:4280/internal/images/win98dun.png
+06:14:10	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 318 expected)) at link 127.42.42.80:4280/favicon.ico (from 127.42.42.80:4280/gollum/overview)
+06:14:12	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 2363 expected)) at link 127.42.42.80:4280/dn42.png (from 127.42.42.80:4280/Home)
+06:14:30	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/BGP-on-Extreme-Summit1i (from 127.42.42.80:4280/howto/Getting-Started)
+06:14:38	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 126423 expected)) at link 127.42.42.80:4280/howto/images/PolicyMap.png (from 127.42.42.80:4280/howto/Address-Space)
+06:14:47	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 58246 expected)) at link 127.42.42.80:4280/internal/images/ircdun.png (from 127.42.42.80:4280/internal/ShowAndTell)
+06:14:48	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 427092 expected)) at link 127.42.42.80:4280/internal/images/win98dun.png (from 127.42.42.80:4280/internal/ShowAndTell)
+06:14:55	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/dn42.png: Is a directory
+06:14:55	Warning: 	file not stored in cache due to bogus state (broken size, expected 2363 got 0): 127.42.42.80:4280/dn42.png
+06:14:55	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/favicon.ico: Is a directory
+06:14:55	Warning: 	file not stored in cache due to bogus state (broken size, expected 318 got 0): 127.42.42.80:4280/favicon.ico
+06:14:57	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/howto/images/PolicyMap.png: Is a directory
+06:14:57	Warning: 	file not stored in cache due to bogus state (broken size, expected 126423 got 0): 127.42.42.80:4280/howto/images/PolicyMap.png
+06:14:59	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/win98dun.png: Is a directory
+06:14:59	Warning: 	file not stored in cache due to bogus state (broken size, expected 427092 got 0): 127.42.42.80:4280/internal/images/win98dun.png
+06:14:59	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/ircdun.png: Is a directory
+06:14:59	Warning: 	file not stored in cache due to bogus state (broken size, expected 58246 got 0): 127.42.42.80:4280/internal/images/ircdun.png
+06:15:12	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 318 expected)) at link 127.42.42.80:4280/favicon.ico (from 127.42.42.80:4280/gollum/overview)
+06:15:12	Error: 	"Incorrect length (0 Bytes, 2363 expected)" (-4) after 2 retries at link 127.42.42.80:4280/dn42.png (from 127.42.42.80:4280/Home)
+06:15:12	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/dn42.png: Is a directory
+06:15:12	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/anon@git.dn42:dn42/ca-client (from 127.42.42.80:4280/services/Automatic-CA)
+06:15:12	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 126423 expected)) at link 127.42.42.80:4280/howto/images/PolicyMap.png (from 127.42.42.80:4280/howto/Address-Space)
+06:15:13	Error: 	"Not Found" (404) at link 127.42.42.80:4280/TODO (from 127.42.42.80:4280/services/New-DNS)
+06:15:13	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 58246 expected)) at link 127.42.42.80:4280/internal/images/ircdun.png (from 127.42.42.80:4280/internal/ShowAndTell)
+06:15:14	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/howto/images/PolicyMap.png: Is a directory
+06:15:14	Warning: 	file not stored in cache due to bogus state (broken size, expected 126423 got 0): 127.42.42.80:4280/howto/images/PolicyMap.png
+06:15:14	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 427092 expected)) at link 127.42.42.80:4280/internal/images/win98dun.png (from 127.42.42.80:4280/internal/ShowAndTell)
+06:15:14	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/favicon.ico: Is a directory
+06:15:14	Warning: 	file not stored in cache due to bogus state (broken size, expected 318 got 0): 127.42.42.80:4280/favicon.ico
+06:15:14	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/ircdun.png: Is a directory
+06:15:14	Warning: 	file not stored in cache due to bogus state (broken size, expected 58246 got 0): 127.42.42.80:4280/internal/images/ircdun.png
+06:15:14	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/win98dun.png: Is a directory
+06:15:14	Warning: 	file not stored in cache due to bogus state (broken size, expected 427092 got 0): 127.42.42.80:4280/internal/images/win98dun.png
+06:15:15	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/whois.dn42 (from 127.42.42.80:4280/howto/IPv6.md)
+06:15:15	Error: 	"Incorrect length (0 Bytes, 318 expected)" (-4) after 2 retries at link 127.42.42.80:4280/favicon.ico (from 127.42.42.80:4280/gollum/overview)
+06:15:15	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/favicon.ico: Is a directory
+06:15:15	Error: 	"Incorrect length (0 Bytes, 126423 expected)" (-4) after 2 retries at link 127.42.42.80:4280/howto/images/PolicyMap.png (from 127.42.42.80:4280/howto/Address-Space)
+06:15:15	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/howto/images/PolicyMap.png: Is a directory
+06:15:15	Error: 	"Incorrect length (0 Bytes, 58246 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/ircdun.png (from 127.42.42.80:4280/internal/ShowAndTell)
+06:15:15	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/ircdun.png: Is a directory
+06:15:15	Error: 	"Incorrect length (0 Bytes, 427092 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/win98dun.png (from 127.42.42.80:4280/internal/ShowAndTell)
+06:15:15	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/win98dun.png: Is a directory
 
-HTTrack Website Copier/3.49-2 mirror complete in 2 minutes 23 seconds : 206 links scanned, 174 files written (3173872 bytes overall), 170 files updated [2725773 bytes received at 19061 bytes/sec], 12.1 requests per connection
+HTTrack Website Copier/3.49-2 mirror complete in 2 minutes 27 seconds : 206 links scanned, 174 files written (3173901 bytes overall), 170 files updated [2725802 bytes received at 18542 bytes/sec], 12.8 requests per connection
 (42 errors, 27 warnings, 0 messages)
