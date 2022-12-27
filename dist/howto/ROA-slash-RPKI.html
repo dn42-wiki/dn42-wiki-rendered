@@ -186,24 +186,24 @@ There exists no ROA for the route announcement</li>
 <h2><a class="anchor" id="how-can-i-implement-roa-on-dn42" href="#how-can-i-implement-roa-on-dn42"></a>How can I implement ROA on dn42?</h2>
 
 <p>On dn42 we generate ROA information from the dn42 registry.<br />
-ROA json/bird files can be generated using <a href="https://git.dn42.us/burble/dn42regsrv">dn42regsrv</a>.
+ROA json/bird files can be generated using <a href="https://git.burble.com/burble.dn42/dn42regsrv">dn42regsrv</a>.
 It is also possible to integrate this with a RTR cache server such as <a href="https://github.com/cloudflare/gortr">gortr</a>.</p>
 
 <h3><a class="anchor" id="dn42regsrv" href="#dn42regsrv"></a>dn42regsrv</h3>
 
 <p>You can find a hosted example of dn42regsrv at <a href="https://explorer.burble.com/">https://explorer.burble.com/</a> </p>
 
-<p>Instructions on how to host dn42regsrv yourself can be found on the git repo of <a href="https://git.dn42.us/burble/dn42regsrv">dn42regsrv</a>. </p>
+<p>Instructions on how to host dn42regsrv yourself can be found on the git repo of <a href="https://git.burble.com/burble.dn42/dn42regsrv">dn42regsrv</a>. </p>
 
 <p>You can also run dn42regsrv via docker (then available at 127.0.0.1:8042):</p>
 
-<pre><code>git checkout https://git.dn42.us/burble/dn42regsrv.git .
+<pre><code>git checkout https://git.burble.com/burble.dn42/dn42regsrv.git .
 cd contrib/docker
 ./build.sh
 docker-compose up -d
 </code></pre>
 
-<p>Documentation for the api endpoints can be found here: <a href="https://git.dn42.us/burble/dn42regsrv/src/master/API.md">https://git.dn42.us/burble/dn42regsrv/src/master/API.md</a></p>
+<p>Documentation for the api endpoints can be found here: <a href="https://git.burble.com/burble.dn42/dn42regsrv/src/master/API.md">https://git.burble.com/burble.dn42/dn42regsrv/src/master/API.md</a></p>
 
 <h3><a class="anchor" id="gortr" href="#gortr"></a>gortr</h3>
 
