@@ -209,6 +209,21 @@ issues. There may still be references back to monotone in some of the documentat
 
 <p>Prior to using ASNs in the new private ASN range 4200000000-4294967294 (<a href="http://tools.ietf.org/html/rfc6996">RFC6996</a>) Some ASNs were allocated from the <a href="http://www.iana.org/assignments/as-numbers/as-numbers.xhtml">ASN reserved block</a> in the 76100-76199 range. </p>
 
+<h3><a class="anchor" id="why-can-t-my-docker-containers-connect-to-other-dn42-hosts" href="#why-can-t-my-docker-containers-connect-to-other-dn42-hosts"></a>Why can't my Docker containers connect to other DN42 hosts?</h3>
+
+<p>By default, Docker overlaps with the entire DN42 range and then some. (172.16.0.0/12 == 172.16.0.0 - 172.31.255.255)</p>
+
+<p>In order to prevent this, you need to supply a different subnet range to the Docker daemon. This can be done by creating or updating <code>/etc/docker/daemon.json</code> with something along the following (this will use 192.168.128.0/18 == 192.168.128.0 - 192.168.128.0 - 192.168.191.255)
+</p><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"default-address-pools"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"base"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.128.0/18"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"size"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span></code></pre>
+Note, I (@bri / AS4242422825) have only tested this with Docker version 23.0.0, build e92dd87. But it should work with any current version. I don't know how Swarm etc. networking works, this might need additional tweaking for other versions. (Referenced from <a href="https://straz.to/2021-09-08-docker-address-pools/">https://straz.to/2021-09-08-docker-address-pools/</a> and <a href="https://docs.docker.com/network/bridge/">https://docs.docker.com/network/bridge/</a> — I used this to get my <code>thelounge</code> container to connect to hackint.dn42.)
+
 <h3><a class="anchor" id="can-i-update-the-wiki" href="#can-i-update-the-wiki"></a>Can I update the wiki?</h3>
 
 <p>Yes, the wiki can be edited when browsing to <a href="https://wiki.dn42/">wiki.dn42</a>.</p>
