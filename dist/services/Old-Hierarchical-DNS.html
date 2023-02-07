@@ -196,14 +196,14 @@
 <li>dn42
 
 <ul>
-<li>{{dn42 domain names}}</li>
+<li></li>
 </ul>
 </li>
 <li>hack</li>
 <li>ffhh</li>
-<li>{{Future Top Level Domains?}}</li>
-<li>{{ano, bit or other organisation TLDs?}}</li>
-<li>{{ICANN TLDs}}</li>
+<li></li>
+<li></li>
+<li></li>
 </ul>
 </li>
 </ul>
@@ -214,13 +214,13 @@
 
 <p>For all of these servers they have a specific IP assigned, only respond to their authoritative zones, and do not allow recursion. </p>
 
-<p><strong>{{name}}.root-servers.dn42</strong> - This server is authoritative for "." (root zone). Is authorative for ICANN root as well. "172.in-addr.arpa" is delegated to ICANN, except rfc1918 zones which are delegated to dn42. The rest of rfc1918 as well as rfc4193 address space is delegated to dn42. </p>
+<p><strong>.root-servers.dn42</strong> - This server is authoritative for "." (root zone). Is authorative for ICANN root as well. "172.in-addr.arpa" is delegated to ICANN, except rfc1918 zones which are delegated to dn42. The rest of rfc1918 as well as rfc4193 address space is delegated to dn42. </p>
 
-<p><strong>{{name}}.zone-servers.dn42</strong> - This server is authoritative for "dn42", "hack", .. This would be where the records for all forward dns nameservers would be. Similar to our current root setup.</p>
+<p><strong>.zone-servers.dn42</strong> - This server is authoritative for "dn42", "hack", .. This would be where the records for all forward dns nameservers would be. Similar to our current root setup.</p>
 
-<p><strong>{{name}}.in-addr-servers.arpa</strong> - This server is authoritative for "arpa", "in-addr", and each of the 172 zones for dn42 ip space. For non dn42 ip space NS records to the respective darknet would need to be registered. </p>
+<p><strong>.in-addr-servers.arpa</strong> - This server is authoritative for "arpa", "in-addr", and each of the 172 zones for dn42 ip space. For non dn42 ip space NS records to the respective darknet would need to be registered. </p>
 
-<p><strong>{{name}}.dn42-servers.arpa</strong> - This server is authoritative for RFC 2317 delegations. For any inetnum object smaller than /24 and whos parent has no nameserver records, a C class parent zone is created (all its subnetworks are delegated to appropriate nameservers with CNAME)</p>
+<p><strong>.dn42-servers.arpa</strong> - This server is authoritative for RFC 2317 delegations. For any inetnum object smaller than /24 and whos parent has no nameserver records, a C class parent zone is created (all its subnetworks are delegated to appropriate nameservers with CNAME)</p>
 
 <p>Real-time server monitor is available at <a href="http://nixnodes.net/dn42/dnsview">http://nixnodes.net/dn42/dnsview</a></p>
 
