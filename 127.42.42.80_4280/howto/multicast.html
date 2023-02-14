@@ -170,6 +170,8 @@
 
 <p>set up ipv4/ipv6 pim for the (s,g) joins to pass through</p>
 
+<p>be prepared to igmpv3 and mldv2 from your listeners</p>
+
 <p>you're done, you should have your streams</p>
 
 <p>current participants:</p>
@@ -188,7 +190,11 @@
 
 <p>current streams:</p>
 
-<p>vlc rtp://172.23.199.110@232.2.3.2:1234/      controllable at <a href="http://webdj.nop.dn42/">http://webdj.nop.dn42/</a></p>
+<p>vlc rtp://172.23.199.110@232.2.3.2:1234/
+controllable at <a href="http://webdj.nop.dn42/">http://webdj.nop.dn42/</a>
+public multicast to unicast relay with vlc4 and above:
+vlc --amt-relay amt-relay.geant.org amt://10.2.255.1@232.2.3.2:1234/
+it's the same stream but i had to nat it to my dn42 ip range to be listenable natively in dn42 :)</p>
 
 <p>feel free to ask for a peering and set it up!</p>
 
