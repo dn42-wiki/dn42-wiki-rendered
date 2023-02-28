@@ -164,7 +164,14 @@
 
 <p>now we have a pull req with cosmetical issues only: <a href="https://git.dn42.dev/dn42/registry/pulls/2575">https://git.dn42.dev/dn42/registry/pulls/2575</a></p>
 
-<p>the whole idea is to consider the following hypervisor configuration:</p>
+<p>the main goal is to have a shared lan where ases can peer to each other with the following conditions:</p>
+
+<ul>
+<li>pure ethernet</li>
+<li>low latency between the vms</li>
+<li>native support for jumbo frames</li>
+<li>possibility to private vlans between participants with the same conditions</li>
+</ul>
 
 <p>how to participate:</p>
 
@@ -177,6 +184,8 @@
 <p>consider enabling lldp on your interfaces because it helps speed up things on the switch moreover if you'll have more interfaces there then will help you too...</p>
 
 <p>last but not least, always save your configs! there will be a daily recurring power cut sheduled to 21:00pm cest +-1minutes to have the infrastructure auto-upgraded...</p>
+
+<p>the whole idea is to consider the following hypervisor configuration:</p>
 
 <pre class="highlight"><code>dn42ix#show startup-config vdc
 vdc definition vm-bri
