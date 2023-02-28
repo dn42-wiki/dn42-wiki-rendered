@@ -162,7 +162,7 @@
 	        
 	        <p>we're planning to have a mcast-ix.dn42 somewhere in the cloud at #dn42 for years now...</p>
 
-<p>now we have a pull req with cosmetical issues only: <a href="https://git.dn42.dev/dn42/registry/pulls/2572">https://git.dn42.dev/dn42/registry/pulls/2572</a></p>
+<p>now we have a pull req with cosmetical issues only: <a href="https://git.dn42.dev/dn42/registry/pulls/2575">https://git.dn42.dev/dn42/registry/pulls/2575</a></p>
 
 <p>the whole idea is to consider the following hypervisor configuration:</p>
 
@@ -170,11 +170,11 @@
 
 <p>all you have to do is prepare a qcow2 or vmdk image and upload it to somewhere and ping nop-mnt (mc36 @ irc) with the url... i'll wget it once then boot up your vm connected to the switchport... you'll have raw dn42 reachability there and pat-ed clearnet to continue your installation or upgrades or to connect to the rest of your infra...</p>
 
-<p>only one thing to look for twice, the "console=ttyS0,115200n8" be present as a kernel parameter as there won't be vnc console... maybe i can lift that later....</p>
+<p>only one thing to look for twice, the "console=ttyS0,115200n8" be present as a kernel parameter... if you need vnc access instead, just ask for it....</p>
 
 <p>always save your configs! there will be a daily recurring power cut sheduled to 21:00pm +-1minutes to have the infrastructure auto-upgraded</p>
 
-<pre class="highlight"><code>dn42ix#show startup-config vdc                                                                                        
+<pre class="highlight"><code>dn42ix#show startup-config vdc
 vdc definition vm-bri
  connect ethernet2825 vm-switch
  cpu host
@@ -205,7 +205,7 @@ vdc definition vm-nop
  connect ethernet1955 vm-switch
  exit
 vdc definition vm-routeserver
- exit              
+ exit
 vdc definition vm-switch
  connect ethernet1080 vm-jlu5
  connect ethernet1955 vm-nop
@@ -214,7 +214,7 @@ vdc definition vm-switch
  connect ethernet66601 vm-clearnet
  exit
 
-dn42ix#      </code></pre>
+dn42ix#</code></pre>
 
 <p>now you can have drop-in replacement vm-s to experiment with like whats it looks a like if the ix is provisioned on a juniper vsrx3 shitload or a cisco nxosv or plain freerouter in software mode or in p4dpdk mode.... </p>
 
@@ -239,28 +239,36 @@ dn42ix#      </code></pre>
 </thead>
 <tbody>
 <tr>
+<td align="left">sw1-mcastix</td>
+<td align="left">1951</td>
+<td align="left">N/A</td>
+<td align="left">N/A</td>
+<td align="left">N/A</td>
+<td align="left">TBD: SOON</td>
+</tr>
+<tr>
+<td align="left">rs1-mcastix</td>
+<td align="left">1951</td>
+<td align="left">172.23.124.126/27</td>
+<td align="left">fde0:93fa:7a0:c1ca::179/64</td>
+<td align="left">fe80::20a:74ff:fe78:6a6</td>
+<td align="left">TBD: SOON</td>
+</tr>
+<tr>
 <td align="left">rtr1-badcorp</td>
-<td align="left">1952?</td>
+<td align="left">1952</td>
 <td align="left">172.23.124.97/27</td>
 <td align="left">fde0:93fa:7a0:c1ca::666/64</td>
 <td align="left">fe80::260:54ff:fe33:2178</td>
 <td align="left">TBD: SOON</td>
 </tr>
 <tr>
-<td align="left">rs1-mcastix</td>
-<td align="left">1951?</td>
-<td align="left">172.23.124.126/27</td>
-<td align="left">fde0:93fa:7a0:c1ca::179/64</td>
-<td align="left">TBD: SOON</td>
-<td align="left">TBD: SOON</td>
-</tr>
-<tr>
-<td align="left">rtr1-nopmnt</td>
+<td align="left">rtr1-nop</td>
 <td align="left">1955</td>
 <td align="left">172.23.124.122/27</td>
 <td align="left">fde0:93fa:7a0:c1ca::1955/64</td>
-<td align="left">TBD: SOON</td>
-<td align="left">TBD: SOON</td>
+<td align="left">fe80::200:ccff:fe1e:c0de</td>
+<td align="left">telnet sandbox.freertr.org</td>
 </tr>
 <tr>
 <td align="left">rtr1-catgirls</td>
@@ -271,13 +279,37 @@ dn42ix#      </code></pre>
 <td align="left">TBD: SOON</td>
 </tr>
 <tr>
-<td align="left">rtr1-laremnt</td>
+<td align="left">rtr1-lare</td>
 <td align="left">3035</td>
 <td align="left">172.23.124.115/27</td>
 <td align="left">fde0:93fa:7a0:c1ca:21f:45ff:fe11:7356</td>
 <td align="left">fe80::21f:45ff:fe11:7356</td>
 <td align="left">clearnet: <a href="https://lg.lare.cc/">https://lg.lare.cc/</a> dn42: <a href="https://lg.lare.dn42/">https://lg.lare.dn42/</a>
 </td>
+</tr>
+<tr>
+<td align="left">rtr1-bri</td>
+<td align="left">2825</td>
+<td align="left">TBD</td>
+<td align="left">TBD</td>
+<td align="left">TBD</td>
+<td align="left">TBD</td>
+</tr>
+<tr>
+<td align="left">rtr1-jlu5</td>
+<td align="left">1080</td>
+<td align="left">TBD</td>
+<td align="left">TBD</td>
+<td align="left">TBD</td>
+<td align="left">TBD</td>
+</tr>
+<tr>
+<td align="left">rtr1-fl</td>
+<td align="left">1975</td>
+<td align="left">TBD</td>
+<td align="left">TBD</td>
+<td align="left">TBD</td>
+<td align="left">TBD</td>
 </tr>
 </tbody>
 </table>
@@ -309,9 +341,11 @@ dn42ix#      </code></pre>
 </tbody>
 </table>
 
-<p>public config archive of the infra <a href="http://ix.nop.dn42/">http://ix.nop.dn42/</a> here</p>
+<p>public mrt dumps and config archive of the infra at <a href="http://ix.nop.dn42/">http://ix.nop.dn42/</a> here</p>
 
 <p>it'll be shitload in the beginning but hopefully it could improve the common knowledge....</p>
+
+<p>please consider joining #dn42-ix#2 to speed up sorting out potential issues, etc</p>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
