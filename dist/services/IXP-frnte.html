@@ -232,17 +232,15 @@ A Ruby script to calculate the IPv6 can be found on <a href="https://gist.github
 
 <p>An example configuration for Debian based Linux distributions would be:  </p>
 
-<pre><code>iface ensXX inet6 static
-    address fde0:93fa:7a0:2:0:fcde:3558:1/64
-</code></pre>
+<pre class="highlight"><code>iface ensXX inet6 static
+    address fde0:93fa:7a0:2:0:fcde:3558:1/64</code></pre>
 
 <p>Here <code>ensXX</code> is the dn42 VLAN interface. This can be determined by comparing the MAC address of the interface with the MAC address of the dn42 VLAN in Proxmox. The MAC address can be determined on Linux with <code>ip l</code>:</p>
 
-<pre><code>ensXX: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu
+<pre class="highlight"><code>ensXX: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu
     1500 qdisc pfifo_fast state UP mode DEFAULT group
     default qlen 1000
-    link/ether MAC brd ff:ff:ff:ff:ff:ff
-</code></pre>
+    <span class="nb">link</span>/ether MAC brd ff:ff:ff:ff:ff:ff</code></pre>
 
 <p><code>MAC</code> would be the MAC address. After that you can activate the interface with ifup or a reboot of the VM.<br />
 Of course there are other configuration possibilities. This is only an example for Debian-based Linux distributions.</p>
@@ -257,18 +255,17 @@ ASN: 4242421081</p>
 
 <p>An example configuration for bird2 would be the following:</p>
 
-<pre><code>protocol bgp ixp_rs from dnpeers {
-    neighbor fde0:93fa:7a0:2:0:fcde:3559:1 as 4242421081;
-
-    enable extended messages on;
-    direct;
-    enforce first as off;
-
-    ipv4 {
-        extended next hop;
+<pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> <span class="n">ixp_rs</span> <span class="n">from</span> <span class="n">dnpeers</span> {
+    <span class="n">neighbor</span> <span class="n">fde0</span>:<span class="m">93</span><span class="n">fa</span>:<span class="m">7</span><span class="n">a0</span>:<span class="m">2</span>:<span class="m">0</span>:<span class="n">fcde</span>:<span class="m">3559</span>:<span class="m">1</span> <span class="n">as</span> <span class="m">4242421081</span>;
+    
+    <span class="n">enable</span> <span class="n">extended</span> <span class="n">messages</span> <span class="n">on</span>;
+    <span class="n">direct</span>;
+    <span class="n">enforce</span> <span class="n">first</span> <span class="n">as</span> <span class="n">off</span>;
+    
+    <span class="n">ipv4</span> {
+    	<span class="n">extended</span> <span class="n">next</span> <span class="n">hop</span>;
     };
-}
-</code></pre>
+}</code></pre>
 
 <p><strong>What does this configuration do?</strong></p>
 
@@ -297,15 +294,19 @@ One can also try to ping the IP of some at the IXP. From the latency you can als
 <li>  Burble's pingable
 
 <ul>
-<li>  172.20.129.5</li>
-<li>  fd42:4242:2601:ac05::1</li>
+<li>  <code>172.20.129.5</code>
+</li>
+<li>  <code>fd42:4242:2601:ac05::1</code>
+</li>
 </ul>
 </li>
 <li>  Bandura's pingable:
 
 <ul>
-<li>  172.22.149.224</li>
-<li>  fd04:234e:fc31::</li>
+<li>  <code>172.22.149.224</code>
+</li>
+<li>  <code>fd04:234e:fc31::</code>
+</li>
 </ul>
 </li>
 </ul>

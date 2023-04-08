@@ -181,38 +181,38 @@ Neighbors use ULA addresses (/127 transfer net) assigned from one of the peer's 
 <h2><a class="anchor" id="local-host" href="#local-host"></a>local host</h2>
 
 <p>Information such as ASN, router ID and allocated networks are required:
-</p><pre class="highlight"><code># macros
-ASN="4242421234"
+</p><pre class="highlight"><code><span class="c"># macros
+</span><span class="n">ASN</span>=<span class="s2">"4242421234"</span>
 
-# global configuration
-AS $ASN
-router-id 1.2.3.4
+<span class="c"># global configuration
+</span><span class="n">AS</span> $<span class="n">ASN</span>
+<span class="n">router</span>-<span class="n">id</span> <span class="m">1</span>.<span class="m">2</span>.<span class="m">3</span>.<span class="m">4</span>
 
-prefix-set mynetworks {
-        fd00:12:34::/48
+<span class="n">prefix</span>-<span class="n">set</span> <span class="n">mynetworks</span> {
+        <span class="n">fd00</span>:<span class="m">12</span>:<span class="m">34</span>::/<span class="m">48</span>
 }</code></pre>
 
 <p>These can be used in subsequent filter rules.
 The local peer's announcements is then defined as follows:
-</p><pre class="highlight"><code># Generate routes for the networks our ASN will originate.
+</p><pre class="highlight"><code><span class="c"># Generate routes for the networks our ASN will originate.
 # The communities (read 'tags') are later used to match on what
 # is announced to EBGP neighbors
-network prefix-set mynetworks set large-community $ASN:1:1</code></pre>
+</span><span class="n">network</span> <span class="n">prefix</span>-<span class="n">set</span> <span class="n">mynetworks</span> <span class="n">set</span> <span class="n">large</span>-<span class="n">community</span> $<span class="n">ASN</span>:<span class="m">1</span>:<span class="m">1</span></code></pre>
 
 <h2><a class="anchor" id="neighbors" href="#neighbors"></a>neighbors</h2>
 
 <p>For each neighbor its ASN and transfer ULA is required.
 An optional description is provided such that <a href="http://man.openbsd.org/bgpctl.8">bgpctl(8)</a> for example can be used with mnemonic names instead of AS numbers:
-</p><pre class="highlight"><code># peer A, transport over IPSec/GRE
-$A_local="fd00:12:34:A::1"
-$A_remote="fd00:12:34:A::2"
-$A_ASN="4242425678"
+</p><pre class="highlight"><code><span class="c"># peer A, transport over IPSec/GRE
+</span>$<span class="n">A_local</span>=<span class="s2">"fd00:12:34:A::1"</span>
+$<span class="n">A_remote</span>=<span class="s2">"fd00:12:34:A::2"</span>
+$<span class="n">A_ASN</span>=<span class="s2">"4242425678"</span>
 
-listen on $A_local
+<span class="n">listen</span> <span class="n">on</span> $<span class="n">A_local</span>
 
-neighbor  $A_remote {
-    remote-as $A_ASN
-    descr "A"
+<span class="n">neighbor</span>  $<span class="n">A_remote</span> {
+    <span class="n">remote</span>-<span class="n">as</span> $<span class="n">A_ASN</span>
+    <span class="n">descr</span> <span class="s2">"A"</span>
 }</code></pre>
 
 <h2><a class="anchor" id="filter-rules" href="#filter-rules"></a>filter rules</h2>
@@ -222,36 +222,36 @@ The filter rules are evaluated in sequential order, form first to last.
 The last matching allow or deny rule decides what action is taken.</p>
 
 <p>Start off with basic protection and sanity rules:
-</p><pre class="highlight"><code># deny more-specifics of our own originated prefixes
-deny quick from ebgp prefix-set mynetworks or-longer
+</p><pre class="highlight"><code><span class="c"># deny more-specifics of our own originated prefixes
+</span><span class="n">deny</span> <span class="n">quick</span> <span class="n">from</span> <span class="n">ebgp</span> <span class="n">prefix</span>-<span class="n">set</span> <span class="n">mynetworks</span> <span class="n">or</span>-<span class="n">longer</span>
 
-# filter out too long paths, establish more peerings instead
-deny quick from any max-as-len 8</code></pre>
+<span class="c"># filter out too long paths, establish more peerings instead
+</span><span class="n">deny</span> <span class="n">quick</span> <span class="n">from</span> <span class="n">any</span> <span class="n">max</span>-<span class="n">as</span>-<span class="n">len</span> <span class="m">8</span></code></pre>
 
 <p><code>quick</code> rules are considered the last matching rule, and evaluation of subsequent rules is skipped.</p>
 
 <p>Allow own announcements:
-</p><pre class="highlight"><code># Outbound EBGP: only allow self originated networks to ebgp peers
+</p><pre class="highlight"><code><span class="c"># Outbound EBGP: only allow self originated networks to ebgp peers
 # Don't leak any routes from upstream or peering sessions. This is done
 # by checking for routes that are tagged with the large-community $ASN:1:1
-allow to ebgp prefix-set mynetworks large-community $ASN:1:1</code></pre>
+</span><span class="n">allow</span> <span class="n">to</span> <span class="n">ebgp</span> <span class="n">prefix</span>-<span class="n">set</span> <span class="n">mynetworks</span> <span class="n">large</span>-<span class="n">community</span> $<span class="n">ASN</span>:<span class="m">1</span>:<span class="m">1</span></code></pre>
 
 <p>Allow all remaining UPDATES based on <strong>O</strong>rigin <strong>V</strong>alidation <strong>S</strong>tates:
-</p><pre class="highlight"><code># enforce ROA
-allow from ebgp ovs valid</code></pre>
+</p><pre class="highlight"><code><span class="c"># enforce ROA
+</span><span class="n">allow</span> <span class="n">from</span> <span class="n">ebgp</span> <span class="n">ovs</span> <span class="n">valid</span></code></pre>
 
 <p>Note how the <code>ovs</code> filter requires the <code>roa-set {...}</code> to be defined;  see the <code>ROA</code> section below.</p>
 
 <h3><a class="anchor" id="path-attributes" href="#path-attributes"></a>path attributes</h3>
 
 <p>Besides <code>allow</code> and <code>deny</code> statements, filter rules can modify UPDATE messages, e.g.
-</p><pre class="highlight"><code># Scrub normal and large communities relevant to our ASN from EBGP neighbors
+</p><pre class="highlight"><code><span class="c"># Scrub normal and large communities relevant to our ASN from EBGP neighbors
 # https://tools.ietf.org/html/rfc7454#section-11
-match from ebgp set { large-community delete $ASN:*:* }
+</span><span class="n">match</span> <span class="n">from</span> <span class="n">ebgp</span> <span class="n">set</span> { <span class="n">large</span>-<span class="n">community</span> <span class="n">delete</span> $<span class="n">ASN</span>:*:* }
 
-# Honor requests to gracefully shutdown BGP sessions
+<span class="c"># Honor requests to gracefully shutdown BGP sessions
 # https://tools.ietf.org/html/rfc8326
-match from any community GRACEFUL_SHUTDOWN set { localpref 0 }</code></pre>
+</span><span class="n">match</span> <span class="n">from</span> <span class="n">any</span> <span class="n">community</span> <span class="n">GRACEFUL_SHUTDOWN</span> <span class="n">set</span> { <span class="n">localpref</span> <span class="m">0</span> }</code></pre>
 
 <h1><a class="anchor" id="roa" href="#roa"></a>ROA</h1>
 
@@ -288,15 +288,15 @@ match from any community GRACEFUL_SHUTDOWN set { localpref 0 }</code></pre>
 </table>
 
 <p><code>/etc/dn42.roa-set</code> is the generated set:
-</p><pre class="highlight"><code>roa-set {
-    fd00:12:34::/48 source-as 4242421234
-    fd00:ab:cd::/44 maxlen 64 source-as 4242427890
+</p><pre class="highlight"><code><span class="n">roa</span>-<span class="n">set</span> {
+    <span class="n">fd00</span>:<span class="m">12</span>:<span class="m">34</span>::/<span class="m">48</span> <span class="n">source</span>-<span class="n">as</span> <span class="m">4242421234</span>
+    <span class="n">fd00</span>:<span class="n">ab</span>:<span class="n">cd</span>::/<span class="m">44</span> <span class="n">maxlen</span> <span class="m">64</span> <span class="n">source</span>-<span class="n">as</span> <span class="m">4242427890</span>
     ...
 }</code></pre>
 
 <p>Include it in <code>/etc/bgpd.conf</code>:
-</p><pre class="highlight"><code># defines roat-set, see _rpki-client crontab
-include "/etc/dn42.roa-set"</code></pre>
+</p><pre class="highlight"><code><span class="c"># defines roat-set, see _rpki-client crontab
+</span><span class="n">include</span> <span class="s2">"/etc/dn42.roa-set"</span></code></pre>
 
 <h1><a class="anchor" id="looking-glass" href="#looking-glass"></a>Looking glass</h1>
 

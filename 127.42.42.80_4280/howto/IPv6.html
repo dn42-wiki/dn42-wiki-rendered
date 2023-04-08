@@ -190,7 +190,7 @@ If you feel like spicing the challenge up a bit, why not get familiar with IPv6 
 <p>Quick list of some native-IPv6-capable services:</p>
 
 <ul>
-<li>Anycast <a href="whois.html">whois.dn42</a>
+<li>Anycast <a href="../services/whois-3.html">whois.dn42</a>
 </li>
 <li>DNS, including anycast</li>
 <li>Media boards, including DN42-Chan</li>
@@ -245,8 +245,8 @@ As such, any address that can only resolve to IPv4 will now also resolve to an a
 For example, if you've been assigned a public /48 prefix, and want to be reachable on DN42 aswell, you can use only ULA addresses from DN42 internally (or your own!), then map them to outside prefixes. Note that they'll need to all use the same prefix size to maintain the one-to-one mapping, so you may have to subnet the public prefix.</p>
 
 <p>In Linux's netfilter, this can be implemented through the use of the NETMAP target, for the example above:
-</p><pre class="highlight"><code>ip6tables -t nat -A POSTROUTING -d 2000::/3 -s &lt;DN42-PREFIX&gt;:&lt;SUBNET&gt;::/56 -j NETMAP --to &lt;PUBLIC-PREFIX&gt;:&lt;SUBNET&gt;::/56; # Map ULA to the public prefix for outgoing packets
-ip6tables -t nat -A PREROUTING -s 2000::/3 -d &lt;PUBLIC-PREFIX&gt;:&lt;SUBNET&gt;::/56 -j NETMAP --to &lt;DN42-PREFIX&gt;:&lt;SUBNET&gt;::/56; # Map public prefix to ULA for incoming packets</code></pre>
+</p><pre class="highlight"><code>ip6tables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-d</span> 2000::/3 <span class="nt">-s</span> &lt;DN42-PREFIX&gt;:&lt;SUBNET&gt;::/56 <span class="nt">-j</span> NETMAP <span class="nt">--to</span> &lt;PUBLIC-PREFIX&gt;:&lt;SUBNET&gt;::/56<span class="p">;</span> <span class="c"># Map ULA to the public prefix for outgoing packets</span>
+ip6tables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-s</span> 2000::/3 <span class="nt">-d</span> &lt;PUBLIC-PREFIX&gt;:&lt;SUBNET&gt;::/56 <span class="nt">-j</span> NETMAP <span class="nt">--to</span> &lt;DN42-PREFIX&gt;:&lt;SUBNET&gt;::/56<span class="p">;</span> <span class="c"># Map public prefix to ULA for incoming packets</span></code></pre>
 
 <h3><a class="anchor" id="with-multiple-prefixes" href="#with-multiple-prefixes"></a>With Multiple Prefixes</h3>
 

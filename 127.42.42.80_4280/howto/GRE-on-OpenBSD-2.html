@@ -173,8 +173,8 @@
 <h2><a class="anchor" id="pseudo-interface" href="#pseudo-interface"></a>pseudo interface</h2>
 
 <p>Populate <a href="https://man.openbsd.org/hostname.if.5"><code>/etc/hostname.gre0</code></a> with:
-</p><pre class="highlight"><code>tunnel A.example.com D.example.net
-inet6 fd42::/127</code></pre>
+</p><pre class="highlight"><code><span class="n">tunnel</span> <span class="n">A</span>.<span class="n">example</span>.<span class="n">com</span> <span class="n">D</span>.<span class="n">example</span>.<span class="n">net</span>
+<span class="n">inet6</span> <span class="n">fd42</span>::/<span class="m">127</span></code></pre>
 This will resolve FQDNs at parse time, set <em>A</em>'s and <em>D</em>'s IPs as source and destination tunnel address and set <em>A</em>'s assigned IP as point-to-point address on the interface.
 
 <p>Replace hostnames in the <code>tunnel</code> line with literal IPs if DNS is not available (at system boot).</p>
@@ -184,7 +184,7 @@ This will resolve FQDNs at parse time, set <em>A</em>'s and <em>D</em>'s IPs as 
 <h2><a class="anchor" id="miscellaneous" href="#miscellaneous"></a>miscellaneous</h2>
 
 <p>Populate <code>/etc/sysctl.conf</code> with:
-</p><pre class="highlight"><code>net.inet.gre.allow=1</code></pre>
+</p><pre class="highlight"><code><span class="n">net</span>.<span class="n">inet</span>.<span class="n">gre</span>.<span class="n">allow</span>=<span class="m">1</span></code></pre>
 Reboot or run <code>sysctl net.inet.gre.allow=1</code> to allow GRE packet processing.
 
 <h2></h2>

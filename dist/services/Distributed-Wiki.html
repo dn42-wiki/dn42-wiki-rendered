@@ -216,28 +216,28 @@ Since gollum is built on top of Git, it is not overly complicated to keep the lo
 
 <ul>
 <li>
-<p><strong>wiki-sync.sh</strong>:</p>
+<strong>wiki-sync.sh</strong>:</li>
+</ul>
 
-<pre lang="sh" xml:lang="sh" xml:lang="sh"><code>#!/bin/bash
+<pre class="highlight"><code><span class="c">#!/bin/bash</span>
 
-WIKI_PATH=&lt;repo path&gt;
-GIT=/usr/bin/git
+<span class="nv">WIKI_PATH</span><span class="o">=</span>&lt;repo path&gt;
+<span class="nv">GIT</span><span class="o">=</span>/usr/bin/git
 
-cd "${WIKI_PATH}"
-${GIT} push
-${GIT} pull
+<span class="nb">cd</span> <span class="s2">"</span><span class="k">${</span><span class="nv">WIKI_PATH</span><span class="k">}</span><span class="s2">"</span>
+<span class="k">${</span><span class="nv">GIT</span><span class="k">}</span> push
+<span class="k">${</span><span class="nv">GIT</span><span class="k">}</span> pull
 
-exit 0
-</code></pre>
-</li>
+<span class="nb">exit </span>0</code></pre>
+
+<ul>
 <li>
-<p><strong>Cron entry</strong>:</p>
+<strong>Cron entry</strong>:</li>
+</ul>
 
 <p><code>*/10 * * * * &lt;path&gt;/wiki-sync.sh &amp;&gt; /dev/null</code></p>
 
 <p>Running in 10 minute intervals is reasonable, if you choose to change this, please keep it in the range from 5 to 15 minutes.</p>
-</li>
-</ul>
 </li>
 </ul>
 
@@ -275,11 +275,11 @@ exit 0
 </li>
 </ul>
 
-<pre class="highlight"><code>./ca.dn42 tls-gen \
-   &lt;AS&gt;-&lt;CC&gt;(-&lt;UID&gt;).wiki.dn42 \
-   EXAMPLE-MNT \
-   mail@example.com \
-   DNS:&lt;AS&gt;-&lt;CC&gt;(-&lt;ID&gt;).wiki.dn42,DNS:wiki.dn42,DNS:www.wiki.dn42,DNS:internal.dn42,DNS:www.internal.dn42</code></pre>
+<pre class="highlight"><code>./ca.dn42 tls-gen <span class="se">\</span>
+   &lt;AS&gt;-&lt;CC&gt;<span class="o">(</span>-&lt;UID&gt;<span class="o">)</span>.wiki.dn42 <span class="se">\</span>
+   EXAMPLE-MNT <span class="se">\</span>
+   mail@example.com <span class="se">\</span>
+   DNS:&lt;AS&gt;-&lt;CC&gt;<span class="o">(</span>-&lt;ID&gt;<span class="o">)</span>.wiki.dn42,DNS:wiki.dn42,DNS:www.wiki.dn42,DNS:internal.dn42,DNS:www.internal.dn42</code></pre>
 
 <p>Wait for a reply and then sign the certificate:</p>
 
@@ -309,13 +309,13 @@ exit 0
 <li>
 <p>Extract base64 encoded SPKI fingerprint from private key <code>wiki.key</code>:</p>
 
-<pre><code>openssl rsa -in wiki.key -outform der -pubout | openssl dgst -sha256 -binary | openssl enc -base64
+<pre lang="sh" xml:lang="sh" xml:lang="sh"><code>openssl rsa -in wiki.key -outform der -pubout | openssl dgst -sha256 -binary | openssl enc -base64
 </code></pre>
 </li>
 <li>
 <p>Configure Nginx to send the fingerprint in header (SSL block):</p>
 
-<pre><code>add_header Public-Key-Pins  pin-sha256="&lt;primary&gt;"; pin-sha256="&lt;backup&gt;"; max-age=5184000; includeSubDomains';
+<pre lang="conf" xml:lang="conf" xml:lang="conf"><code>add_header Public-Key-Pins  pin-sha256="&lt;primary&gt;"; pin-sha256="&lt;backup&gt;"; max-age=5184000; includeSubDomains';
 </code></pre>
 
 <ul>
@@ -349,51 +349,51 @@ exit 0
 
 <h4><a class="anchor" id="config-example" href="#config-example"></a>Config example</h4>
 
-<pre class="highlight"><code>ssl_protocols  TLSv1.2 TLSv1.1 TLSv1;
-ssl_session_cache shared:SSL:2m;
+<pre class="highlight"><code><span class="n">ssl_protocols</span>  <span class="n">TLSv1</span>.<span class="m">2</span> <span class="n">TLSv1</span>.<span class="m">1</span> <span class="n">TLSv1</span>;
+<span class="n">ssl_session_cache</span> <span class="n">shared</span>:<span class="n">SSL</span>:<span class="m">2</span><span class="n">m</span>;
 
-ssl_ciphers   ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA;
+<span class="n">ssl_ciphers</span>   <span class="n">ECDHE</span>-<span class="n">RSA</span>-<span class="n">AES128</span>-<span class="n">GCM</span>-<span class="n">SHA256</span>:<span class="n">ECDHE</span>-<span class="n">ECDSA</span>-<span class="n">AES128</span>-<span class="n">GCM</span>-<span class="n">SHA256</span>:<span class="n">ECDHE</span>-<span class="n">RSA</span>-<span class="n">AES256</span>-<span class="n">GCM</span>-<span class="n">SHA384</span>:<span class="n">ECDHE</span>-<span class="n">ECDSA</span>-<span class="n">AES256</span>-<span class="n">GCM</span>-<span class="n">SHA384</span>:<span class="n">DHE</span>-<span class="n">RSA</span>-<span class="n">AES128</span>-<span class="n">GCM</span>-<span class="n">SHA256</span>:<span class="n">DHE</span>-<span class="n">DSS</span>-<span class="n">AES128</span>-<span class="n">GCM</span>-<span class="n">SHA256</span>:<span class="n">kEDH</span>+<span class="n">AESGCM</span>:<span class="n">ECDHE</span>-<span class="n">RSA</span>-<span class="n">AES128</span>-<span class="n">SHA256</span>:<span class="n">ECDHE</span>-<span class="n">ECDSA</span>-<span class="n">AES128</span>-<span class="n">SHA256</span>:<span class="n">ECDHE</span>-<span class="n">RSA</span>-<span class="n">AES128</span>-<span class="n">SHA</span>:<span class="n">ECDHE</span>-<span class="n">ECDSA</span>-<span class="n">AES128</span>-<span class="n">SHA</span>:<span class="n">ECDHE</span>-<span class="n">RSA</span>-<span class="n">AES256</span>-<span class="n">SHA384</span>:<span class="n">ECDHE</span>-<span class="n">ECDSA</span>-<span class="n">AES256</span>-<span class="n">SHA384</span>:<span class="n">ECDHE</span>-<span class="n">RSA</span>-<span class="n">AES256</span>-<span class="n">SHA</span>:<span class="n">ECDHE</span>-<span class="n">ECDSA</span>-<span class="n">AES256</span>-<span class="n">SHA</span>:<span class="n">DHE</span>-<span class="n">RSA</span>-<span class="n">AES128</span>-<span class="n">SHA256</span>:<span class="n">DHE</span>-<span class="n">RSA</span>-<span class="n">AES128</span>-<span class="n">SHA</span>:<span class="n">DHE</span>-<span class="n">DSS</span>-<span class="n">AES128</span>-<span class="n">SHA256</span>:<span class="n">DHE</span>-<span class="n">RSA</span>-<span class="n">AES256</span>-<span class="n">SHA256</span>:<span class="n">DHE</span>-<span class="n">DSS</span>-<span class="n">AES256</span>-<span class="n">SHA</span>:<span class="n">DHE</span>-<span class="n">RSA</span>-<span class="n">AES256</span>-<span class="n">SHA</span>:<span class="n">AES128</span>-<span class="n">GCM</span>-<span class="n">SHA256</span>:<span class="n">AES256</span>-<span class="n">GCM</span>-<span class="n">SHA384</span>:<span class="n">AES128</span>-<span class="n">SHA256</span>:<span class="n">AES256</span>-<span class="n">SHA256</span>:<span class="n">AES128</span>-<span class="n">SHA</span>:<span class="n">AES256</span>-<span class="n">SHA</span>:<span class="n">AES</span>:<span class="n">CAMELLIA</span>:<span class="n">DES</span>-<span class="n">CBC3</span>-<span class="n">SHA</span>:!<span class="n">aNULL</span>:!<span class="n">eNULL</span>:!<span class="n">EXPORT</span>:!<span class="n">DES</span>:!<span class="n">RC4</span>:!<span class="n">MD5</span>:!<span class="n">PSK</span>:!<span class="n">aECDH</span>:!<span class="n">EDH</span>-<span class="n">DSS</span>-<span class="n">DES</span>-<span class="n">CBC3</span>-<span class="n">SHA</span>:!<span class="n">EDH</span>-<span class="n">RSA</span>-<span class="n">DES</span>-<span class="n">CBC3</span>-<span class="n">SHA</span>:!<span class="n">KRB5</span>-<span class="n">DES</span>-<span class="n">CBC3</span>-<span class="n">SHA</span>;
 
-ssl_prefer_server_ciphers   on;
+<span class="n">ssl_prefer_server_ciphers</span>   <span class="n">on</span>;
 
-upstream wiki { server 127.0.0.1:4567; }
+<span class="n">upstream</span> <span class="n">wiki</span> { <span class="n">server</span> <span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">1</span>:<span class="m">4567</span>; }
 
-server { 
-        server_name internal.dn42 wiki.dn42 as&lt;aut-num&gt;-&lt;cc&gt;.wiki.dn42;
+<span class="n">server</span> { 
+        <span class="n">server_name</span> <span class="n">internal</span>.<span class="n">dn42</span> <span class="n">wiki</span>.<span class="n">dn42</span> <span class="n">as</span>&lt;<span class="n">aut</span>-<span class="n">num</span>&gt;-&lt;<span class="n">cc</span>&gt;.<span class="n">wiki</span>.<span class="n">dn42</span>;
 
-        listen 172.23.0.80:80 default;
-        listen [fd42:d42:d42:80::1]:80 default;
-        listen &lt;unicast ipv4&gt; 80;
-        listen [&lt;unicast ipv6&gt;]:80;
+        <span class="n">listen</span> <span class="m">172</span>.<span class="m">23</span>.<span class="m">0</span>.<span class="m">80</span>:<span class="m">80</span> <span class="n">default</span>;
+        <span class="n">listen</span> [<span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">80</span>::<span class="m">1</span>]:<span class="m">80</span> <span class="n">default</span>;
+        <span class="n">listen</span> &lt;<span class="n">unicast</span> <span class="n">ipv4</span>&gt; <span class="m">80</span>;
+        <span class="n">listen</span> [&lt;<span class="n">unicast</span> <span class="n">ipv6</span>&gt;]:<span class="m">80</span>;
 
-        add_header X-SiteID                   '&lt;aut-num&gt;-&lt;cc&gt;';
+        <span class="n">add_header</span> <span class="n">X</span>-<span class="n">SiteID</span>                   <span class="s1">'&lt;aut-num&gt;-&lt;cc&gt;'</span>;
 
-        location / {
-                proxy_pass http://wiki;
+        <span class="n">location</span> / {
+                <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">wiki</span>;
         }
 }
 
-upstream wikirw { server 127.0.0.1:4568; }
+<span class="n">upstream</span> <span class="n">wikirw</span> { <span class="n">server</span> <span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">1</span>:<span class="m">4568</span>; }
 
 
-server { 
-        server_name internal.dn42 wiki.dn42 as&lt;aut-num&gt;-&lt;cc&gt;.wiki.dn42;
+<span class="n">server</span> { 
+        <span class="n">server_name</span> <span class="n">internal</span>.<span class="n">dn42</span> <span class="n">wiki</span>.<span class="n">dn42</span> <span class="n">as</span>&lt;<span class="n">aut</span>-<span class="n">num</span>&gt;-&lt;<span class="n">cc</span>&gt;.<span class="n">wiki</span>.<span class="n">dn42</span>;
 
-        listen 172.23.0.80:443 ssl default;
-        listen [fd42:d42:d42:80::1]:443 ssl default;
-        listen &lt;unicast ipv4&gt; 443 ssl;
-        listen [&lt;unicast ipv6&gt;]:443 ssl;
+        <span class="n">listen</span> <span class="m">172</span>.<span class="m">23</span>.<span class="m">0</span>.<span class="m">80</span>:<span class="m">443</span> <span class="n">ssl</span> <span class="n">default</span>;
+        <span class="n">listen</span> [<span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">80</span>::<span class="m">1</span>]:<span class="m">443</span> <span class="n">ssl</span> <span class="n">default</span>;
+        <span class="n">listen</span> &lt;<span class="n">unicast</span> <span class="n">ipv4</span>&gt; <span class="m">443</span> <span class="n">ssl</span>;
+        <span class="n">listen</span> [&lt;<span class="n">unicast</span> <span class="n">ipv6</span>&gt;]:<span class="m">443</span> <span class="n">ssl</span>;
 
-	ssl on;
-        ssl_certificate      &lt;path&gt;/ssl.crt;  
-        ssl_certificate_key  &lt;path&gt;/ssl.key;
+	<span class="n">ssl</span> <span class="n">on</span>;
+        <span class="n">ssl_certificate</span>      &lt;<span class="n">path</span>&gt;/<span class="n">ssl</span>.<span class="n">crt</span>;  
+        <span class="n">ssl_certificate_key</span>  &lt;<span class="n">path</span>&gt;/<span class="n">ssl</span>.<span class="n">key</span>;
 
-        add_header strict-transport-security  "max-age=5184000; includeSubDomains";
-        add_header Public-Key-Pins            'pin-sha256="&lt;primary-pin&gt;";pin-sha256="&lt;backup-pin&gt;";  max-age=5184000; includeSubDomains';
-        add_header X-SiteID                   '&lt;aut-num&gt;-&lt;cc&gt;';
+        <span class="n">add_header</span> <span class="n">strict</span>-<span class="n">transport</span>-<span class="n">security</span>  <span class="s2">"max-age=5184000; includeSubDomains"</span>;
+        <span class="n">add_header</span> <span class="n">Public</span>-<span class="n">Key</span>-<span class="n">Pins</span>            <span class="s1">'pin-sha256="&lt;primary-pin&gt;";pin-sha256="&lt;backup-pin&gt;";  max-age=5184000; includeSubDomains'</span>;
+        <span class="n">add_header</span> <span class="n">X</span>-<span class="n">SiteID</span>                   <span class="s1">'&lt;aut-num&gt;-&lt;cc&gt;'</span>;
 
-        location / {
-                proxy_pass http://wikirw;
+        <span class="n">location</span> / {
+                <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">wikirw</span>;
         }
 }
 </code></pre>
@@ -406,36 +406,36 @@ server {
 
 <h4><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h4>
 
-<pre class="highlight"><code># exabgp.conf
-
-group gollum-watchdog {
-  neighbor &lt;peer1&gt; {
-    router-id x.x.x.x;
-    local-address &lt;source-address&gt;;
-    local-as &lt;ownas&gt;;
-    peer-as &lt;peeras&gt;;
+<pre class="highlight"><code><span class="c"># exabgp.conf
+</span>
+<span class="n">group</span> <span class="n">gollum</span>-<span class="n">watchdog</span> {
+  <span class="n">neighbor</span> &lt;<span class="n">peer1</span>&gt; {
+    <span class="n">router</span>-<span class="n">id</span> <span class="n">x</span>.<span class="n">x</span>.<span class="n">x</span>.<span class="n">x</span>;
+    <span class="n">local</span>-<span class="n">address</span> &lt;<span class="n">source</span>-<span class="n">address</span>&gt;;
+    <span class="n">local</span>-<span class="n">as</span> &lt;<span class="n">ownas</span>&gt;;
+    <span class="n">peer</span>-<span class="n">as</span> &lt;<span class="n">peeras</span>&gt;;
   }
 
-  ## (example ipv4) peer with one of our iBGP speakers:
-  neighbor 172.22.0.1 {
-    router-id 172.23.0.80;
-    local-address 172.22.0.2;
-    local-as 123456;
-    peer-as 123456;
+  <span class="c">## (example ipv4) peer with one of our iBGP speakers:
+</span>  <span class="n">neighbor</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">0</span>.<span class="m">1</span> {
+    <span class="n">router</span>-<span class="n">id</span> <span class="m">172</span>.<span class="m">23</span>.<span class="m">0</span>.<span class="m">80</span>;
+    <span class="n">local</span>-<span class="n">address</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">0</span>.<span class="m">2</span>;
+    <span class="n">local</span>-<span class="n">as</span> <span class="m">123456</span>;
+    <span class="n">peer</span>-<span class="n">as</span> <span class="m">123456</span>;
   }
 
-  ## (example ipv6) peer with one of our iBGP speakers:
-  neighbor fd42:4992:6a6d::1 {
-    router-id 172.23.0.80;
-    local-address fd42:4992:6a6d::2;
-    local-as 123456;
-    peer-as 123456;
+  <span class="c">## (example ipv6) peer with one of our iBGP speakers:
+</span>  <span class="n">neighbor</span> <span class="n">fd42</span>:<span class="m">4992</span>:<span class="m">6</span><span class="n">a6d</span>::<span class="m">1</span> {
+    <span class="n">router</span>-<span class="n">id</span> <span class="m">172</span>.<span class="m">23</span>.<span class="m">0</span>.<span class="m">80</span>;
+    <span class="n">local</span>-<span class="n">address</span> <span class="n">fd42</span>:<span class="m">4992</span>:<span class="m">6</span><span class="n">a6d</span>::<span class="m">2</span>;
+    <span class="n">local</span>-<span class="n">as</span> <span class="m">123456</span>;
+    <span class="n">peer</span>-<span class="n">as</span> <span class="m">123456</span>;
   }
 
-  ## ...
-
-  process watch-gollum {
-     run &lt;path&gt;/gollum-watchdog.sh;
+  <span class="c">## ...
+</span>
+  <span class="n">process</span> <span class="n">watch</span>-<span class="n">gollum</span> {
+     <span class="n">run</span> &lt;<span class="n">path</span>&gt;/<span class="n">gollum</span>-<span class="n">watchdog</span>.<span class="n">sh</span>;
   }
 }
 </code></pre>

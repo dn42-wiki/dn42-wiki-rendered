@@ -191,151 +191,151 @@ Additionally Bird2 before 2.0.8 cannot automatically update filtered bgp routes 
 <li>Keep in mind that you'll have to enter both networks in the OWNNET{,v6} and OWNNETSET{,v6}, the two variables are required due to set parsing difficulties with variables.</li>
 </ul>
 
-<pre class="highlight"><code>################################################
+<pre class="highlight"><code><span class="c">################################################
 #               Variable header                #
 ################################################
+</span>
+<span class="n">define</span> <span class="n">OWNAS</span> =  &lt;<span class="n">OWNAS</span>&gt;;
+<span class="n">define</span> <span class="n">OWNIP</span> =  &lt;<span class="n">OWNIP</span>&gt;;
+<span class="n">define</span> <span class="n">OWNIPv6</span> = &lt;<span class="n">OWNIPv6</span>&gt;;
+<span class="n">define</span> <span class="n">OWNNET</span> = &lt;<span class="n">OWNNET</span>&gt;;
+<span class="n">define</span> <span class="n">OWNNETv6</span> = &lt;<span class="n">OWNNETv6</span>&gt;;
+<span class="n">define</span> <span class="n">OWNNETSET</span> = [&lt;<span class="n">OWNNET</span>&gt;+];
+<span class="n">define</span> <span class="n">OWNNETSETv6</span> = [&lt;<span class="n">OWNNETv6</span>&gt;+];
 
-define OWNAS =  &lt;OWNAS&gt;;
-define OWNIP =  &lt;OWNIP&gt;;
-define OWNIPv6 = &lt;OWNIPv6&gt;;
-define OWNNET = &lt;OWNNET&gt;;
-define OWNNETv6 = &lt;OWNNETv6&gt;;
-define OWNNETSET = [&lt;OWNNET&gt;+];
-define OWNNETSETv6 = [&lt;OWNNETv6&gt;+];
-
-################################################
+<span class="c">################################################
 #                 Header end                   #
 ################################################
+</span>
+<span class="n">router</span> <span class="n">id</span> <span class="n">OWNIP</span>;
 
-router id OWNIP;
-
-protocol device {
-    scan time 10;
+<span class="n">protocol</span> <span class="n">device</span> {
+    <span class="n">scan</span> <span class="n">time</span> <span class="m">10</span>;
 }
 
 /*
- *  Utility functions
+ *  <span class="n">Utility</span> <span class="n">functions</span>
  */
 
-function is_self_net() {
-  return net ~ OWNNETSET;
+<span class="n">function</span> <span class="n">is_self_net</span>() {
+  <span class="n">return</span> <span class="n">net</span> ~ <span class="n">OWNNETSET</span>;
 }
 
-function is_self_net_v6() {
-  return net ~ OWNNETSETv6;
+<span class="n">function</span> <span class="n">is_self_net_v6</span>() {
+  <span class="n">return</span> <span class="n">net</span> ~ <span class="n">OWNNETSETv6</span>;
 }
 
-function is_valid_network() {
-  return net ~ [
-    172.20.0.0/14{21,29}, # dn42
-    172.20.0.0/24{28,32}, # dn42 Anycast
-    172.21.0.0/24{28,32}, # dn42 Anycast
-    172.22.0.0/24{28,32}, # dn42 Anycast
-    172.23.0.0/24{28,32}, # dn42 Anycast
-    172.31.0.0/16+,       # ChaosVPN
-    10.100.0.0/14+,       # ChaosVPN
-    10.127.0.0/16{16,32}, # neonetwork
-    10.0.0.0/8{15,24}     # Freifunk.net
-  ];
+<span class="n">function</span> <span class="n">is_valid_network</span>() {
+  <span class="n">return</span> <span class="n">net</span> ~ [
+    <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">14</span>{<span class="m">21</span>,<span class="m">29</span>}, <span class="c"># dn42
+</span>    <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">24</span>{<span class="m">28</span>,<span class="m">32</span>}, <span class="c"># dn42 Anycast
+</span>    <span class="m">172</span>.<span class="m">21</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">24</span>{<span class="m">28</span>,<span class="m">32</span>}, <span class="c"># dn42 Anycast
+</span>    <span class="m">172</span>.<span class="m">22</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">24</span>{<span class="m">28</span>,<span class="m">32</span>}, <span class="c"># dn42 Anycast
+</span>    <span class="m">172</span>.<span class="m">23</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">24</span>{<span class="m">28</span>,<span class="m">32</span>}, <span class="c"># dn42 Anycast
+</span>    <span class="m">172</span>.<span class="m">31</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">16</span>+,       <span class="c"># ChaosVPN
+</span>    <span class="m">10</span>.<span class="m">100</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">14</span>+,       <span class="c"># ChaosVPN
+</span>    <span class="m">10</span>.<span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">16</span>{<span class="m">16</span>,<span class="m">32</span>}, <span class="c"># neonetwork
+</span>    <span class="m">10</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">8</span>{<span class="m">15</span>,<span class="m">24</span>}     <span class="c"># Freifunk.net
+</span>  ];
 }
 
-roa4 table dn42_roa;
-roa6 table dn42_roa_v6;
+<span class="n">roa4</span> <span class="n">table</span> <span class="n">dn42_roa</span>;
+<span class="n">roa6</span> <span class="n">table</span> <span class="n">dn42_roa_v6</span>;
 
-protocol static {
-    roa4 { table dn42_roa; };
-    include "/etc/bird/roa_dn42.conf";
+<span class="n">protocol</span> <span class="n">static</span> {
+    <span class="n">roa4</span> { <span class="n">table</span> <span class="n">dn42_roa</span>; };
+    <span class="n">include</span> <span class="s2">"/etc/bird/roa_dn42.conf"</span>;
 };
 
-protocol static {
-    roa6 { table dn42_roa_v6; };
-    include "/etc/bird/roa_dn42_v6.conf";
+<span class="n">protocol</span> <span class="n">static</span> {
+    <span class="n">roa6</span> { <span class="n">table</span> <span class="n">dn42_roa_v6</span>; };
+    <span class="n">include</span> <span class="s2">"/etc/bird/roa_dn42_v6.conf"</span>;
 };
 
-function is_valid_network_v6() {
-  return net ~ [
-    fd00::/8{44,64} # ULA address space as per RFC 4193
-  ];
+<span class="n">function</span> <span class="n">is_valid_network_v6</span>() {
+  <span class="n">return</span> <span class="n">net</span> ~ [
+    <span class="n">fd00</span>::/<span class="m">8</span>{<span class="m">44</span>,<span class="m">64</span>} <span class="c"># ULA address space as per RFC 4193
+</span>  ];
 }
 
-protocol kernel {
-    scan time 20;
+<span class="n">protocol</span> <span class="n">kernel</span> {
+    <span class="n">scan</span> <span class="n">time</span> <span class="m">20</span>;
 
-    ipv6 {
-        import none;
-        export filter {
-            if source = RTS_STATIC then reject;
-            krt_prefsrc = OWNIPv6;
-            accept;
+    <span class="n">ipv6</span> {
+        <span class="n">import</span> <span class="n">none</span>;
+        <span class="n">export</span> <span class="n">filter</span> {
+            <span class="n">if</span> <span class="n">source</span> = <span class="n">RTS_STATIC</span> <span class="n">then</span> <span class="n">reject</span>;
+            <span class="n">krt_prefsrc</span> = <span class="n">OWNIPv6</span>;
+            <span class="n">accept</span>;
         };
     };
 };
 
-protocol kernel {
-    scan time 20;
+<span class="n">protocol</span> <span class="n">kernel</span> {
+    <span class="n">scan</span> <span class="n">time</span> <span class="m">20</span>;
 
-    ipv4 {
-        import none;
-        export filter {
-            if source = RTS_STATIC then reject;
-            krt_prefsrc = OWNIP;
-            accept;
+    <span class="n">ipv4</span> {
+        <span class="n">import</span> <span class="n">none</span>;
+        <span class="n">export</span> <span class="n">filter</span> {
+            <span class="n">if</span> <span class="n">source</span> = <span class="n">RTS_STATIC</span> <span class="n">then</span> <span class="n">reject</span>;
+            <span class="n">krt_prefsrc</span> = <span class="n">OWNIP</span>;
+            <span class="n">accept</span>;
         };
     };
 }
 
-protocol static {
-    route OWNNET reject;
+<span class="n">protocol</span> <span class="n">static</span> {
+    <span class="n">route</span> <span class="n">OWNNET</span> <span class="n">reject</span>;
 
-    ipv4 {
-        import all;
-        export none;
+    <span class="n">ipv4</span> {
+        <span class="n">import</span> <span class="n">all</span>;
+        <span class="n">export</span> <span class="n">none</span>;
     };
 }
 
-protocol static {
-    route OWNNETv6 reject;
+<span class="n">protocol</span> <span class="n">static</span> {
+    <span class="n">route</span> <span class="n">OWNNETv6</span> <span class="n">reject</span>;
 
-    ipv6 {
-        import all;
-        export none;
+    <span class="n">ipv6</span> {
+        <span class="n">import</span> <span class="n">all</span>;
+        <span class="n">export</span> <span class="n">none</span>;
     };
 }
 
-template bgp dnpeers {
-    local as OWNAS;
-    path metric 1;
+<span class="n">template</span> <span class="n">bgp</span> <span class="n">dnpeers</span> {
+    <span class="n">local</span> <span class="n">as</span> <span class="n">OWNAS</span>;
+    <span class="n">path</span> <span class="n">metric</span> <span class="m">1</span>;
 
-    ipv4 {
-        import filter {
-          if is_valid_network() &amp;&amp; !is_self_net() then {
-            if (roa_check(dn42_roa, net, bgp_path.last) != ROA_VALID) then {
-              print "[dn42] ROA check failed for ", net, " ASN ", bgp_path.last;
-              reject;
-            } else accept;
-          } else reject;
+    <span class="n">ipv4</span> {
+        <span class="n">import</span> <span class="n">filter</span> {
+          <span class="n">if</span> <span class="n">is_valid_network</span>() &amp;&amp; !<span class="n">is_self_net</span>() <span class="n">then</span> {
+            <span class="n">if</span> (<span class="n">roa_check</span>(<span class="n">dn42_roa</span>, <span class="n">net</span>, <span class="n">bgp_path</span>.<span class="n">last</span>) != <span class="n">ROA_VALID</span>) <span class="n">then</span> {
+              <span class="n">print</span> <span class="s2">"[dn42] ROA check failed for "</span>, <span class="n">net</span>, <span class="s2">" ASN "</span>, <span class="n">bgp_path</span>.<span class="n">last</span>;
+              <span class="n">reject</span>;
+            } <span class="n">else</span> <span class="n">accept</span>;
+          } <span class="n">else</span> <span class="n">reject</span>;
         };
 
-        export filter { if is_valid_network() &amp;&amp; source ~ [RTS_STATIC, RTS_BGP] then accept; else reject; };
-        import limit 1000 action block;
+        <span class="n">export</span> <span class="n">filter</span> { <span class="n">if</span> <span class="n">is_valid_network</span>() &amp;&amp; <span class="n">source</span> ~ [<span class="n">RTS_STATIC</span>, <span class="n">RTS_BGP</span>] <span class="n">then</span> <span class="n">accept</span>; <span class="n">else</span> <span class="n">reject</span>; };
+        <span class="n">import</span> <span class="n">limit</span> <span class="m">1000</span> <span class="n">action</span> <span class="n">block</span>;
     };
 
-    ipv6 {   
-        import filter {
-          if is_valid_network_v6() &amp;&amp; !is_self_net_v6() then {
-            if (roa_check(dn42_roa_v6, net, bgp_path.last) != ROA_VALID) then {
-              print "[dn42] ROA check failed for ", net, " ASN ", bgp_path.last;
-              reject;
-            } else accept;
-          } else reject;
+    <span class="n">ipv6</span> {   
+        <span class="n">import</span> <span class="n">filter</span> {
+          <span class="n">if</span> <span class="n">is_valid_network_v6</span>() &amp;&amp; !<span class="n">is_self_net_v6</span>() <span class="n">then</span> {
+            <span class="n">if</span> (<span class="n">roa_check</span>(<span class="n">dn42_roa_v6</span>, <span class="n">net</span>, <span class="n">bgp_path</span>.<span class="n">last</span>) != <span class="n">ROA_VALID</span>) <span class="n">then</span> {
+              <span class="n">print</span> <span class="s2">"[dn42] ROA check failed for "</span>, <span class="n">net</span>, <span class="s2">" ASN "</span>, <span class="n">bgp_path</span>.<span class="n">last</span>;
+              <span class="n">reject</span>;
+            } <span class="n">else</span> <span class="n">accept</span>;
+          } <span class="n">else</span> <span class="n">reject</span>;
         };
-        export filter { if is_valid_network_v6() &amp;&amp; source ~ [RTS_STATIC, RTS_BGP] then accept; else reject; };
-        import limit 1000 action block; 
+        <span class="n">export</span> <span class="n">filter</span> { <span class="n">if</span> <span class="n">is_valid_network_v6</span>() &amp;&amp; <span class="n">source</span> ~ [<span class="n">RTS_STATIC</span>, <span class="n">RTS_BGP</span>] <span class="n">then</span> <span class="n">accept</span>; <span class="n">else</span> <span class="n">reject</span>; };
+        <span class="n">import</span> <span class="n">limit</span> <span class="m">1000</span> <span class="n">action</span> <span class="n">block</span>; 
     };
 }
 
 
-include "/etc/bird/peers/*";</code></pre>
+<span class="n">include</span> <span class="s2">"/etc/bird/peers/*"</span>;</code></pre>
 
 <h1><a class="anchor" id="route-origin-authorization" href="#route-origin-authorization"></a>Route Origin Authorization</h1>
 
@@ -345,26 +345,26 @@ include "/etc/bird/peers/*";</code></pre>
 
 <p>To use an RTR server for ROA information, replace this config in your bird2 configuration file:</p>
 
-<pre class="highlight"><code>protocol static {
-    roa4 { table dn42_roa; };
-    include "/etc/bird/roa_dn42.conf";
+<pre class="highlight"><code><span class="n">protocol</span> <span class="n">static</span> {
+    <span class="n">roa4</span> { <span class="n">table</span> <span class="n">dn42_roa</span>; };
+    <span class="n">include</span> <span class="s2">"/etc/bird/roa_dn42.conf"</span>;
 };
 
-protocol static {
-    roa6 { table dn42_roa_v6; };
-    include "/etc/bird/roa_dn42_v6.conf";
+<span class="n">protocol</span> <span class="n">static</span> {
+    <span class="n">roa6</span> { <span class="n">table</span> <span class="n">dn42_roa_v6</span>; };
+    <span class="n">include</span> <span class="s2">"/etc/bird/roa_dn42_v6.conf"</span>;
 };</code></pre>
 
 <p>... with this one (by changing address and port so it points to your RTR server)</p>
 
-<p></p><pre class="highlight"><code>protocol rpki roa_dn42 {
-        roa4 { table dn42_roa; };
-        roa6 { table dn42_roa_v6; };
-        remote 10.1.3.3;
-        port 323;
-        refresh 600;
-        retry 300;
-        expire 7200;
+<p></p><pre class="highlight"><code><span class="n">protocol</span> <span class="n">rpki</span> <span class="n">roa_dn42</span> {
+        <span class="n">roa4</span> { <span class="n">table</span> <span class="n">dn42_roa</span>; };
+        <span class="n">roa6</span> { <span class="n">table</span> <span class="n">dn42_roa_v6</span>; };
+        <span class="n">remote</span> <span class="m">10</span>.<span class="m">1</span>.<span class="m">3</span>.<span class="m">3</span>;
+        <span class="n">port</span> <span class="m">323</span>;
+        <span class="n">refresh</span> <span class="m">600</span>;
+        <span class="n">retry</span> <span class="m">300</span>;
+        <span class="n">expire</span> <span class="m">7200</span>;
 }</code></pre>
 To reflect changes in the ROA table without a manual reload, <strong>ADD</strong> "import table" switch for both channels in your DN42 BGP template:
 
@@ -385,7 +385,7 @@ To reflect changes in the ROA table without a manual reload, <strong>ADD</strong
 
 <p>First, make sure the /etc/bird/peers directory exists:</p>
 
-<pre class="highlight"><code># mkdir -p /etc/bird/peers</code></pre>
+<pre class="highlight"><code><span class="c"># mkdir -p /etc/bird/peers</span></code></pre>
 
 <p>Then for each peer, create a configuration file similar to this one:</p>
 
@@ -399,7 +399,7 @@ protocol bgp &lt;NEIGHBOR_NAME&gt;_v6 from dnpeers {
         neighbor &lt;NEIGHBOR_IPv6&gt;%&lt;NEIGHBOR_INTERFACE&gt; as &lt;NEIGHBOR_ASN&gt;;
 }</code></pre>
 
-<p>Due to the special link local addresses of IPv6, an interface has to be specified using the % syntax if a link local address is used (Which is recommended)</p>
+<p>Due to the special link local addresses of IPv6, an interface has to be specified using the <code>%&lt;if&gt;</code> syntax if a link local address is used (Which is recommended)</p>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">

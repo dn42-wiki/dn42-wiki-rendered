@@ -209,43 +209,43 @@
 
 <p>Example bird2 config:</p>
 
-<pre class="highlight"><code>protocol bgp ROUTE_COLLECTOR
+<pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> <span class="n">ROUTE_COLLECTOR</span>
 {
-  local as ***YOUR_ASN***;
-  neighbor fd42:4242:2601:ac12::1 as 4242422602;
+  <span class="n">local</span> <span class="n">as</span> ***<span class="n">YOUR_ASN</span>***;
+  <span class="n">neighbor</span> <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac12</span>::<span class="m">1</span> <span class="n">as</span> <span class="m">4242422602</span>;
 
-  # enable multihop as the collector is not locally connected
-  multihop;
+  <span class="c"># enable multihop as the collector is not locally connected
+</span>  <span class="n">multihop</span>;
 
-  ipv4 {
-    # export all available paths to the collector    
-    add paths tx;
+  <span class="n">ipv4</span> {
+    <span class="c"># export all available paths to the collector    
+</span>    <span class="n">add</span> <span class="n">paths</span> <span class="n">tx</span>;
 
-    # import/export filters
-    import none;
-    export filter {
-      # export all valid routes
-      if ( is_valid_network() &amp;&amp; source ~ [ RTS_STATIC, RTS_BGP ] )
-      then {
-        accept;
+    <span class="c"># import/export filters
+</span>    <span class="n">import</span> <span class="n">none</span>;
+    <span class="n">export</span> <span class="n">filter</span> {
+      <span class="c"># export all valid routes
+</span>      <span class="n">if</span> ( <span class="n">is_valid_network</span>() &amp;&amp; <span class="n">source</span> ~ [ <span class="n">RTS_STATIC</span>, <span class="n">RTS_BGP</span> ] )
+      <span class="n">then</span> {
+        <span class="n">accept</span>;
       }
-      reject;
+      <span class="n">reject</span>;
     };
   };
 
-  ipv6 {
-    # export all available paths to the collector    
-    add paths tx;
+  <span class="n">ipv6</span> {
+    <span class="c"># export all available paths to the collector    
+</span>    <span class="n">add</span> <span class="n">paths</span> <span class="n">tx</span>;
 
-    # import/export filters
-    import none;
-    export filter {
-      # export all valid routes
-      if ( is_valid_network_v6() &amp;&amp; source ~ [ RTS_STATIC, RTS_BGP ] )
-      then {
-        accept;
+    <span class="c"># import/export filters
+</span>    <span class="n">import</span> <span class="n">none</span>;
+    <span class="n">export</span> <span class="n">filter</span> {
+      <span class="c"># export all valid routes
+</span>      <span class="n">if</span> ( <span class="n">is_valid_network_v6</span>() &amp;&amp; <span class="n">source</span> ~ [ <span class="n">RTS_STATIC</span>, <span class="n">RTS_BGP</span> ] )
+      <span class="n">then</span> {
+        <span class="n">accept</span>;
       }
-      reject;
+      <span class="n">reject</span>;
     };
   };
 }</code></pre>

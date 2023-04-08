@@ -188,10 +188,9 @@
 
 <p>In <code>/etc/config/network</code>, add entries for each dn42 interface:</p>
 
-<pre><code>config interface dn42peer1
-    option ifname tun-peer1
-    option proto none
-</code></pre>
+<pre class="highlight"><code><span class="n">config</span> <span class="n">interface</span> <span class="n">dn42peer1</span>
+    <span class="n">option</span> <span class="n">ifname</span> <span class="n">tun</span>-<span class="n">peer1</span>
+    <span class="n">option</span> <span class="n">proto</span> <span class="n">none</span></code></pre>
 
 <h2><a class="anchor" id="firewall" href="#firewall"></a>Firewall</h2>
 
@@ -206,32 +205,28 @@
 
 <h3><a class="anchor" id="zone-declaration" href="#zone-declaration"></a>Zone declaration</h3>
 
-<pre><code>config zone
-    option name             dn42
-    option network          'dn42peer1 dn42peer2 dn42peer3'
-    option input            REJECT
-    option output           ACCEPT
-    option forward          REJECT
-</code></pre>
+<pre class="highlight"><code><span class="n">config</span> <span class="n">zone</span>
+    <span class="n">option</span> <span class="n">name</span>             <span class="n">dn42</span>
+    <span class="n">option</span> <span class="n">network</span>          <span class="s1">'dn42peer1 dn42peer2 dn42peer3'</span>
+    <span class="n">option</span> <span class="n">input</span>            <span class="n">REJECT</span>
+    <span class="n">option</span> <span class="n">output</span>           <span class="n">ACCEPT</span>
+    <span class="n">option</span> <span class="n">forward</span>          <span class="n">REJECT</span></code></pre>
 
 <p>If you need to NAT your home network into dn42, you probably just need to add: </p>
 
-<pre><code>    option masq             1
-</code></pre>
+<pre class="highlight"><code><span class="n">option</span> <span class="n">masq</span>             <span class="m">1</span></code></pre>
 
 <h3><a class="anchor" id="dn42-lan-forwarding" href="#dn42-lan-forwarding"></a>dn42 ↔ LAN forwarding</h3>
 
-<pre><code>config forwarding                   
-    option src              lan
-    option dest             dn42
-</code></pre>
+<pre class="highlight"><code><span class="n">config</span> <span class="n">forwarding</span>                   
+    <span class="n">option</span> <span class="n">src</span>              <span class="n">lan</span>
+    <span class="n">option</span> <span class="n">dest</span>             <span class="n">dn42</span></code></pre>
 
 <p>If you're confident enough, you can also forward dn42 into your LAN:</p>
 
-<pre><code>config forwarding                   
-    option src              dn42
-    option dest             lan
-</code></pre>
+<pre class="highlight"><code><span class="n">config</span> <span class="n">forwarding</span>                   
+    <span class="n">option</span> <span class="n">src</span>              <span class="n">dn42</span>
+    <span class="n">option</span> <span class="n">dest</span>             <span class="n">lan</span></code></pre>
 
 <p>Or you can forward only certain ports, to certain hosts, etc (standard <code>config rule</code> stuff)</p>
 
@@ -239,8 +234,7 @@
 
 <p>This is more tricky. In theory, all you have to do is to set</p>
 
-<pre><code>    option forward          ACCEPT
-</code></pre>
+<pre class="highlight"><code><span class="n">option</span> <span class="n">forward</span>          <span class="n">ACCEPT</span></code></pre>
 
 <p>in the definition of the zone. However, due to a bug in Attitude Adjustment (see <a href="https://dev.openwrt.org/ticket/12945">https://dev.openwrt.org/ticket/12945</a>), this will allow forwarding <strong>everything everywhere</strong>.</p>
 

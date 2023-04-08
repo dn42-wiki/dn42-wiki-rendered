@@ -172,10 +172,10 @@
 
 <h4><a class="anchor" id="collectd-conf" href="#collectd-conf"></a>collectd.conf</h4>
 
-<pre class="highlight"><code>LoadPlugin exec
-&lt;Plugin exec&gt;
-   Exec nobody "/etc/collectd/bgp_prefixes-quagga.sh"
-&lt;/Plugin&gt;</code></pre>
+<pre class="highlight"><code><span class="n">LoadPlugin</span> <span class="n">exec</span>
+&lt;<span class="n">Plugin</span> <span class="n">exec</span>&gt;
+   <span class="n">Exec</span> <span class="n">nobody</span> <span class="s2">"/etc/collectd/bgp_prefixes-quagga.sh"</span>
+&lt;/<span class="n">Plugin</span>&gt;</code></pre>
 
 <p>collectd refuses to exec scripts as root. On Debian vtysh is compiled with PAM support: adding nobody to the quaggavty group suffices.</p>
 

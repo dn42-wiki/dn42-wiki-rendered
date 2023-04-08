@@ -203,21 +203,21 @@ service and configure the other service as the secondary or backup nameserver.</
 
 <p>Example resolv.conf, preferring a0.recursive-servers.dn42 and IPv4:</p>
 
-<pre class="highlight"><code>nameserver 172.20.0.53
-nameserver 172.23.0.53
-nameserver fd42:d42:d42:54::1
-nameserver fd42:d42:d42:53::1
-search dn42</code></pre>
+<pre class="highlight"><code><span class="n">nameserver</span> <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">nameserver</span> <span class="m">172</span>.<span class="m">23</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">nameserver</span> <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
+<span class="n">nameserver</span> <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">53</span>::<span class="m">1</span>
+<span class="n">search</span> <span class="n">dn42</span></code></pre>
 
 <p>Example resolv.conf, preferring a3.recursive-servers.dn42 and IPv6:</p>
 
-<pre class="highlight"><code>nameserver fd42:d42:d42:53::1
-nameserver fd42:d42:d42:54::1
-nameserver 172.23.0.53
-nameserver 172.20.0.53
-option inet6       # Linux/glibc
-family inet6 inet4 # BSD
-search dn42</code></pre>
+<pre class="highlight"><code><span class="n">nameserver</span> <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">53</span>::<span class="m">1</span>
+<span class="n">nameserver</span> <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
+<span class="n">nameserver</span> <span class="m">172</span>.<span class="m">23</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">nameserver</span> <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">option</span> <span class="n">inet6</span>       <span class="c"># Linux/glibc
+</span><span class="n">family</span> <span class="n">inet6</span> <span class="n">inet4</span> <span class="c"># BSD
+</span><span class="n">search</span> <span class="n">dn42</span></code></pre>
 
 <h2><a class="anchor" id="advanced-configuration" href="#advanced-configuration"></a>Advanced Configuration</h2>
 

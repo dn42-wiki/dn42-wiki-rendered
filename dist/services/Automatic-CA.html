@@ -217,7 +217,7 @@ The following steps take place in creating a signed certificate.</p>
 
 <p>get the script here: </p>
 
-<p>curl <a href="https://ca.dn42/ca.dn42">https://ca.dn42/ca.dn42</a> &gt; ca.dn42; chmod +x ca.dn42</p>
+<pre class="highlight"><code>curl https://ca.dn42/ca.dn42 <span class="o">&gt;</span> ca.dn42<span class="p">;</span> <span class="nb">chmod</span> +x ca.dn42</code></pre>
 
 <p>available via git: anon@git.dn42:dn42/ca-client</p>
 
@@ -256,46 +256,46 @@ Environtment Options:
 
 <p>Generate the user key</p>
 
-<pre class="highlight"><code>$ ./ca.dn42 user-gen XUU-MNT xuu@sour.is
+<pre class="highlight"><code><span class="nv">$ </span>./ca.dn42 user-gen XUU-MNT xuu@sour.is
 Generating a 2048 bit RSA private key
 ...............................+++
 .........................+++
-writing new private key to 'XUU-MNT.key'
------
-=
-= You need to have this pin added to your mnt object before proceeding to the next step.
-=
-|MNT Key Pin| remarks: pin-sha256:HdqCid0sedWXX3Q0uG98rYjJyTNOzaT13WfWpr1GvIw=</code></pre>
+writing new private key to <span class="s1">'XUU-MNT.key'</span>
+<span class="nt">-----</span>
+<span class="o">=</span>
+<span class="o">=</span> You need to have this pin added to your mnt object before proceeding to the next step.
+<span class="o">=</span>
+|MNT Key Pin| remarks: pin-sha256:HdqCid0sedWXX3Q0uG98rYjJyTNOzaT13WfWpr1GvIw<span class="o">=</span></code></pre>
 
 <h3><a class="anchor" id="sign-the-user-key" href="#sign-the-user-key"></a>Sign the user key</h3>
 
-<pre class="highlight"><code>$ ./ca.dn42 user-sign XUU-MNT xuu@sour.is
-== USER CERT ==
+<pre class="highlight"><code><span class="nv">$ </span>./ca.dn42 user-sign XUU-MNT xuu@sour.is
+<span class="o">==</span> USER CERT <span class="o">==</span>
    C:XD
    O:dn42
    OU:dn42 Certificate Authority
    CN:XUU-MNT
    emailAddress:xuu@sour.is
    owner:XUU-MNT
-   pin-sha256:HdqCid0sedWXX3Q0uG98rYjJyTNOzaT13WfWpr1GvIw=
+   pin-sha256:HdqCid0sedWXX3Q0uG98rYjJyTNOzaT13WfWpr1GvIw<span class="o">=</span>
 OK https://ca.dn42/crt/XUU-MNT.crt
 Enter Export Password:
 Verifying - Enter Export Password:</code></pre>
 
 <h3><a class="anchor" id="generate-the-server-key" href="#generate-the-server-key"></a>Generate the server key</h3>
 
-<pre class="highlight"><code>$ ./ca.dn42 tls-gen ca.dn42 XUU-MNT xuu@sour.is DNS:ca.dn42
+<pre class="highlight"><code><span class="nv">$ </span>./ca.dn42 tls-gen ca.dn42 XUU-MNT xuu@sour.is DNS:ca.dn42
 
 Generating a 2048 bit RSA private key
 ...........................................+++
 .......................+++
-writing new private key to 'XUU-MNT_ca.dn42.key'
------
+writing new private key to <span class="s1">'XUU-MNT_ca.dn42.key'</span>
+<span class="nt">-----</span>
 writing RSA key
-=
-= |DNS Key Pin| You need to have this pin added to your dns records  before proceeding to the next step.
-=
-_dn42_tlsverify.ca.dn42. IN TXT XUU-MNT:pin-sha256:Qu/X5GNqOo05TdL7oexkamE34OUuDE60T+f0xc60UPQ=</code></pre>
+<span class="o">=</span>
+<span class="o">=</span> |DNS Key Pin| You need to have this pin added to your dns records  before proceeding to the next step.
+<span class="o">=</span>
+_dn42_tlsverify.ca.dn42. IN TXT XUU-MNT:pin-sha256:Qu/X5GNqOo05TdL7oexkamE34OUuDE60T+f0xc60UPQ<span class="o">=</span></code></pre>
 
 <p>After you set this TXT-Record for your domain, you can verify it with the following command (by replacing the domain with your own):</p>
 
@@ -304,65 +304,65 @@ _dn42_tlsverify.ca.dn42. IN TXT XUU-MNT:pin-sha256:Qu/X5GNqOo05TdL7oexkamE34OUuD
 
 <h3><a class="anchor" id="sign-the-server-key" href="#sign-the-server-key"></a>Sign the server key</h3>
 
-<pre class="highlight"><code>$ ./ca.dn42 tls-sign ca.dn42 XUU-MNT
-== USER CERT ==
+<pre class="highlight"><code><span class="nv">$ </span>./ca.dn42 tls-sign ca.dn42 XUU-MNT
+<span class="o">==</span> USER CERT <span class="o">==</span>
    C:XD 
    O:dn42 
    OU:dn42 Certificate Authority 
    CN:XUU-MNT 
    emailAddress:xuu@sour.is 
    owner:XUU-MNT 
-   pin-sha256:HdqCid0sedWXX3Q0uG98rYjJyTNOzaT13WfWpr1GvIw= 
-== DNS CSR ==
+   pin-sha256:HdqCid0sedWXX3Q0uG98rYjJyTNOzaT13WfWpr1GvIw<span class="o">=</span> 
+<span class="o">==</span> DNS CSR <span class="o">==</span>
    C:XD 
    O:dn42 
    OU:dn42 Certificate Authority 
    CN:ca.dn42 
    emailAddress:xuu@sour.is 
    owner:XUU-MNT 
-   pin-sha256:Qu/X5GNqOo05TdL7oexkamE34OUuDE60T+f0xc60UPQ= 
-== DNS Tests ==
+   pin-sha256:Qu/X5GNqOo05TdL7oexkamE34OUuDE60T+f0xc60UPQ<span class="o">=</span> 
+<span class="o">==</span> DNS Tests <span class="o">==</span>
    CN Record: ca.dn42 PASSED
    SAN Record: ca.dn42 PASSED
 OK https://ca.dn42/crt/XUU-MNT_ca.dn42.crt
-Enter Export Password: ****
-Verifying - Enter Export Password: ****</code></pre>
+Enter Export Password: <span class="k">****</span>
+Verifying - Enter Export Password: <span class="k">****</span></code></pre>
 
 <p>The generated certificate will be valid for 3 months, to renew it simply run <code>./ca.dn42 tls-sign ca.dn42 XUU-MNT</code> again. This could be also automated in cron:</p>
 
-<pre class="highlight"><code>0 0 1 * * /etc/ssl/dn42/ca.dn42 tls-sign wiki.dn42 MIC92-MNT</code></pre>
+<pre class="highlight"><code>0 0 1 <span class="k">*</span> <span class="k">*</span> /etc/ssl/dn42/ca.dn42 tls-sign wiki.dn42 MIC92-MNT</code></pre>
 
 <p>or with a systemd timer:</p>
 
-<pre class="highlight"><code># update-dn42-ca.timer
-[Timer]
-OnBootSec=1h
-OnUnitActiveSec=1w
-Persistent=yes
+<pre class="highlight"><code><span class="c"># update-dn42-ca.timer
+</span>[<span class="n">Timer</span>]
+<span class="n">OnBootSec</span>=<span class="m">1</span><span class="n">h</span>
+<span class="n">OnUnitActiveSec</span>=<span class="m">1</span><span class="n">w</span>
+<span class="n">Persistent</span>=<span class="n">yes</span>
 
-[Install]
-WantedBy=timers.target</code></pre>
+[<span class="n">Install</span>]
+<span class="n">WantedBy</span>=<span class="n">timers</span>.<span class="n">target</span></code></pre>
 
-<pre class="highlight"><code>[Service]
-Type=oneshot
-WorkingDirectory=/etc/ssl/dn42
-ExecStart=/etc/ssl/dn42/ca.dn42 tls-sign wiki.dn42 MIC92-MNT
-# accept multiple ExecStart lines for other certificates
+<pre class="highlight"><code>[<span class="n">Service</span>]
+<span class="n">Type</span>=<span class="n">oneshot</span>
+<span class="n">WorkingDirectory</span>=/<span class="n">etc</span>/<span class="n">ssl</span>/<span class="n">dn42</span>
+<span class="n">ExecStart</span>=/<span class="n">etc</span>/<span class="n">ssl</span>/<span class="n">dn42</span>/<span class="n">ca</span>.<span class="n">dn42</span> <span class="n">tls</span>-<span class="n">sign</span> <span class="n">wiki</span>.<span class="n">dn42</span> <span class="n">MIC92</span>-<span class="n">MNT</span>
+<span class="c"># accept multiple ExecStart lines for other certificates
 # ExecStart=/etc/ssl/dn42/ca.dn42 tls-sign foobar.dn42 MIC92-MNT
-ExecStart=/usr/bin/nginx -s reload</code></pre>
+</span><span class="n">ExecStart</span>=/<span class="n">usr</span>/<span class="n">bin</span>/<span class="n">nginx</span> -<span class="n">s</span> <span class="n">reload</span></code></pre>
 
 <h3><a class="anchor" id="revoke-a-certificate" href="#revoke-a-certificate"></a>Revoke a certificate.</h3>
 
-<pre class="highlight"><code>$ ./ca.dn42 revoke XUU-MNT XUU-MNT.crt 
-== USER CERT ==
+<pre class="highlight"><code><span class="nv">$ </span>./ca.dn42 revoke XUU-MNT XUU-MNT.crt 
+<span class="o">==</span> USER CERT <span class="o">==</span>
    C:XD 
    O:dn42 
    OU:dn42 Certificate Authority 
    CN:XUU-MNT 
    emailAddress:xuu@sour.is 
    owner:XUU-MNT 
-   pin-sha256:HdqCid0sedWXX3Q0uG98rYjJyTNOzaT13WfWpr1GvIw= 
-== REVOKE CERT ==
+   pin-sha256:HdqCid0sedWXX3Q0uG98rYjJyTNOzaT13WfWpr1GvIw<span class="o">=</span> 
+<span class="o">==</span> REVOKE CERT <span class="o">==</span>
 OK</code></pre>
 
 <h3><a class="anchor" id="certificate-transparency" href="#certificate-transparency"></a>Certificate transparency</h3>

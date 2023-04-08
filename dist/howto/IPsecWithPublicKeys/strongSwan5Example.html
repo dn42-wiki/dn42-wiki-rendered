@@ -173,20 +173,19 @@
 
 <h3><a class="anchor" id="generate-an-rsa-keypair" href="#generate-an-rsa-keypair"></a>Generate an RSA keypair</h3>
 
-<pre><code>root@debian:~# mkdir /etc/ipsec.d/public
-root@debian:~# ipsec pki --gen --type rsa --outform pem --size 4096 &gt; /etc/ipsec.d/private/mykey.pem
-root@debian:~# ipsec pki --pub --in /etc/ipsec.d/private/mykey.pem --outform pem &gt; /etc/ipsec.d/public/mykey.pem
-root@debian:~# echo ": RSA mykey.pem" &gt;&gt; /etc/ipsec.secrets
-</code></pre>
+<pre class="highlight"><code>root@debian:~# <span class="nb">mkdir</span> /etc/ipsec.d/public
+root@debian:~# ipsec pki <span class="nt">--gen</span> <span class="nt">--type</span> rsa <span class="nt">--outform</span> pem <span class="nt">--size</span> 4096 <span class="o">&gt;</span> /etc/ipsec.d/private/mykey.pem
+root@debian:~# ipsec pki <span class="nt">--pub</span> <span class="nt">--in</span> /etc/ipsec.d/private/mykey.pem <span class="nt">--outform</span> pem <span class="o">&gt;</span> /etc/ipsec.d/public/mykey.pem
+root@debian:~# <span class="nb">echo</span> <span class="s2">": RSA mykey.pem"</span> <span class="o">&gt;&gt;</span> /etc/ipsec.secrets</code></pre>
 
 <h3><a class="anchor" id="exchange-public-keys-with-your-peer" href="#exchange-public-keys-with-your-peer"></a>Exchange public keys with your peer</h3>
 
 <ol>
-<li>
-<p>Display the public key. Send the key data to your peer.</p>
+<li>Display the public key. Send the key data to your peer.</li>
+</ol>
 
-<pre><code>root@debian:~# more /etc/ipsec.d/public/mykey.pem
------BEGIN PUBLIC KEY-----
+<pre class="highlight"><code>root@debian:~# more /etc/ipsec.d/public/mykey.pem
+<span class="nt">-----BEGIN</span> PUBLIC KEY-----
 MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2/FWIJuVUtfsLovavNp+
 nPSsT2mQoNK3ZUUwuEKfBjT7mhijdXRHh1SAtIaU2aen5+d5q6e27vMCCYOQLagn
 9CkKatBq54zGNvDSzQEpz0mIsaBx9xjvhsgqAmKCTpLtKuMz6cZbH8y8o9/ZZ8Kv
@@ -198,11 +197,11 @@ JHXr88HM2XeYRfRPAB6wembIEMKYdwIhwYAPPAtL+lDHtZBiBAIAp0y0FhaozSzl
 MSry8tbJR2fD/i8/yXr5isVfjJZdw8WK0LAd8a8zvmNIFKgiKWjoDgIycM5HrRD+
 rY0Br9xONkNdgB7Lz/wPEyUsiIiZpawM/S4taX7ExK4Wi3pdxkOHLn2ZyaWKsdhX
 PpCkdMfSOJ0SqCUcVze+xD8GlInUQsPgbDGvxT73jT6Ie+wSA94Cgs3mq7FS6cNo
-ZAASv7cT9DG+xfQmjrJC9SUCAwEAAQ==
------END PUBLIC KEY-----
-</code></pre>
-</li>
-<li><p>Convert your peer's public key to the PEM format using the <a href="https://git.dn42.dev/ryan/pubkey-converter/raw/master/pubkey-converter.pl" title="Public key conversion script">pubkey-converter</a> script, if necessary.</p></li>
+ZAASv7cT9DG+xfQmjrJC9SUCAwEAAQ<span class="o">==</span>
+<span class="nt">-----END</span> PUBLIC KEY-----</code></pre>
+
+<ol>
+<li>Convert your peer's public key to the PEM format using the <a href="https://git.dn42.dev/ryan/pubkey-converter/raw/master/pubkey-converter.pl" title="Public key conversion script">pubkey-converter</a> script, if necessary.</li>
 </ol>
 
 <h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
@@ -247,10 +246,10 @@ ZAASv7cT9DG+xfQmjrJC9SUCAwEAAQ==
 </table>
 
 <ol>
-<li>
-<p>Add your peer's public key</p>
+<li>Add your peer's public key</li>
+</ol>
 
-<pre><code>root@debian:~# cat &lt;&lt; EOF &gt; /etc/ipsec.d/public/peerkey.pem
+<pre class="highlight"><code>root@debian:~# <span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> &gt; /etc/ipsec.d/public/peerkey.pem
 -----BEGIN PUBLIC KEY-----
 MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAuQ1hX3+AEiLis4p5jvmY
 IfEgaq9488GU2nkuR1gZK4/CphrccmztgADU/TkiE5IOOo7zKPparcl8dZwJfX+j
@@ -265,13 +264,13 @@ YVxF2A8IAvr7Q1TQfwm2WPAWvjai2rbl6w8ZYiQBPUwkFtUATXU7XyGcLmjCGJGg
 HZoAqPHddX1z7HosFId+SSc7ugCnUNtwSYHq+DczBVdTa65aPv758zxeKzUqJBKy
 mP4HkvHlEmXHP2oAQ4G6PTkCAwEAAQ==
 -----END PUBLIC KEY-----
-EOF
-</code></pre>
-</li>
-<li>
-<p>Configure a connection policy in ipsec.conf for your peer</p>
+EOF</span></code></pre>
 
-<pre><code>root@debian:~# cat &lt;&lt; EOF &gt;&gt; /etc/ipsec.conf
+<ol>
+<li>Configure a connection policy in ipsec.conf for your peer</li>
+</ol>
+
+<pre class="highlight"><code>root@debian:~# <span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> &gt;&gt; /etc/ipsec.conf
 conn MYPEER
     # peer IPs
     left=192.0.2.1
@@ -283,61 +282,59 @@ conn MYPEER
     authby=pubkey
     leftrsasigkey=/etc/ipsec.d/public/mykey.pem
     rightrsasigkey=/etc/ipsec.d/public/peerkey.pem
-EOF
-</code></pre>
-</li>
-<li><p>All done! Configure the phase 2 parameters as you otherwise would.</p></li>
+EOF</span></code></pre>
+
+<ol>
+<li>All done! Configure the phase 2 parameters as you otherwise would.</li>
 </ol>
 
 <h2><a class="anchor" id="full-gre-ipsec-example" href="#full-gre-ipsec-example"></a>Full GRE/IPsec example</h2>
 
-<pre><code>root@debian:~# ip addr show dev gre1
+<pre class="highlight"><code>root@debian:~# ip addr show dev gre1
 11: gre1@NONE: &lt;POINTOPOINT,NOARP,UP,LOWER_UP&gt; mtu 1400 qdisc noqueue state UNKNOWN
-    link/gre 192.0.2.1 peer 192.0.2.2
+    <span class="nb">link</span>/gre 192.0.2.1 peer 192.0.2.2
     inet 10.1.2.0/31 scope global gre1
-       valid_lft forever preferred_lft forever
-    inet6 fe80::200:5efe:6825:1c22/64 scope link
-       valid_lft forever preferred_lft forever
+        valid_lft forever preferred_lft forever
+    inet6 fe80::200:5efe:6825:1c22/64 scope <span class="nb">link
+        </span>valid_lft forever preferred_lft forever
 root@debian:~# more /etc/ipsec.conf
-# ipsec.conf - strongSwan IPsec configuration file
+<span class="c"># ipsec.conf - strongSwan IPsec configuration file</span>
 
 config setup
 
 conn %default
-    keyexchange=ikev1
-    dpdaction=restart
+    <span class="nv">keyexchange</span><span class="o">=</span>ikev1
+    <span class="nv">dpdaction</span><span class="o">=</span>restart
 
 conn MYPEER
-    # peer IPs
-    left=192.0.2.1
-    right=192.0.2.2
-    # phase 1 parameters
-    ike=aes128-sha1-modp1536!
-    ikelifetime=28800s
-    # authentication
-    authby=pubkey
-    leftrsasigkey=/etc/ipsec.d/public/mykey.pem
-    rightrsasigkey=/etc/ipsec.d/public/peerkey.pem
-    # phase 2 parameters
-    esp=aes128-sha1-modp1536!
-    lifetime=3600s
-    type=transport
-    leftprotoport=gre
-    rightprotoport=gre
-    # startup
-    auto=route
-    keyingtries=%forever
-</code></pre>
+    <span class="c"># peer IPs</span>
+    <span class="nv">left</span><span class="o">=</span>192.0.2.1
+    <span class="nv">right</span><span class="o">=</span>192.0.2.2
+    <span class="c"># phase 1 parameters</span>
+    <span class="nv">ike</span><span class="o">=</span>aes128-sha1-modp1536!
+    <span class="nv">ikelifetime</span><span class="o">=</span>28800s
+    <span class="c"># authentication</span>
+    <span class="nv">authby</span><span class="o">=</span>pubkey
+    <span class="nv">leftrsasigkey</span><span class="o">=</span>/etc/ipsec.d/public/mykey.pem
+    <span class="nv">rightrsasigkey</span><span class="o">=</span>/etc/ipsec.d/public/peerkey.pem
+    <span class="c"># phase 2 parameters</span>
+    <span class="nv">esp</span><span class="o">=</span>aes128-sha1-modp1536!
+    <span class="nv">lifetime</span><span class="o">=</span>3600s
+    <span class="nb">type</span><span class="o">=</span>transport
+    <span class="nv">leftprotoport</span><span class="o">=</span>gre
+    <span class="nv">rightprotoport</span><span class="o">=</span>gre
+    <span class="c"># startup</span>
+    <span class="nv">auto</span><span class="o">=</span>route
+    <span class="nv">keyingtries</span><span class="o">=</span>%forever</code></pre>
 
 <p>If your peer is using a Cisco router and is behind NAT, then you might need to add the following option:</p>
 
-<pre><code>    rightid=NATIP
-</code></pre>
+<pre class="highlight"><code>rightid=NATIP</code></pre>
 
 <h1><a class="anchor" id="see-also" href="#see-also"></a>See also</h1>
 
 <ul>
-<li><a href="https://internal.dn42/howto/networksettings">Network settings</a></li>
+<li><a href="../networksettings.html">Network settings</a></li>
 </ul>
 
 	      </div>

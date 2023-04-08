@@ -164,7 +164,7 @@
 
 <p>The following guide illustrates how to set up an IPv6 multicast router using <a href="https://en.wikipedia.org/wiki/Protocol_Independent_Multicast#Sparse_mode">PIM-SM</a> (Protocol Independent Multicast in Sparse Mode) with your own personal multicast prefix.</p>
 
-<p>rfc8815 deprecated pim-sm, please take a look at the new multicast page about pim-ssm: wiki.dn42/howto/multicast.md</p>
+<p>rfc8815 deprecated pim-sm, please take a look at the new multicast page about pim-ssm: </p>
 
 <h2><a class="anchor" id="quickstart" href="#quickstart"></a>Quickstart</h2>
 
@@ -214,7 +214,7 @@ make
 <li>
 <p>Create a dummy interface to hold your calculated unicast Rendezvous Point address. This one needs to be reachable from within dn42. Also set "multicast on" on this dummy interface. Example:</p>
 
-<pre><code># /etc/network/interfaces.d/pim6sd
+<pre lang="conf" xml:lang="conf" xml:lang="conf"><code># /etc/network/interfaces.d/pim6sd
 auto pim-router-id
 iface pim-router-id inet manual
         pre-up ip link add name $IFACE type dummy
@@ -271,14 +271,14 @@ iface pim-ns0 inet manual
 
 <h3><a class="anchor" id="creating-a-test-multicast-listener" href="#creating-a-test-multicast-listener"></a>Creating a test multicast listener</h3>
 
-<pre class="highlight"><code>$ socat -u UDP6-RECV:1234,reuseaddr,ipv6-join-group="[ff7e:230:fdd5:69d5:c530::123]:eth0" -</code></pre>
+<pre class="highlight"><code><span class="nv">$ </span>socat <span class="nt">-u</span> UDP6-RECV:1234,reuseaddr,ipv6-join-group<span class="o">=</span><span class="s2">"[ff7e:230:fdd5:69d5:c530::123]:eth0"</span> -</code></pre>
 
 <h3><a class="anchor" id="creating-a-test-multicast-sender" href="#creating-a-test-multicast-sender"></a>Creating a test multicast sender</h3>
 
 <p>First select which interface should be the default one for your multicast traffic. Then send multicast packets via ICMPv6:</p>
 
-<pre class="highlight"><code>$ ip -6 route add ff7e:230:fdd5:69d5:c530::/96 dev eth0 table local
-$ ping6 -t 16 ff7e:230:fdd5:69d5:c530::123</code></pre>
+<pre class="highlight"><code><span class="nv">$ </span>ip <span class="nt">-6</span> route add ff7e:230:fdd5:69d5:c530::/96 dev eth0 table <span class="nb">local</span>
+<span class="nv">$ </span>ping6 <span class="nt">-t</span> 16 ff7e:230:fdd5:69d5:c530::123</code></pre>
 
 <p>The "-t 16", a hop-limit of 16, is important here as <strong>by default all multicast traffic is usually send with a hop-limit of just 1</strong>.</p>
 
@@ -347,8 +347,8 @@ $ ping6 -t 16 ff7e:230:fdd5:69d5:c530::123</code></pre>
 <p>If you want to be participate as a bootstrap router candidate, please read up on how PIM works first. If you join with a bootstrap router candidate add it here below with contact information and join #dn42-multicast on HackInt:</p>
 
 <ul>
-<li> - <a href="mailto:foo@example.com">foo@example.com</a>, foo@HackInt</li>
-<li> - ...</li>
+<li>&lt;BSR-ADDR1&gt; - <a href="mailto:foo@example.com">foo@example.com</a>, foo@HackInt</li>
+<li>&lt;BSR-ADDR2&gt; - ...</li>
 </ul>
 
 <h4><a class="anchor" id="shared-multicast-addresses" href="#shared-multicast-addresses"></a>Shared multicast addresses</h4>
@@ -358,17 +358,19 @@ $ ping6 -t 16 ff7e:230:fdd5:69d5:c530::123</code></pre>
 <p>If you want to offer an RP candidate for a shared multicast address, please read up on how PIM works first. If you join with an RP candidate for a shared multicast address add it here below with contact information and join #dn42-multicast on HackInt:</p>
 
 <ul>
-<li>/128:
+<li>&lt;multicast-address1&gt;/128:
 
 <ul>
-<li> - <a href="mailto:foo@example.com">foo@example.com</a>, foo@HackInt</li>
-<li> - <a href="mailto:bar@example.com">bar@example.com</a>, bar@HackInt</li>
-</ul></li>
-<li>/128:
+<li>&lt;RP-address1&gt; - <a href="mailto:foo@example.com">foo@example.com</a>, foo@HackInt</li>
+<li>&lt;RP-address2&gt; - <a href="mailto:bar@example.com">bar@example.com</a>, bar@HackInt</li>
+</ul>
+</li>
+<li>&lt;multicast-address2&gt;/128:
 
 <ul>
 <li>...</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 
 <h2><a class="anchor" id="questions" href="#questions"></a>Questions?</h2>

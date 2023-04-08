@@ -177,26 +177,26 @@
 I'd probably go with 4096 bits.
 
 <p>in your racoon.conf:
-</p><pre class="highlight"><code>path certificate "/etc/racoon/keys";
+</p><pre class="highlight"><code><span class="n">path</span> <span class="n">certificate</span> <span class="s2">"/etc/racoon/keys"</span>;
 
-listen {
-  isakmp 192.168.255.1[500];
+<span class="n">listen</span> {
+  <span class="n">isakmp</span> <span class="m">192</span>.<span class="m">168</span>.<span class="m">255</span>.<span class="m">1</span>[<span class="m">500</span>];
 }
 
-remote 192.168.255.2 {
-  exchange_mode main;
-  certificate_type plain_rsa "local.priv.key";
-  peers_certfile plain_rsa "remote.pub.key";
-  proposal {
-    authentication_method rsasig;
-    lifetime time 8 hour;
-    encryption_algorithm aes256;
-    hash_algorithm sha256;
-    dh_group modp1024;
+<span class="n">remote</span> <span class="m">192</span>.<span class="m">168</span>.<span class="m">255</span>.<span class="m">2</span> {
+  <span class="n">exchange_mode</span> <span class="n">main</span>;
+  <span class="n">certificate_type</span> <span class="n">plain_rsa</span> <span class="s2">"local.priv.key"</span>;
+  <span class="n">peers_certfile</span> <span class="n">plain_rsa</span> <span class="s2">"remote.pub.key"</span>;
+  <span class="n">proposal</span> {
+    <span class="n">authentication_method</span> <span class="n">rsasig</span>;
+    <span class="n">lifetime</span> <span class="n">time</span> <span class="m">8</span> <span class="n">hour</span>;
+    <span class="n">encryption_algorithm</span> <span class="n">aes256</span>;
+    <span class="n">hash_algorithm</span> <span class="n">sha256</span>;
+    <span class="n">dh_group</span> <span class="n">modp1024</span>;
   }
 }</code></pre>
 
-<h2><a class="anchor" id="se-also" href="#se-also"></a>Se also</h2>
+<h2><a class="anchor" id="see-also" href="#see-also"></a>See also</h2>
 
 <p><a href="GRE-plus-IPsec-Debian.html">Debian specific configuration</a></p>
 

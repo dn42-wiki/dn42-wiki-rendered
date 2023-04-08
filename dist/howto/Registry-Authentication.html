@@ -223,7 +223,7 @@ There are three options for doing this. but you only need to do <strong>one</str
 
 <ul>
 <li><p>Use the following <code>auth</code> attribute in your <code>mntner</code> object:
-</p><pre class="highlight"><code>auth:               pgp-fingerprint &lt;fingerprint&gt;</code></pre>
+</p><pre class="highlight"><code><span class="n">auth</span>:               <span class="n">pgp</span>-<span class="n">fingerprint</span> &lt;<span class="n">fingerprint</span>&gt;</code></pre>
 Where <code>&lt;fingerprint&gt;</code> is your <strong>full 40-digit</strong> key fingerprint, without spaces.</li>
 <li><p>Ensure that your public key has been uploaded to your account in gitea or a public keyserver, e.g. <a href="https://sks-keyservers.net/">SKS</a>, <a href="https://keys.openpgp.org/">OpenPGP</a>, <a href="https://keybase.io/">keybase</a>.</p></li>
 </ul>
@@ -235,7 +235,7 @@ Where <code>&lt;fingerprint&gt;</code> is your <strong>full 40-digit</strong> ke
 
 <ul>
 <li><p>In this case the <code>auth</code> attribute must refer to the new key-cert object so use the following in your <code>mntner</code> object:
-</p><pre class="highlight"><code>auth:               PGPKEY-&lt;short fingerprint&gt;</code></pre>
+</p><pre class="highlight"><code><span class="n">auth</span>:               <span class="n">PGPKEY</span>-&lt;<span class="n">short</span> <span class="n">fingerprint</span>&gt;</code></pre>
 Where <code>&lt;short fingerprint&gt;</code> is the last <strong>8</strong> digits from your key fingerprint.</li>
 <li><p>Create a <code>key-cert</code> object for your public key, using <code>PGPKEY-&lt;fprint&gt;</code> for the filename.</p></li>
 </ul>
@@ -247,7 +247,7 @@ Where <code>&lt;short fingerprint&gt;</code> is the last <strong>8</strong> digi
 <ul>
 <li><p>Use <code>git commit -S</code> to commit and sign your change.</p></li>
 <li><p>If you have already committed your change without signing it, you can sign the existing commit using:
-</p><pre class="highlight"><code>git commit --amend --no-edit -S</code></pre>
+</p><pre class="highlight"><code>git commit <span class="nt">--amend</span> <span class="nt">--no-edit</span> <span class="nt">-S</span></code></pre>
 If you had already pushed your change to gitea, you must also do a force push (<code>git push --force</code>) to update the remote copy.</li>
 </ul>
 
@@ -282,13 +282,13 @@ If you had already pushed your change to gitea, you must also do a force push (<
 <code>auth</code> attribute format when using an ssh key</h3>
 
 <p>The generic format for authentication using an SSH key is as follows:
-</p><pre class="highlight"><code>auth:               ssh-&lt;keytype&gt; &lt;pubkey&gt;</code></pre>
+</p><pre class="highlight"><code><span class="n">auth</span>:               <span class="n">ssh</span>-&lt;<span class="n">keytype</span>&gt; &lt;<span class="n">pubkey</span>&gt;</code></pre>
 
 <p>Common examples:</p>
 
-<pre class="highlight"><code>auth:               ssh-ed25519 &lt;pubkey&gt;</code></pre>
+<pre class="highlight"><code><span class="n">auth</span>:               <span class="n">ssh</span>-<span class="n">ed25519</span> &lt;<span class="n">pubkey</span>&gt;</code></pre>
 
-<pre class="highlight"><code>auth:               ssh-rsa &lt;pubkey&gt;</code></pre>
+<pre class="highlight"><code><span class="n">auth</span>:               <span class="n">ssh</span>-<span class="n">rsa</span> &lt;<span class="n">pubkey</span>&gt;</code></pre>
 
 <p><em>Tip: look in the existing registry objects for examples</em></p>
 
@@ -304,13 +304,13 @@ If you had already pushed your change to gitea, you must also do a force push (<
 <li>Set your git signature format to be SSH</li>
 </ul>
 
-<pre class="highlight"><code>git config --global gpg.format ssh</code></pre>
+<pre class="highlight"><code>git config <span class="nt">--global</span> gpg.format ssh</code></pre>
 
 <ul>
 <li>Tell git which SSH key to use</li>
 </ul>
 
-<pre class="highlight"><code>git config --global user.signingKey '&lt;ssh public key&gt;'</code></pre>
+<pre class="highlight"><code>git config <span class="nt">--global</span> user.signingKey <span class="s1">'&lt;ssh public key&gt;'</span></code></pre>
 
 <h4><a class="anchor" id="how-to-sign" href="#how-to-sign"></a>How to sign</h4>
 
@@ -337,17 +337,17 @@ If you had already pushed your change to gitea, you must also do a force push (<
 
 <h4><a class="anchor" id="how-to-sign-1" href="#how-to-sign-1"></a>How to sign</h4>
 
-<pre class="highlight"><code>./sign-my-commit --ssh --key &lt;path to your SSH private key&gt; --push &lt;MNTNER&gt;</code></pre>
+<pre class="highlight"><code>./sign-my-commit <span class="nt">--ssh</span> <span class="nt">--key</span> &lt;path to your SSH private key&gt; <span class="nt">--push</span> &lt;MNTNER&gt;</code></pre>
 
 <p>e.g.</p>
 
-<pre class="highlight"><code>./sign-my-commit --ssh --key /home/foo/.ssh/id_ed25519 --push FOO-MNT</code></pre>
+<pre class="highlight"><code>./sign-my-commit <span class="nt">--ssh</span> <span class="nt">--key</span> /home/foo/.ssh/id_ed25519 <span class="nt">--push</span> FOO-MNT</code></pre>
 
 <h4><a class="anchor" id="verifying-the-signature-2" href="#verifying-the-signature-2"></a>Verifying the signature</h4>
 
 <p>The script can also verify your signature:</p>
 
-<pre class="highlight"><code>./sign-my-commit --ssh --verify &lt;MNTNER&gt;</code></pre>
+<pre class="highlight"><code>./sign-my-commit <span class="nt">--ssh</span> <span class="nt">--verify</span> &lt;MNTNER&gt;</code></pre>
 
 <h3><a class="anchor" id="manually-signing-using-ssh-keygen" href="#manually-signing-using-ssh-keygen"></a>Manually signing using ssh-keygen</h3>
 
@@ -388,7 +388,7 @@ Verify the signature
 
 <ul>
 <li>Use the following <code>auth</code> attribute in your <code>mntner</code> object:
-<pre class="highlight"><code>auth:               ssh-rsa &lt;pubkey&gt;</code></pre>
+<pre class="highlight"><code><span class="n">auth</span>:               <span class="n">ssh</span>-<span class="n">rsa</span> &lt;<span class="n">pubkey</span>&gt;</code></pre>
 Where <code>&lt;pubkey&gt;</code> is the ssh public key copied from your id_rsa.pub file. </li>
 </ul>
 
@@ -422,7 +422,7 @@ Where <code>&lt;pubkey&gt;</code> is the ssh public key copied from your id_rsa.
 
 <ul>
 <li>Use the following <code>auth</code> attribute in your <code>mntner</code> object:
-<pre class="highlight"><code>auth:               ecdsa-sha2-nistp256 &lt;pubkey&gt;</code></pre>
+<pre class="highlight"><code><span class="n">auth</span>:               <span class="n">ecdsa</span>-<span class="n">sha2</span>-<span class="n">nistp256</span> &lt;<span class="n">pubkey</span>&gt;</code></pre>
 Where <code>&lt;pubkey&gt;</code> is the ssh public key copied from your id_ecdsa.pub file. </li>
 </ul>
 

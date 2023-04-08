@@ -171,58 +171,58 @@
 
 <p>Configuration for <code>unbound.conf</code></p>
 
-<pre class="highlight"><code>server:
-        local-zone: "22.172.in-addr.arpa." nodefault
-        local-zone: "23.172.in-addr.arpa." nodefault
+<pre class="highlight"><code><span class="n">server</span>:
+        <span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"22.172.in-addr.arpa."</span> <span class="n">nodefault</span>
+        <span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"23.172.in-addr.arpa."</span> <span class="n">nodefault</span>
 
-stub-zone:
-        name: "dn42"
-        stub-prime: yes
-        stub-addr: 172.22.119.160
-        stub-addr: 172.22.119.163
+<span class="n">stub</span>-<span class="n">zone</span>:
+        <span class="n">name</span>: <span class="s2">"dn42"</span>
+        <span class="n">stub</span>-<span class="n">prime</span>: <span class="n">yes</span>
+        <span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">22</span>.<span class="m">119</span>.<span class="m">160</span>
+        <span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">22</span>.<span class="m">119</span>.<span class="m">163</span>
 
-stub-zone:
-        name: "22.172.in-addr.arpa"
-        stub-prime: yes
-        stub-addr: 172.22.119.160
-        stub-addr: 172.22.119.163
+<span class="n">stub</span>-<span class="n">zone</span>:
+        <span class="n">name</span>: <span class="s2">"22.172.in-addr.arpa"</span>
+        <span class="n">stub</span>-<span class="n">prime</span>: <span class="n">yes</span>
+        <span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">22</span>.<span class="m">119</span>.<span class="m">160</span>
+        <span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">22</span>.<span class="m">119</span>.<span class="m">163</span>
 
-stub-zone:
-        name: "23.172.in-addr.arpa"
-        stub-prime: yes
-        stub-addr: 172.22.119.160
-        stub-addr: 172.22.119.163</code></pre>
+<span class="n">stub</span>-<span class="n">zone</span>:
+        <span class="n">name</span>: <span class="s2">"23.172.in-addr.arpa"</span>
+        <span class="n">stub</span>-<span class="n">prime</span>: <span class="n">yes</span>
+        <span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">22</span>.<span class="m">119</span>.<span class="m">160</span>
+        <span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">22</span>.<span class="m">119</span>.<span class="m">163</span></code></pre>
 
 <h3><a class="anchor" id="unbound-with-root-hints" href="#unbound-with-root-hints"></a>Unbound with root-hints</h3>
 
 <p>Alternatively you can put dn42 root servers in the root-hints file for recursive resolving.</p>
 
-<pre class="highlight"><code># /etc/unbound/unbound.conf.d/dn42.conf 
-server:
-        # DNSSEC validation will fail
-        val-permissive-mode: yes
-        # recursive queries for everyone
-        access-control: 0.0.0.0/0 allow
-        # dn42 root servers
-        root-hints: /etc/unbound/dn42.hints
-	# enable IPv6
-	do-ip6: yes
-	# allow reverse lookup of rfc1918 space, which includes the DN42 address space
-	unblock-lan-zones: yes
-	insecure-lan-zones: yes
+<pre class="highlight"><code><span class="c"># /etc/unbound/unbound.conf.d/dn42.conf 
+</span><span class="n">server</span>:
+        <span class="c"># DNSSEC validation will fail
+</span>        <span class="n">val</span>-<span class="n">permissive</span>-<span class="n">mode</span>: <span class="n">yes</span>
+        <span class="c"># recursive queries for everyone
+</span>        <span class="n">access</span>-<span class="n">control</span>: <span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">0</span> <span class="n">allow</span>
+        <span class="c"># dn42 root servers
+</span>        <span class="n">root</span>-<span class="n">hints</span>: /<span class="n">etc</span>/<span class="n">unbound</span>/<span class="n">dn42</span>.<span class="n">hints</span>
+	<span class="c"># enable IPv6
+</span>	<span class="n">do</span>-<span class="n">ip6</span>: <span class="n">yes</span>
+	<span class="c"># allow reverse lookup of rfc1918 space, which includes the DN42 address space
+</span>	<span class="n">unblock</span>-<span class="n">lan</span>-<span class="n">zones</span>: <span class="n">yes</span>
+	<span class="n">insecure</span>-<span class="n">lan</span>-<span class="n">zones</span>: <span class="n">yes</span>
 
-remote-control:
-        control-enable: no</code></pre>
+<span class="n">remote</span>-<span class="n">control</span>:
+        <span class="n">control</span>-<span class="n">enable</span>: <span class="n">no</span></code></pre>
 
 <p>The <code>/etc/unbound/dn42.hints</code> file:
-</p><pre class="highlight"><code>.                                         NS    a.root-servers.dn42.
-a.root-servers.dn42.           3600000    A     172.22.177.6
-.                                         NS    m.root-servers.dn42.
-m.root-servers.dn42.           3600000    A     172.23.67.67
-.                                         NS    t.root-servers.dn42.
-t.root-servers.dn42.           3600000    A     172.22.102.141
-.                                         NS    x.root-servers.dn42.
-x.root-servers.dn42.           3600000    A     172.22.141.1</code></pre>
+</p><pre class="highlight"><code>.                                         <span class="n">NS</span>    <span class="n">a</span>.<span class="n">root</span>-<span class="n">servers</span>.<span class="n">dn42</span>.
+<span class="n">a</span>.<span class="n">root</span>-<span class="n">servers</span>.<span class="n">dn42</span>.           <span class="m">3600000</span>    <span class="n">A</span>     <span class="m">172</span>.<span class="m">22</span>.<span class="m">177</span>.<span class="m">6</span>
+.                                         <span class="n">NS</span>    <span class="n">m</span>.<span class="n">root</span>-<span class="n">servers</span>.<span class="n">dn42</span>.
+<span class="n">m</span>.<span class="n">root</span>-<span class="n">servers</span>.<span class="n">dn42</span>.           <span class="m">3600000</span>    <span class="n">A</span>     <span class="m">172</span>.<span class="m">23</span>.<span class="m">67</span>.<span class="m">67</span>
+.                                         <span class="n">NS</span>    <span class="n">t</span>.<span class="n">root</span>-<span class="n">servers</span>.<span class="n">dn42</span>.
+<span class="n">t</span>.<span class="n">root</span>-<span class="n">servers</span>.<span class="n">dn42</span>.           <span class="m">3600000</span>    <span class="n">A</span>     <span class="m">172</span>.<span class="m">22</span>.<span class="m">102</span>.<span class="m">141</span>
+.                                         <span class="n">NS</span>    <span class="n">x</span>.<span class="n">root</span>-<span class="n">servers</span>.<span class="n">dn42</span>.
+<span class="n">x</span>.<span class="n">root</span>-<span class="n">servers</span>.<span class="n">dn42</span>.           <span class="m">3600000</span>    <span class="n">A</span>     <span class="m">172</span>.<span class="m">22</span>.<span class="m">141</span>.<span class="m">1</span></code></pre>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">

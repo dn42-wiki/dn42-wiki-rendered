@@ -363,7 +363,7 @@ set protocols bgp neighbor 172.20.x.y ebgp-multihop 20</code></pre>
 
 <h3><a class="anchor" id="setup-rpki-caching-server" href="#setup-rpki-caching-server"></a>Setup RPKI Caching Server</h3>
 
-<p>Burble has made this super easy.  More info can be found <a href="https://wiki.dn42/howto/ROA-slash-RPKI">here</a> on this wiki.  Get started by running the below command on a Linux server with Docker installed (VyOS now supports containers, but doesn't yet supports commands to pass to them... so we still need another machine to run GoRTR)     </p>
+<p>Burble has made this super easy.  More info can be found <a href="ROA-slash-RPKI.html">here</a> on this wiki.  Get started by running the below command on a Linux server with Docker installed (VyOS now supports containers, but doesn't yet supports commands to pass to them... so we still need another machine to run GoRTR)</p>
 
 <pre class="highlight"><code>sudo docker run -ti -p 8082:8082 cloudflare/gortr -cache https://dn42.burble.com/roa/dn42_roa_46.json -verify=false -checktime=false -bind :8082</code></pre>
 

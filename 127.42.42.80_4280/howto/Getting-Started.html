@@ -251,12 +251,12 @@
 </ul>
 
 <p>Example: data/mntner/FOO-MNT
-</p><pre class="highlight"><code>mntner:             FOO-MNT
-admin-c:            FOO-DN42
-tech-c:             FOO-DN42
-mnt-by:             FOO-MNT
-auth:               pgp-fingerprint 0123456789ABCDEF0123456789ABCDEF01234567
-source:             DN42</code></pre>
+</p><pre class="highlight"><code><span class="n">mntner</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
+<span class="n">admin</span>-<span class="n">c</span>:            <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">tech</span>-<span class="n">c</span>:             <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">mnt</span>-<span class="n">by</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
+<span class="n">auth</span>:               <span class="n">pgp</span>-<span class="n">fingerprint</span> <span class="m">0123456789</span><span class="n">ABCDEF0123456789ABCDEF01234567</span>
+<span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 
 <h3><a class="anchor" id="create-person-objects" href="#create-person-objects"></a>Create person objects</h3>
 
@@ -276,11 +276,11 @@ source:             DN42</code></pre>
 <p>Contact attributes are optional but DN42 is a dynamic network and being able to contact users is really important if there are changes or problems. However, please also be aware that the DN42 registry is a public resource and you must assume that any details provided will be made public and cannot be fully removed. If this is a concern for you, please do not provide bogus contact details; simply provide anonymous details that are specific for use within DN42 or leave them out entirely.</p>
 
 <p>Example: data/person/FOO-DN42
-</p><pre class="highlight"><code>person:             John Doe
-e-mail:             john.doe@example.com
-nic-hdl:            FOO-DN42
-mnt-by:             FOO-MNT
-source:             DN42</code></pre>
+</p><pre class="highlight"><code><span class="n">person</span>:             <span class="n">John</span> <span class="n">Doe</span>
+<span class="n">e</span>-<span class="n">mail</span>:             <span class="n">john</span>.<span class="n">doe</span>@<span class="n">example</span>.<span class="n">com</span>
+<span class="n">nic</span>-<span class="n">hdl</span>:            <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">mnt</span>-<span class="n">by</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
+<span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 
 <hr />
 
@@ -303,12 +303,12 @@ source:             DN42</code></pre>
 </ul>
 
 <p>Example: data/organisation/ORG-EXAMPLE
-</p><pre class="highlight"><code>organisation:       ORG-FOO
-org-name:           Foo Organisation
-admin-c:            FOO-DN42
-tech-c:             FOO-DN42
-mnt-by:             FOO-MNT
-source:             DN42</code></pre>
+</p><pre class="highlight"><code><span class="n">organisation</span>:       <span class="n">ORG</span>-<span class="n">FOO</span>
+<span class="n">org</span>-<span class="n">name</span>:           <span class="n">Foo</span> <span class="n">Organisation</span>
+<span class="n">admin</span>-<span class="n">c</span>:            <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">tech</span>-<span class="n">c</span>:             <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">mnt</span>-<span class="n">by</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
+<span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 
 <h3><a class="anchor" id="guidelines-for-resource-objects" href="#guidelines-for-resource-objects"></a>Guidelines for resource objects</h3>
 
@@ -343,12 +343,12 @@ source:             DN42</code></pre>
 <p>If unsure, ask on the mailing list or IRC.</p>
 
 <p>Example: data/aut-num/AS4242423999
-</p><pre class="highlight"><code>aut-num:            AS4242423999
-as-name:            AS-FOO-DN42
-admin-c:            FOO-DN42
-tech-c:             FOO-DN42
-mnt-by:             FOO-MNT
-source:             DN42</code></pre>
+</p><pre class="highlight"><code><span class="n">aut</span>-<span class="n">num</span>:            <span class="n">AS4242423999</span>
+<span class="n">as</span>-<span class="n">name</span>:            <span class="n">AS</span>-<span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">admin</span>-<span class="n">c</span>:            <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">tech</span>-<span class="n">c</span>:             <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">mnt</span>-<span class="n">by</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
+<span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 
 <h3><a class="anchor" id="register-a-network-prefix" href="#register-a-network-prefix"></a>Register a network prefix</h3>
 
@@ -369,16 +369,16 @@ source:             DN42</code></pre>
 <p>or a small script is available: <a href="https://git.dn42.dev/netravnen/dn42-repo-utils/src/master/ulagen.py">ulagen.py</a></p>
 
 <p>example: data/inet6num/fd35:4992:6a6d::_48
-</p><pre class="highlight"><code>inet6num:           fd35:4992:6a6d:0000:0000:0000:0000:0000 - fd35:4992:6a6d:ffff:ffff:ffff:ffff:ffff
-cidr:               fd35:4992:6a6d::/48
-netname:            FOO-NETWORK
-descr:              Network of FOO
-country:            XD
-admin-c:            FOO-DN42
-tech-c:             FOO-DN42
-mnt-by:             FOO-MNT
-status:             ASSIGNED
-source:             DN42</code></pre>
+</p><pre class="highlight"><code><span class="n">inet6num</span>:           <span class="n">fd35</span>:<span class="m">4992</span>:<span class="m">6</span><span class="n">a6d</span>:<span class="m">0000</span>:<span class="m">0000</span>:<span class="m">0000</span>:<span class="m">0000</span>:<span class="m">0000</span> - <span class="n">fd35</span>:<span class="m">4992</span>:<span class="m">6</span><span class="n">a6d</span>:<span class="n">ffff</span>:<span class="n">ffff</span>:<span class="n">ffff</span>:<span class="n">ffff</span>:<span class="n">ffff</span>
+<span class="n">cidr</span>:               <span class="n">fd35</span>:<span class="m">4992</span>:<span class="m">6</span><span class="n">a6d</span>::/<span class="m">48</span>
+<span class="n">netname</span>:            <span class="n">FOO</span>-<span class="n">NETWORK</span>
+<span class="n">descr</span>:              <span class="n">Network</span> <span class="n">of</span> <span class="n">FOO</span>
+<span class="n">country</span>:            <span class="n">XD</span>
+<span class="n">admin</span>-<span class="n">c</span>:            <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">tech</span>-<span class="n">c</span>:             <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">mnt</span>-<span class="n">by</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
+<span class="n">status</span>:             <span class="n">ASSIGNED</span>
+<span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 
 <h4><a class="anchor" id="ipv4-legacy" href="#ipv4-legacy"></a>IPv4 (Legacy)</h4>
 
@@ -439,34 +439,34 @@ source:             DN42</code></pre>
 <p><strong>Note:</strong> Reverse DNS works with <em>any</em> prefix length, as long as your <a href="../services/DNS.html">recursive nameserver</a> supports <a href="https://www.ietf.org/rfc/rfc2317.txt">RFC 2317</a>. Don't go for a /24 <em>just to have RDNS</em>.</p>
 
 <p>example: data/inetnum/172.20.150.0_27
-</p><pre class="highlight"><code>inetnum:            172.20.150.0 - 172.20.150.31
-cidr:               172.20.150.0/27
-netname:            FOO-NETWORK
-descr:              Network of FOO
-country:            XD
-admin-c:            FOO-DN42
-tech-c:             FOO-DN42
-mnt-by:             FOO-MNT
-status:             ASSIGNED
-source:             DN42</code></pre>
+</p><pre class="highlight"><code><span class="n">inetnum</span>:            <span class="m">172</span>.<span class="m">20</span>.<span class="m">150</span>.<span class="m">0</span> - <span class="m">172</span>.<span class="m">20</span>.<span class="m">150</span>.<span class="m">31</span>
+<span class="n">cidr</span>:               <span class="m">172</span>.<span class="m">20</span>.<span class="m">150</span>.<span class="m">0</span>/<span class="m">27</span>
+<span class="n">netname</span>:            <span class="n">FOO</span>-<span class="n">NETWORK</span>
+<span class="n">descr</span>:              <span class="n">Network</span> <span class="n">of</span> <span class="n">FOO</span>
+<span class="n">country</span>:            <span class="n">XD</span>
+<span class="n">admin</span>-<span class="n">c</span>:            <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">tech</span>-<span class="n">c</span>:             <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">mnt</span>-<span class="n">by</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
+<span class="n">status</span>:             <span class="n">ASSIGNED</span>
+<span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 
 <h4><a class="anchor" id="create-route-objects" href="#create-route-objects"></a>Create route objects</h4>
 
 <p>If you plan to announce your prefixes in dn42, which you probably want in most cases, you will also need to create a <code>route6</code> object for ipv6 prefixes and a <code>route</code> object for ipv4 prefixes. This information is used for Route Origin Authorization (ROA) checks. If you skip this step, your network will probably get filtered by most major peers.  Checking ROA will prevent (accidental) hijacking of other people's prefixes.</p>
 
 <p>example: data/route6/fd35:4992:6a6d::_48
-</p><pre class="highlight"><code>route6:             fd35:4992:6a6d::/48
-origin:             AS4242423999
-max-length:         48
-mnt-by:             FOO-MNT
-source:             DN42</code></pre>
+</p><pre class="highlight"><code><span class="n">route6</span>:             <span class="n">fd35</span>:<span class="m">4992</span>:<span class="m">6</span><span class="n">a6d</span>::/<span class="m">48</span>
+<span class="n">origin</span>:             <span class="n">AS4242423999</span>
+<span class="n">max</span>-<span class="n">length</span>:         <span class="m">48</span>
+<span class="n">mnt</span>-<span class="n">by</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
+<span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 
 <p>example data/route/172.20.150.0_27:
-</p><pre class="highlight"><code>route:              172.20.150.0/27
-origin:             AS4242423999
-max-length:         27
-mnt-by:             FOO-MNT
-source:             DN42</code></pre>
+</p><pre class="highlight"><code><span class="n">route</span>:              <span class="m">172</span>.<span class="m">20</span>.<span class="m">150</span>.<span class="m">0</span>/<span class="m">27</span>
+<span class="n">origin</span>:             <span class="n">AS4242423999</span>
+<span class="n">max</span>-<span class="n">length</span>:         <span class="m">27</span>
+<span class="n">mnt</span>-<span class="n">by</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
+<span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 <strong>Note</strong>: the "max-length" should be the same as the prefix length (i.e. 27 for default ipv4 allocation size and 48 for default ipv6 allocation size) except if you have special needs in announcing larger prefixes
 
 <h4><a class="anchor" id="dns-and-domain-registration" href="#dns-and-domain-registration"></a>DNS and Domain Registration</h4>
@@ -476,34 +476,34 @@ To register a domain name, create a <code>dns</code> object in the data/dns dire
 Domain names and nserver attributes must be lowercase.</p>
 
 <p>example: data/dns/foo.dn42
-</p><pre class="highlight"><code>domain:             foo.dn42
-admin-c:            FOO-DN42
-tech-c:             FOO-DN42
-mnt-by:             FOO-MNT
-nserver:            ns1.foo.dn42 172.20.150.1
-nserver:            ns1.foo.dn42 fd35:4992:6a6d:53::1
-nserver:            ns2.foo.dn42 172.20.150.2
-nserver:            ns2.foo.dn42 fd35:4992:6a6d:53::2
-source:             DN42</code></pre>
+</p><pre class="highlight"><code><span class="n">domain</span>:             <span class="n">foo</span>.<span class="n">dn42</span>
+<span class="n">admin</span>-<span class="n">c</span>:            <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">tech</span>-<span class="n">c</span>:             <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">mnt</span>-<span class="n">by</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
+<span class="n">nserver</span>:            <span class="n">ns1</span>.<span class="n">foo</span>.<span class="n">dn42</span> <span class="m">172</span>.<span class="m">20</span>.<span class="m">150</span>.<span class="m">1</span>
+<span class="n">nserver</span>:            <span class="n">ns1</span>.<span class="n">foo</span>.<span class="n">dn42</span> <span class="n">fd35</span>:<span class="m">4992</span>:<span class="m">6</span><span class="n">a6d</span>:<span class="m">53</span>::<span class="m">1</span>
+<span class="n">nserver</span>:            <span class="n">ns2</span>.<span class="n">foo</span>.<span class="n">dn42</span> <span class="m">172</span>.<span class="m">20</span>.<span class="m">150</span>.<span class="m">2</span>
+<span class="n">nserver</span>:            <span class="n">ns2</span>.<span class="n">foo</span>.<span class="n">dn42</span> <span class="n">fd35</span>:<span class="m">4992</span>:<span class="m">6</span><span class="n">a6d</span>:<span class="m">53</span>::<span class="m">2</span>
+<span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 
 <p>You can also add DNSSEC delegations using <code>ds-rdata</code> attributes to your domain:</p>
 
-<pre class="highlight"><code>ds-rdata:           61857 13 2 bd35e3efe3325d2029fb652e01604a48b677cc2f44226eeabee54b456c67680c</code></pre>
+<pre class="highlight"><code><span class="n">ds</span>-<span class="n">rdata</span>:           <span class="m">61857</span> <span class="m">13</span> <span class="m">2</span> <span class="n">bd35e3efe3325d2029fb652e01604a48b677cc2f44226eeabee54b456c67680c</span></code></pre>
 
 <p>For reverse DNS, add <code>nserver</code> attributes to you inet{,6}num objects:</p>
 
-<pre class="highlight"><code>inet6num:           fd35:4992:6a6d:0000:0000:0000:0000:0000 - fd35:4992:6a6d:ffff:ffff:ffff:ffff:ffff
-cidr:               fd35:4992:6a6d::/48
-netname:            FOO-NETWORK
-descr:              Network of FOO
-country:            XD
-admin-c:            FOO-DN42
-tech-c:             FOO-DN42
-mnt-by:             FOO-MNT
-status:             ASSIGNED
-nserver:            ns1.foo.dn42
-nserver:            ns2.foo.dn42
-source:             DN42</code></pre>
+<pre class="highlight"><code><span class="n">inet6num</span>:           <span class="n">fd35</span>:<span class="m">4992</span>:<span class="m">6</span><span class="n">a6d</span>:<span class="m">0000</span>:<span class="m">0000</span>:<span class="m">0000</span>:<span class="m">0000</span>:<span class="m">0000</span> - <span class="n">fd35</span>:<span class="m">4992</span>:<span class="m">6</span><span class="n">a6d</span>:<span class="n">ffff</span>:<span class="n">ffff</span>:<span class="n">ffff</span>:<span class="n">ffff</span>:<span class="n">ffff</span>
+<span class="n">cidr</span>:               <span class="n">fd35</span>:<span class="m">4992</span>:<span class="m">6</span><span class="n">a6d</span>::/<span class="m">48</span>
+<span class="n">netname</span>:            <span class="n">FOO</span>-<span class="n">NETWORK</span>
+<span class="n">descr</span>:              <span class="n">Network</span> <span class="n">of</span> <span class="n">FOO</span>
+<span class="n">country</span>:            <span class="n">XD</span>
+<span class="n">admin</span>-<span class="n">c</span>:            <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">tech</span>-<span class="n">c</span>:             <span class="n">FOO</span>-<span class="n">DN42</span>
+<span class="n">mnt</span>-<span class="n">by</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
+<span class="n">status</span>:             <span class="n">ASSIGNED</span>
+<span class="n">nserver</span>:            <span class="n">ns1</span>.<span class="n">foo</span>.<span class="n">dn42</span>
+<span class="n">nserver</span>:            <span class="n">ns2</span>.<span class="n">foo</span>.<span class="n">dn42</span>
+<span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 
 <h1><a class="anchor" id="get-some-peers" href="#get-some-peers"></a>Get some peers</h1>
 

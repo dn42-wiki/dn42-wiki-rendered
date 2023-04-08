@@ -168,40 +168,40 @@
 
 <h2><a class="anchor" id="loopback-device-lo-network" href="#loopback-device-lo-network"></a>loopback device (lo.network)</h2>
 
-<pre class="highlight"><code>[Match]
-Name=lo
+<pre class="highlight"><code>[<span class="n">Match</span>]
+<span class="n">Name</span>=<span class="n">lo</span>
 
-[Network]
-Address=fdff:b02d:2ef7::2/128</code></pre>
+[<span class="n">Network</span>]
+<span class="n">Address</span>=<span class="n">fdff</span>:<span class="n">b02d</span>:<span class="m">2</span><span class="n">ef7</span>::<span class="m">2</span>/<span class="m">128</span></code></pre>
 
 <h2><a class="anchor" id="wireguard-netdev-dn42p1-netdev" href="#wireguard-netdev-dn42p1-netdev"></a>wireguard netdev (dn42p1.netdev)</h2>
 
-<pre class="highlight"><code>[NetDev]
-Name = dn42p1
-Kind = wireguard
-Description = WireGuard
+<pre class="highlight"><code>[<span class="n">NetDev</span>]
+<span class="n">Name</span> = <span class="n">dn42p1</span>
+<span class="n">Kind</span> = <span class="n">wireguard</span>
+<span class="n">Description</span> = <span class="n">WireGuard</span>
 
-[WireGuard]
-ListenPort = 42421
-PrivateKeyFile = /etc/wireguard/private.key
+[<span class="n">WireGuard</span>]
+<span class="n">ListenPort</span> = <span class="m">42421</span>
+<span class="n">PrivateKeyFile</span> = /<span class="n">etc</span>/<span class="n">wireguard</span>/<span class="n">private</span>.<span class="n">key</span>
 
-[WireGuardPeer]
-PublicKey = &lt;peer wg pubkey&gt;
-Endpoint = &lt;peer wg endpoint&gt;:&lt;peer wg port&gt;
-AllowedIPs = 172.16.0.0/12,10.0.0.0/8,fd00::/8,fe80::/10,ff00::/8</code></pre>
+[<span class="n">WireGuardPeer</span>]
+<span class="n">PublicKey</span> = &lt;<span class="n">peer</span> <span class="n">wg</span> <span class="n">pubkey</span>&gt;
+<span class="n">Endpoint</span> = &lt;<span class="n">peer</span> <span class="n">wg</span> <span class="n">endpoint</span>&gt;:&lt;<span class="n">peer</span> <span class="n">wg</span> <span class="n">port</span>&gt;
+<span class="n">AllowedIPs</span> = <span class="m">172</span>.<span class="m">16</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">12</span>,<span class="m">10</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">8</span>,<span class="n">fd00</span>::/<span class="m">8</span>,<span class="n">fe80</span>::/<span class="m">10</span>,<span class="n">ff00</span>::/<span class="m">8</span></code></pre>
 
 <h2><a class="anchor" id="wireguard-network-dn42p1-network" href="#wireguard-network-dn42p1-network"></a>wireguard network (dn42p1.network)</h2>
 
-<pre class="highlight"><code>[Match]
-Name = dn42p1
+<pre class="highlight"><code>[<span class="n">Match</span>]
+<span class="n">Name</span> = <span class="n">dn42p1</span>
 
-[Address]
-Address = fe80::2342/128 # arbitrary, doesn't need to be unique for each interface
-Peer = &lt;peer tunnel linklocal address&gt;/128
+[<span class="n">Address</span>]
+<span class="n">Address</span> = <span class="n">fe80</span>::<span class="m">2342</span>/<span class="m">128</span> <span class="c"># arbitrary, doesn't need to be unique for each interface
+</span><span class="n">Peer</span> = &lt;<span class="n">peer</span> <span class="n">tunnel</span> <span class="n">linklocal</span> <span class="n">address</span>&gt;/<span class="m">128</span>
 
-[Address]
-Address = &lt;your DN42 ipv4&gt;/32
-Peer = &lt;peer DN42 ipv4&gt;/32
+[<span class="n">Address</span>]
+<span class="n">Address</span> = &lt;<span class="n">your</span> <span class="n">DN42</span> <span class="n">ipv4</span>&gt;/<span class="m">32</span>
+<span class="n">Peer</span> = &lt;<span class="n">peer</span> <span class="n">DN42</span> <span class="n">ipv4</span>&gt;/<span class="m">32</span>
 </code></pre>
 
 	      </div>

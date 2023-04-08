@@ -175,16 +175,16 @@ That is why <code>rp_filter</code> needs to be disabled.</p>
 
 <p><strong>Note</strong> using sysctl is not persistent. Depending on your linux distribution put it into <code>/etc/sysctl.conf</code> or <code>/etc/sysctl.d</code></p>
 
-<pre class="highlight"><code>sysctl -w net.ipv4.conf.all.rp_filter=0 net.ipv4.conf.default.rp_filter=0</code></pre>
+<pre class="highlight"><code>sysctl <span class="nt">-w</span> net.ipv4.conf.all.rp_filter<span class="o">=</span>0 net.ipv4.conf.default.rp_filter<span class="o">=</span>0</code></pre>
 
 <p>Check that its really disabled:
-</p><pre class="highlight"><code>sysctl -a | grep rp_filter</code></pre>
+</p><pre class="highlight"><code>sysctl <span class="nt">-a</span> | <span class="nb">grep </span>rp_filter</code></pre>
 
 <p>Also the following options must be set.
-</p><pre class="highlight"><code>$ sysctl -w net.ipv4.conf.all.forwarding=1 net.ipv6.conf.all.forwarding=1</code></pre>
+</p><pre class="highlight"><code><span class="nv">$ </span>sysctl <span class="nt">-w</span> net.ipv4.conf.all.forwarding<span class="o">=</span>1 net.ipv6.conf.all.forwarding<span class="o">=</span>1</code></pre>
 
 <p>Check that ALL your vpn interfaces allow ip forwarding for ipv6/ipv4.
-</p><pre class="highlight"><code>$ sysctl -a | grep forwarding</code></pre>
+</p><pre class="highlight"><code><span class="nv">$ </span>sysctl <span class="nt">-a</span> | <span class="nb">grep </span>forwarding</code></pre>
 
 <h2><a class="anchor" id="note-on-firewalls-conntrack-and-asymmetric-routing" href="#note-on-firewalls-conntrack-and-asymmetric-routing"></a>Note on firewalls, conntrack and asymmetric routing</h2>
 

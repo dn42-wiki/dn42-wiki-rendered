@@ -205,79 +205,79 @@ multiple services from *.recursive-servers.dn42 for redundancy. </p>
 <p>If you already run a local DNS server, you can tell it to query the dn42 anycast servers for the relevant domains
 by adding the following to /etc/bind/named.conf.local</p>
 
-<pre class="highlight"><code>zone "dn42" {
-  type forward;
-  forwarders { 172.20.0.53; fd42:d42:d42:54::1; };
+<pre class="highlight"><code><span class="n">zone</span> <span class="s2">"dn42"</span> {
+  <span class="n">type</span> <span class="n">forward</span>;
+  <span class="n">forwarders</span> { <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>; <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>; };
 };
-zone "20.172.in-addr.arpa" {
-  type forward;
-  forwarders { 172.20.0.53; fd42:d42:d42:54::1; };
+<span class="n">zone</span> <span class="s2">"20.172.in-addr.arpa"</span> {
+  <span class="n">type</span> <span class="n">forward</span>;
+  <span class="n">forwarders</span> { <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>; <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>; };
 };
-zone "21.172.in-addr.arpa" {
-  type forward;
-  forwarders { 172.20.0.53; fd42:d42:d42:54::1; };
+<span class="n">zone</span> <span class="s2">"21.172.in-addr.arpa"</span> {
+  <span class="n">type</span> <span class="n">forward</span>;
+  <span class="n">forwarders</span> { <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>; <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>; };
 };
-zone "22.172.in-addr.arpa" {
-  type forward;
-  forwarders { 172.20.0.53; fd42:d42:d42:54::1; };
+<span class="n">zone</span> <span class="s2">"22.172.in-addr.arpa"</span> {
+  <span class="n">type</span> <span class="n">forward</span>;
+  <span class="n">forwarders</span> { <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>; <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>; };
 };
-zone "23.172.in-addr.arpa" {
-  type forward;
-  forwarders { 172.20.0.53; fd42:d42:d42:54::1; };
+<span class="n">zone</span> <span class="s2">"23.172.in-addr.arpa"</span> {
+  <span class="n">type</span> <span class="n">forward</span>;
+  <span class="n">forwarders</span> { <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>; <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>; };
 };
-zone "10.in-addr.arpa" {
-  type forward;
-  forwarders { 172.20.0.53; fd42:d42:d42:54::1; };
+<span class="n">zone</span> <span class="s2">"10.in-addr.arpa"</span> {
+  <span class="n">type</span> <span class="n">forward</span>;
+  <span class="n">forwarders</span> { <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>; <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>; };
 };
-zone "d.f.ip6.arpa" {
-  type forward;
-  forwarders { 172.20.0.53; fd42:d42:d42:54::1; };
+<span class="n">zone</span> <span class="s2">"d.f.ip6.arpa"</span> {
+  <span class="n">type</span> <span class="n">forward</span>;
+  <span class="n">forwarders</span> { <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>; <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>; };
 };
 
-# for reverse dns to work the following option must be set:
-options {
-  # [...]
+<span class="c"># for reverse dns to work the following option must be set:
+</span><span class="n">options</span> {
+  <span class="c"># [...]
+</span>
+  <span class="c"># disable the integrated handling of RFC1918 and non-assigned IPv6 space reverse dns
+</span>  <span class="n">empty</span>-<span class="n">zones</span>-<span class="n">enable</span> <span class="n">no</span>;
 
-  # disable the integrated handling of RFC1918 and non-assigned IPv6 space reverse dns
-  empty-zones-enable no;
-
-  # [...]
-};</code></pre>
+  <span class="c"># [...]
+</span>};</code></pre>
 
 <p><strong>Note</strong>: With DNSSEC enabled, bind might refuse to accept query results from the dn42 zone: <code>validating dn42/SOA: got insecure response; parent indicates it should be secure</code>.</p>
 
 <p>To disable DNSSEC validation only for certain TLDs include the following in the options section:
-</p><pre class="highlight"><code>options {
-  # [...]
-
-  validate-except {
-    "dn42";
-    "20.172.in-addr.arpa";
-    "21.172.in-addr.arpa";
-    "22.172.in-addr.arpa";
-    "23.172.in-addr.arpa";
-    "10.in-addr.arpa";
-    "d.f.ip6.arpa";
+</p><pre class="highlight"><code><span class="n">options</span> {
+  <span class="c"># [...]
+</span>
+  <span class="n">validate</span>-<span class="n">except</span> {
+    <span class="s2">"dn42"</span>;
+    <span class="s2">"20.172.in-addr.arpa"</span>;
+    <span class="s2">"21.172.in-addr.arpa"</span>;
+    <span class="s2">"22.172.in-addr.arpa"</span>;
+    <span class="s2">"23.172.in-addr.arpa"</span>;
+    <span class="s2">"10.in-addr.arpa"</span>;
+    <span class="s2">"d.f.ip6.arpa"</span>;
   };
 
-  # [...]
-};</code></pre>
+  <span class="c"># [...]
+</span>};</code></pre>
 
 <h2><a class="anchor" id="dnsmasq" href="#dnsmasq"></a>dnsmasq</h2>
 
 <p>If you are running dnsmasq under openwrt, you just have to add </p>
 
-<pre class="highlight"><code>config dnsmasq
-        option boguspriv '0'
-        option rebind_protection '1'
-        list rebind_domain 'dn42'
-        list server '/dn42/172.20.0.53'
-        list server '/20.172.in-addr.arpa/172.20.0.53'
-        list server '/21.172.in-addr.arpa/172.20.0.53'
-        list server '/22.172.in-addr.arpa/172.20.0.53'
-        list server '/23.172.in-addr.arpa/172.20.0.53'
-        list server '/10.in-addr.arpa/172.20.0.53'
-        list server '/d.f.ip6.arpa/fd42:d42:d42:54::1'
+<pre class="highlight"><code><span class="n">config</span> <span class="n">dnsmasq</span>
+        <span class="n">option</span> <span class="n">boguspriv</span> <span class="s1">'0'</span>
+        <span class="n">option</span> <span class="n">rebind_protection</span> <span class="s1">'1'</span>
+        <span class="n">list</span> <span class="n">rebind_domain</span> <span class="s1">'dn42'</span>
+        <span class="n">list</span> <span class="n">server</span> <span class="s1">'/dn42/172.20.0.53'</span>
+        <span class="n">list</span> <span class="n">server</span> <span class="s1">'/20.172.in-addr.arpa/172.20.0.53'</span>
+        <span class="n">list</span> <span class="n">server</span> <span class="s1">'/21.172.in-addr.arpa/172.20.0.53'</span>
+        <span class="n">list</span> <span class="n">server</span> <span class="s1">'/22.172.in-addr.arpa/172.20.0.53'</span>
+        <span class="n">list</span> <span class="n">server</span> <span class="s1">'/23.172.in-addr.arpa/172.20.0.53'</span>
+        <span class="n">list</span> <span class="n">server</span> <span class="s1">'/10.in-addr.arpa/172.20.0.53'</span>
+        <span class="n">list</span> <span class="n">server</span> <span class="s1">'/d.f.ip6.arpa/fd42:d42:d42:54::1'</span>
 </code></pre>
 
 <p>to <code>/etc/config/dhcp</code> and run <code>/etc/init.d/dnsmasq restart</code>. After that you are able to resolve <code>.dn42</code> 
@@ -287,134 +287,134 @@ with the anycast DNS-Server, while your normal requests go to your standard DNS-
 
 <p>For normal dnsmasq use</p>
 
-<p></p><pre class="highlight"><code>server=/dn42/172.20.0.53
-server=/20.172.in-addr.arpa/172.20.0.53
-server=/21.172.in-addr.arpa/172.20.0.53
-server=/22.172.in-addr.arpa/172.20.0.53
-server=/23.172.in-addr.arpa/172.20.0.53
-server=/10.in-addr.arpa/172.20.0.53
-server=/d.f.ip6.arpa/fd42:d42:d42:54::1</code></pre>
+<p></p><pre class="highlight"><code><span class="n">server</span>=/<span class="n">dn42</span>/<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">server</span>=/<span class="m">20</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>/<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">server</span>=/<span class="m">21</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>/<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">server</span>=/<span class="m">22</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>/<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">server</span>=/<span class="m">23</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>/<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">server</span>=/<span class="m">10</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>/<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">server</span>=/<span class="n">d</span>.<span class="n">f</span>.<span class="n">ip6</span>.<span class="n">arpa</span>/<span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span></code></pre>
 in <code>dnsmasq.conf</code>.
 
 <h2><a class="anchor" id="powerdns-recursor" href="#powerdns-recursor"></a>PowerDNS recursor</h2>
 
 <p>Add this to /etc/powerdns/recursor.conf (at least in Debian and CentOS).</p>
 
-<pre class="highlight"><code>dont-query=127.0.0.0/8, 192.168.0.0/16, ::1/128, fe80::/10
-forward-zones-recurse=dn42=172.20.0.53
-forward-zones-recurse+=20.172.in-addr.arpa=172.20.0.53
-forward-zones-recurse+=21.172.in-addr.arpa=172.20.0.53
-forward-zones-recurse+=22.172.in-addr.arpa=172.20.0.53
-forward-zones-recurse+=23.172.in-addr.arpa=172.20.0.53
-forward-zones-recurse+=10.in-addr.arpa=172.20.0.53
-forward-zones-recurse+=d.f.ip6.arpa=172.20.0.53</code></pre>
+<pre class="highlight"><code><span class="n">dont</span>-<span class="n">query</span>=<span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">8</span>, <span class="m">192</span>.<span class="m">168</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">16</span>, ::<span class="m">1</span>/<span class="m">128</span>, <span class="n">fe80</span>::/<span class="m">10</span>
+<span class="n">forward</span>-<span class="n">zones</span>-<span class="n">recurse</span>=<span class="n">dn42</span>=<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">forward</span>-<span class="n">zones</span>-<span class="n">recurse</span>+=<span class="m">20</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>=<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">forward</span>-<span class="n">zones</span>-<span class="n">recurse</span>+=<span class="m">21</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>=<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">forward</span>-<span class="n">zones</span>-<span class="n">recurse</span>+=<span class="m">22</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>=<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">forward</span>-<span class="n">zones</span>-<span class="n">recurse</span>+=<span class="m">23</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>=<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">forward</span>-<span class="n">zones</span>-<span class="n">recurse</span>+=<span class="m">10</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>=<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<span class="n">forward</span>-<span class="n">zones</span>-<span class="n">recurse</span>+=<span class="n">d</span>.<span class="n">f</span>.<span class="n">ip6</span>.<span class="n">arpa</span>=<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span></code></pre>
 
 <h2><a class="anchor" id="maradns" href="#maradns"></a>MaraDNS</h2>
 
 <p>Put this in your mararc:</p>
 
-<pre class="highlight"><code>ipv4_alias["dn42_root"] = "172.20.0.53"
-root_servers["dn42."] = "dn42_root"
-root_servers["20.172.in-addr.arpa."] = "dn42_root"
-root_servers["21.172.in-addr.arpa."] = "dn42_root"
-root_servers["22.172.in-addr.arpa."] = "dn42_root"
-root_servers["23.172.in-addr.arpa."] = "dn42_root"
-root_servers["10.in-addr.arpa."] = "dn42_root"</code></pre>
+<pre class="highlight"><code><span class="n">ipv4_alias</span>[<span class="s2">"dn42_root"</span>] = <span class="s2">"172.20.0.53"</span>
+<span class="n">root_servers</span>[<span class="s2">"dn42."</span>] = <span class="s2">"dn42_root"</span>
+<span class="n">root_servers</span>[<span class="s2">"20.172.in-addr.arpa."</span>] = <span class="s2">"dn42_root"</span>
+<span class="n">root_servers</span>[<span class="s2">"21.172.in-addr.arpa."</span>] = <span class="s2">"dn42_root"</span>
+<span class="n">root_servers</span>[<span class="s2">"22.172.in-addr.arpa."</span>] = <span class="s2">"dn42_root"</span>
+<span class="n">root_servers</span>[<span class="s2">"23.172.in-addr.arpa."</span>] = <span class="s2">"dn42_root"</span>
+<span class="n">root_servers</span>[<span class="s2">"10.in-addr.arpa."</span>] = <span class="s2">"dn42_root"</span></code></pre>
 
 <h2><a class="anchor" id="unbound" href="#unbound"></a>Unbound</h2>
 
 <p>Make sure to disable <code>auto-trust-anchor-file</code> and manually configure <code>trust-anchor-file</code> to 
 point to a file with DNSKEY records for dn42.</p>
 
-<pre class="highlight"><code>server:
-      local-zone: "20.172.in-addr.arpa." nodefault
-      local-zone: "21.172.in-addr.arpa." nodefault
-      local-zone: "22.172.in-addr.arpa." nodefault
-      local-zone: "23.172.in-addr.arpa." nodefault
-      local-zone: "10.in-addr.arpa." nodefault
-      local-zone: "d.f.ip6.arpa." nodefault
+<pre class="highlight"><code><span class="n">server</span>:
+      <span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"20.172.in-addr.arpa."</span> <span class="n">nodefault</span>
+      <span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"21.172.in-addr.arpa."</span> <span class="n">nodefault</span>
+      <span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"22.172.in-addr.arpa."</span> <span class="n">nodefault</span>
+      <span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"23.172.in-addr.arpa."</span> <span class="n">nodefault</span>
+      <span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"10.in-addr.arpa."</span> <span class="n">nodefault</span>
+      <span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"d.f.ip6.arpa."</span> <span class="n">nodefault</span>
 
-forward-zone: 
-      name: "dn42"
-      forward-addr: fd42:d42:d42:54::1
-      forward-addr: 172.20.0.53
+<span class="n">forward</span>-<span class="n">zone</span>: 
+      <span class="n">name</span>: <span class="s2">"dn42"</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 
-forward-zone: 
-      name: "20.172.in-addr.arpa"
-      forward-addr: fd42:d42:d42:54::1
-      forward-addr: 172.20.0.53
+<span class="n">forward</span>-<span class="n">zone</span>: 
+      <span class="n">name</span>: <span class="s2">"20.172.in-addr.arpa"</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 
-forward-zone: 
-      name: "21.172.in-addr.arpa"
-      forward-addr: fd42:d42:d42:54::1
-      forward-addr: 172.20.0.53
+<span class="n">forward</span>-<span class="n">zone</span>: 
+      <span class="n">name</span>: <span class="s2">"21.172.in-addr.arpa"</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 
-forward-zone: 
-      name: "22.172.in-addr.arpa"
-      forward-addr: fd42:d42:d42:54::1
-      forward-addr: 172.20.0.53
+<span class="n">forward</span>-<span class="n">zone</span>: 
+      <span class="n">name</span>: <span class="s2">"22.172.in-addr.arpa"</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 
-forward-zone: 
-      name: "23.172.in-addr.arpa"
-      forward-addr: fd42:d42:d42:54::1
-      forward-addr: 172.20.0.53
+<span class="n">forward</span>-<span class="n">zone</span>: 
+      <span class="n">name</span>: <span class="s2">"23.172.in-addr.arpa"</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 
-forward-zone: 
-      name: "10.in-addr.arpa"
-      forward-addr: fd42:d42:d42:54::1
-      forward-addr: 172.20.0.53
+<span class="n">forward</span>-<span class="n">zone</span>: 
+      <span class="n">name</span>: <span class="s2">"10.in-addr.arpa"</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 
-forward-zone:
-      name: "d.f.ip6.arpa"
-      forward-addr: fd42:d42:d42:54::1
-      forward-addr: 172.20.0.53</code></pre>
+<span class="n">forward</span>-<span class="n">zone</span>:
+      <span class="n">name</span>: <span class="s2">"d.f.ip6.arpa"</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
+      <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span></code></pre>
 
 <h2><a class="anchor" id="junos-srx-12-1x46" href="#junos-srx-12-1x46"></a>JunOS (SRX 12.1X46)</h2>
 
 <p>Should also work in 12.1X44 and 12.1X45. After making the changes below you may need to run:
 </p><pre class="highlight"><code>restart named-service</code></pre>
 Config (vlan.0 is presumed to be your LAN/Trust interface)
-<pre class="highlight"><code>system {
-   services {
-      dns {
-         dns-proxy {
-            interface {
-               vlan.0;
+<pre class="highlight"><code><span class="n">system</span> {
+   <span class="n">services</span> {
+      <span class="n">dns</span> {
+         <span class="n">dns</span>-<span class="n">proxy</span> {
+            <span class="n">interface</span> {
+               <span class="n">vlan</span>.<span class="m">0</span>;
             }
-        default-domain dn42 {
-           forwarders {
-              172.20.0.53;
-	      fd42:d42:d42:54::1;
+        <span class="n">default</span>-<span class="n">domain</span> <span class="n">dn42</span> {
+           <span class="n">forwarders</span> {
+              <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>;
+	      <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>;
            }
         }
-        default-domain 20.172.in-addr.arpa {
-               forwarders {
-                  172.20.0.53;
-		  fd42:d42:d42:54::1;
+        <span class="n">default</span>-<span class="n">domain</span> <span class="m">20</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span> {
+               <span class="n">forwarders</span> {
+                  <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>;
+		  <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>;
                }
             }
-        default-domain 21.172.in-addr.arpa {
-               forwarders {
-                  172.20.0.53;
-		  fd42:d42:d42:54::1;
+        <span class="n">default</span>-<span class="n">domain</span> <span class="m">21</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span> {
+               <span class="n">forwarders</span> {
+                  <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>;
+		  <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>;
                }
             }
-        default-domain 22.172.in-addr.arpa {
-               forwarders {
-                  172.20.0.53;
-		  fd42:d42:d42:54::1;
+        <span class="n">default</span>-<span class="n">domain</span> <span class="m">22</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span> {
+               <span class="n">forwarders</span> {
+                  <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>;
+		  <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>;
                }
             }
-            default-domain 23.172.in-addr.arpa {
-               forwarders {
-                  172.20.0.53;
-                  fd42:d42:d42:54::1;
+            <span class="n">default</span>-<span class="n">domain</span> <span class="m">23</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span> {
+               <span class="n">forwarders</span> {
+                  <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>;
+                  <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>;
                }
             }
-            default-domain 10.in-addr.arpa {
-               forwarders {
-                  172.20.0.53;
-                  fd42:d42:d42:54::1;
+            <span class="n">default</span>-<span class="n">domain</span> <span class="m">10</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span> {
+               <span class="n">forwarders</span> {
+                  <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>;
+                  <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>;
                }
             }
          }
@@ -473,13 +473,13 @@ multiple services from *.delegation-servers.dn42 for redundancy. </p>
 <p>Following is a list of links to the DS record for TLD and reverse zone, to configure the key file, extract the value of ds-rdata and format it as follows, you must add all ds-rdata to the key file for dnssec to work. P.S. each ds-rdata or DS record should contain 4 numbers.</p>
 
 <p>This is an example for dn42. and (fake) ds-rdata of 1 2 3 456
-</p><pre class="highlight"><code>dn42.	86400	IN	DS	1 2 3 456</code></pre>
+</p><pre class="highlight"><code><span class="n">dn42</span>.	<span class="m">86400</span>	<span class="n">IN</span>	<span class="n">DS</span>	<span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="m">456</span></code></pre>
 
 <p>This is an example for 172.20.0.0/16 and (fake) ds-rdata of 1 2 3 456
-</p><pre class="highlight"><code>20.172.in-addr.arpa.	86400	IN	DS	1 2 3 456</code></pre>
+</p><pre class="highlight"><code><span class="m">20</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>.	<span class="m">86400</span>	<span class="n">IN</span>	<span class="n">DS</span>	<span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="m">456</span></code></pre>
 
 <p>This is an example for fd00::/8 and (fake) ds-rdata of 1 2 3 456
-</p><pre class="highlight"><code>d.f.ip6.arpa.	86400	IN	DS	1 2 3 456</code></pre>
+</p><pre class="highlight"><code><span class="n">d</span>.<span class="n">f</span>.<span class="n">ip6</span>.<span class="n">arpa</span>.	<span class="m">86400</span>	<span class="n">IN</span>	<span class="n">DS</span>	<span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="m">456</span></code></pre>
 
 <h3><a class="anchor" id="dn42-ds-record" href="#dn42-ds-record"></a>DN42 DS record</h3>
 
@@ -503,61 +503,61 @@ multiple services from *.delegation-servers.dn42 for redundancy. </p>
 
 <h2><a class="anchor" id="unbound-1" href="#unbound-1"></a>Unbound</h2>
 
-<pre class="highlight"><code>trust-anchor-file: &lt;path to key file&gt;
+<pre class="highlight"><code><span class="n">trust</span>-<span class="n">anchor</span>-<span class="n">file</span>: &lt;<span class="n">path</span> <span class="n">to</span> <span class="n">key</span> <span class="n">file</span>&gt;
 
-server:
-local-zone: "dn42" typetransparent
-local-zone: "20.172.in-addr.arpa" typetransparent
-local-zone: "21.172.in-addr.arpa" typetransparent
-local-zone: "22.172.in-addr.arpa" typetransparent
-local-zone: "23.172.in-addr.arpa" typetransparent
-local-zone: "d.f.ip6.arpa" typetransparent
+<span class="n">server</span>:
+<span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"dn42"</span> <span class="n">typetransparent</span>
+<span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"20.172.in-addr.arpa"</span> <span class="n">typetransparent</span>
+<span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"21.172.in-addr.arpa"</span> <span class="n">typetransparent</span>
+<span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"22.172.in-addr.arpa"</span> <span class="n">typetransparent</span>
+<span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"23.172.in-addr.arpa"</span> <span class="n">typetransparent</span>
+<span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"d.f.ip6.arpa"</span> <span class="n">typetransparent</span>
 
-private-domain: "dn42"
-private-domain: "20.172.in-addr.arpa"
-private-domain: "21.172.in-addr.arpa"
-private-domain: "22.172.in-addr.arpa"
-private-domain: "23.172.in-addr.arpa"
-private-domain: "d.f.ip6.arpa"
+<span class="n">private</span>-<span class="n">domain</span>: <span class="s2">"dn42"</span>
+<span class="n">private</span>-<span class="n">domain</span>: <span class="s2">"20.172.in-addr.arpa"</span>
+<span class="n">private</span>-<span class="n">domain</span>: <span class="s2">"21.172.in-addr.arpa"</span>
+<span class="n">private</span>-<span class="n">domain</span>: <span class="s2">"22.172.in-addr.arpa"</span>
+<span class="n">private</span>-<span class="n">domain</span>: <span class="s2">"23.172.in-addr.arpa"</span>
+<span class="n">private</span>-<span class="n">domain</span>: <span class="s2">"d.f.ip6.arpa"</span>
 
-stub-zone:
-	name: "dn42"
-	stub-addr: fd42:4242:2601:ac53::1
-	stub-addr: 172.20.129.1
-stub-zone:
-	name: "20.172.in-addr.arpa"
-	stub-addr: fd42:4242:2601:ac53::1
-	stub-addr: 172.20.129.1
+<span class="n">stub</span>-<span class="n">zone</span>:
+	<span class="n">name</span>: <span class="s2">"dn42"</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
+<span class="n">stub</span>-<span class="n">zone</span>:
+	<span class="n">name</span>: <span class="s2">"20.172.in-addr.arpa"</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
 
-stub-zone:
-	name: "21.172.in-addr.arpa"
-	stub-addr: fd42:4242:2601:ac53::1
-	stub-addr: 172.20.129.1
+<span class="n">stub</span>-<span class="n">zone</span>:
+	<span class="n">name</span>: <span class="s2">"21.172.in-addr.arpa"</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
 
-stub-zone:
-	name: "22.172.in-addr.arpa"
-	stub-addr: fd42:4242:2601:ac53::1
-	stub-addr: 172.20.129.1
+<span class="n">stub</span>-<span class="n">zone</span>:
+	<span class="n">name</span>: <span class="s2">"22.172.in-addr.arpa"</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
 
-stub-zone:
-	name: "23.172.in-addr.arpa"
-	stub-addr: fd42:4242:2601:ac53::1
-	stub-addr: 172.20.129.1
+<span class="n">stub</span>-<span class="n">zone</span>:
+	<span class="n">name</span>: <span class="s2">"23.172.in-addr.arpa"</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
 
-stub-zone: 
-    name: "23.172.in-addr.arpa"
-	stub-addr: fd42:4242:2601:ac53::1
-	stub-addr: 172.20.129.1
+<span class="n">stub</span>-<span class="n">zone</span>: 
+    <span class="n">name</span>: <span class="s2">"23.172.in-addr.arpa"</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
 
-stub-zone: 
-      name: "10.in-addr.arpa"
-	stub-addr: fd42:4242:2601:ac53::1
-	stub-addr: 172.20.129.1
+<span class="n">stub</span>-<span class="n">zone</span>: 
+      <span class="n">name</span>: <span class="s2">"10.in-addr.arpa"</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
 
-stub-zone:
-	name: "d.f.ip6.arpa"
-	stub-addr: fd42:4242:2601:ac53::1
-	stub-addr: 172.20.129.1
+<span class="n">stub</span>-<span class="n">zone</span>:
+	<span class="n">name</span>: <span class="s2">"d.f.ip6.arpa"</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
+	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
 </code></pre>
 
 	      </div>

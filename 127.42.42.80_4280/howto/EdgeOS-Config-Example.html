@@ -186,361 +186,361 @@
 
 <h1><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h1>
 
-<pre class="highlight"><code>firewall {
-    all-ping enable
-    broadcast-ping disable
-    conntrack-expect-table-size 4096
-    conntrack-hash-size 4096
-    conntrack-table-size 32768
-    conntrack-tcp-loose enable
-    ipv6-name ROUTER_V6 {
-        default-action drop
-        rule 1 {
-            action drop
-            destination {
-                port 22
+<pre class="highlight"><code><span class="n">firewall</span> {
+    <span class="n">all</span>-<span class="n">ping</span> <span class="n">enable</span>
+    <span class="n">broadcast</span>-<span class="n">ping</span> <span class="n">disable</span>
+    <span class="n">conntrack</span>-<span class="n">expect</span>-<span class="n">table</span>-<span class="n">size</span> <span class="m">4096</span>
+    <span class="n">conntrack</span>-<span class="n">hash</span>-<span class="n">size</span> <span class="m">4096</span>
+    <span class="n">conntrack</span>-<span class="n">table</span>-<span class="n">size</span> <span class="m">32768</span>
+    <span class="n">conntrack</span>-<span class="n">tcp</span>-<span class="n">loose</span> <span class="n">enable</span>
+    <span class="n">ipv6</span>-<span class="n">name</span> <span class="n">ROUTER_V6</span> {
+        <span class="n">default</span>-<span class="n">action</span> <span class="n">drop</span>
+        <span class="n">rule</span> <span class="m">1</span> {
+            <span class="n">action</span> <span class="n">drop</span>
+            <span class="n">destination</span> {
+                <span class="n">port</span> <span class="m">22</span>
             }
-            protocol tcp
+            <span class="n">protocol</span> <span class="n">tcp</span>
         }
     }
-    ipv6-name WAN_IN_V6 {
-        default-action drop
-        enable-default-log
-        rule 3 {
-            action drop
-            destination {
-                port 22
+    <span class="n">ipv6</span>-<span class="n">name</span> <span class="n">WAN_IN_V6</span> {
+        <span class="n">default</span>-<span class="n">action</span> <span class="n">drop</span>
+        <span class="n">enable</span>-<span class="n">default</span>-<span class="n">log</span>
+        <span class="n">rule</span> <span class="m">3</span> {
+            <span class="n">action</span> <span class="n">drop</span>
+            <span class="n">destination</span> {
+                <span class="n">port</span> <span class="m">22</span>
             }
-            protocol tcp
+            <span class="n">protocol</span> <span class="n">tcp</span>
         }
     }
-    ipv6-receive-redirects disable
-    ipv6-src-route disable
-    ip-src-route disable
-    log-martians enable
-    name DN42 {
-        default-action drop
-        rule 100 {
-            action drop
-            destination {
-                address 172.22.117.181
+    <span class="n">ipv6</span>-<span class="n">receive</span>-<span class="n">redirects</span> <span class="n">disable</span>
+    <span class="n">ipv6</span>-<span class="n">src</span>-<span class="n">route</span> <span class="n">disable</span>
+    <span class="n">ip</span>-<span class="n">src</span>-<span class="n">route</span> <span class="n">disable</span>
+    <span class="n">log</span>-<span class="n">martians</span> <span class="n">enable</span>
+    <span class="n">name</span> <span class="n">DN42</span> {
+        <span class="n">default</span>-<span class="n">action</span> <span class="n">drop</span>
+        <span class="n">rule</span> <span class="m">100</span> {
+            <span class="n">action</span> <span class="n">drop</span>
+            <span class="n">destination</span> {
+                <span class="n">address</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">181</span>
             }
-            source {
-                address !172.22.117.128/25
-            }
-        }
-        rule 101 {
-            action drop
-            destination {
-                address 172.22.117.182
-            }
-            source {
-                address !172.22.117.128/25
+            <span class="n">source</span> {
+                <span class="n">address</span> !<span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">128</span>/<span class="m">25</span>
             }
         }
-        rule 102 {
-            action drop
-            destination {
-                address 172.22.117.183
+        <span class="n">rule</span> <span class="m">101</span> {
+            <span class="n">action</span> <span class="n">drop</span>
+            <span class="n">destination</span> {
+                <span class="n">address</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">182</span>
             }
-            source {
-                address !172.22.117.128/25
+            <span class="n">source</span> {
+                <span class="n">address</span> !<span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">128</span>/<span class="m">25</span>
             }
         }
-    }
-    name ROUTER_V4 {
-        default-action accept
-        rule 2 {
-            action accept
-            protocol icmp
-        }
-        rule 10 {
-            action drop
-            destination {
-                port 22
+        <span class="n">rule</span> <span class="m">102</span> {
+            <span class="n">action</span> <span class="n">drop</span>
+            <span class="n">destination</span> {
+                <span class="n">address</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">183</span>
             }
-            protocol tcp
+            <span class="n">source</span> {
+                <span class="n">address</span> !<span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">128</span>/<span class="m">25</span>
+            }
         }
     }
-    name WAN_IN_V4 {
-        default-action drop
-        enable-default-log
-        rule 1 {
-            action accept
-            description "allow established connections"
-            protocol all
-            state {
-                established enable
-                related enable
-            }
+    <span class="n">name</span> <span class="n">ROUTER_V4</span> {
+        <span class="n">default</span>-<span class="n">action</span> <span class="n">accept</span>
+        <span class="n">rule</span> <span class="m">2</span> {
+            <span class="n">action</span> <span class="n">accept</span>
+            <span class="n">protocol</span> <span class="n">icmp</span>
         }
-        rule 2 {
-            action drop
-            state {
-                invalid enable
+        <span class="n">rule</span> <span class="m">10</span> {
+            <span class="n">action</span> <span class="n">drop</span>
+            <span class="n">destination</span> {
+                <span class="n">port</span> <span class="m">22</span>
             }
-        }
-        rule 3 {
-            action drop
-            destination {
-                port 22
-            }
-            protocol tcp
+            <span class="n">protocol</span> <span class="n">tcp</span>
         }
     }
-    receive-redirects disable
-    send-redirects enable
-    source-validation disable
-    syn-cookies enable
+    <span class="n">name</span> <span class="n">WAN_IN_V4</span> {
+        <span class="n">default</span>-<span class="n">action</span> <span class="n">drop</span>
+        <span class="n">enable</span>-<span class="n">default</span>-<span class="n">log</span>
+        <span class="n">rule</span> <span class="m">1</span> {
+            <span class="n">action</span> <span class="n">accept</span>
+            <span class="n">description</span> <span class="s2">"allow established connections"</span>
+            <span class="n">protocol</span> <span class="n">all</span>
+            <span class="n">state</span> {
+                <span class="n">established</span> <span class="n">enable</span>
+                <span class="n">related</span> <span class="n">enable</span>
+            }
+        }
+        <span class="n">rule</span> <span class="m">2</span> {
+            <span class="n">action</span> <span class="n">drop</span>
+            <span class="n">state</span> {
+                <span class="n">invalid</span> <span class="n">enable</span>
+            }
+        }
+        <span class="n">rule</span> <span class="m">3</span> {
+            <span class="n">action</span> <span class="n">drop</span>
+            <span class="n">destination</span> {
+                <span class="n">port</span> <span class="m">22</span>
+            }
+            <span class="n">protocol</span> <span class="n">tcp</span>
+        }
+    }
+    <span class="n">receive</span>-<span class="n">redirects</span> <span class="n">disable</span>
+    <span class="n">send</span>-<span class="n">redirects</span> <span class="n">enable</span>
+    <span class="n">source</span>-<span class="n">validation</span> <span class="n">disable</span>
+    <span class="n">syn</span>-<span class="n">cookies</span> <span class="n">enable</span>
 }
-interfaces {
-    ethernet eth0 {
-        duplex auto
-        firewall {
-            in {
-                name WAN_IN_V4
+<span class="n">interfaces</span> {
+    <span class="n">ethernet</span> <span class="n">eth0</span> {
+        <span class="n">duplex</span> <span class="n">auto</span>
+        <span class="n">firewall</span> {
+            <span class="n">in</span> {
+                <span class="n">name</span> <span class="n">WAN_IN_V4</span>
             }
         }
-        pppoe 0 {
-            default-route auto
-            firewall {
-                local {
-                    ipv6-name ROUTER_V6
-                    name ROUTER_V4
+        <span class="n">pppoe</span> <span class="m">0</span> {
+            <span class="n">default</span>-<span class="n">route</span> <span class="n">auto</span>
+            <span class="n">firewall</span> {
+                <span class="n">local</span> {
+                    <span class="n">ipv6</span>-<span class="n">name</span> <span class="n">ROUTER_V6</span>
+                    <span class="n">name</span> <span class="n">ROUTER_V4</span>
                 }
             }
-            mtu 1492
-            name-server auto
-            password 12345678
-            traffic-policy {
+            <span class="n">mtu</span> <span class="m">1492</span>
+            <span class="n">name</span>-<span class="n">server</span> <span class="n">auto</span>
+            <span class="n">password</span> <span class="m">12345678</span>
+            <span class="n">traffic</span>-<span class="n">policy</span> {
             }
-            user-id some-t-online-crap@t-online.de
+            <span class="n">user</span>-<span class="n">id</span> <span class="n">some</span>-<span class="n">t</span>-<span class="n">online</span>-<span class="n">crap</span>@<span class="n">t</span>-<span class="n">online</span>.<span class="n">de</span>
         }
-        speed auto
+        <span class="n">speed</span> <span class="n">auto</span>
     }
-    ethernet eth1 {
-        address 172.22.117.254/25
-        duplex auto
-        speed auto
-        traffic-policy {
+    <span class="n">ethernet</span> <span class="n">eth1</span> {
+        <span class="n">address</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">254</span>/<span class="m">25</span>
+        <span class="n">duplex</span> <span class="n">auto</span>
+        <span class="n">speed</span> <span class="n">auto</span>
+        <span class="n">traffic</span>-<span class="n">policy</span> {
         }
     }
-    ethernet eth2 {
-        address 192.168.42.1/24
-        duplex auto
-        speed auto
+    <span class="n">ethernet</span> <span class="n">eth2</span> {
+        <span class="n">address</span> <span class="m">192</span>.<span class="m">168</span>.<span class="m">42</span>.<span class="m">1</span>/<span class="m">24</span>
+        <span class="n">duplex</span> <span class="n">auto</span>
+        <span class="n">speed</span> <span class="n">auto</span>
     }
-    loopback lo {
+    <span class="n">loopback</span> <span class="n">lo</span> {
     }
-    openvpn vtun0 {
-        local-address 172.22.117.254 {
-            subnet-mask 255.255.255.128
+    <span class="n">openvpn</span> <span class="n">vtun0</span> {
+        <span class="n">local</span>-<span class="n">address</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">254</span> {
+            <span class="n">subnet</span>-<span class="n">mask</span> <span class="m">255</span>.<span class="m">255</span>.<span class="m">255</span>.<span class="m">128</span>
         }
-        local-port 33121
-        mode site-to-site
-        openvpn-option --comp-lzo
-        protocol udp
-        remote-address 172.22.117.1
-        remote-host 5.9.33.163
-        remote-port 33121
-        shared-secret-key-file /config/auth/felihome.key
+        <span class="n">local</span>-<span class="n">port</span> <span class="m">33121</span>
+        <span class="n">mode</span> <span class="n">site</span>-<span class="n">to</span>-<span class="n">site</span>
+        <span class="n">openvpn</span>-<span class="n">option</span> --<span class="n">comp</span>-<span class="n">lzo</span>
+        <span class="n">protocol</span> <span class="n">udp</span>
+        <span class="n">remote</span>-<span class="n">address</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">1</span>
+        <span class="n">remote</span>-<span class="n">host</span> <span class="m">5</span>.<span class="m">9</span>.<span class="m">33</span>.<span class="m">163</span>
+        <span class="n">remote</span>-<span class="n">port</span> <span class="m">33121</span>
+        <span class="n">shared</span>-<span class="n">secret</span>-<span class="n">key</span>-<span class="n">file</span> /<span class="n">config</span>/<span class="n">auth</span>/<span class="n">felihome</span>.<span class="n">key</span>
     }
 }
-policy {
-    prefix-list vpn-in {
-        rule 10 {
-            action permit
-            ge 22
-            le 28
-            prefix 172.22.0.0/15
-        }
-    }
-}
-protocols {
-    bgp 76197 {
-        neighbor 172.22.117.1 {
-            description feli-server
-            peer-group dn42
-            remote-as 64717
-        }
-        network 172.22.117.128/25 {
-        }
-        peer-group dn42 {
-            soft-reconfiguration {
-                inbound
-            }
+<span class="n">policy</span> {
+    <span class="n">prefix</span>-<span class="n">list</span> <span class="n">vpn</span>-<span class="n">in</span> {
+        <span class="n">rule</span> <span class="m">10</span> {
+            <span class="n">action</span> <span class="n">permit</span>
+            <span class="n">ge</span> <span class="m">22</span>
+            <span class="n">le</span> <span class="m">28</span>
+            <span class="n">prefix</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">15</span>
         }
     }
 }
-service {
-    dhcp-server {
-        disabled false
-        dynamic-dns-update {
-            enable true
+<span class="n">protocols</span> {
+    <span class="n">bgp</span> <span class="m">76197</span> {
+        <span class="n">neighbor</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">1</span> {
+            <span class="n">description</span> <span class="n">feli</span>-<span class="n">server</span>
+            <span class="n">peer</span>-<span class="n">group</span> <span class="n">dn42</span>
+            <span class="n">remote</span>-<span class="n">as</span> <span class="m">64717</span>
         }
-        shared-network-name int {
-            authoritative disable
-            subnet 172.22.117.128/25 {
-                default-router 172.22.117.254
-                dns-server 172.22.117.254
-                domain-name feli-home.felicitus.org
-                lease 86400
-                start 172.22.117.129 {
-                    stop 172.22.117.150
-                }
-                static-mapping monitoring {
-                    ip-address 172.22.117.183
-                    mac-address 52:54:00:20:df:46
-                }
-                static-mapping nas {
-                    ip-address 172.22.117.181
-                    mac-address e8:39:35:ee:22:7b
-                }
+        <span class="n">network</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">128</span>/<span class="m">25</span> {
+        }
+        <span class="n">peer</span>-<span class="n">group</span> <span class="n">dn42</span> {
+            <span class="n">soft</span>-<span class="n">reconfiguration</span> {
+                <span class="n">inbound</span>
             }
-        }
-        shared-network-name nat {
-            authoritative disable
-            subnet 192.168.42.0/24 {
-                default-router 192.168.42.1
-                dns-server 8.8.8.8
-                dns-server 8.8.4.4
-                lease 86400
-                start 192.168.42.10 {
-                    stop 192.168.42.100
-                }
-            }
-        }
-    }
-    dns {
-        forwarding {
-            cache-size 150
-            listen-on eth1
-            listen-on eth2
-            name-server 8.8.8.8
-            name-server 8.8.4.4
-            options server=/dn42/172.23.0.53
-            options server=/22.172.in-addr.arpa/172.23.0.53
-            options server=/23.172.in-addr.arpa/172.23.0.53
-            options rebind-domain-ok=/dn42/
-        }
-    }
-    nat {
-        rule 6000 {
-            outbound-interface pppoe0
-            type masquerade
-        }
-        rule 7000 {
-            outbound-interface eth2
-            type masquerade
-        }
-    }
-    ssh {
-        port 22
-        protocol-version v2
-    }
-    upnp {
-        listen-on eth1 {
-            outbound-interface pppoe0
-        }
-        listen-on eth2 {
-            outbound-interface pppoe0
         }
     }
 }
-system {
-    host-name ubnt
-    login {
-        user felicitus {
-            authentication {
-                encrypted-password errnope
-                plaintext-password ""
-                public-keys felicitus@felicitus.org {
-                    key AAAAB3NzaC1yc2EAAAADAQABAAABAQDPTSLjSY/Be1XJ/klAwLiM1pKSvmbdcOgtgDB6nPcHkgX6JZu7g/Kejfuk4qIKL8GYYUQt7DlGY6n2u5rChWE/6KZJzXcUwS3pXk4LZ5KydWp7ihfvyRtUOBgKkRa1zQv+6KCH9WyR++ArwVTP8KSkrmDe6k7NWAjZqOuIJHG/AbEyTBapTJYjObZ0AM7wlwcB+oRM1BfZCP0Y+PIP2eGJS7Pyb32pITNKk3JuFXgAvbj5OeRrwtpZ9S+/7wIpaUVODPzrVmbC7vOXu/2KJ9aY2BmxUsxRbrvWMmWNiuE0YPt/7lUroK4pH3md3lWRcGUS/uYvhug7yG1yB81nyI15
-                    type ssh-rsa
+<span class="n">service</span> {
+    <span class="n">dhcp</span>-<span class="n">server</span> {
+        <span class="n">disabled</span> <span class="n">false</span>
+        <span class="n">dynamic</span>-<span class="n">dns</span>-<span class="n">update</span> {
+            <span class="n">enable</span> <span class="n">true</span>
+        }
+        <span class="n">shared</span>-<span class="n">network</span>-<span class="n">name</span> <span class="n">int</span> {
+            <span class="n">authoritative</span> <span class="n">disable</span>
+            <span class="n">subnet</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">128</span>/<span class="m">25</span> {
+                <span class="n">default</span>-<span class="n">router</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">254</span>
+                <span class="n">dns</span>-<span class="n">server</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">254</span>
+                <span class="n">domain</span>-<span class="n">name</span> <span class="n">feli</span>-<span class="n">home</span>.<span class="n">felicitus</span>.<span class="n">org</span>
+                <span class="n">lease</span> <span class="m">86400</span>
+                <span class="n">start</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">129</span> {
+                    <span class="n">stop</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">150</span>
+                }
+                <span class="n">static</span>-<span class="n">mapping</span> <span class="n">monitoring</span> {
+                    <span class="n">ip</span>-<span class="n">address</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">183</span>
+                    <span class="n">mac</span>-<span class="n">address</span> <span class="m">52</span>:<span class="m">54</span>:<span class="m">00</span>:<span class="m">20</span>:<span class="n">df</span>:<span class="m">46</span>
+                }
+                <span class="n">static</span>-<span class="n">mapping</span> <span class="n">nas</span> {
+                    <span class="n">ip</span>-<span class="n">address</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">181</span>
+                    <span class="n">mac</span>-<span class="n">address</span> <span class="n">e8</span>:<span class="m">39</span>:<span class="m">35</span>:<span class="n">ee</span>:<span class="m">22</span>:<span class="m">7</span><span class="n">b</span>
                 }
             }
-            level admin
         }
-    }
-    name-server 172.22.117.254
-    ntp {
-        server 0.ubnt.pool.ntp.org {
-        }
-        server 1.ubnt.pool.ntp.org {
-        }
-        server 2.ubnt.pool.ntp.org {
-        }
-        server 3.ubnt.pool.ntp.org {
-        }
-    }
-    syslog {
-        global {
-            facility all {
-                level notice
-            }
-            facility protocols {
-                level debug
+        <span class="n">shared</span>-<span class="n">network</span>-<span class="n">name</span> <span class="n">nat</span> {
+            <span class="n">authoritative</span> <span class="n">disable</span>
+            <span class="n">subnet</span> <span class="m">192</span>.<span class="m">168</span>.<span class="m">42</span>.<span class="m">0</span>/<span class="m">24</span> {
+                <span class="n">default</span>-<span class="n">router</span> <span class="m">192</span>.<span class="m">168</span>.<span class="m">42</span>.<span class="m">1</span>
+                <span class="n">dns</span>-<span class="n">server</span> <span class="m">8</span>.<span class="m">8</span>.<span class="m">8</span>.<span class="m">8</span>
+                <span class="n">dns</span>-<span class="n">server</span> <span class="m">8</span>.<span class="m">8</span>.<span class="m">4</span>.<span class="m">4</span>
+                <span class="n">lease</span> <span class="m">86400</span>
+                <span class="n">start</span> <span class="m">192</span>.<span class="m">168</span>.<span class="m">42</span>.<span class="m">10</span> {
+                    <span class="n">stop</span> <span class="m">192</span>.<span class="m">168</span>.<span class="m">42</span>.<span class="m">100</span>
+                }
             }
         }
     }
-    time-zone UTC
+    <span class="n">dns</span> {
+        <span class="n">forwarding</span> {
+            <span class="n">cache</span>-<span class="n">size</span> <span class="m">150</span>
+            <span class="n">listen</span>-<span class="n">on</span> <span class="n">eth1</span>
+            <span class="n">listen</span>-<span class="n">on</span> <span class="n">eth2</span>
+            <span class="n">name</span>-<span class="n">server</span> <span class="m">8</span>.<span class="m">8</span>.<span class="m">8</span>.<span class="m">8</span>
+            <span class="n">name</span>-<span class="n">server</span> <span class="m">8</span>.<span class="m">8</span>.<span class="m">4</span>.<span class="m">4</span>
+            <span class="n">options</span> <span class="n">server</span>=/<span class="n">dn42</span>/<span class="m">172</span>.<span class="m">23</span>.<span class="m">0</span>.<span class="m">53</span>
+            <span class="n">options</span> <span class="n">server</span>=/<span class="m">22</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>/<span class="m">172</span>.<span class="m">23</span>.<span class="m">0</span>.<span class="m">53</span>
+            <span class="n">options</span> <span class="n">server</span>=/<span class="m">23</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>/<span class="m">172</span>.<span class="m">23</span>.<span class="m">0</span>.<span class="m">53</span>
+            <span class="n">options</span> <span class="n">rebind</span>-<span class="n">domain</span>-<span class="n">ok</span>=/<span class="n">dn42</span>/
+        }
+    }
+    <span class="n">nat</span> {
+        <span class="n">rule</span> <span class="m">6000</span> {
+            <span class="n">outbound</span>-<span class="n">interface</span> <span class="n">pppoe0</span>
+            <span class="n">type</span> <span class="n">masquerade</span>
+        }
+        <span class="n">rule</span> <span class="m">7000</span> {
+            <span class="n">outbound</span>-<span class="n">interface</span> <span class="n">eth2</span>
+            <span class="n">type</span> <span class="n">masquerade</span>
+        }
+    }
+    <span class="n">ssh</span> {
+        <span class="n">port</span> <span class="m">22</span>
+        <span class="n">protocol</span>-<span class="n">version</span> <span class="n">v2</span>
+    }
+    <span class="n">upnp</span> {
+        <span class="n">listen</span>-<span class="n">on</span> <span class="n">eth1</span> {
+            <span class="n">outbound</span>-<span class="n">interface</span> <span class="n">pppoe0</span>
+        }
+        <span class="n">listen</span>-<span class="n">on</span> <span class="n">eth2</span> {
+            <span class="n">outbound</span>-<span class="n">interface</span> <span class="n">pppoe0</span>
+        }
+    }
 }
-traffic-policy {
-    shaper client-up-s {
-        bandwidth 30kbit
-        class 20 {
-            bandwidth 100%
-            burst 6k
-            match TCPACK {
-                ip {
-                    protocol tcp
+<span class="n">system</span> {
+    <span class="n">host</span>-<span class="n">name</span> <span class="n">ubnt</span>
+    <span class="n">login</span> {
+        <span class="n">user</span> <span class="n">felicitus</span> {
+            <span class="n">authentication</span> {
+                <span class="n">encrypted</span>-<span class="n">password</span> <span class="n">errnope</span>
+                <span class="n">plaintext</span>-<span class="n">password</span> <span class="s2">""</span>
+                <span class="n">public</span>-<span class="n">keys</span> <span class="n">felicitus</span>@<span class="n">felicitus</span>.<span class="n">org</span> {
+                    <span class="n">key</span> <span class="n">AAAAB3NzaC1yc2EAAAADAQABAAABAQDPTSLjSY</span>/<span class="n">Be1XJ</span>/<span class="n">klAwLiM1pKSvmbdcOgtgDB6nPcHkgX6JZu7g</span>/<span class="n">Kejfuk4qIKL8GYYUQt7DlGY6n2u5rChWE</span>/<span class="m">6</span><span class="n">KZJzXcUwS3pXk4LZ5KydWp7ihfvyRtUOBgKkRa1zQv</span>+<span class="m">6</span><span class="n">KCH9WyR</span>++<span class="n">ArwVTP8KSkrmDe6k7NWAjZqOuIJHG</span>/<span class="n">AbEyTBapTJYjObZ0AM7wlwcB</span>+<span class="n">oRM1BfZCP0Y</span>+<span class="n">PIP2eGJS7Pyb32pITNKk3JuFXgAvbj5OeRrwtpZ9S</span>+/<span class="m">7</span><span class="n">wIpaUVODPzrVmbC7vOXu</span>/<span class="m">2</span><span class="n">KJ9aY2BmxUsxRbrvWMmWNiuE0YPt</span>/<span class="m">7</span><span class="n">lUroK4pH3md3lWRcGUS</span>/<span class="n">uYvhug7yG1yB81nyI15</span>
+                    <span class="n">type</span> <span class="n">ssh</span>-<span class="n">rsa</span>
                 }
-                mark 225
             }
-            priority 5
-            queue-limit 65
-            queue-type fair-queue
+            <span class="n">level</span> <span class="n">admin</span>
         }
-        class 30 {
-            bandwidth 5%
-            burst 15k
-            ceiling 20%
-            match ssh {
-                ip {
-                    destination {
-                        port 22
+    }
+    <span class="n">name</span>-<span class="n">server</span> <span class="m">172</span>.<span class="m">22</span>.<span class="m">117</span>.<span class="m">254</span>
+    <span class="n">ntp</span> {
+        <span class="n">server</span> <span class="m">0</span>.<span class="n">ubnt</span>.<span class="n">pool</span>.<span class="n">ntp</span>.<span class="n">org</span> {
+        }
+        <span class="n">server</span> <span class="m">1</span>.<span class="n">ubnt</span>.<span class="n">pool</span>.<span class="n">ntp</span>.<span class="n">org</span> {
+        }
+        <span class="n">server</span> <span class="m">2</span>.<span class="n">ubnt</span>.<span class="n">pool</span>.<span class="n">ntp</span>.<span class="n">org</span> {
+        }
+        <span class="n">server</span> <span class="m">3</span>.<span class="n">ubnt</span>.<span class="n">pool</span>.<span class="n">ntp</span>.<span class="n">org</span> {
+        }
+    }
+    <span class="n">syslog</span> {
+        <span class="n">global</span> {
+            <span class="n">facility</span> <span class="n">all</span> {
+                <span class="n">level</span> <span class="n">notice</span>
+            }
+            <span class="n">facility</span> <span class="n">protocols</span> {
+                <span class="n">level</span> <span class="n">debug</span>
+            }
+        }
+    }
+    <span class="n">time</span>-<span class="n">zone</span> <span class="n">UTC</span>
+}
+<span class="n">traffic</span>-<span class="n">policy</span> {
+    <span class="n">shaper</span> <span class="n">client</span>-<span class="n">up</span>-<span class="n">s</span> {
+        <span class="n">bandwidth</span> <span class="m">30</span><span class="n">kbit</span>
+        <span class="n">class</span> <span class="m">20</span> {
+            <span class="n">bandwidth</span> <span class="m">100</span>%
+            <span class="n">burst</span> <span class="m">6</span><span class="n">k</span>
+            <span class="n">match</span> <span class="n">TCPACK</span> {
+                <span class="n">ip</span> {
+                    <span class="n">protocol</span> <span class="n">tcp</span>
+                }
+                <span class="n">mark</span> <span class="m">225</span>
+            }
+            <span class="n">priority</span> <span class="m">5</span>
+            <span class="n">queue</span>-<span class="n">limit</span> <span class="m">65</span>
+            <span class="n">queue</span>-<span class="n">type</span> <span class="n">fair</span>-<span class="n">queue</span>
+        }
+        <span class="n">class</span> <span class="m">30</span> {
+            <span class="n">bandwidth</span> <span class="m">5</span>%
+            <span class="n">burst</span> <span class="m">15</span><span class="n">k</span>
+            <span class="n">ceiling</span> <span class="m">20</span>%
+            <span class="n">match</span> <span class="n">ssh</span> {
+                <span class="n">ip</span> {
+                    <span class="n">destination</span> {
+                        <span class="n">port</span> <span class="m">22</span>
                     }
-                    dscp lowdelay
-                    protocol tcp
+                    <span class="n">dscp</span> <span class="n">lowdelay</span>
+                    <span class="n">protocol</span> <span class="n">tcp</span>
                 }
             }
-            match ssh-ipv6 {
-                ipv6 {
-                    destination {
-                        port 22
+            <span class="n">match</span> <span class="n">ssh</span>-<span class="n">ipv6</span> {
+                <span class="n">ipv6</span> {
+                    <span class="n">destination</span> {
+                        <span class="n">port</span> <span class="m">22</span>
                     }
-                    protocol tcp
+                    <span class="n">protocol</span> <span class="n">tcp</span>
                 }
             }
-            priority 6
-            queue-limit 10
-            queue-type fair-queue
+            <span class="n">priority</span> <span class="m">6</span>
+            <span class="n">queue</span>-<span class="n">limit</span> <span class="m">10</span>
+            <span class="n">queue</span>-<span class="n">type</span> <span class="n">fair</span>-<span class="n">queue</span>
         }
-        default {
-            bandwidth 95%
-            burst 15k
-            ceiling 100%
-            priority 2
-            queue-limit 13
-            queue-type fair-queue
+        <span class="n">default</span> {
+            <span class="n">bandwidth</span> <span class="m">95</span>%
+            <span class="n">burst</span> <span class="m">15</span><span class="n">k</span>
+            <span class="n">ceiling</span> <span class="m">100</span>%
+            <span class="n">priority</span> <span class="m">2</span>
+            <span class="n">queue</span>-<span class="n">limit</span> <span class="m">13</span>
+            <span class="n">queue</span>-<span class="n">type</span> <span class="n">fair</span>-<span class="n">queue</span>
         }
     }
 }
 
 
-/* Warning: Do not remove the following line. */
-/* === vyatta-config-version: "config-management@1:dhcp-relay@1:dhcp-server@4:firewall@4:ipsec@3:nat@3:qos@1:quagga@2:system@4:ubnt-pptp@1:ubnt-util@1:vrrp@1:webgui@1:webproxy@1:zone-policy@1" === */
-/* Release version: v1.3.0.4605130.131011.1754 */</code></pre>
+/* <span class="n">Warning</span>: <span class="n">Do</span> <span class="n">not</span> <span class="n">remove</span> <span class="n">the</span> <span class="n">following</span> <span class="n">line</span>. */
+/* === <span class="n">vyatta</span>-<span class="n">config</span>-<span class="n">version</span>: <span class="s2">"config-management@1:dhcp-relay@1:dhcp-server@4:firewall@4:ipsec@3:nat@3:qos@1:quagga@2:system@4:ubnt-pptp@1:ubnt-util@1:vrrp@1:webgui@1:webproxy@1:zone-policy@1"</span> === */
+/* <span class="n">Release</span> <span class="n">version</span>: <span class="n">v1</span>.<span class="m">3</span>.<span class="m">0</span>.<span class="m">4605130</span>.<span class="m">131011</span>.<span class="m">1754</span> */</code></pre>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">

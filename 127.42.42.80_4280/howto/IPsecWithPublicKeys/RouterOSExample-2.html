@@ -167,32 +167,31 @@
 
 <h3><a class="anchor" id="generate-an-rsa-keypair" href="#generate-an-rsa-keypair"></a>Generate an RSA keypair</h3>
 
-<pre><code>[admin@mtk1] &gt; /ip ipsec key
+<pre class="highlight"><code>[admin@mtk1] &gt; /ip ipsec key
 [admin@mtk1] /ip ipsec key&gt; generate-key mykey key-size=4096
 For key bigger than 1024bit this may take a while..
 [admin@mtk1] /ip ipsec key&gt; print
 Flags: P - private-key, R - rsa
  #    NAME                                                             KEY-SIZE
- 0 PR mykey                                                            4096-bit
-</code></pre>
+ 0 PR mykey                                                            4096-bit</code></pre>
 
 <h2><a class="anchor" id="exchange-public-keys-with-your-peer" href="#exchange-public-keys-with-your-peer"></a>Exchange public keys with your peer</h2>
 
 <ol>
-<li>
-<p>Export the public key to a file.</p>
+<li>Export the public key to a file.</li>
+</ol>
 
-<pre><code>[admin@mtk1] /ip ipsec key&gt; export-pub-key mykey file-name=mykey.pub
+<pre class="highlight"><code>[admin@mtk1] /ip ipsec key&gt; export-pub-key mykey file-name=mykey.pub
 
 [admin@mtk1] /ip ipsec key&gt; /file print where name=mykey.pub
  # NAME                   TYPE                        SIZE CREATION-TIME
- 2 mykey.pub              ssh key                      451 jul/20/2014 12:35:33
-</code></pre>
-</li>
-<li>
-<p>Copy the file to your workstation and send it to your peer. The contents of the file should look like this:</p>
+ 2 mykey.pub              ssh key                      451 jul/20/2014 12:35:33</code></pre>
 
-<pre><code>-----BEGIN PUBLIC KEY-----
+<ol>
+<li>Copy the file to your workstation and send it to your peer. The contents of the file should look like this:</li>
+</ol>
+
+<pre class="highlight"><code>-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv4RHohMZP4F5qTJKqoSL
 TqefoZZRt1RVI5dOocjV1pJZnqcXMtHfQ/5+O+igUCAX+yBv0hie+U32FWcy5cQO
 +xaohZW1zFzvlRWVqOpTwdk/993Zmy070T1FzK4kFShsNtxYrtYNheCnakgfXgMg
@@ -200,10 +199,10 @@ TqefoZZRt1RVI5dOocjV1pJZnqcXMtHfQ/5+O+igUCAX+yBv0hie+U32FWcy5cQO
 4E8oOmKWVoFErQA6XetJzI+X+knzI3J/6/Pff4Tz7TLxu1m2I0InFaBv1G0+BXnh
 QOvIM7fvs5s0YWaUdT+vz8F0SHtb6Q/IdWc4JJPH/Q2t4HKTkk7FUnvvub2GxVbs
 8QIDAQAB
------END PUBLIC KEY-----
-</code></pre>
-</li>
-<li><p>Convert your peer's public key to the PEM format using the <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl" title="Public key conversion script">pubkey-converter</a> script, if necessary.</p></li>
+-----END PUBLIC KEY-----</code></pre>
+
+<ol>
+<li>Convert your peer's public key to the PEM format using the <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl" title="Public key conversion script">pubkey-converter</a> script, if necessary.</li>
 </ol>
 
 <h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
@@ -248,23 +247,23 @@ QOvIM7fvs5s0YWaUdT+vz8F0SHtb6Q/IdWc4JJPH/Q2t4HKTkk7FUnvvub2GxVbs
 </table>
 
 <ol>
-<li>
-<p>Copy your peer's PEM-encoded public key to the router and import it. (Hit enter when it asks for a passphrase)</p>
+<li>Copy your peer's PEM-encoded public key to the router and import it. (Hit enter when it asks for a passphrase)</li>
+</ol>
 
-<pre><code>[admin@mtk1] /ip ipsec key&gt; import peer-key.pub name=peer-key
+<pre class="highlight"><code>[admin@mtk1] /ip ipsec key&gt; import peer-key.pub name=peer-key
 passphrase:
 
 [admin@mtk1] /ip ipsec key&gt; print
 Flags: P - private-key, R - rsa
  #    NAME                                                             KEY-SIZE
  0 PR mykey                                                            4096-bit
- 1  R peer-key                                                         4096-bit
-</code></pre>
-</li>
-<li>
-<p>Configure your peer definition to use the public key</p>
+ 1  R peer-key                                                         4096-bit</code></pre>
 
-<pre><code>[admin@mtk1] /ip ipsec peer&gt; add address=192.0.2.2 local-address=192.0.2.1 enc-algorithm=aes-128 hash-algorithm=sha1 dh-group=modp1536 lifetime=28800 key=mykey remote-key=peer-key auth-method=rsa-key
+<ol>
+<li>Configure your peer definition to use the public key</li>
+</ol>
+
+<pre class="highlight"><code>[admin@mtk1] /ip ipsec peer&gt; add address=192.0.2.2 local-address=192.0.2.1 enc-algorithm=aes-128 hash-algorithm=sha1 dh-group=modp1536 lifetime=28800 key=mykey remote-key=peer-key auth-method=rsa-key
 [admin@mtk1] /ip ipsec peer&gt; print
 Flags: X - disabled
  0   address=192.0.2.2/32 local-address=192.0.2.1 passive=no port=500
@@ -272,15 +271,15 @@ Flags: X - disabled
      exchange-mode=main send-initial-contact=yes nat-traversal=no
      proposal-check=obey hash-algorithm=sha1 enc-algorithm=aes-128
      dh-group=modp1536 lifetime=8h lifebytes=0 dpd-interval=2m
-     dpd-maximum-failures=5
-</code></pre>
-</li>
-<li><p>All done! Configure the phase 2 parameters as you otherwise would.</p></li>
+     dpd-maximum-failures=5</code></pre>
+
+<ol>
+<li>All done! Configure the phase 2 parameters as you otherwise would.</li>
 </ol>
 
 <h2><a class="anchor" id="full-gre-ipsec-example" href="#full-gre-ipsec-example"></a>Full GRE/IPsec example</h2>
 
-<pre><code># jul/20/2014 13:00:04 by RouterOS 6.15
+<pre class="highlight"><code># jul/20/2014 13:00:04 by RouterOS 6.15
 # software id = HBCA-0B2J
 #
 /interface gre
@@ -295,8 +294,7 @@ add address=192.0.2.2/32 auth-method=rsa-key dh-group=modp1536 key=mykey \
     lifetime=8h local-address=192.0.2.1 remote-key=peer-key
 /ip ipsec policy
 add dst-address=192.0.2.2/32 protocol=gre sa-dst-address=192.0.2.2 \
-    sa-src-address=192.0.2.1 src-address=192.0.2.1/32
-</code></pre>
+    sa-src-address=192.0.2.1 src-address=192.0.2.1/32</code></pre>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">

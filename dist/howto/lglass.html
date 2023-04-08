@@ -162,8 +162,7 @@
 	        
 	        <p>lglass is a Python software package designed for Internet Registries like the DN42. You can generate zone files for DNS and rDNS IPv4/v6, and handle the registry. It is available on GitHub as free software:</p>
 
-<pre><code>$ git clone git://github.com/fritz0705/lglass.git
-</code></pre>
+<pre class="highlight"><code><span class="nv">$ </span>git clone git://github.com/fritz0705/lglass.git</code></pre>
 
 <h2><a class="anchor" id="links" href="#links"></a>Links</h2>
 
@@ -176,30 +175,25 @@
 
 <p>lglass provides an event-based whois daemon with internal caching, which was written in Python. It is very simple to run an instance:</p>
 
-<pre><code>$ ./bin/lglass-whoisd
-</code></pre>
+<pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-whoisd</code></pre>
 
 <p>without the configfile:</p>
 
-<pre><code>$ ./bin/lglass-regtool whoisd -H $HOST -p $PORT
-</code></pre>
+<pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-regtool whoisd <span class="nt">-H</span> <span class="nv">$HOST</span> <span class="nt">-p</span> <span class="nv">$PORT</span></code></pre>
 
-<p>.</p>
-
-<pre><code>usage: lglass-whoisd [-h] [-4] [-6] [--host HOST] [--port PORT]
-                             [--cidr] [--no-cidr] [--inverse] [--no-inverse]
+<pre class="highlight"><code>usage: lglass-whoisd [-h] [-4] [-6] [--host HOST] [--port PORT]
+                     [--cidr] [--no-cidr] [--inverse] [--no-inverse]
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -4                    Listen on IPv4
-  -6                    Listen on IPv6
-  --host HOST, -H HOST  Listen on host
-  --port PORT, -p PORT  Listen on port
-  --cidr, -c            Perform CIDR matching on queries
-  --no-cidr             Do not perform CIDR matching on queries
-  --inverse, -i         Perform inverse matching on queries
-  --no-inverse          Do not perform inverse matching on queries
-</code></pre>
+    -h, --help            show this help message and exit
+    -4                    Listen on IPv4
+    -6                    Listen on IPv6
+    --host HOST, -H HOST  Listen on host
+    --port PORT, -p PORT  Listen on port
+    --cidr, -c            Perform CIDR matching on queries
+    --no-cidr             Do not perform CIDR matching on queries
+    --inverse, -i         Perform inverse matching on queries
+    --no-inverse          Do not perform inverse matching on queries</code></pre>
 
 <h2><a class="anchor" id="generate-zone-files" href="#generate-zone-files"></a>Generate zone files</h2>
 
@@ -207,38 +201,30 @@ optional arguments:
 
 <p>To generate DNS zones:</p>
 
-<pre><code>$ ./bin/lglass-zonegen -d $PATH_TO_DATA_DIR -n ns1... -n ns2... -e foo.bar.com dns -z dn42
-</code></pre>
+<pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-zonegen <span class="nt">-d</span> <span class="nv">$PATH_TO_DATA_DIR</span> <span class="nt">-n</span> ns1... <span class="nt">-n</span> ns2... <span class="nt">-e</span> foo.bar.com dns <span class="nt">-z</span> dn42</code></pre>
 
 <p>To generate IPv4 rDNS zones:</p>
 
-<pre><code>$ ./bin/lglass-zonegen -d $PATH_TO_DATA_DIR -n ns1... -n ns2... -e foo.bar.com rdns4 -N 172.22.0.0/16
-</code></pre>
+<pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-zonegen <span class="nt">-d</span> <span class="nv">$PATH_TO_DATA_DIR</span> <span class="nt">-n</span> ns1... <span class="nt">-n</span> ns2... <span class="nt">-e</span> foo.bar.com rdns4 <span class="nt">-N</span> 172.22.0.0/16</code></pre>
 
-<p>To generate IPv6 rDNS zones:</p>
-
-<pre><code>$ ./bin/lglass-zonegen -d $PATH_TO_DATA_DIR -n ns1... -n ns2... -e foo.bar.com rdns6 -N fd00::/8
-</code></pre>
+<p>To generate IPv6 rDNS zones:
+</p><pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-zonegen <span class="nt">-d</span> <span class="nv">$PATH_TO_DATA_DIR</span> <span class="nt">-n</span> ns1... <span class="nt">-n</span> ns2... <span class="nt">-e</span> foo.bar.com rdns6 <span class="nt">-N</span> fd00::/8</code></pre>
 
 <h2><a class="anchor" id="reformat-rpsl-files" href="#reformat-rpsl-files"></a>Reformat RPSL files</h2>
 
 <p>You can also reformat RPSL files using lglass by using the lglass.rpsl module:</p>
 
-<pre><code>$ ./bin/lglass-rpsl &lt; $DATA/inetnum/172.22.0.53_32
-</code></pre>
+<pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-rpsl &lt; <span class="nv">$DATA</span>/inetnum/172.22.0.53_32</code></pre>
 
 <p>lglass.rpsl also supports in-place operation:</p>
 
-<pre><code>$ ./bin/lglass-rpsl -i $DATA/inetnum/172.22.0.53_32
-</code></pre>
+<pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-rpsl <span class="nt">-i</span> <span class="nv">$DATA</span>/inetnum/172.22.0.53_32</code></pre>
 
 <p>This opens the file, reads the content into memory, seeks to position 0, writes the formatted object and truncates the file.
 Simple web interface</p>
 
-<p>lglass also comes with a simple web interface written in Python3 using Bottle and Jinja2. It also provides a binary to run it using wsgiref:</p>
-
-<pre><code>$ ./bin/lglass-web
-</code></pre>
+<p>lglass also comes with a simple web interface written in Python3 using Bottle and Jinja2. It also provides a binary to run it using wsgiref:
+</p><pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-web</code></pre>
 
 <p>Furthermore you can use any WSGI server like Gunicorn by using lglass.web.application:app as WSGI callback. You can provide a path to the configuration file in the environment variable <code>LGLASS_WEB_CFG</code>.</p>
 
@@ -272,7 +258,7 @@ Simple web interface</p>
 </tr>
 <tr>
 <td>database.types</td>
-<td align="left">Array of object types in database (Default: undefined)<br />Default chain:<br />[<br />  "whois+lglass.database.file+file:.",<br />  "whois+lglass.database.cidr+cidr:",<br />  "whois+lglass.database.schema+schema:",<br />  "whois+lglass.database.cache+cached:"<br />]</td>
+<td align="left">Array of object types in database (Default: undefined) <br />Default chain:<br />[<br />  "whois+lglass.database.file+file:.",<br />  "whois+lglass.database.cidr+cidr:",<br />  "whois+lglass.database.schema+schema:",<br />  "whois+lglass.database.cache+cached:"<br />]</td>
 </tr>
 <tr>
 <td>messages.preamble</td>

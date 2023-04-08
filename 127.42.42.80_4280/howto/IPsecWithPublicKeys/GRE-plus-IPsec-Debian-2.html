@@ -189,52 +189,52 @@ Change the direction on 5.6.7.8.
 <h2><a class="anchor" id="load-the-ipsec-security-policy-into-the-ipsec-security-policy-database" href="#load-the-ipsec-security-policy-into-the-ipsec-security-policy-database"></a>Load the IPsec security policy into the IPsec security policy database</h2>
 
 <p>Load the policy with the setkey command.
-</p><pre class="highlight"><code>setkey -f /etc/ipsec-tools.conf</code></pre>
+</p><pre class="highlight"><code>setkey <span class="nt">-f</span> /etc/ipsec-tools.conf</code></pre>
 Afterward check the policy database with:
-<pre class="highlight"><code>setkey -DP</code></pre>
+<pre class="highlight"><code>setkey <span class="nt">-DP</span></code></pre>
 
 <h2><a class="anchor" id="configure-the-racoon-daemon" href="#configure-the-racoon-daemon"></a>Configure the racoon daemon</h2>
 
 <p>An example /etc/racoon/racoon.conf.
-</p><pre class="highlight"><code>path pre_shared_key "/etc/racoon/psk.txt";
-path certificate    "/etc/racoon/certs";
-log info;
+</p><pre class="highlight"><code><span class="n">path</span> <span class="n">pre_shared_key</span> <span class="s2">"/etc/racoon/psk.txt"</span>;
+<span class="n">path</span> <span class="n">certificate</span>    <span class="s2">"/etc/racoon/certs"</span>;
+<span class="n">log</span> <span class="n">info</span>;
 
-listen {
-  # replace with local tunnel endpoint
-  isakmp      1.2.3.4 [500];
-  isakmp_natt 1.2.3.4 [4500];
+<span class="n">listen</span> {
+  <span class="c"># replace with local tunnel endpoint
+</span>  <span class="n">isakmp</span>      <span class="m">1</span>.<span class="m">2</span>.<span class="m">3</span>.<span class="m">4</span> [<span class="m">500</span>];
+  <span class="n">isakmp_natt</span> <span class="m">1</span>.<span class="m">2</span>.<span class="m">3</span>.<span class="m">4</span> [<span class="m">4500</span>];
 }
 
-# replace with remote tunnel endpoint
-remote 5.6.7.8 [500] {
-  exchange_mode    main;
-  proposal_check   strict;
-  my_identifier    asn1dn;
-  peers_identifier asn1dn;
-  lifetime         time 1 hour;
-  certificate_type x509 "local.crt" "local.key";
-  peers_certfile   x509 "remote.crt";
-  ca_type          x509 "ca.crt";
-  verify_cert      on;
-  send_cert        off;
-  send_cr          off;
+<span class="c"># replace with remote tunnel endpoint
+</span><span class="n">remote</span> <span class="m">5</span>.<span class="m">6</span>.<span class="m">7</span>.<span class="m">8</span> [<span class="m">500</span>] {
+  <span class="n">exchange_mode</span>    <span class="n">main</span>;
+  <span class="n">proposal_check</span>   <span class="n">strict</span>;
+  <span class="n">my_identifier</span>    <span class="n">asn1dn</span>;
+  <span class="n">peers_identifier</span> <span class="n">asn1dn</span>;
+  <span class="n">lifetime</span>         <span class="n">time</span> <span class="m">1</span> <span class="n">hour</span>;
+  <span class="n">certificate_type</span> <span class="n">x509</span> <span class="s2">"local.crt"</span> <span class="s2">"local.key"</span>;
+  <span class="n">peers_certfile</span>   <span class="n">x509</span> <span class="s2">"remote.crt"</span>;
+  <span class="n">ca_type</span>          <span class="n">x509</span> <span class="s2">"ca.crt"</span>;
+  <span class="n">verify_cert</span>      <span class="n">on</span>;
+  <span class="n">send_cert</span>        <span class="n">off</span>;
+  <span class="n">send_cr</span>          <span class="n">off</span>;
 
-  proposal {
-    encryption_algorithm  aes 256;
-    hash_algorithm        sha256;
-    authentication_method rsasig;
-    dh_group              modp4096;
+  <span class="n">proposal</span> {
+    <span class="n">encryption_algorithm</span>  <span class="n">aes</span> <span class="m">256</span>;
+    <span class="n">hash_algorithm</span>        <span class="n">sha256</span>;
+    <span class="n">authentication_method</span> <span class="n">rsasig</span>;
+    <span class="n">dh_group</span>              <span class="n">modp4096</span>;
   }
 }
 
-# local tunnel endpoint, GRE ip protocol number, remote tunnel endpoint, GRE ip protocol number
-sainfo address 1.2.3.4 47 address 5.6.7.8 47 {
-  pfs_group                modp4096;
-  lifetime                 time 1 hour;
-  encryption_algorithm     aes 256;
-  authentication_algorithm hmac_sha1;
-  compression_algorithm    deflate;
+<span class="c"># local tunnel endpoint, GRE ip protocol number, remote tunnel endpoint, GRE ip protocol number
+</span><span class="n">sainfo</span> <span class="n">address</span> <span class="m">1</span>.<span class="m">2</span>.<span class="m">3</span>.<span class="m">4</span> <span class="m">47</span> <span class="n">address</span> <span class="m">5</span>.<span class="m">6</span>.<span class="m">7</span>.<span class="m">8</span> <span class="m">47</span> {
+  <span class="n">pfs_group</span>                <span class="n">modp4096</span>;
+  <span class="n">lifetime</span>                 <span class="n">time</span> <span class="m">1</span> <span class="n">hour</span>;
+  <span class="n">encryption_algorithm</span>     <span class="n">aes</span> <span class="m">256</span>;
+  <span class="n">authentication_algorithm</span> <span class="n">hmac_sha1</span>;
+  <span class="n">compression_algorithm</span>    <span class="n">deflate</span>;
 }</code></pre>
 
 <h2><a class="anchor" id="configure-a-gre-tunnel" href="#configure-a-gre-tunnel"></a>Configure a GRE tunnel</h2>

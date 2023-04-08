@@ -175,54 +175,54 @@
 <code>&lt;LOCAL_GATEWAY_IPV6&gt; &lt;REMOTE_GATEWAY_IPV6&gt;</code> same as ipv4, but both ip addresses needs to be in the same subnet. For simplicity you can always use an address from link-local ipv6 range (fe80::/64)</li>
 </ul>
 
-<pre class="highlight"><code>#/etc/openvpn/&lt;PEER_NAME&gt;
-proto       &lt;PROTO&gt;
-mode        p2p
-remote      &lt;REMOTE_HOST&gt;
-rport       &lt;REMOTE_PORT&gt;
-local       &lt;LOCAL_HOST&gt;
-lport       &lt;LOCAL_PORT&gt;
-dev-type    tun
-tun-ipv6
-resolv-retry infinite
-dev         &lt;INTERFACE_NAME&gt;
-comp-lzo
-persist-key
-persist-tun
-cipher aes-256-cbc
-ifconfig-ipv6 &lt;LOCAL_GATEWAY_IPV6&gt; &lt;REMOTE_GATEWAY_IPV6&gt;
-ifconfig &lt;LOCAL_GATEWAY_IP&gt;  &lt;REMOTE_GATEWAY_IP&gt;
-secret /etc/openvpn/&lt;PEER_NAME&gt;.key
+<pre class="highlight"><code><span class="c">#/etc/openvpn/&lt;PEER_NAME&gt;
+</span><span class="n">proto</span>       &lt;<span class="n">PROTO</span>&gt;
+<span class="n">mode</span>        <span class="n">p2p</span>
+<span class="n">remote</span>      &lt;<span class="n">REMOTE_HOST</span>&gt;
+<span class="n">rport</span>       &lt;<span class="n">REMOTE_PORT</span>&gt;
+<span class="n">local</span>       &lt;<span class="n">LOCAL_HOST</span>&gt;
+<span class="n">lport</span>       &lt;<span class="n">LOCAL_PORT</span>&gt;
+<span class="n">dev</span>-<span class="n">type</span>    <span class="n">tun</span>
+<span class="n">tun</span>-<span class="n">ipv6</span>
+<span class="n">resolv</span>-<span class="n">retry</span> <span class="n">infinite</span>
+<span class="n">dev</span>         &lt;<span class="n">INTERFACE_NAME</span>&gt;
+<span class="n">comp</span>-<span class="n">lzo</span>
+<span class="n">persist</span>-<span class="n">key</span>
+<span class="n">persist</span>-<span class="n">tun</span>
+<span class="n">cipher</span> <span class="n">aes</span>-<span class="m">256</span>-<span class="n">cbc</span>
+<span class="n">ifconfig</span>-<span class="n">ipv6</span> &lt;<span class="n">LOCAL_GATEWAY_IPV6</span>&gt; &lt;<span class="n">REMOTE_GATEWAY_IPV6</span>&gt;
+<span class="n">ifconfig</span> &lt;<span class="n">LOCAL_GATEWAY_IP</span>&gt;  &lt;<span class="n">REMOTE_GATEWAY_IP</span>&gt;
+<span class="n">secret</span> /<span class="n">etc</span>/<span class="n">openvpn</span>/&lt;<span class="n">PEER_NAME</span>&gt;.<span class="n">key</span>
 
-# The secret can also be included inline with the config by 
+<span class="c"># The secret can also be included inline with the config by 
 #   wrapping it in &lt;secret&gt;&lt;/secret&gt; tags.
 # &lt;secret&gt;
 # ... Key File contents go here ...
-# &lt;/secret&gt;</code></pre>
+</span><span class="err">#</span> &lt;/<span class="n">secret</span>&gt;</code></pre>
 
 <p>then create a new key and share it with your peer</p>
 
-<pre class="highlight"><code>$ openvpn --genkey --secret /etc/openvpn/&lt;PEER_NAME&gt;.key</code></pre>
+<pre class="highlight"><code><span class="nv">$ </span>openvpn <span class="nt">--genkey</span> <span class="nt">--secret</span> /etc/openvpn/&lt;PEER_NAME&gt;.key</code></pre>
 
 <h1><a class="anchor" id="example-configuration-if-one-peer-has-a-floating-ip" href="#example-configuration-if-one-peer-has-a-floating-ip"></a>Example Configuration if one peer has a floating ip</h1>
 
 <h2><a class="anchor" id="peer-with-fixed-ip" href="#peer-with-fixed-ip"></a>peer with fixed ip</h2>
 
-<pre class="highlight"><code>proto       &lt;PROTO&gt;
-mode        p2p
-dev-type    tun
-comp-lzo
-dev  &lt;INTERFACE_NAME&gt;
-persist-key
-persist-tun
-tun-ipv6
-cipher aes-256-cbc
-resolv-retry infinite
-float
-port &lt;LOCAL_PORT&gt;
-ifconfig-ipv6 &lt;LOCAL_GATEWAY_IPV6&gt; &lt;REMOTE_GATEWAY_IPV6&gt;
-ifconfig  &lt;LOCAL_GATEWAY_IP&gt;  &lt;REMOTE_GATEWAY_IP&gt;
-secret /etc/openvpn/&lt;PEER_NAME&gt;.key</code></pre>
+<pre class="highlight"><code><span class="n">proto</span>       &lt;<span class="n">PROTO</span>&gt;
+<span class="n">mode</span>        <span class="n">p2p</span>
+<span class="n">dev</span>-<span class="n">type</span>    <span class="n">tun</span>
+<span class="n">comp</span>-<span class="n">lzo</span>
+<span class="n">dev</span>  &lt;<span class="n">INTERFACE_NAME</span>&gt;
+<span class="n">persist</span>-<span class="n">key</span>
+<span class="n">persist</span>-<span class="n">tun</span>
+<span class="n">tun</span>-<span class="n">ipv6</span>
+<span class="n">cipher</span> <span class="n">aes</span>-<span class="m">256</span>-<span class="n">cbc</span>
+<span class="n">resolv</span>-<span class="n">retry</span> <span class="n">infinite</span>
+<span class="n">float</span>
+<span class="n">port</span> &lt;<span class="n">LOCAL_PORT</span>&gt;
+<span class="n">ifconfig</span>-<span class="n">ipv6</span> &lt;<span class="n">LOCAL_GATEWAY_IPV6</span>&gt; &lt;<span class="n">REMOTE_GATEWAY_IPV6</span>&gt;
+<span class="n">ifconfig</span>  &lt;<span class="n">LOCAL_GATEWAY_IP</span>&gt;  &lt;<span class="n">REMOTE_GATEWAY_IP</span>&gt;
+<span class="n">secret</span> /<span class="n">etc</span>/<span class="n">openvpn</span>/&lt;<span class="n">PEER_NAME</span>&gt;.<span class="n">key</span></code></pre>
 
 <h2><a class="anchor" id="peer-with-floating-ip" href="#peer-with-floating-ip"></a>peer with floating ip</h2>
 
@@ -235,22 +235,22 @@ his remote gateway is your local gateway</li>
 <code>&lt;REMOTE_PORT&gt;</code> is openvpn port, where your peer listen for traffic</li>
 </ul>
 
-<pre class="highlight"><code>proto       &lt;PROTO&gt;
-mode        p2p
-remote      &lt;REMOTE_HOST&gt;
-rport       &lt;REMOTE_PORT&gt;
-lport       float
-dev-type    tun
-tun-ipv6
-dev         &lt;INTERFACE_NAME&gt;
-comp-lzo
-persist-key
-persist-tun
-cipher aes-256-cbc
-resolv-retry infinite
-ifconfig  &lt;LOCAL_GATEWAY_IP&gt;  &lt;REMOTE_GATEWAY_IP&gt;
-ifconfig-ipv6 &lt;LOCAL_GATEWAY_IPV6&gt; &lt;LOCAL_GATEWAY_IPV6&gt;
-secret /etc/openvpn/&lt;PEER_NAME&gt;.key</code></pre>
+<pre class="highlight"><code><span class="n">proto</span>       &lt;<span class="n">PROTO</span>&gt;
+<span class="n">mode</span>        <span class="n">p2p</span>
+<span class="n">remote</span>      &lt;<span class="n">REMOTE_HOST</span>&gt;
+<span class="n">rport</span>       &lt;<span class="n">REMOTE_PORT</span>&gt;
+<span class="n">lport</span>       <span class="n">float</span>
+<span class="n">dev</span>-<span class="n">type</span>    <span class="n">tun</span>
+<span class="n">tun</span>-<span class="n">ipv6</span>
+<span class="n">dev</span>         &lt;<span class="n">INTERFACE_NAME</span>&gt;
+<span class="n">comp</span>-<span class="n">lzo</span>
+<span class="n">persist</span>-<span class="n">key</span>
+<span class="n">persist</span>-<span class="n">tun</span>
+<span class="n">cipher</span> <span class="n">aes</span>-<span class="m">256</span>-<span class="n">cbc</span>
+<span class="n">resolv</span>-<span class="n">retry</span> <span class="n">infinite</span>
+<span class="n">ifconfig</span>  &lt;<span class="n">LOCAL_GATEWAY_IP</span>&gt;  &lt;<span class="n">REMOTE_GATEWAY_IP</span>&gt;
+<span class="n">ifconfig</span>-<span class="n">ipv6</span> &lt;<span class="n">LOCAL_GATEWAY_IPV6</span>&gt; &lt;<span class="n">LOCAL_GATEWAY_IPV6</span>&gt;
+<span class="n">secret</span> /<span class="n">etc</span>/<span class="n">openvpn</span>/&lt;<span class="n">PEER_NAME</span>&gt;.<span class="n">key</span></code></pre>
 
 <h1><a class="anchor" id="example-configuration-for-connecting-roaming-clients-to-dn42" href="#example-configuration-for-connecting-roaming-clients-to-dn42"></a>Example configuration for connecting roaming clients to dn42</h1>
 
@@ -260,80 +260,80 @@ secret /etc/openvpn/&lt;PEER_NAME&gt;.key</code></pre>
 
 <p>Replace <code>&lt;PORT&gt;</code> with the UDP port you want OpenVPN to listen to, and change the IP ranges (<code>ifconfig</code> and <code>route-gateway</code> options).</p>
 
-<pre class="highlight"><code>mode server
-tls-server
+<pre class="highlight"><code><span class="n">mode</span> <span class="n">server</span>
+<span class="n">tls</span>-<span class="n">server</span>
 
-dh dh2048.pem
-cipher aes-256-cbc
+<span class="n">dh</span> <span class="n">dh2048</span>.<span class="n">pem</span>
+<span class="n">cipher</span> <span class="n">aes</span>-<span class="m">256</span>-<span class="n">cbc</span>
 
-ca keys/ca.crt
-cert keys/roaming-dn42.crt
-key keys/roaming-dn42.key
+<span class="n">ca</span> <span class="n">keys</span>/<span class="n">ca</span>.<span class="n">crt</span>
+<span class="n">cert</span> <span class="n">keys</span>/<span class="n">roaming</span>-<span class="n">dn42</span>.<span class="n">crt</span>
+<span class="n">key</span> <span class="n">keys</span>/<span class="n">roaming</span>-<span class="n">dn42</span>.<span class="n">key</span>
 
-client-config-dir /etc/openvpn/roaming
+<span class="n">client</span>-<span class="n">config</span>-<span class="n">dir</span> /<span class="n">etc</span>/<span class="n">openvpn</span>/<span class="n">roaming</span>
 
-dev tun-roaming
-persist-tun
-tun-ipv6
-tun-mtu 1500
-fragment 1300
-mssfix
-log /var/log/openvpn-dn42-roaming.log
-status /var/log/openvpn-dn42-roaming-status.log 60
+<span class="n">dev</span> <span class="n">tun</span>-<span class="n">roaming</span>
+<span class="n">persist</span>-<span class="n">tun</span>
+<span class="n">tun</span>-<span class="n">ipv6</span>
+<span class="n">tun</span>-<span class="n">mtu</span> <span class="m">1500</span>
+<span class="n">fragment</span> <span class="m">1300</span>
+<span class="n">mssfix</span>
+<span class="n">log</span> /<span class="n">var</span>/<span class="n">log</span>/<span class="n">openvpn</span>-<span class="n">dn42</span>-<span class="n">roaming</span>.<span class="n">log</span>
+<span class="n">status</span> /<span class="n">var</span>/<span class="n">log</span>/<span class="n">openvpn</span>-<span class="n">dn42</span>-<span class="n">roaming</span>-<span class="n">status</span>.<span class="n">log</span> <span class="m">60</span>
 
-# Should work for both IPv4 and IPv6
-proto udp6
-port &lt;PORT&gt;
+<span class="c"># Should work for both IPv4 and IPv6
+</span><span class="n">proto</span> <span class="n">udp6</span>
+<span class="n">port</span> &lt;<span class="n">PORT</span>&gt;
 
-# IPv6
+<span class="c"># IPv6
 ###tun-ipv6
 ###push tun-ipv6
 ###ifconfig-ipv6 2001:db8:42:42::1 2001:db8:42:42::2
 ###ifconfig-ipv6-pool 2001:db8:42:42::3/64
+</span>
+<span class="n">topology</span> <span class="n">subnet</span>
+<span class="n">push</span> <span class="s2">"topology subnet"</span>
 
-topology subnet
-push "topology subnet"
+<span class="n">keepalive</span> <span class="m">10</span> <span class="m">60</span>
 
-keepalive 10 60
+<span class="c"># That's 172.22.X.144/28 (172.22.X.144 to 172.22.X.159)
+</span><span class="n">ifconfig</span> <span class="m">172</span>.<span class="m">22</span>.<span class="n">X</span>.<span class="m">145</span> <span class="m">255</span>.<span class="m">255</span>.<span class="m">255</span>.<span class="m">240</span>
+<span class="n">ifconfig</span>-<span class="n">pool</span> <span class="m">172</span>.<span class="m">22</span>.<span class="n">X</span>.<span class="m">146</span> <span class="m">172</span>.<span class="m">22</span>.<span class="n">X</span>.<span class="m">158</span> <span class="m">255</span>.<span class="m">255</span>.<span class="m">255</span>.<span class="m">240</span>
 
-# That's 172.22.X.144/28 (172.22.X.144 to 172.22.X.159)
-ifconfig 172.22.X.145 255.255.255.240
-ifconfig-pool 172.22.X.146 172.22.X.158 255.255.255.240
+<span class="n">ifconfig</span>-<span class="n">pool</span>-<span class="n">persist</span> <span class="n">pool</span>-<span class="n">persist</span>.<span class="n">txt</span>
 
-ifconfig-pool-persist pool-persist.txt
-
-push "route-gateway 172.22.X.145"
-push "route 172.22.0.0 255.254.0.0" 
-###push "route 172.31.0.0 255.255.0.0" 
-###push "route 10.0.0.0 255.0.0.0" </code></pre>
+<span class="n">push</span> <span class="s2">"route-gateway 172.22.X.145"</span>
+<span class="n">push</span> <span class="s2">"route 172.22.0.0 255.254.0.0"</span> 
+<span class="c">###push "route 172.31.0.0 255.255.0.0" 
+</span><span class="err">###</span><span class="n">push</span> <span class="s2">"route 10.0.0.0 255.0.0.0"</span> </code></pre>
 
 <h2><a class="anchor" id="client-configuration" href="#client-configuration"></a>Client configuration</h2>
 
 <p>Change <code>&lt;SERVER&gt;</code> and <code>&lt;PORT&gt;</code>.</p>
 
-<pre class="highlight"><code>client
+<pre class="highlight"><code><span class="n">client</span>
 
-ca   ca.crt
-cert myclient.crt
-key  myclient.key
+<span class="n">ca</span>   <span class="n">ca</span>.<span class="n">crt</span>
+<span class="n">cert</span> <span class="n">myclient</span>.<span class="n">crt</span>
+<span class="n">key</span>  <span class="n">myclient</span>.<span class="n">key</span>
 
-dev tun
-proto udp6
-cipher aes-256-cbc
+<span class="n">dev</span> <span class="n">tun</span>
+<span class="n">proto</span> <span class="n">udp6</span>
+<span class="n">cipher</span> <span class="n">aes</span>-<span class="m">256</span>-<span class="n">cbc</span>
 
-remote &lt;SERVER&gt; &lt;PORT&gt;
+<span class="n">remote</span> &lt;<span class="n">SERVER</span>&gt; &lt;<span class="n">PORT</span>&gt;
 
-tun-mtu 1500
-fragment 1300
-mssfix
+<span class="n">tun</span>-<span class="n">mtu</span> <span class="m">1500</span>
+<span class="n">fragment</span> <span class="m">1300</span>
+<span class="n">mssfix</span>
 
-route-delay 2
-nobind
-persist-key
-persist-tun
-resolv-retry infinite
+<span class="n">route</span>-<span class="n">delay</span> <span class="m">2</span>
+<span class="n">nobind</span>
+<span class="n">persist</span>-<span class="n">key</span>
+<span class="n">persist</span>-<span class="n">tun</span>
+<span class="n">resolv</span>-<span class="n">retry</span> <span class="n">infinite</span>
 
-verb 3</code></pre>
+<span class="n">verb</span> <span class="m">3</span></code></pre>
 
 <h2><a class="anchor" id="certificate-management" href="#certificate-management"></a>Certificate management</h2>
 
@@ -346,7 +346,7 @@ verb 3</code></pre>
 <h1><a class="anchor" id="see-also" href="#see-also"></a>See also</h1>
 
 <ul>
-<li><a href="https://internal.dn42/howto/networksettings">Network settings</a></li>
+<li><a href="networksettings.html">Network settings</a></li>
 </ul>
 
 <h1><a class="anchor" id="external-links" href="#external-links"></a>External Links</h1>
