@@ -168,13 +168,13 @@
 
 <h2><a class="anchor" id="firewall-baseline" href="#firewall-baseline"></a>Firewall Baseline</h2>
 
-<p>We will configure firewall access lists for inbound connections on our peer Wireguard interfaces as well as block all inbound connections to our router with the exception of BGP.  This should be a good baseline firewall ruleset to filter inbound traffic on your network’s edge.  Modifications may be needed depending on your specific goals.  If your router has an uplink back to a larger internal network (outside of DN42), an outbound firewall ruleset will need to be applied to that interface.</p>
+<p>We will configure firewall access lists for inbound connections on our peer Wireguard interfaces as well as block all inbound connections to our router with the exception of BGP.  This should be a good baseline firewall ruleset to filter inbound traffic on your network's edge.  Modifications may be needed depending on your specific goals.  If your router has an uplink back to a larger internal network (outside of DN42), an outbound firewall ruleset will need to be applied to that interface.</p>
 
 <p>By default, VyOS is a <strong>stateless</strong> firewall.  To enable <strong>stateful</strong> packet inspection globally enter the following commands.
 </p><pre class="highlight"><code>set firewall state-policy established action 'accept'
 set firewall state-policy related action 'accept'</code></pre>
 
-<p>We also need to accept invalids on our network’s edge.  However, this should not become common practice elsewhere.
+<p>We also need to accept invalids on our network's edge.  However, this should not become common practice elsewhere.
 </p><pre class="highlight"><code>set firewall state-policy invalid action 'accept'</code></pre>
 
 <p>The below commands create <strong>in</strong> and <strong>local</strong> baseline templates to be applied to all Wireguard interfaces that are facing peers.  In this example, <strong>172.20.20.0/24</strong> and <strong>fd88:9deb:a69e::/48</strong> are your assigned address spaces.
