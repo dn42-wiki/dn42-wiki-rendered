@@ -270,7 +270,7 @@ Private key: SOoPQdMdmXE3ssp0/vwwoIMhQqvcQls+DhDjmaLw03U=
 Public key: ArkXeK1c0pCWCouePcRRBCQpXfi4ZIvRFFwTxO60dxs=</code></pre>
 
 <p>If you choose to generate unique keypairs for peerings, you can generate and install the keypair in a single command. Note that you have to be in <code>configure</code> mode, at the top level, as shown below:
-</p><pre class="highlight"><span class="err">vyos@vyos$ configure
+</p><pre class="highlight"><code>vyos@vyos$ configure
 
 [edit]
 vyos@vyos# run generate pki wireguard key-pair install interface wg4242424242
@@ -278,13 +278,13 @@ vyos@vyos# run generate pki wireguard key-pair install interface wg4242424242
 Corresponding public-key to use on peer system is: 'UcqcZsJvq1MlYgo3gObjaJ8FH+N7wkfV+EH3YDAMyRE='
 [edit]
 vyos@vyos-home# show interfaces wireguard wg4242424242 
-+private-key kHCqfe/GZ8phoNnWfkL3+joXi/qK3ZfdfAnlNuX/9FU=</span></pre>
++private-key kHCqfe/GZ8phoNnWfkL3+joXi/qK3ZfdfAnlNuX/9FU=</code></pre>
 
 <p>To retrieve keys later, use the op-mode command <code>show interfaces wireguard wg4242424242 public-key</code>.</p>
 
 <p>Example:
-</p><pre class="highlight"><span class="err">vyos@vyos$ show interfaces wireguard wg4242424242 public-key 
-UcqcZsJvq1MlYgo3gObjaJ8FH+N7wkfV+EH3YDAMyRE=</span></pre>
+</p><pre class="highlight"><code>vyos@vyos$ show interfaces wireguard wg4242424242 public-key 
+UcqcZsJvq1MlYgo3gObjaJ8FH+N7wkfV+EH3YDAMyRE=</code></pre>
 
 <h3><a class="anchor" id="configure-first-peer-s-tunnel" href="#configure-first-peer-s-tunnel"></a>Configure First Peer's tunnel</h3>
 
@@ -386,7 +386,7 @@ set protocols bgp neighbor 172.20.x.y ebgp-multihop 20</code></pre>
 
 <p>You can now check your BGP summary:</p>
 
-<pre class="highlight"><span class="err">vyos@vyos$ show ip bgp summary
+<pre class="highlight"><code>vyos@vyos$ show ip bgp summary
 
 IPv4 Unicast Summary (VRF default):
 BGP router identifier 172.20.20.1, local AS number 4242421234 vrf-id 0
@@ -406,7 +406,7 @@ Peers 1, using 1 MiB of memory
 Peer groups 1, using 64 bytes of memory
 
 Neighbor               V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
-fe80::4242             4 4242424242      1031         6        0    0    0 00:04:20          710        1 FriendlyNet</span></pre>
+fe80::4242             4 4242424242      1031         6        0    0    0 00:04:20          710        1 FriendlyNet</code></pre>
 
 <p>Setting up peer-groups might help standardize multiple peerings:</p>
 
@@ -523,6 +523,14 @@ set protocols bgp neighbor x.x.x.x address-family ipv4-unicast route-map export 
 set protocols bgp neighbor x.x.x.x address-family ipv4-unicast route-map import 'Default-Peering'
 set protocols bgp neighbor x.x.x.x address-family ipv6-unicast route-map export 'Default-Peering'
 set protocols bgp neighbor x.x.x.x address-family ipv6-unicast route-map import 'Default-Peering' </code></pre>
+
+<h1><a class="anchor" id="add-your-vyos-router-to-the-global-route-collector" href="#add-your-vyos-router-to-the-global-route-collector"></a>Add your VyOS router to the <a href="../services/Route-Collector.html">Global Route Collector</a>!</h1>
+
+<pre class="highlight"><code>set protocols bgp neighbor fd42:4242:2601:ac12::1 address-family ipv4-unicast
+set protocols bgp neighbor fd42:4242:2601:ac12::1 address-family ipv6-unicast
+set protocols bgp neighbor fd42:4242:2601:ac12::1 description 'https://lg.collector.dn42'
+set protocols bgp neighbor fd42:4242:2601:ac12::1 ebgp-multihop '10'
+set protocols bgp neighbor fd42:4242:2601:ac12::1 remote-as '4242422602'</code></pre>
 
 <h2><a class="anchor" id="credits" href="#credits"></a>Credits</h2>
 
