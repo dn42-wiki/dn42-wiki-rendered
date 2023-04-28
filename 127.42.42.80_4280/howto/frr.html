@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <meta name="MobileOptimized" content="width">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="../gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css" media="all">
+  <link rel="stylesheet" type="text/css" href="../gollum/assets/print-512498c368be0d3fb1ba105dfa84289ae48380ec9fcbef948bd4e23b0b095bfb.css" media="print">
+
+  <link rel="stylesheet" type="text/css" href="../custom.css" media="all">
+  
+
+  <script>
+  var criticMarkup = '';
+	var baseUrl = '';
+  var showLocalTime = false;
+	var uploadDest = 'uploads';
+	var perPageUploads = '';
+	if (perPageUploads == 'true') {
+	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
+	}
+	  var pageFullPath = 'howto/frr.md';
+    var pageFormat   = 'markdown';
+
+  </script>
+  <script src="../gollum/assets/app-f05401ee374f0c7f48fc2bc08e30b4f4db705861fd5895ed70998683b383bfb5.js" type="text/javascript"></script>
+  
+
+  <title>frr</title>
+</head>
+<body>
+<div class="container-lg clearfix">
+<div id="wiki-wrapper" class="page">
+<div id="head">
+	<nav class="TableObject
+            actions
+            border-bottom
+            border-md-0
+            p-2
+            pt-lg-4
+            px-lg-0
+            overflow-x-scroll">
+  <div class="TableObject-item hide-lg hide-xl">
+    <details class="details-reset details-overlay">
+      <summary class="btn btn-invisible" aria-haspopup="true">
+        <span aria-label="Open menu">☰</span>
+      </summary>
+    
+      <div class="SelectMenu mx-sm-2">
+        <div class="SelectMenu-modal">
+          <div class="SelectMenu-divider py-3">
+            <h2 class="h6">Current Page</h2>
+            <div>frr</div>
+          </div>
+    
+            <a
+              class="SelectMenu-item"
+              href="http://127.42.42.80:4280/gollum/history/howto/frr.md"
+              role="menuitem"
+            >
+              <span>History</span>
+            </a>
+    
+    
+          <div class="SelectMenu-divider py-3">
+            <h2 class="h6">Main Menu</h2>
+          </div>
+    
+          <div class="SelectMenu-list">
+            <a class="SelectMenu-item" role="menuitem" href="../index.html">
+              Home
+            </a>
+    
+              <a class="SelectMenu-item" role="menuitem" href="../gollum/overview.html">
+                Overview
+              </a>
+    
+              <a
+                class="SelectMenu-item"
+                href="../gollum/latest_changes.html"
+                role="menuitem"
+              >
+                Latest Changes
+              </a>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="TableObject-item hide-sm hide-md">
+    <a class="btn btn-sm" id="minibutton-home" href="../index.html">
+      Home
+    </a>
+  </div>
+
+  <div
+    class="TableObject-item TableObject-item--primary px-2"
+    
+  >
+    <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
+    	<input type="text" class="form-control input-block" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
+    </form>  </div>
+
+  <div class="TableObject-item hide-sm hide-md">
+    <div class="BtnGroup d-flex">
+        <a
+          class="btn BtnGroup-item btn-sm"
+          href="../gollum/overview.html"
+          id="minibutton-overview"
+        >
+          Overview
+        </a>
+
+        <a
+          class="btn BtnGroup-item btn-sm"
+          href="../gollum/latest_changes.html"
+          id="minibutton-latest-changes"
+        >
+          Latest Changes
+        </a>
+    </div>
+  </div>
+
+  <div class="TableObject-item px-2">
+    <div class="BtnGroup d-flex">
+        <a
+          class="btn BtnGroup-item btn-sm hide-sm hide-md"
+          href="http://127.42.42.80:4280/gollum/history/howto/frr.md/"
+          id="minibutton-history"
+        >
+          History
+        </a>
+
+    </div>
+  </div>
+
+</nav>
+
+</div>
+
+<div id="wiki-content" class="px-2 px-lg-0">
+  <h1 class="header-title text-center text-md-left pt-4">
+    frr
+  </h1>
+	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
+<li class="breadcrumb-item"><a href="../gollum/overview/howto/index.html">howto</a></li>
+</ol></nav></div>
+
+	<div class="has-header has-footer has-sidebar has-rightbar">
+	  <div id="wiki-body" class="gollum-markdown-content">
+	    <div id="wiki-header" class="gollum-markdown-content">
+	      <div id="header-content" class="markdown-body">
+	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
+
+	      </div>
+	    </div>
+	    <div class="main-content clearfix container-lg">
+	      <div class="markdown-body  float-md-left col-md-9" >
+	        
+	        <p>To quote from <a href="https://frrouting.org/">https://frrouting.org/</a>:</p>
+
+<p>"FRRouting (FRR) is a free and open source Internet routing protocol suite for Linux and Unix platforms. It implements BGP, OSPF, RIP, IS-IS, PIM, LDP, BFD, Babel, PBR, OpenFabric and VRRP, with alpha support for EIGRP and NHRP."</p>
+
+<p>It features a similar configuration style to Cisco IOS.</p>
+
+<h3><a class="anchor" id="installation" href="#installation"></a>Installation</h3>
+
+<p>Install the <code>frr</code> and <code>frr-pythontools</code> package on your favourite Linux/BSD distribution. For BGP RPKI support, also install <code>frr-rpki</code>. <em>Make sure you are using frr version 8.5 or greater for IPv6 link local peerings.</em></p>
+
+<ul>
+<li>More installation options: <a href="https://docs.frrouting.org/en/latest/installation.html">https://docs.frrouting.org/en/latest/installation.html</a>
+</li>
+<li>Releases: <a href="https://frrouting.org/release/">https://frrouting.org/release/</a>
+</li>
+</ul>
+
+<h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
+
+<p>Important cofiguration files:</p>
+
+<ul>
+<li>
+<code>/etc/frr/daemons</code>: daemons that will be started </li>
+<li>
+<code>/etc/frr/vtysh.conf</code>: configuration for the VTY shell</li>
+<li>
+<code>/etc/frr/frr.conf</code>: configuration for the daemons</li>
+<li>
+<code>/etc/frr/${DAEMON}.conf</code>: configuration for a single daemon (deprecated)</li>
+</ul>
+
+<p>It this guide, only BGP will be set up using the shared <code>/etc/frr/frr.conf</code>.</p>
+
+<h3><a class="anchor" id="daemons" href="#daemons"></a>Daemons</h3>
+
+<p>First, setup <code>/etc/frr/daemons</code>. As stated previously. this file specifies which daemons will be started.</p>
+
+<pre class="highlight"><code><span class="gd">--- /etc/frr/daemons
+</span><span class="gi">+++ /etc/frr/daemons
+</span><span class="p">@@ -14,7 +14,7 @@</span>
+ #
+ # The watchfrr, zebra and staticd daemons are always started.
+ #
+<span class="gd">-bgpd=no
+</span><span class="gi">+bgpd=yes
+</span> ospfd=no
+ ospf6d=no
+ ripd=no</code></pre>
+
+<h3><a class="anchor" id="vty-shell" href="#vty-shell"></a>VTY shell</h3>
+
+<p>To use the VTY shell, <code>/etc/frr/vtysh.conf</code> needs to be set up. <em>The <code>hostname</code> and <code>banner motd</code> also need to be entered there manually to be persistant.</em></p>
+
+<pre class="highlight"><code>service integrated-vtysh-config</code></pre>
+
+<p>Unprivileged users need to be in the <code>frrvty</code> group to use <code>vtysh</code>.</p>
+
+<p>The VTY shell can be used to interact with running daemons and configure them. Changes made in the VTY shell can be written to <code>/etc/frr/frr.conf</code> using the <code>write</code> command. To enter configuration mode use the <code>configure</code> command. To get information about the available commands, press <code>?</code>.</p>
+
+<h3><a class="anchor" id="zebra" href="#zebra"></a>Zebra</h3>
+
+<p>Before configuring BGP, a few other things need to be set up. First, create a <a href="https://docs.frrouting.org/en/latest/filter.html#ip-prefix-list">prefix-list</a> for the dn42 prefixes. That will be used to filter out non-dn42 routes to be announced to BGP. For that, open <code>/etc/frr/frr.conf</code> or <code>vtysh</code> in configuration mode and add:</p>
+
+<pre class="highlight"><code>ip prefix-list dn42 seq 1 deny 172.22.166.0/24 le 32
+ip prefix-list dn42 seq 1001 permit 172.20.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1002 permit 172.21.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1003 permit 172.22.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1004 permit 172.23.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1100 permit 172.20.0.0/14 ge 21 le 29
+ip prefix-list dn42 seq 2001 permit 10.100.0.0/14 le 32
+ip prefix-list dn42 seq 2002 permit 10.127.0.0/16 le 32
+ip prefix-list dn42 seq 2003 permit 10.0.0.0/8 ge 15 le 24
+ip prefix-list dn42 seq 3001 permit 172.31.0.0/16 le 32
+ip prefix-list dn42 seq 9999 deny 0.0.0.0/0 le 32
+!
+ipv6 prefix-list dn42v6 seq 1001 permit fd00::/8 ge 44 le 64
+ipv6 prefix-list dn42v6 seq 9999 deny ::/0 le 128</code></pre>
+
+<p>This prefix list can be created yourself by following the instructions for Quagga in the <code>data/filter.txt</code> and <code>data/filter6.txt</code> files from the registry. </p>
+
+<p>Next create a <a href="https://docs.frrouting.org/en/latest/routemap.html">route-map</a>, which will be used for doing the actual filtering later.</p>
+
+<pre class="highlight"><code>route-map dn42 permit 5
+ match ip address prefix-list dn42
+ set src &lt;IPv4 address of the node&gt;
+exit
+!
+route-map dn42v6 permit 5
+ match ipv6 address prefix-list dn42v6
+ set src &lt;IPv6 address of the node&gt;
+exit</code></pre>
+
+<h3><a class="anchor" id="bgp" href="#bgp"></a>BGP</h3>
+
+<p>With the configuration of the daemons file and Zebra done, BGP can now be configured.</p>
+
+<pre class="highlight"><code>router bgp &lt;AS of the network&gt;
+ neighbor &lt;IPv4 peer address&gt; remote-as &lt;Peer AS&gt;
+ neighbor &lt;IPv6 peer address&gt; remote-as &lt;Peer AS&gt;
+ ! In case an IPv6 link local address is used to peer
+ neighbor &lt;IPv6 peer address&gt; interface &lt;Peer interface&gt;
+ !
+ address-family ipv4 unicast
+  neighbor &lt;IPv4 peer address&gt; activate
+  neighbor &lt;IPv4 peer address&gt; route-map dn42 in
+  neighbor &lt;IPv4 peer address&gt; route-map dn42 out
+ exit
+ !
+ address-family ipv6 unicast
+  neighbor &lt;IPv6 peer address&gt; activate
+  neighbor &lt;IPv6 peer address&gt; route-map dn42v6 in
+  neighbor &lt;IPv6 peer address&gt; route-map dn42v6 out
+ exit
+exit</code></pre>
+
+<p>With everything configured, the BGP session should come up. In the normal VTY shell mode the status of BGP peerings can be checked using the <code>show bgp summary</code> command.</p>
+
+<h3><a class="anchor" id="complete-configuration-example" href="#complete-configuration-example"></a>Complete configuration example</h3>
+
+<pre class="highlight"><code>router bgp &lt;Your AS here&gt;
+ neighbor &lt;Peer IPv4&gt; remote-as &lt;Peer AS&gt;
+ neighbor &lt;Peer IPv6&gt; remote-as &lt;Peer AS&gt;
+ ! In case an IPv6 link local address is used to peer
+ neighbor &lt;Peer IPv6&gt; interface &lt;Peer interface&gt;
+ !
+ address-family ipv4 unicast
+  neighbor &lt;IPv4 peer address&gt; activate
+  neighbor &lt;IPv4 peer address&gt; route-map dn42 in
+  neighbor &lt;IPv4 peer address&gt; route-map dn42 out
+ exit
+ !
+ address-family ipv6 unicast
+  neighbor &lt;IPv6 peer address&gt; activate
+  neighbor &lt;IPv6 peer address&gt; route-map dn42v6 in
+  neighbor &lt;IPv6 peer address&gt; route-map dn42v6 out
+ exit
+exit
+!
+ip prefix-list dn42 seq 1 deny 172.22.166.0/24 le 32
+ip prefix-list dn42 seq 1001 permit 172.20.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1002 permit 172.21.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1003 permit 172.22.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1004 permit 172.23.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1100 permit 172.20.0.0/14 ge 21 le 29
+ip prefix-list dn42 seq 2001 permit 10.100.0.0/14 le 32
+ip prefix-list dn42 seq 2002 permit 10.127.0.0/16 le 32
+ip prefix-list dn42 seq 2003 permit 10.0.0.0/8 ge 15 le 24
+ip prefix-list dn42 seq 3001 permit 172.31.0.0/16 le 32
+ip prefix-list dn42 seq 9999 deny 0.0.0.0/0 le 32
+!
+ipv6 prefix-list dn42v6 seq 1001 permit fd00::/8 ge 44 le 64
+ipv6 prefix-list dn42v6 seq 9999 deny ::/0 le 128
+!
+route-map dn42 permit 5
+ match ip address prefix-list dn42
+ set src &lt;IPv4 address of the node&gt;
+exit
+!
+route-map dn42v6 permit 5
+ match ipv6 address prefix-list dn42v6
+ set src &lt;IPv6 address of the node&gt;
+exit</code></pre>
+
+<h2><a class="anchor" id="further-reading" href="#further-reading"></a>Further reading</h2>
+
+<h3><a class="anchor" id="general-things" href="#general-things"></a>General things</h3>
+
+<ul>
+<li>FRR documentation: <a href="https://docs.frrouting.org/en/latest">https://docs.frrouting.org/en/latest</a>
+</li>
+<li>FRR source code: <a href="https://github.com/frrouting/frr">https://github.com/frrouting/frr</a>
+</li>
+</ul>
+
+<h3><a class="anchor" id="configuration-tipps" href="#configuration-tipps"></a>Configuration tipps</h3>
+
+<ul>
+<li>Use <a href="https://docs.frrouting.org/en/latest/bgp.html#peer-groups">peer groups</a> (<em>Strongly reccomended to limit the work neede to add new peers or change general configuration for may peers.</em>)</li>
+<li>
+<code>tab</code> and <code>?</code> are your best friends in the VTY shell</li>
+<li>Use <code>find REGEX</code> in the VTY shell to find certain commands</li>
+</ul>
+
+	      </div>
+          <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
+	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
+	          <ul>
+<li>
+<p><a href="../Home.html" rel="nofollow">Home</a></p>
+
+<ul>
+<li><a href="Getting-Started.html" rel="nofollow">Getting Started</a></li>
+<li><a href="Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+<li><a href="Address-Space.html" rel="nofollow">Address Space</a></li>
+<li><a href="Bird-communities.html" rel="nofollow">BGP communities</a></li>
+<li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
+</ul>
+</li>
+<li>
+<p>How-To</p>
+
+<ul>
+<li><a href="wireguard.html" rel="nofollow">Wireguard</a></li>
+<li><a href="openvpn.html" rel="nofollow">Openvpn</a></li>
+<li><a href="IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+<li><a href="tinc.html" rel="nofollow">Tinc</a></li>
+<li><a href="GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+<li><a href="GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+<li><a href="IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+<li><a href="multicast.html" rel="nofollow">SSM Multicast</a></li>
+<li><a href="mpls.html" rel="nofollow">MPLS</a></li>
+<li>
+<a href="Bird.html" rel="nofollow">Bird</a> / <a href="Bird2.html" rel="nofollow">Bird2</a>
+</li>
+<li><a href="Quagga.html" rel="nofollow">Quagga</a></li>
+<li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+<li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+<li><a href="EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+<li><a href="Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+<li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+<li><a href="vyos1.4.html" rel="nofollow">VyOS</a></li>
+<li><a href="nixos.html" rel="nofollow">NixOS</a></li>
+</ul>
+</li>
+<li>
+<p>Services</p>
+
+<ul>
+<li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
+<li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
+<li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
+<li><a href="../services/IX2.html" rel="nofollow">IX</a></li>
+<li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+<li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+<li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+<li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+<li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+<li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+<li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+</ul>
+</li>
+<li>
+<p>Internal</p>
+
+<ul>
+<li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+<li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+<li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+<li>
+<a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a><br />
+</li>
+<li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+</ul>
+</li>
+<li>
+<p>External Tools</p>
+
+<ul>
+<li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+<li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+</ul>
+</li>
+</ul>
+
+<hr />
+
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  <div id="wiki-footer" class="gollum-markdown-content my-2">
+	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
+	      <p>Hosted by: <a href="mailto:xuu@sour.is" rel="nofollow">xuu</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">nurtic-vibe</a>, <a href="mailto:tom@xcv.vc" rel="nofollow">toBee</a>, <a href="mailto:dn42@burble.com" rel="nofollow">burble</a> | Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a></p>
+
+	    </div>
+	  </div>
+
+
+	</div>
+
+
+	<div id="footer" class="pt-4">
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/frr.md">When was this page last modified?</a></p>
+	</div>
+
+
+</div>
+
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/frr.md">
+  <input type="hidden" name="rename"/>
+  <input type="hidden" name="message"/>
+</form>
+
+</div>
+</div>
+</body>
+</html>
