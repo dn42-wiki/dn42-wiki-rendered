@@ -368,14 +368,14 @@ Additionally Bird2 before 2.0.8 cannot automatically update filtered bgp routes 
 }</code></pre>
 To reflect changes in the ROA table without a manual reload, <strong>ADD</strong> "import table" switch for both channels in your DN42 BGP template:
 
-<pre class="highlight"><code>template bgp dnpeers {
-  ipv4 {
-    ...existing configuration
-    import table;
+<pre class="highlight"><code><span class="n">template</span> <span class="n">bgp</span> <span class="n">dnpeers</span> {
+  <span class="n">ipv4</span> {
+    ...<span class="n">existing</span> <span class="n">configuration</span>
+    <span class="n">import</span> <span class="n">table</span>;
   };
-  ipv6 {
-    ...existing configuration
-    import table;
+  <span class="n">ipv6</span> {
+    ...<span class="n">existing</span> <span class="n">configuration</span>
+    <span class="n">import</span> <span class="n">table</span>;
   };
 }</code></pre>
 
@@ -391,12 +391,12 @@ To reflect changes in the ROA table without a manual reload, <strong>ADD</strong
 
 <p><code>/etc/bird/peers/&lt;NEIGHBOR_NAME&gt;.conf</code>:</p>
 
-<pre class="highlight"><code>protocol bgp &lt;NEIGHBOR_NAME&gt; from dnpeers {
-        neighbor &lt;NEIGHBOR_IP&gt; as &lt;NEIGHBOR_ASN&gt;;
+<pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt; <span class="n">from</span> <span class="n">dnpeers</span> {
+        <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IP</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
 }
 
-protocol bgp &lt;NEIGHBOR_NAME&gt;_v6 from dnpeers {
-        neighbor &lt;NEIGHBOR_IPv6&gt;%&lt;NEIGHBOR_INTERFACE&gt; as &lt;NEIGHBOR_ASN&gt;;
+<span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt;<span class="err">_</span><span class="n">v6</span> <span class="n">from</span> <span class="n">dnpeers</span> {
+        <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IPv6</span>&gt;%&lt;<span class="n">NEIGHBOR_INTERFACE</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
 }</code></pre>
 
 <p>Due to the special link local addresses of IPv6, an interface has to be specified using the <code>%&lt;if&gt;</code> syntax if a link local address is used (Which is recommended)</p>
