@@ -160,47 +160,50 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h2><a class="anchor" id="multicast" href="#multicast"></a>multicast</h2>
+	        <h2><a class="anchor" id="multicast" href="#multicast"></a>Multicast</h2>
 
-<p>rfc8815 deprecated pim-sm so pim-ssm is the way to go!</p>
+<p>RFC 8815 deprecated PIM-SM so PIM-SSM is the way to go!</p>
 
-<p>for it to work, you'll need to do the following:</p>
+<h3><a class="anchor" id="setup" href="#setup"></a>Setup</h3>
 
-<p>ask your peering to enable ipv4/ipv6 multicast afi on your peering</p>
+<p>For it to work, you'll need to do the following:</p>
 
-<p>set up ipv4/ipv6 pim for the (s,g) joins to pass through</p>
+<ul>
+<li>Ask your peering to enable ipv4/ipv6 multicast AFI on your peering</li>
+<li>Set up IPv4/IPv6 PIM for the (s,g) joins to pass through</li>
+<li>Be prepared to setup IGMP v3 and MLD v2 from your listeners</li>
+</ul>
 
-<p>be prepared to igmpv3 and mldv2 from your listeners</p>
+<p>You're done! You should receive the multicast routes from peers advertising them.</p>
 
-<p>you're done, you should have your streams</p>
-
-<p>current participants:</p>
-
-<p>nop-mnt</p>
-
-<p>grawity-mnt</p>
-
-<p>mirsal-mnt</p>
-
-<p>C4TG1RL5-MNT -
-<a href="https://git.lemonsh.moe/C4TG1RL5/dn42/src/branch/master/lab.rtr.famfo.catgirls.dn42/frr">frr configuration</a> 
+<p><a href="https://git.lemonsh.moe/C4TG1RL5/dn42/src/branch/master/lab.rtr.famfo.catgirls.dn42/frr">FRR configuration</a> used by C4TG1RL5.
 <em>Please make sure you understand how to configure and use frr before you use anything from this configuration!</em></p>
 
-<p>kioubit-mnt</p>
+<h3><a class="anchor" id="participants" href="#participants"></a>Participants</h3>
 
-<p>current streams:</p>
+<p>Current participants:</p>
 
-<p>vlc rtp://172.23.199.110@232.2.3.2:1234/</p>
+<ul>
+<li>NOP-MNT</li>
+<li>GRAWITY-MNT</li>
+<li>MIRSAL-MNT</li>
+<li>C4TG1RL5-MNT</li>
+<li>KIOUBIT-MNT</li>
+<li>PREVARINITE-MNT</li>
+</ul>
 
-<p>controllable at <a href="http://webdj.nop.dn42/">http://webdj.nop.dn42/</a></p>
+<h2><a class="anchor" id="current-streams" href="#current-streams"></a>Current streams</h2>
 
-<p>public multicast to unicast relay with vlc4 and above:</p>
+<p>Public multicast to unicast relay with vlc4 and above:</p>
 
-<p>vlc --amt-relay amt-relay.geant.org amt://10.2.255.1@232.2.3.2:1234/</p>
+<ul>
+<li><code>vlc rtp://172.23.199.110@232.2.3.2:1234/</code></li>
+<li><code>vlc --amt-relay amt-relay.geant.org amt://10.2.255.1@232.2.3.2:1234/</code></li>
+</ul>
 
-<p>it's the same stream but i had to nat it to my dn42 ip range to be listenable natively in dn42 :)</p>
+<p>Controllable at <a href="http://webdj.nop.dn42/">http://webdj.nop.dn42/</a></p>
 
-<p>feel free to ask for a peering and set it up!</p>
+<p>Feel free to ask for a peering and set it up!</p>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
