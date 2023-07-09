@@ -349,14 +349,8 @@ set protocols bgp parameters router-id '172.20.20.1'</code></pre>
 <p>MP-BGP peerings over IPv6 are recommended on DN42.
 </p><pre class="highlight"><code># For these examples, your peer's link-local address is fe80::4242
 
-set protocols bgp neighbor fe80::4242 interface v6only remote-as '4242424242'
-set protocols bgp neighbor fe80::4242 remote-as '4242424242'
-set protocols bgp neighbor fe80::4242 interface source-interface 'wg4242424242'
 set protocols bgp neighbor fe80::4242 update-source 'wg4242424242'
 set protocols bgp neighbor fe80::4242 description 'FriendlyNet'
-
-# Set the RFC 9234 role to "peer". 
-set protocols bgp neighbor fe80::4242 local-role peer
 
 set protocols bgp neighbor fe80::4242 capability extended-nexthop
 
@@ -367,8 +361,6 @@ set protocols bgp neighbor fe80::4242 address-family ipv6-unicast
 <h4><a class="anchor" id="option-2-bgp-no-multi-protocol-no-extended-next-hop" href="#option-2-bgp-no-multi-protocol-no-extended-next-hop"></a>Option 2: BGP (no Multi Protocol) - no Extended Next-Hop</h4>
 
 <pre class="highlight"><code># First, we set the ipv6 part.
-set protocols bgp neighbor fe80::4242 interface remote-as '4242424242'
-set protocols bgp neighbor fe80::4242 interface source-interface 'wg4242424242'
 set protocols bgp neighbor fe80::4242 remote-as '4242424242'
 set protocols bgp neighbor fe80::4242 address-family ipv6-unicast 
 set protocols bgp neighbor fe80::4242 description 'FriendlyNet'
@@ -414,7 +406,6 @@ fe80::4242             4 4242424242      1031         6        0    0    0 00:04
 set protocols bgp peer-group dn42 address-family ipv4-unicast
 set protocols bgp peer-group dn42 address-family ipv6-unicast
 set protocols bgp peer-group dn42 capability extended-nexthop
-set protocols bgp peer-group dn42 local-role peer
 
 set protocols bgp neighbor fe80::4242 peer-group dn42
 
