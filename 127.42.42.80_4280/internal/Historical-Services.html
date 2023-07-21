@@ -183,6 +183,11 @@
 </li>
 <li>Nixnodes original Map of the network: <a href="http://map.nixnodes.net/">map.nixnodes.net</a>
 </li>
+<li>IP base network map: <a href="https://jh0project.dn42/map">map.jh0project.dn42</a> (DN42) or <a href="https://dn42.jh0project.com/map">dn42.jh0project.com</a> (IANA) <em>(uses ping and traceroute the whole DN42's ipv4 addresss block.)</em>
+</li>
+<li>BGP lookup tool: <a href="https://bgp.charlie.dn42/">bgp.charlie.dn42</a> (DN42)</li>
+<li>Observed routes over time (from the perspective of the C4TG1RL5 network): <a href="https://catgirls.dn42/routes/">https://catgirls.dn42/routes/</a>
+</li>
 </ul>
 
 <h3><a class="anchor" id="dns-hosting" href="#dns-hosting"></a>DNS Hosting</h3>
@@ -267,6 +272,10 @@ wieistmeineip.dn42 also provides a telnet service that returns the address you c
 <td align="left"><a href="http://mhm.dn42/search">http://mhm.dn42/search</a></td>
 <td align="left">Hosted by toBee</td>
 </tr>
+<tr>
+<td align="left"></td>
+<td align="left">Hosted by marlinc</td>
+</tr>
 </tbody>
 </table>
 
@@ -296,6 +305,14 @@ wieistmeineip.dn42 also provides a telnet service that returns the address you c
 <tr>
 <td align="left"><a href="https://yp.unknownts.dn42/">https://yp.unknownts.dn42/</a></td>
 <td align="left">A YellowPages for internet radio stations inside dn42</td>
+</tr>
+<tr>
+<td align="left"><a href="http://deep.radio.unknownts.dn42/">http://deep.radio.unknownts.dn42/</a></td>
+<td align="left">Internet radio playing random music</td>
+</tr>
+<tr>
+<td align="left"><a href="http://rickroll.dn42/">http://rickroll.dn42</a></td>
+<td align="left">Play Rickroll Video</td>
 </tr>
 </tbody>
 </table>
@@ -438,6 +455,22 @@ Until browsers have ipfs access (either through native support or js), one can u
 <td align="left">ntp2.nixnodes.dn42 (172.22.177.124)</td>
 <td align="left"></td>
 </tr>
+<tr>
+<td align="left">ntp.martin89.dn42</td>
+<td align="left">more than one A records/server</td>
+</tr>
+<tr>
+<td align="left">tick.gotroot.dn42 (172.20.14.247)</td>
+<td align="left">Stratum 1, GPS, Vancouver Canada</td>
+</tr>
+<tr>
+<td align="left">tock.gotroot.dn42 (172.20.14.250)</td>
+<td align="left">Stratum 2, Anycast on each node</td>
+</tr>
+<tr>
+<td align="left">ntp.yuetau.dn42 (172.21.68.50)</td>
+<td align="left">Anycast on all node</td>
+</tr>
 </tbody>
 </table>
 
@@ -490,6 +523,29 @@ Until browsers have ipfs access (either through native support or js), one can u
 <td align="left"><a href="http://mirrors.zhaofeng.dn42/archlinux">http://mirrors.zhaofeng.dn42/archlinux</a></td>
 <td align="left">Arch Linux</td>
 <td align="left">Every hour</td>
+</tr>
+</tbody>
+</table>
+
+<h3><a class="anchor" id="direct-connect" href="#direct-connect"></a>Direct Connect</h3>
+
+<p>Some <a href="https://en.wikipedia.org/wiki/Advanced_Direct_Connect">Advanced Direct Connect</a> Hubs are being run DN42 internally. Choose a <a href="https://en.wikipedia.org/wiki/Comparison_of_ADC_software#Client_software">client</a> and connect to exchange files.</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">adcs://hub.dcpp.dn42:1511</td>
+</tr>
+<tr>
+<td align="left">dchub://hub.dcpp.dn42:2780</td>
+</tr>
+<tr>
+<td align="left">dchub://dcpp.grmml.dn42:4111</td>
 </tr>
 </tbody>
 </table>
@@ -574,6 +630,21 @@ Until browsers have ipfs access (either through native support or js), one can u
 <td><a href="https://paste.weiti.dn42/">https://paste.weiti.dn42</a></td>
 <td>AES-encrypted pastebin-like (privatebin)</td>
 </tr>
+<tr>
+<td>
+<a href="https://bbs.dn42/">https://bbs.dn42</a>, <a href="https://dn42bbs.0b1.me/">https://dn42bbs.0b1.me</a> via Clearnet</td>
+<td>A general BBS powered by Flarum for virtually any topics. Maintained by nicholascw.</td>
+</tr>
+<tr>
+<td><a href="http://jack.pyropeter.eu/dn42/routecount/">http://jack.pyropeter.eu/dn42/routecount/</a></td>
+<td>Statistics about the number of v4/v6 routes seen by AS76115 (Since Aug. 2014)</td>
+</tr>
+<tr>
+<td>
+<a href="https://flapping.p2p-node.de/dashboard/">Clearnet</a>, <a href="https://flapping.bandura.dn42/dashboard">dn42</a>, <a href="https://flapping.bandura.neo/dashboard/">NeoNetwork</a>
+</td>
+<td>FlapAlertedPro by Kioubit hosted by mark22k</td>
+</tr>
 </tbody>
 </table>
 
@@ -589,9 +660,19 @@ Until browsers have ipfs access (either through native support or js), one can u
 </thead>
 <tbody>
 <tr>
-<td align="left">mc.nia.dn42 (172.20.168.133, fd01:1926:817:3::)</td>
+<td align="left">mc.nia.dn42 (172.20.168.137, fd01:1926:817:7::)</td>
 <td align="left">Minecraft</td>
-<td align="left">1.16.4 Mod, Optimized for CN</td>
+<td align="left">Latest Stable, Optimized for CN , Map available on mc-map.nia.dn42</td>
+</tr>
+<tr>
+<td align="left">hulk.mhm.dn42 (172.23.67.1)</td>
+<td align="left">Tetrinet</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ns1.deltaman.dn42 (172.22.134.131, fd1b:7f7d:dd55:4600:219:ff:fe00:fafe)</td>
+<td align="left">OpenTTD</td>
+<td align="left">1.10.3, Hosted in NL</td>
 </tr>
 </tbody>
 </table>

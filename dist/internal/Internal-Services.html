@@ -164,11 +164,9 @@
 
 <p>You are asked to show some creativity in terms of network usage and content. ;)</p>
 
-<p><strong>More inspiration is collected <a href="Historical-Services.html">here</a> and <a href="Ideas.html">here</a>.</strong></p>
-
 <h2><a class="anchor" id="search-engine" href="#search-engine"></a>Search engine</h2>
 
-<p>There is a search engine at <a href="https://search.dn42/">search.dn42</a> that can also be used to discover services and content. It attempts to index all sites on DN42. If it's not available you can also use <a href="http://search.marlinc.dn42/">search.marlinc.dn42</a>.</p>
+<p>There is a search engine at <a href="https://search.dn42/">search.dn42</a> that can also be used to discover services and content. It attempts to index all sites on DN42.</p>
 
 <h2><a class="anchor" id="certificate-authority" href="#certificate-authority"></a>Certificate Authority</h2>
 
@@ -182,12 +180,9 @@
 <li>See <a href="../services/Looking-Glasses.html">Looking Glasses</a> for more network diagnostic tools</li>
 <li>Realtime network map: <a href="http://map.dn42/">map.dn42</a> (DN42) or <a href="https://map42.0x7f.cc/">map42.0x7f.cc</a>, <a href="https://map.kuu.moe/">map.kuu.moe</a> (IANA) <em>(Note: This is a direct copy of nixnodes map with some fixes and new functions since original map is no longer get maintained. This map is currently using MRT dump from GRC as source. We will pull new dumps from GRC every 15 minutes.)</em>
 </li>
-<li>IP base network map: <a href="https://jh0project.dn42/map">map.jh0project.dn42</a> (DN42) or <a href="https://dn42.jh0project.com/map">dn42.jh0project.com</a> (IANA) <em>(uses ping and traceroute the whole DN42's ipv4 addresss block.)</em>
-</li>
 <li>Network Information Service: <a href="http://info.nia.dn42/">info.nia.dn42</a> (DN42) or <a href="https://bgp42.strexp.net/">bgp42.strexp.net</a> (IANA). Main functions including <em>network information</em>, <em>network map (from map.dn42, require WebGL)</em>, <em>network ranking (based on centrality)</em>, <em>ROA alerting</em> and <em>path finder</em>.</li>
 <li>Yet Another network map: <a href="https://map.jerry.dn42/">map.jerry.dn42</a> (DN42) or <a href="https://map.meson.cc/">map.meson.cc</a> (via clearnet) <em>(uses MRT dump as source, updated every 15 minutes.)</em>
 </li>
-<li>BGP lookup tool: <a href="https://bgp.charlie.dn42/">bgp.charlie.dn42</a> (DN42)</li>
 <li>DN42 IP address lookup tool: <a href="https://dn42.g-load.eu/lookup/">dn42.g-load.eu/lookup</a>
 </li>
 <li>New DNS System monitoring: <a href="https://grafana.burble.com/d/E4iCaHoWk/dn42-dns-status?orgId=1&amp;refresh=1m">grafana.burble.com/d/E4iCaHoWk/dn42-dns-status</a>
@@ -203,13 +198,11 @@
 <li>/index.html: "fancy" human readable site; /raw: just your ip address; /api: json with ip,serverip,AS of server, location of server and "node_id"</li>
 </ul>
 </li>
-<li>Observed routes over time (from the perspective of the C4TG1RL5 network): <a href="https://catgirls.dn42/routes/">https://catgirls.dn42/routes/</a>
-</li>
 </ul>
 
 <h3><a class="anchor" id="geoip-services" href="#geoip-services"></a>GeoIP Services</h3>
 
-<p><a href="http://map.dn42/">Map.dn42</a> provides a simple GeoIP service. This service uses rDNS records and country field in aut-num objects as a reference, currently designed for fun :P</p>
+<p><a href="http://map.dn42/">map.dn42</a> provides a simple GeoIP service. This service uses rDNS records and country field in aut-num objects as a reference, currently designed for fun :P</p>
 
 <h4><a class="anchor" id="api" href="#api"></a>API</h4>
 
@@ -329,10 +322,6 @@ To use the service, please message Kioubit on IRC to have your domain activated 
 <td align="left">Live audio stream powered by mpd</td>
 </tr>
 <tr>
-<td align="left"><a href="http://deep.radio.unknownts.dn42/">http://deep.radio.unknownts.dn42/</a></td>
-<td align="left">Internet radio playing random music</td>
-</tr>
-<tr>
 <td align="left"><a href="https://dn42:dn42@tv.munsternet.dn42/playlist">https://dn42:dn42@tv.munsternet.dn42/playlist</a></td>
 <td align="left">TV Channels Streaming</td>
 </tr>
@@ -340,37 +329,10 @@ To use the service, please message Kioubit on IRC to have your domain activated 
 <td align="left"><a href="http://icy.jones.dn42/">http://icy.jones.dn42</a></td>
 <td align="left">Home grown Icecast Radio covering a number of genres (HLS &amp; Player coming soon [ish]!)</td>
 </tr>
-<tr>
-<td align="left"><a href="http://rickroll.dn42/">http://rickroll.dn42</a></td>
-<td align="left">Play Rickroll Video</td>
-</tr>
 </tbody>
 </table>
 
 <h2><a class="anchor" id="file-sharing" href="#file-sharing"></a>File Sharing</h2>
-
-<h3><a class="anchor" id="direct-connect" href="#direct-connect"></a>Direct Connect</h3>
-
-<p>Some <a href="https://en.wikipedia.org/wiki/Advanced_Direct_Connect">Advanced Direct Connect</a> Hubs are being run DN42 internally. Choose a <a href="https://en.wikipedia.org/wiki/Comparison_of_ADC_software#Client_software">client</a> and connect to exchange files.</p>
-
-<table>
-<thead>
-<tr>
-<th align="left">Address</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">adcs://hub.dcpp.dn42:1511</td>
-</tr>
-<tr>
-<td align="left">dchub://hub.dcpp.dn42:2780</td>
-</tr>
-<tr>
-<td align="left">dchub://dcpp.grmml.dn42:4111</td>
-</tr>
-</tbody>
-</table>
 
 <h3><a class="anchor" id="ftp-http" href="#ftp-http"></a>FTP / HTTP</h3>
 
@@ -414,10 +376,6 @@ provided by TheQ at <a href="https://dn42.0011.de/vpnusers">https://dn42.0011.de
 
 <p>A MTProxy server is available at <a href="https://t.me/proxy?server=mtp.jerry.dn42&amp;port=8044&amp;secret=ee1419944c0a129dbba2beb2636fcf361a616e64726f69642e676f6f676c65736f757263652e636f6d">mtp.jerry.dn42:8044</a>.</p>
 
-<h2><a class="anchor" id="tor" href="#tor"></a>Tor</h2>
-
-<p>Entry points to the Tor network are available on dn42. See <a href="Tor.html">Tor</a> for more details.</p>
-
 <h2><a class="anchor" id="ntp" href="#ntp"></a>NTP</h2>
 
 <table>
@@ -429,25 +387,9 @@ provided by TheQ at <a href="https://dn42.0011.de/vpnusers">https://dn42.0011.de
 </thead>
 <tbody>
 <tr>
-<td align="left">ntp.martin89.dn42</td>
-<td align="left">more than one A records/server</td>
-</tr>
-<tr>
-<td align="left">tick.gotroot.dn42 (172.20.14.247)</td>
-<td align="left">Stratum 1, GPS, Vancouver Canada</td>
-</tr>
-<tr>
-<td align="left">tock.gotroot.dn42 (172.20.14.250)</td>
-<td align="left">Stratum 2, Anycast on each node</td>
-</tr>
-<tr>
 <td align="left">*.burble.dn42</td>
 <td align="left">All burble.dn42 nodes provide NTP over clearnet and DN42. See also <a href="https://dn42.burble.com/services/public/">burble.dn42 public services</a>
 </td>
-</tr>
-<tr>
-<td align="left">ntp.yuetau.dn42 (172.21.68.50)</td>
-<td align="left">Anycast on all node</td>
 </tr>
 </tbody>
 </table>
@@ -467,16 +409,6 @@ provided by TheQ at <a href="https://dn42.0011.de/vpnusers">https://dn42.0011.de
 </tr>
 </thead>
 <tbody>
-<tr>
-<td align="left">hulk.mhm.dn42 (172.23.67.1)</td>
-<td align="left">Tetrinet</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">mc.nia.dn42 (172.20.168.137, fd01:1926:817:7::)</td>
-<td align="left">Minecraft</td>
-<td align="left">Latest Stable, Optimized for CN , Map available on mc-map.nia.dn42</td>
-</tr>
 <tr>
 <td align="left">yuan.nia.dn42 (172.20.168.244)</td>
 <td align="left">Genshi Impact (Unofficial)</td>
@@ -522,11 +454,6 @@ provided by TheQ at <a href="https://dn42.0011.de/vpnusers">https://dn42.0011.de
 <td align="left">stk2.jerry.dn42:2759, stk2.jerry.neo:2759</td>
 <td align="left">SuperTuxKart</td>
 <td align="left">latest, IPv4 &amp; IPv6</td>
-</tr>
-<tr>
-<td align="left">ns1.deltaman.dn42 (172.22.134.131, fd1b:7f7d:dd55:4600:219:ff:fe00:fafe)</td>
-<td align="left">OpenTTD</td>
-<td align="left">1.10.3, Hosted in NL</td>
 </tr>
 <tr>
 <td align="left">factorio.catgirls.dn42 (IPv6 only)</td>
@@ -630,7 +557,9 @@ provided by TheQ at <a href="https://dn42.0011.de/vpnusers">https://dn42.0011.de
 </tr>
 <tr>
 <td align="left">burble</td>
-<td align="left"><code>ssh &lt;mntner&gt;@shell.burble.dn42</code></td>
+<td align="left">
+<code>ssh &lt;mntner&gt;@shell.fr-rbx1.burble.dn42</code> <br /> <code>ssh &lt;mntner&gt;@shell.ca-bhs2.burble.dn42</code>
+</td>
 <td align="left">dn42</td>
 <td align="left">Full shell account</td>
 <td align="left">See below</td>
@@ -684,11 +613,6 @@ constructed using the MNTNER name, lowercased and without the '-MNT' suffix. SSH
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-<a href="https://bbs.dn42/">https://bbs.dn42</a>, <a href="https://dn42bbs.0b1.me/">https://dn42bbs.0b1.me</a> via Clearnet</td>
-<td>A general BBS powered by Flarum for virtually any topics. Maintained by nicholascw.</td>
-</tr>
 <tr>
 <td><a href="http://www.nop.dn42/">http://www.nop.dn42/</a></td>
 <td>Basic "whatismyip" service</td>
@@ -744,10 +668,6 @@ constructed using the MNTNER name, lowercased and without the '-MNT' suffix. SSH
 <td>This wiki!  Git Repo hosted on git.dn42</td>
 </tr>
 <tr>
-<td><a href="http://jack.pyropeter.eu/dn42/routecount/">http://jack.pyropeter.eu/dn42/routecount/</a></td>
-<td>Statistics about the number of v4/v6 routes seen by AS76115 (Since Aug. 2014)</td>
-</tr>
-<tr>
 <td><a href="https://p.pebkac.dn42/">https://p.pebkac.dn42/</a></td>
 <td>PasteBin Service (Netcat/Bash CLI Client)</td>
 </tr>
@@ -756,18 +676,8 @@ constructed using the MNTNER name, lowercased and without the '-MNT' suffix. SSH
 <td>OpenWebRX SDR Receiver, FM/VHF/UHF Analog &amp; Digital</td>
 </tr>
 <tr>
-<td><a href="http://www.marlinc.dn42/">http://www.marlinc.dn42/</a></td>
-<td>Marlinc website</td>
-</tr>
-<tr>
 <td><a href="https://urandom.catgirls.dn42/">https://urandom.catgirls.dn42/</a></td>
 <td>Message board</td>
-</tr>
-<tr>
-<td>
-<a href="https://flapping.p2p-node.de/dashboard/">Clearnet</a>, <a href="https://flapping.bandura.dn42/dashboard">dn42</a>, <a href="https://flapping.bandura.neo/dashboard/">NeoNetwork</a>
-</td>
-<td>FlapAlertedPro by Kioubit hosted by mark22k</td>
 </tr>
 <tr>
 <td><a href="https://flaps.pebkac.dn42/">https://flaps.pebkac.dn42/</a></td>
@@ -788,17 +698,13 @@ constructed using the MNTNER name, lowercased and without the '-MNT' suffix. SSH
 </tbody>
 </table>
 
-<h3><a class="anchor" id="usenet-servers-news" href="#usenet-servers-news"></a>Usenet Servers / News</h3>
+<h2><a class="anchor" id="usenet-servers-news" href="#usenet-servers-news"></a>Usenet Servers / News</h2>
 
 <p>There are some News Servers available <a href="../services/News.html">here</a></p>
 
 <h2><a class="anchor" id="e-mail" href="#e-mail"></a>E-Mail</h2>
 
 <p>There is a list of E-Mail providers <a href="../services/E-Mail-Providers.html">here</a></p>
-
-<h2><a class="anchor" id="sim-cards-home-cable-connections-in-nl" href="#sim-cards-home-cable-connections-in-nl"></a>SIM cards / Home cable connections (in NL)</h2>
-
-<p>For people in The Netherlands you can join cooperation ONT as member, our goal it is to give anyone the ability to be their own ISP with SIM cards and home connections. Allowing you to connect your own phone or home directly to DN42 and other networks. Interested? Check <a href="http://www.marlinc.dn42/ont/">http://www.marlinc.dn42/ont/</a></p>
 
 <h1><a class="anchor" id="other-networks" href="#other-networks"></a>Other networks</h1>
 
