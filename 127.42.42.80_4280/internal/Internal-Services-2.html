@@ -206,6 +206,8 @@
 </ul>
 </li>
 <li>Route Graphs: <a href="http://routegraphs.highdef.dn42/">routegraphs.highdef.dn42</a> (DN42), <a href="https://routegraphs.highdef.network/">routegraphs.highdef.network</a> (clearnet) - graph reachability from ASes to specific prefixes, using data from the dn42 GRC</li>
+<li>BGP flap detector (FlapAlertedPro by Kioubit) hosted by AS4242422092: <a href="https://flaps.pebkac.dn42/">https://flaps.pebkac.dn42</a>
+</li>
 </ul>
 
 <h3><a class="anchor" id="geoip-services" href="#geoip-services"></a>GeoIP Services</h3>
@@ -214,17 +216,17 @@
 
 <h4><a class="anchor" id="api" href="#api"></a>API</h4>
 
-<p>Results are in JSON format. </p>
+<p>Results are in JSON format.</p>
 
-<pre class="highlight"><code>http://ipip.map.dn42/whois?ip=[DN42_IP]&amp;lang=en  
+<pre class="highlight"><code>http://ipip.map.dn42/whois?ip=[DN42_IP]&amp;lang=en
 http://ipip.map.dn42/whois?asn=AS[DN42_ASN]</code></pre>
 
 <h4><a class="anchor" id="client" href="#client"></a>Client</h4>
 
-<p>There is a client software using above apis to provide GeoIP-based traceroute. 
+<p>There is a client software using above apis to provide GeoIP-based traceroute.
 It is a modified IPIP.NET Best Trace software with DN42 support injection.</p>
 
-<p>Windows only, no virus scan report available, but our DLL source is provided with the modified client. It's highly recommended to run this tool in a sandbox. </p>
+<p>Windows only, no virus scan report available, but our DLL source is provided with the modified client. It's highly recommended to run this tool in a sandbox.</p>
 
 <p><strong>Since the original software is not open source, so use it at your own risk.</strong></p>
 
@@ -337,6 +339,14 @@ To use the service, please message Kioubit on IRC to have your domain activated 
 <td align="left"><a href="http://icy.jones.dn42/">http://icy.jones.dn42</a></td>
 <td align="left">Home grown Icecast Radio covering a number of genres (HLS &amp; Player coming soon [ish]!)</td>
 </tr>
+<tr>
+<td align="left"><a href="http://webdj.nop.dn42/">http://webdj.nop.dn42/</a></td>
+<td align="left">controller for Multicast stream: rtp://172.23.199.110@232.2.3.2:1234/</td>
+</tr>
+<tr>
+<td align="left"><a href="https://sdr.pebkac.dn42/">https://sdr.pebkac.dn42/</a></td>
+<td align="left">OpenWebRX SDR Receiver, FM/VHF/UHF Analog &amp; Digital</td>
+</tr>
 </tbody>
 </table>
 
@@ -346,27 +356,35 @@ To use the service, please message Kioubit on IRC to have your domain activated 
 
 <p><strong>FIXME</strong>: Please add info about (approximate) bandwidth of the servers.</p>
 
+<p>Repository Mirrors are listed on another page: <a href="../services/Repository-Mirrors.html">Repository Mirrors</a></p>
+
 <table>
 <thead>
 <tr>
 <th align="left">Hostname / IP</th>
-<th align="left">Space</th>
-<th align="left">Speed</th>
-<th align="left">Remarks</th>
+<th>Remarks</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td align="left"><a href="http://files.nop.dn42/">http://files.nop.dn42</a></td>
-<td align="left"></td>
-<td align="left">max 1Mbit/s</td>
-<td align="left">download only</td>
+<td>download only, max 1Mbit/s</td>
 </tr>
 <tr>
 <td align="left"><a href="http://rfc-editor.dn42/">http://rfc-editor.dn42</a></td>
-<td align="left"></td>
-<td align="left">max 1Mbit/s</td>
-<td align="left">download only</td>
+<td>download only, max 1Mbit/s</td>
+</tr>
+<tr>
+<td align="left"><a href="http://freertr.dn42/">http://freertr.dn42/</a></td>
+<td>freeRouter main site</td>
+</tr>
+<tr>
+<td align="left"><a href="http://sources.nop.dn42/">http://sources.nop.dn42</a></td>
+<td>freeRouter source tree</td>
+</tr>
+<tr>
+<td align="left"><a href="http://rtros.nop.dn42/">http://rtros.nop.dn42/</a></td>
+<td>freeRouter distribution</td>
 </tr>
 </tbody>
 </table>
@@ -401,10 +419,6 @@ provided by TheQ at <a href="https://dn42.0011.de/vpnusers">https://dn42.0011.de
 </tr>
 </tbody>
 </table>
-
-<h2><a class="anchor" id="os-mirror-repository-s" href="#os-mirror-repository-s"></a>OS Mirror/Repository's</h2>
-
-<p>Repository Mirrors are listed on another page: <a href="../services/Repository-Mirrors.html">Repository Mirrors</a></p>
 
 <h2><a class="anchor" id="gaming" href="#gaming"></a>Gaming</h2>
 
@@ -483,6 +497,11 @@ provided by TheQ at <a href="https://dn42.0011.de/vpnusers">https://dn42.0011.de
 <td align="left"><a href="https://clicker.burble.dn42/">https://clicker.burble.dn42/</a></td>
 <td align="left">Clicker/Idle</td>
 <td align="left">Waste your time away with a dn42 themed browser based idle game</td>
+</tr>
+<tr>
+<td align="left"><a href="https://monkic.mk16.de/">monkic.mk16.de</a></td>
+<td align="left">Monkic (Game in German)</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
@@ -577,7 +596,7 @@ provided by TheQ at <a href="https://dn42.0011.de/vpnusers">https://dn42.0011.de
 
 <h3><a class="anchor" id="burble-dn42-shell-access" href="#burble-dn42-shell-access"></a>burble.dn42 shell access</h3>
 
-<p>Full shell accounts are available for all dn42 users. Usernames are 
+<p>Full shell accounts are available for all dn42 users. Usernames are
 constructed using the MNTNER name, lowercased and without the '-MNT' suffix. SSH public keys are imported automatically from the registry or alternatively, a password can be used instead.</p>
 
 <p>See also the <a href="https://dn42.burble.com/services/shell/">burble.dn42 website</a> for more details.</p>
@@ -611,6 +630,44 @@ constructed using the MNTNER name, lowercased and without the '-MNT' suffix. SSH
 </tbody>
 </table>
 
+<h2><a class="anchor" id="pastebins" href="#pastebins"></a>Pastebins</h2>
+
+<table>
+<thead>
+<tr>
+<th>Hostname / IP</th>
+<th>Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://paste.nop.dn42/">http://paste.nop.dn42</a></td>
+<td>yet another paste service</td>
+</tr>
+<tr>
+<td><a href="https://p.pebkac.dn42/">https://p.pebkac.dn42/</a></td>
+<td>PasteBin Service (Netcat/Bash CLI Client)</td>
+</tr>
+</tbody>
+</table>
+
+<h2><a class="anchor" id="forums-message-boards" href="#forums-message-boards"></a>Forums / Message boards</h2>
+
+<table>
+<thead>
+<tr>
+<th>Hostname / IP</th>
+<th>Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://urandom.catgirls.dn42/">https://urandom.catgirls.dn42/</a></td>
+<td>Message board</td>
+</tr>
+</tbody>
+</table>
+
 <h2><a class="anchor" id="misc" href="#misc"></a>Misc</h2>
 
 <table>
@@ -622,20 +679,14 @@ constructed using the MNTNER name, lowercased and without the '-MNT' suffix. SSH
 </thead>
 <tbody>
 <tr>
+<td>
+<a href="http://wiki.dn42/">http://wiki.dn42</a>, <a href="http://internal.dn42/">http://internal.dn42</a>
+</td>
+<td>This wiki!  Git Repo hosted on git.dn42</td>
+</tr>
+<tr>
 <td><a href="http://www.nop.dn42/">http://www.nop.dn42/</a></td>
 <td>Basic "whatismyip" service</td>
-</tr>
-<tr>
-<td><a href="http://freertr.dn42/">http://freertr.dn42/</a></td>
-<td>freeRouter main site</td>
-</tr>
-<tr>
-<td><a href="http://sources.nop.dn42/">http://sources.nop.dn42</a></td>
-<td>freeRouter source tree</td>
-</tr>
-<tr>
-<td><a href="http://webdj.nop.dn42/">http://webdj.nop.dn42/</a></td>
-<td>controller of the rtp://172.23.199.110@232.2.3.2:1234/ stream</td>
 </tr>
 <tr>
 <td><a href="http://fun.nop.dn42/">http://fun.nop.dn42/</a></td>
@@ -654,48 +705,12 @@ constructed using the MNTNER name, lowercased and without the '-MNT' suffix. SSH
 <td>girls with switches and routers, a hwpr0n.se mirror</td>
 </tr>
 <tr>
-<td><a href="http://paste.nop.dn42/">http://paste.nop.dn42</a></td>
-<td>yet another paste service</td>
-</tr>
-<tr>
-<td><a href="http://rtros.nop.dn42/">http://rtros.nop.dn42/</a></td>
-<td>freeRouter distribution</td>
-</tr>
-<tr>
 <td><a href="http://ix.nop.dn42/">http://ix.nop.dn42</a></td>
 <td>mcast-ix main site</td>
 </tr>
 <tr>
 <td><a href="http://mpls.dn42/">http://mpls.dn42/</a></td>
 <td>a brief description of MPLS technology</td>
-</tr>
-<tr>
-<td>
-<a href="http://wiki.dn42/">http://wiki.dn42</a>, <a href="http://internal.dn42/">http://internal.dn42</a>
-</td>
-<td>This wiki!  Git Repo hosted on git.dn42</td>
-</tr>
-<tr>
-<td><a href="https://p.pebkac.dn42/">https://p.pebkac.dn42/</a></td>
-<td>PasteBin Service (Netcat/Bash CLI Client)</td>
-</tr>
-<tr>
-<td><a href="https://sdr.pebkac.dn42/">https://sdr.pebkac.dn42/</a></td>
-<td>OpenWebRX SDR Receiver, FM/VHF/UHF Analog &amp; Digital</td>
-</tr>
-<tr>
-<td><a href="https://urandom.catgirls.dn42/">https://urandom.catgirls.dn42/</a></td>
-<td>Message board</td>
-</tr>
-<tr>
-<td><a href="https://flaps.pebkac.dn42/">https://flaps.pebkac.dn42/</a></td>
-<td>FlapAlertedPro by Kioubit hosted by AS4242422092</td>
-</tr>
-<tr>
-<td>
-<a href="https://monkic.mk16.de/">Clearnet</a>, <a href="https://monkic.mk16.de/">dn42</a>
-</td>
-<td>Monkic (Game in German)</td>
 </tr>
 <tr>
 <td>
