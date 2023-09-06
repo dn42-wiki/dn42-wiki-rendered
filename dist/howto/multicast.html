@@ -197,8 +197,16 @@
 <p>Public multicast to unicast relay with vlc4 and above:</p>
 
 <ul>
-<li><code>vlc rtp://172.23.199.110@232.2.3.2:1234/</code></li>
-<li><code>vlc --amt-relay amt-relay.geant.org amt://10.2.255.1@232.2.3.2:1234/</code></li>
+<li>
+<code>vlc rtp://172.23.199.110@232.2.3.2:1234/</code>
+
+<ul>
+<li><code>vlc --amt-relay amt-relay.rtr2.c4e.hbone.hu amt://10.2.255.1@232.2.3.2:1234/</code></li>
+<li>
+<code>vlc --amt-relay amt-relay.geant.org amt://10.2.255.1@232.2.3.2:1234/</code>
+the last one needs vlc4 off their nighty, the amt relay usually defuncs as geant rents the p4 testbed....</li>
+</ul>
+</li>
 </ul>
 
 <p>Controllable at <a href="http://webdj.nop.dn42/">http://webdj.nop.dn42/</a></p>
