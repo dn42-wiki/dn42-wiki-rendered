@@ -160,9 +160,9 @@
 	        
 	        <h2><a class="anchor" id="about-dn42" href="#about-dn42"></a>About dn42</h2>
 
-<p>dn42 is a big dynamic <a href="http://en.wikipedia.org/wiki/Virtual_private_network">VPN</a>, which employs Internet technologies (<a href="http://en.wikipedia.org/wiki/Bgp">BGP</a>, whois database, <a href="http://en.wikipedia.org/wiki/Domain_Name_System">DNS</a>, etc).  Participants connect to each other using network tunnels (<a href="howto/GRE-on-FreeBSD.html">GRE</a>, <a href="howto/openvpn.html">OpenVPN</a>, <a href="howto/wireguard.html">WireGuard</a>, <a href="howto/tinc.html">Tinc</a>, <a href="howto/IPsec-with-PublicKeys.html">IPsec</a>) and exchange routes thanks to the Border Gateway Protocol.  Network addresses are assigned in the <code>172.20.0.0/14</code> range and private AS numbers are used (see <a href="services/Whois.html">registry</a>) as well as IPv6 addresses from the ULA-Range (<code>fd00::/8</code>) - see <a href="FAQ.html#frequently-asked-questions_what-about-ipv6-in-dn42">FAQ</a>.</p>
+<p>dn42 is a big dynamic <a href="https://en.wikipedia.org/wiki/Virtual_private_network">VPN</a>, which employs Internet technologies (<a href="https://en.wikipedia.org/wiki/Bgp">BGP</a>, whois database, <a href="https://en.wikipedia.org/wiki/Domain_Name_System">DNS</a>, etc).  Participants connect to each other using network tunnels (<a href="howto/GRE-on-FreeBSD.html">GRE</a>, <a href="howto/openvpn.html">OpenVPN</a>, <a href="howto/wireguard.html">WireGuard</a>, <a href="howto/tinc.html">Tinc</a>, <a href="howto/IPsec-with-PublicKeys.html">IPsec</a>) and exchange routes thanks to the Border Gateway Protocol.  Network addresses are assigned in the <code>172.20.0.0/14</code> range and private AS numbers are used (see <a href="services/Whois.html">registry</a>) as well as IPv6 addresses from the ULA-Range (<code>fd00::/8</code>) - see <a href="FAQ.html#frequently-asked-questions_what-about-ipv6-in-dn42">FAQ</a>.</p>
 
-<p>A number of services are provided on the network: see <a href="internal/Internal-Services.html">internal</a> (only available from within dn42).  Also, dn42 is interconnected with other networks, such as <a href="http://wiki.hamburg.ccc.de/ChaosVPN">ChaosVPN</a> or some <a href="http://en.wikipedia.org/wiki/Freifunk">Freifunk</a> networks.</p>
+<p>A number of services are provided on the network: see <a href="internal/Internal-Services.html">internal</a> (only available from within dn42).  Also, dn42 is interconnected with other networks, such as <a href="http://wiki.hamburg.ccc.de/ChaosVPN">ChaosVPN</a> or some <a href="https://en.wikipedia.org/wiki/Freifunk">Freifunk</a> networks.</p>
 
 <p>Still have questions? We have  <a href="FAQ.html">FAQs</a> listed.</p>
 
@@ -182,7 +182,7 @@
 
 <p>Have you ever wanted to SSH on your Raspberry Pi hosted at your local hacker space and had trouble doing so because of NAT? If your hacker space was using dn42, it could have been much easier.</p>
 
-<p>Nowadays, most end-user networks use <a href="http://en.wikipedia.org/wiki/Network_address_translation">NAT</a> to squeeze all those nifty computing devices behind a single public IPv4 address.  This makes it difficult to provide services directly from a machine behind the NAT.  Besides, you might want to provide some services to other hackerspaces, but not to anybody on the Internet.</p>
+<p>Nowadays, most end-user networks use <a href="https://en.wikipedia.org/wiki/Network_address_translation">NAT</a> to squeeze all those nifty computing devices behind a single public IPv4 address.  This makes it difficult to provide services directly from a machine behind the NAT.  Besides, you might want to provide some services to other hackerspaces, but not to anybody on the Internet.</p>
 
 <p>dn42 solves this problem.  By addressing your network in dn42, your devices can communicate with all other participants in a transparent way, without resorting to this ugly thing called NAT.  Of course, this doesn't mean that you have to fully open your network to dn42: similarly to IPv6, you can still use a firewall (but you could, for instance, allow incoming TCP 22 and TCP 80 from dn42 by default).</p>
 
