@@ -535,6 +535,33 @@ More information can be found <a href="Bird-communities.html">here</a>. </p>
 
 <p>then enable and start the timer with <code>systemctl enable --now dn42-roa.timer</code>.</p>
 
+<p>More advanced script with error checking:
+</p><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nv">roa4URL</span><span class="o">=</span><span class="s2">""</span>
+<span class="nv">roa6URL</span><span class="o">=</span><span class="s2">""</span>
+
+<span class="nv">roa4FILE</span><span class="o">=</span><span class="s2">"/etc/bird/roa/roa_dn42.conf"</span>
+<span class="nv">roa6FILE</span><span class="o">=</span><span class="s2">"/etc/bird/roa/roa_dn42_v6.conf"</span>
+
+<span class="nb">cp</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">.old"</span>
+<span class="nb">cp</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">.old"</span>
+
+<span class="k">if </span>curl <span class="nt">-f</span> <span class="nt">-o</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">.new"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4URL</span><span class="k">}</span><span class="s2">;"</span> <span class="p">;</span><span class="k">then
+    </span><span class="nb">mv</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">.new"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">"</span>
+<span class="k">fi
+
+if </span>curl <span class="nt">-f</span> <span class="nt">-o</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">.new"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6URL</span><span class="k">}</span><span class="s2">;"</span> <span class="p">;</span><span class="k">then
+    </span><span class="nb">mv</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">.new"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">"</span>
+<span class="k">fi
+
+if </span>birdc configure <span class="p">;</span> <span class="k">then
+    </span><span class="nb">rm</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">.old"</span>
+    <span class="nb">rm</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">.old"</span>
+<span class="k">else
+    </span><span class="nb">mv</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">.old"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">"</span>
+    <span class="nb">mv</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">.old"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">"</span>
+<span class="k">fi</span></code></pre>
+
 <h3><a class="anchor" id="use-rpki-roa-in-bird2" href="#use-rpki-roa-in-bird2"></a>Use RPKI ROA in bird2</h3>
 
 <ul>
