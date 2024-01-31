@@ -296,6 +296,8 @@ Use <code>which ip</code> to get the full path to your ip binary.
 <span class="n">DHCP</span>=<span class="n">no</span>
 <span class="n">IPv6AcceptRA</span>=<span class="n">false</span>
 <span class="n">IPForward</span>=<span class="n">yes</span>
+<span class="n">IPv4ReversePathFilter</span>=<span class="n">no</span>  <span class="c"># required if sysctl item `net.ipv4.conf.default.rp_filter` is not 0
+</span>
 
 <span class="c"># for networkd &gt;= 244 KeepConfiguration stops networkd from
 # removing routes on this interface when restarting

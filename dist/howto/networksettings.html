@@ -180,6 +180,8 @@ That is why <code>rp_filter</code> needs to be disabled.</p>
 <p>Check that its really disabled:
 </p><pre class="highlight"><code>sysctl <span class="nt">-a</span> | <span class="nb">grep </span>rp_filter</code></pre>
 
+<p><strong>Note</strong> The max value from <code>conf/{all,interface}/rp_filter</code> is used when doing source validation on the <code>{interface}</code>. In case you don't want to disable <code>rp_filter</code> for the entire system, the correct setup is to set both <code>net.ipv4.conf.all.rp_filter=0</code> and <code>net.ipv4.conf.{interface}.rp_filter=0</code>, where <code>{interface}</code> is your vpn interface.</p>
+
 <p>Also the following options must be set.
 </p><pre class="highlight"><code><span class="nv">$ </span>sysctl <span class="nt">-w</span> net.ipv4.conf.all.forwarding<span class="o">=</span>1 net.ipv6.conf.all.forwarding<span class="o">=</span>1</code></pre>
 
