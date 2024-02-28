@@ -21,14 +21,14 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'services/IX2.md';
+	  var pageFullPath = 'services/SERNET-IX.md';
     var pageFormat   = 'markdown';
 
   </script>
   <script src="../gollum/assets/app-f05401ee374f0c7f48fc2bc08e30b4f4db705861fd5895ed70998683b383bfb5.js" type="text/javascript"></script>
   
 
-  <title>IX2</title>
+  <title>SERNET-IX</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -52,12 +52,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>IX2</div>
+            <div>SERNET-IX</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="http://127.42.42.80:4280/gollum/history/services/IX2.md"
+              href="http://127.42.42.80:4280/gollum/history/services/SERNET-IX.md"
               role="menuitem"
             >
               <span>History</span>
@@ -128,7 +128,7 @@
     <div class="BtnGroup d-flex">
         <a
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          href="http://127.42.42.80:4280/gollum/history/services/IX2.md/"
+          href="http://127.42.42.80:4280/gollum/history/services/SERNET-IX.md/"
           id="minibutton-history"
         >
           History
@@ -143,7 +143,7 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    IX2
+    SERNET-IX
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
 <li class="breadcrumb-item"><a href="../gollum/overview/services/index.html">services</a></li>
@@ -160,217 +160,7 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>we're planning to have a mcast-ix.dn42 somewhere in the cloud at #dn42 for years now...</p>
-
-<p>now we have a pull req with cosmetical issues only: <a href="https://git.dn42.dev/dn42/registry/pulls/2575">https://git.dn42.dev/dn42/registry/pulls/2575</a></p>
-
-<p>the main goal is to have a shared lan where ases can peer to each other with the following conditions:</p>
-
-<ul>
-<li>pure ethernet</li>
-<li>low latency between the vms</li>
-<li>native support for jumbo frames</li>
-<li>possibility to private vlans between participants with the same conditions</li>
-</ul>
-
-<p>how to participate:</p>
-
-<p>all you have to do is prepare a qcow2 or vmdk image and upload it to somewhere and ping nop-mnt (mc36 @ irc) with the url... i'll wget it once then boot up your vm connected to the switchport... you'll have raw dn42 reachability there and pat-ed clearnet to continue your installation or upgrades or to connect to the rest of your infra...</p>
-
-<p>alternatively you can try remotely the ix by preparing the vm image and giving it a vnic pointing to a remote switch participating in the ix already.  "-netdev socket,id=a1,udp=vpn.nop.hu:998,localaddr=:1234 -device virtio-net-pci,netdev=a1,mac=as:df:as:df:as:df" 4 example nop-mnt's vpls instance running in a very different datacenter where the real ix located, plus your networking delays to that datacenter, is the sum packet loss, delay, etc... its just about to try out the ix before participating...</p>
-
-<p>once finalized, only one thing to look for twice, the "console=ttyS0,115200n8" be present as a kernel parameter... plus that your only vnic at the real dc will be the above mentioned vpls instance, but now, with a much less delay/jitter/packetlosss.... if you need vnc access instead, just ask for it during the bringup phase....</p>
-
-<p>if you need a private peering here between you and an other participant, just ask for a private ethernet connection...</p>
-
-<p>consider enabling lldp on your interfaces because it helps speed up things on the switch moreover if you'll have more interfaces there then will help you too...</p>
-
-<p>also consider enabling pim sparse mode on the ix and then you can have the rtp://172.23.199.110@232.2.3.2:1234/ stream</p>
-
-<p>last but not least, always save your configs! there will be a daily recurring power cut sheduled to 21:00pm cest +-1minutes to have the infrastructure auto-upgraded...</p>
-
-<p>the whole idea is to consider the following hypervisor configuration:</p>
-
-<pre class="highlight"><code>dn42ix#show startup-config vdc
-vdc definition vm-bri
- connect ethernet2825 vm-switch
- cpu host
- image /rtr/ix/bri.img
- memory 1024
- nic virtio-net-pci
- mac cafe.beef.b00b
- exit
-vdc definition vm-clearnet
- local ethernet66602
- local ethernet66603
- connect ethernet66601 vm-switch
- exit
-vdc definition vm-jlu5
- connect ethernet1080 vm-switch
- cpu host
- image /rtr/ix/jlu5.img
- cdrom /rtr/ix/jlu5.iso
- memory 1024
- exit
-vdc definition vm-lare
- connect ethernet3035 vm-switch
- cpu host
- image /rtr/ix/lare.img
- memory 1024
- exit
-vdc definition vm-nop
- connect ethernet1955 vm-switch
- exit
-vdc definition vm-routeserver
- exit
-vdc definition vm-switch
- connect ethernet1080 vm-jlu5
- connect ethernet1955 vm-nop
- connect ethernet2825 vm-bri
- connect ethernet3035 vm-lare
- connect ethernet66601 vm-clearnet
- exit
-
-dn42ix#</code></pre>
-
-<p>now you can have drop-in replacement vm-s to experiment with like whats it looks a like if the ix is provisioned on a juniper vsrx3 shitload or a cisco nxosv or plain freerouter in software mode or in p4dpdk mode.... </p>
-
-<p>then publishing a small report on r/networking on behalf of #dn42 measurements</p>
-
-<p>and probably doing even more crazyer projects/experiment if we settle to have a proper dn42 ix finally with low latency shared vlan between the vms...</p>
-
-<p>like a real ix...</p>
-
-<p>static addressing plan, there is a randomized dhcp and slaac on the subnet but consider picking up a static ip and pere with that:</p>
-
-<table>
-<thead>
-<tr>
-<th align="left">nick/mnter</th>
-<th align="left">asn*</th>
-<th align="left">your-ipv4-fixed-ip</th>
-<th align="left">your-ipv6-fixed-ip</th>
-<th align="left">your-ipv6-linklocal</th>
-<th align="left">public lg</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">sw1-mcastix</td>
-<td align="left">1951</td>
-<td align="left">N/A</td>
-<td align="left">N/A</td>
-<td align="left">N/A</td>
-<td align="left">TBD: SOON</td>
-</tr>
-<tr>
-<td align="left">rs1-mcastix</td>
-<td align="left">1951</td>
-<td align="left">172.23.124.126/27</td>
-<td align="left">fde0:93fa:7a0:c1ca::179/64</td>
-<td align="left">fe80::200:bff:fead:beef</td>
-<td align="left">TBD: SOON</td>
-</tr>
-<tr>
-<td align="left">rtr1-badcorp</td>
-<td align="left">1952</td>
-<td align="left">172.23.124.97/27</td>
-<td align="left">fde0:93fa:7a0:c1ca::666/64</td>
-<td align="left">fe80::260:54ff:fe33:2178</td>
-<td align="left">TBD: SOON</td>
-</tr>
-<tr>
-<td align="left">rtr1-nop</td>
-<td align="left">1955</td>
-<td align="left">172.23.124.122/27</td>
-<td align="left">fde0:93fa:7a0:c1ca::1955/64</td>
-<td align="left">fe80::200:ccff:fe1e:c0de</td>
-<td align="left">telnet sandbox.freertr.org</td>
-</tr>
-<tr>
-<td align="left">rtr1-catgirls</td>
-<td align="left">1411</td>
-<td align="left">172.23.124.101/27</td>
-<td align="left">fde0:93fa:7a0:c1ca:581a:fc3f:a2d0:828c/64</td>
-<td align="left">fe80::1411:5</td>
-<td align="left">TBD: SOON</td>
-</tr>
-<tr>
-<td align="left">rtr1-catgirls2</td>
-<td align="left">1411</td>
-<td align="left">TBD</td>
-<td align="left">TBD</td>
-<td align="left">TBD</td>
-<td align="left">TBD: SOON</td>
-</tr>
-<tr>
-<td align="left">rtr1-lare</td>
-<td align="left">3035</td>
-<td align="left">172.23.124.114/27</td>
-<td align="left">fde0:93fa:7a0:c1ca:0:42:4242:3035/64</td>
-<td align="left">fe80::21f:45ff:fe11:7356</td>
-<td align="left">clearnet: <a href="https://lg.lare.cc/">https://lg.lare.cc/</a> dn42: <a href="https://lg.lare.dn42/">https://lg.lare.dn42/</a>
-</td>
-</tr>
-<tr>
-<td align="left">rtr1-bri</td>
-<td align="left">2825</td>
-<td align="left">TBD</td>
-<td align="left">TBD</td>
-<td align="left">TBD</td>
-<td align="left">TBD</td>
-</tr>
-<tr>
-<td align="left">rtr1-jlu5</td>
-<td align="left">1080</td>
-<td align="left">TBD</td>
-<td align="left">TBD</td>
-<td align="left">TBD</td>
-<td align="left">TBD</td>
-</tr>
-<tr>
-<td align="left">rtr1-fl</td>
-<td align="left">1975</td>
-<td align="left">TBD</td>
-<td align="left">TBD</td>
-<td align="left">TBD</td>
-<td align="left">TBD</td>
-</tr>
-</tbody>
-</table>
-
-<p>TBD: add yourself please here while keeping some ordering</p>
-
-<p>*: so your as number xxxx shortened here, the rigthmost part after the 424242xxxx.... this also will be your ethernetXXXX and so on so just remember this by heart XD</p>
-
-<table>
-<thead>
-<tr>
-<th align="left">function</th>
-<th align="left">console</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">switch</td>
-<td align="left">telnet ix.nop.dn42 20001</td>
-</tr>
-<tr>
-<td align="left">route server 1</td>
-<td align="left">telnet ix.nop.dn42 20002</td>
-</tr>
-<tr>
-<td align="left">bad-corp-rtr1</td>
-<td align="left">telnet ix.nop.dn42 20003</td>
-</tr>
-</tbody>
-</table>
-
-<p>public mrt dumps and config archive of the infra at <a href="http://ix.nop.dn42/">http://ix.nop.dn42/</a> here</p>
-
-<p>it'll be shitload in the beginning but hopefully it could improve the common knowledge....</p>
-
-<p>please consider joining #dn42-ix#2 to speed up sorting out potential issues, etc</p>
+	        <p>Placeholder.</p>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -383,7 +173,7 @@ dn42ix#</code></pre>
 <li><a href="../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
 <li><a href="../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
 <li><a href="../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
-<li><a href="../howto/Bird-communities.html" rel="nofollow">BGP communities</a></li>
+<li><a href="../howto/BGP-communities.html" rel="nofollow">BGP communities</a></li>
 <li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
 </ul>
 </li>
@@ -400,9 +190,7 @@ dn42ix#</code></pre>
 <li><a href="../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
 <li><a href="../howto/multicast.html" rel="nofollow">SSM Multicast</a></li>
 <li><a href="../howto/mpls.html" rel="nofollow">MPLS</a></li>
-<li>
-<a href="../howto/Bird.html" rel="nofollow">Bird</a> / <a href="../howto/Bird2.html" rel="nofollow">Bird2</a>
-</li>
+<li><a href="../howto/Bird2.html" rel="nofollow">Bird2</a></li>
 <li><a href="../howto/Quagga.html" rel="nofollow">Quagga</a></li>
 <li><a href="../howto/frr.html" rel="nofollow">FRRouting</a></li>
 <li><a href="../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
@@ -421,7 +209,7 @@ dn42ix#</code></pre>
 <li><a href="IRC.html" rel="nofollow">IRC</a></li>
 <li><a href="Whois.html" rel="nofollow">Whois registry</a></li>
 <li><a href="DNS.html" rel="nofollow">DNS</a></li>
-<li><a href="IX2.html" rel="nofollow">IX</a></li>
+<li><a href="IX-Collection.html" rel="nofollow">IX Collection</a></li>
 <li><a href="Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
 <li><a href="Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
 <li><a href="Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
@@ -442,6 +230,14 @@ dn42ix#</code></pre>
 <a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a><br />
 </li>
 <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+</ul>
+</li>
+<li>
+<p>Historical</p>
+
+<ul>
+<li>
+<a href="../historical/Bird.html" rel="nofollow">Bird 1</a> / </li>
 </ul>
 </li>
 <li>
@@ -472,13 +268,13 @@ dn42ix#</code></pre>
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="services/IX2.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="services/SERNET-IX.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/services/IX2.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/services/SERNET-IX.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
