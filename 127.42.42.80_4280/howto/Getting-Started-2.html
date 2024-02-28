@@ -507,7 +507,7 @@ Domain names and nserver attributes must be lowercase.</p>
 
 <h1><a class="anchor" id="get-some-peers" href="#get-some-peers"></a>Get some peers</h1>
 
-<p>In dn42, there is no real distinction between peering and transit: in most cases, everybody serves as an upstream provider to all its peers.  Note that if you have very slow connectivity to the Internet, you may want to avoid providing transit between your peers, which can be done by filtering or prepending your ASN. For the sake of sane routing, try to peer with people on the same continent to avoid inefficient routing, &lt;50ms is a good rule of thumb. You can also look into Bird communities if you are using Bird to mark the latency for the <a href="Bird-communities.html">link</a>.</p>
+<p>In dn42, there is no real distinction between peering and transit: in most cases, everybody serves as an upstream provider to all its peers.  Note that if you have very slow connectivity to the Internet, you may want to avoid providing transit between your peers, which can be done by filtering or prepending your ASN. For the sake of sane routing, try to peer with people on the same continent to avoid inefficient routing, &lt;50ms is a good rule of thumb. You can also look into Bird communities if you are using Bird to mark the latency for the <a href="BGP-communities.html">link</a>.</p>
 
 <p>You can use the peerfinder to help you find potential peers close to you: <a href="https://dn42.us/peers">https://dn42.us/peers</a></p>
 
@@ -523,7 +523,7 @@ Domain names and nserver attributes must be lowercase.</p>
 
 <p>You need a routing daemon to speak BGP with your peers. People usually run Bird or FRR, but you may use anything (OpenBGPD, XORP, somebody even used an old <a href="BGP-on-Extreme-Summit1i.html">hardware router</a> ).  See the relevant <a href="../FAQ.html#frequently-asked-questions_what-bgp-daemon-should-i-use">FAQ entry</a>.</p>
 
-<p>You can find <a href="Bird.html">configuration examples for Bird here</a>.</p>
+<p>You can find <a href="Bird2.html">configuration examples for Bird here</a>.</p>
 
 <h2><a class="anchor" id="configuration-examples" href="#configuration-examples"></a>Configuration Examples</h2>
 
@@ -542,8 +542,8 @@ Domain names and nserver attributes must be lowercase.</p>
 <li>BGP:
 
 <ul>
-<li><a href="Bird.html">Bird</a></li>
-<li><a href="Quagga.html">Quagga</a></li>
+<li><a href="Bird2.html">Bird</a></li>
+<li><a href="../historical/Quagga.html">Quagga</a></li>
 </ul>
 </li>
 <li>Router specific:
@@ -596,7 +596,6 @@ Domain names and nserver attributes must be lowercase.</p>
 <li><a href="multicast.html" rel="nofollow">SSM Multicast</a></li>
 <li><a href="mpls.html" rel="nofollow">MPLS</a></li>
 <li><a href="Bird2.html" rel="nofollow">Bird2</a></li>
-<li><a href="Quagga.html" rel="nofollow">Quagga</a></li>
 <li><a href="frr.html" rel="nofollow">FRRouting</a></li>
 <li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
 <li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
@@ -642,6 +641,7 @@ Domain names and nserver attributes must be lowercase.</p>
 
 <ul>
 <li><a href="../historical/Bird.html" rel="nofollow">Bird 1</a></li>
+<li><a href="../historical/Quagga.html" rel="nofollow">Quagga</a></li>
 </ul>
 </li>
 <li>

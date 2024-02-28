@@ -160,7 +160,7 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>This guide is similar to the normal <a href="Bird.html">Bird</a> guide in that it provides you with help setting up the BIRD routing daemon, with the difference that this page is dedicated to versions 2.x.</p>
+	        <p>This guide is similar to the normal <a href="../historical/Bird.html">Bird</a> guide in that it provides you with help setting up the BIRD routing daemon, with the difference that this page is dedicated to versions 2.x.</p>
 
 <h1><a class="anchor" id="arch-linux" href="#arch-linux"></a>Arch Linux</h1>
 
@@ -337,11 +337,38 @@ Additionally Bird2 before 2.0.8 cannot automatically update filtered bgp routes 
 
 <span class="n">include</span> <span class="s2">"/etc/bird/peers/*"</span>;</code></pre>
 
+<h1><a class="anchor" id="setting-up-peers" href="#setting-up-peers"></a>Setting up peers</h1>
+
+<p>Please note: This section assumes that you've already got a tunnel to your peering partner setup.</p>
+
+<p>First, make sure the /etc/bird/peers directory exists:</p>
+
+<pre class="highlight"><code><span class="c"># mkdir -p /etc/bird/peers</span></code></pre>
+
+<p>Then for each peer, create a configuration file similar to this one:</p>
+
+<p><code>/etc/bird/peers/&lt;NEIGHBOR_NAME&gt;.conf</code>:</p>
+
+<pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt; <span class="n">from</span> <span class="n">dnpeers</span> {
+        <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IP</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
+}
+
+<span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt;<span class="err">_</span><span class="n">v6</span> <span class="n">from</span> <span class="n">dnpeers</span> {
+        <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IPv6</span>&gt;%&lt;<span class="n">NEIGHBOR_INTERFACE</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
+}</code></pre>
+
+<p>Due to the special link local addresses of IPv6, an interface has to be specified using the <code>%&lt;if&gt;</code> syntax if a link local address is used (Which is recommended)</p>
+
+<h1><a class="anchor" id="bgp-communities" href="#bgp-communities"></a>BGP communities</h1>
+
+<p>Communities can be used to prioritize traffic based on different flags, in DN42 we are using communities to prioritize based on latency, bandwidth and encryption. It is really easy to get started with communities and we encourage all of you to get the basic configuration done and to mark your peerings with the correct flags for improved routing.
+More information can be found <a href="BGP-communities.html">here</a>. </p>
+
 <h1><a class="anchor" id="route-origin-authorization" href="#route-origin-authorization"></a>Route Origin Authorization</h1>
 
-<p>The example config above relies on ROA configuration files in <code>/etc/bird/roa_dn42{,_v6}.conf</code>. These should be automatically downloaded and updated every so often to prevent BGP highjacking, <a href="Bird.html#route-origin-authorization">see the bird1 page</a> for more details and links to the ROA files. Note: edit the links to replace roa_bird1 to say roa_bird2 if using the cron jobs listed on that page. </p>
+<p>Route Origin Authorizations should be used in BIRD to authenticate prefix announcements. These check the originating AS and validate that they are allowed to advertise a prefix. </p>
 
-<h1><a class="anchor" id="rpki-rtr-for-roa" href="#rpki-rtr-for-roa"></a>RPKI / RTR for ROA</h1>
+<h2><a class="anchor" id="rpki-rtr-for-roa" href="#rpki-rtr-for-roa"></a>RPKI / RTR for ROA</h2>
 
 <p>To use an RTR server for ROA information, replace this config in your bird2 configuration file:</p>
 
@@ -378,37 +405,6 @@ To reflect changes in the ROA table without a manual reload, <strong>ADD</strong
     <span class="n">import</span> <span class="n">table</span>;
   };
 }</code></pre>
-
-<h1><a class="anchor" id="setting-up-peers" href="#setting-up-peers"></a>Setting up peers</h1>
-
-<p>Please note: This section assumes that you've already got a tunnel to your peering partner setup.</p>
-
-<p>First, make sure the /etc/bird/peers directory exists:</p>
-
-<pre class="highlight"><code><span class="c"># mkdir -p /etc/bird/peers</span></code></pre>
-
-<p>Then for each peer, create a configuration file similar to this one:</p>
-
-<p><code>/etc/bird/peers/&lt;NEIGHBOR_NAME&gt;.conf</code>:</p>
-
-<pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt; <span class="n">from</span> <span class="n">dnpeers</span> {
-        <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IP</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
-}
-
-<span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt;<span class="err">_</span><span class="n">v6</span> <span class="n">from</span> <span class="n">dnpeers</span> {
-        <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IPv6</span>&gt;%&lt;<span class="n">NEIGHBOR_INTERFACE</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
-}</code></pre>
-
-<p>Due to the special link local addresses of IPv6, an interface has to be specified using the <code>%&lt;if&gt;</code> syntax if a link local address is used (Which is recommended)</p>
-
-<h1><a class="anchor" id="bgp-communities" href="#bgp-communities"></a>BGP communities</h1>
-
-<p>Communities can be used to prioritize traffic based on different flags, in DN42 we are using communities to prioritize based on latency, bandwidth and encryption. It is really easy to get started with communities and we encourage all of you to get the basic configuration done and to mark your peerings with the correct flags for improved routing.
-More information can be found <a href="BGP-communities.html">here</a>. </p>
-
-<h1><a class="anchor" id="route-origin-authorization-1" href="#route-origin-authorization-1"></a>Route Origin Authorization</h1>
-
-<p>Route Origin Authorizations should be used in BIRD to authenticate prefix announcements. These check the originating AS and validate that they are allowed to advertise a prefix. </p>
 
 <h2><a class="anchor" id="roa-tables" href="#roa-tables"></a>ROA Tables</h2>
 
@@ -617,14 +613,6 @@ if </span>birdc configure <span class="p">;</span> <span class="k">then
    <span class="n">reject</span>;
 }</code></pre>
 
-<p>Also, define your ROA table with:</p>
-
-<pre class="highlight"><code><span class="n">roa</span> <span class="n">table</span> <span class="n">dn42_roa</span> {
-    <span class="n">include</span> <span class="s2">"/var/lib/bird/bird_roa_dn42.conf"</span>;
-};</code></pre>
-
-<p><strong>NOTE</strong>: Make sure you setup ROA checks for both IPv4 and IPv6.</p>
-
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -654,7 +642,6 @@ if </span>birdc configure <span class="p">;</span> <span class="k">then
 <li><a href="multicast.html" rel="nofollow">SSM Multicast</a></li>
 <li><a href="mpls.html" rel="nofollow">MPLS</a></li>
 <li><a href="Bird2.html" rel="nofollow">Bird2</a></li>
-<li><a href="Quagga.html" rel="nofollow">Quagga</a></li>
 <li><a href="frr.html" rel="nofollow">FRRouting</a></li>
 <li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
 <li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
@@ -700,6 +687,7 @@ if </span>birdc configure <span class="p">;</span> <span class="k">then
 
 <ul>
 <li><a href="../historical/Bird.html" rel="nofollow">Bird 1</a></li>
+<li><a href="../historical/Quagga.html" rel="nofollow">Quagga</a></li>
 </ul>
 </li>
 <li>
