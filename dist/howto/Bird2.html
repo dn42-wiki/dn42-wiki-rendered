@@ -160,13 +160,15 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>This guide is similar to the normal <a href="../historical/Bird.html">Bird</a> guide in that it provides you with help setting up the BIRD routing daemon, with the difference that this page is dedicated to versions 2.x.</p>
+	        <h1><a class="anchor" id="installation-notes" href="#installation-notes"></a>Installation notes</h1>
 
-<h1><a class="anchor" id="arch-linux" href="#arch-linux"></a>Arch Linux</h1>
+<p>This page is applicable to bird versions 2.x</p>
+
+<h2><a class="anchor" id="arch-linux" href="#arch-linux"></a>Arch Linux</h2>
 
 <p>The <code>extra/bird</code> package in the arch repositories will usually have a relatively recent version and there is (usually) no need for a manual install over the usual <code># pacman -S bird</code>.</p>
 
-<h1><a class="anchor" id="bird2-version-2-0-8-debian" href="#bird2-version-2-0-8-debian"></a>Bird2 Version &lt;2.0.8 / Debian</h1>
+<h2><a class="anchor" id="bird2-version-2-0-8-debian" href="#bird2-version-2-0-8-debian"></a>Bird2 Version &lt;2.0.8 / Debian</h2>
 
 <p>Please note, that Bird2 versions before 2.0.8 don't support IPv6 extended nexthops for IPv4 destinations (<a href="https://bird.network.cz/pipermail/bird-users/2020-April/014412.html">https://bird.network.cz/pipermail/bird-users/2020-April/014412.html</a>).
 Additionally Bird2 before 2.0.8 cannot automatically update filtered bgp routes when an used RPKI source changes.</p>
@@ -310,27 +312,29 @@ Additionally Bird2 before 2.0.8 cannot automatically update filtered bgp routes 
         <span class="n">import</span> <span class="n">filter</span> {
           <span class="n">if</span> <span class="n">is_valid_network</span>() &amp;&amp; !<span class="n">is_self_net</span>() <span class="n">then</span> {
             <span class="n">if</span> (<span class="n">roa_check</span>(<span class="n">dn42_roa</span>, <span class="n">net</span>, <span class="n">bgp_path</span>.<span class="n">last</span>) != <span class="n">ROA_VALID</span>) <span class="n">then</span> {
-              <span class="n">print</span> <span class="s2">"[dn42] ROA check failed for "</span>, <span class="n">net</span>, <span class="s2">" ASN "</span>, <span class="n">bgp_path</span>.<span class="n">last</span>;
+              <span class="c"># Reject when unknown or invalid according to ROA
+</span>              <span class="n">print</span> <span class="s2">"[dn42] ROA check failed for "</span>, <span class="n">net</span>, <span class="s2">" ASN "</span>, <span class="n">bgp_path</span>.<span class="n">last</span>;
               <span class="n">reject</span>;
             } <span class="n">else</span> <span class="n">accept</span>;
           } <span class="n">else</span> <span class="n">reject</span>;
         };
 
         <span class="n">export</span> <span class="n">filter</span> { <span class="n">if</span> <span class="n">is_valid_network</span>() &amp;&amp; <span class="n">source</span> ~ [<span class="n">RTS_STATIC</span>, <span class="n">RTS_BGP</span>] <span class="n">then</span> <span class="n">accept</span>; <span class="n">else</span> <span class="n">reject</span>; };
-        <span class="n">import</span> <span class="n">limit</span> <span class="m">1000</span> <span class="n">action</span> <span class="n">block</span>;
+        <span class="n">import</span> <span class="n">limit</span> <span class="m">9000</span> <span class="n">action</span> <span class="n">block</span>;
     };
 
     <span class="n">ipv6</span> {   
         <span class="n">import</span> <span class="n">filter</span> {
           <span class="n">if</span> <span class="n">is_valid_network_v6</span>() &amp;&amp; !<span class="n">is_self_net_v6</span>() <span class="n">then</span> {
             <span class="n">if</span> (<span class="n">roa_check</span>(<span class="n">dn42_roa_v6</span>, <span class="n">net</span>, <span class="n">bgp_path</span>.<span class="n">last</span>) != <span class="n">ROA_VALID</span>) <span class="n">then</span> {
-              <span class="n">print</span> <span class="s2">"[dn42] ROA check failed for "</span>, <span class="n">net</span>, <span class="s2">" ASN "</span>, <span class="n">bgp_path</span>.<span class="n">last</span>;
+              <span class="c"># Reject when unknown or invalid according to ROA
+</span>              <span class="n">print</span> <span class="s2">"[dn42] ROA check failed for "</span>, <span class="n">net</span>, <span class="s2">" ASN "</span>, <span class="n">bgp_path</span>.<span class="n">last</span>;
               <span class="n">reject</span>;
             } <span class="n">else</span> <span class="n">accept</span>;
           } <span class="n">else</span> <span class="n">reject</span>;
         };
         <span class="n">export</span> <span class="n">filter</span> { <span class="n">if</span> <span class="n">is_valid_network_v6</span>() &amp;&amp; <span class="n">source</span> ~ [<span class="n">RTS_STATIC</span>, <span class="n">RTS_BGP</span>] <span class="n">then</span> <span class="n">accept</span>; <span class="n">else</span> <span class="n">reject</span>; };
-        <span class="n">import</span> <span class="n">limit</span> <span class="m">1000</span> <span class="n">action</span> <span class="n">block</span>; 
+        <span class="n">import</span> <span class="n">limit</span> <span class="m">9000</span> <span class="n">action</span> <span class="n">block</span>; 
     };
 }
 
@@ -466,7 +470,7 @@ To reflect changes in the ROA table without a manual reload, <strong>ADD</strong
 </tbody>
 </table>
 
-<p>ROA files generated by <a href="https://git.dn42.dev/Kioubit/roa_wizard">roa_wizard</a> are available:</p>
+<p>ROA files generated by <a href="https://git.dn42.dev/Kioubit/roa_wizard">roa_wizard</a> are available from kioubit.dn42:</p>
 
 <table>
 <thead>
@@ -502,17 +506,8 @@ To reflect changes in the ROA table without a manual reload, <strong>ADD</strong
 
 <p>You can add cron entries to periodically update the tables:</p>
 
-<pre class="highlight"><code>*/<span class="m">15</span> * * * * <span class="n">curl</span> -<span class="n">sfSLR</span> {-<span class="n">o</span>,-<span class="n">z</span>}/<span class="n">var</span>/<span class="n">lib</span>/<span class="n">bird</span>/<span class="n">bird6_roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird1_6</span>.<span class="n">conf</span> &amp;&amp; <span class="n">chronic</span> <span class="n">birdc6</span> <span class="n">configure</span>
-*/<span class="m">15</span> * * * * <span class="n">curl</span> -<span class="n">sfSLR</span> {-<span class="n">o</span>,-<span class="n">z</span>}/<span class="n">var</span>/<span class="n">lib</span>/<span class="n">bird</span>/<span class="n">bird_roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird1_4</span>.<span class="n">conf</span> &amp;&amp; <span class="n">chronic</span> <span class="n">birdc</span> <span class="n">configure</span></code></pre>
-
-<p>Debian version:</p>
-
-<pre class="highlight"><code>*/<span class="m">15</span> * * * * <span class="n">curl</span> -<span class="n">sfSLR</span> -<span class="n">o</span>/<span class="n">var</span>/<span class="n">lib</span>/<span class="n">bird</span>/<span class="n">bird6_roa_dn42</span>.<span class="n">conf</span> -<span class="n">z</span>/<span class="n">var</span>/<span class="n">lib</span>/<span class="n">bird</span>/<span class="n">bird6_roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird1_6</span>.<span class="n">conf</span> &amp;&amp; /<span class="n">usr</span>/<span class="n">sbin</span>/<span class="n">birdc6</span> <span class="n">configure</span>
-*/<span class="m">15</span> * * * * <span class="n">curl</span> -<span class="n">sfSLR</span> -<span class="n">o</span>/<span class="n">var</span>/<span class="n">lib</span>/<span class="n">bird</span>/<span class="n">bird_roa_dn42</span>.<span class="n">conf</span> -<span class="n">z</span>/<span class="n">var</span>/<span class="n">lib</span>/<span class="n">bird</span>/<span class="n">bird_roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird1_4</span>.<span class="n">conf</span> &amp;&amp; /<span class="n">usr</span>/<span class="n">sbin</span>/<span class="n">birdc</span> <span class="n">configure</span></code></pre>
-
-<p>then create the directory to make sure curls can save the files:</p>
-
-<pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> /var/lib/bird/</code></pre>
+<pre class="highlight"><code>*/<span class="m">15</span> * * * * <span class="n">curl</span> -<span class="n">sfSLR</span> {-<span class="n">o</span>,-<span class="n">z</span>}/<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_4</span>.<span class="n">conf</span> &amp;&amp; <span class="n">birdc</span> <span class="n">configure</span> &gt; /<span class="n">dev</span>/<span class="n">null</span>
+*/<span class="m">15</span> * * * * <span class="n">curl</span> -<span class="n">sfSLR</span> {-<span class="n">o</span>,-<span class="n">z</span>}/<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_6</span>.<span class="n">conf</span> &amp;&amp; <span class="n">birdc</span> <span class="n">configure</span> &gt; /<span class="n">dev</span>/<span class="n">null</span></code></pre>
 
 <p>Or use a systemd timer: (check the commands before copy-pasting)</p>
 
@@ -522,8 +517,8 @@ To reflect changes in the ROA table without a manual reload, <strong>ADD</strong
 
 [<span class="n">Service</span>]
 <span class="n">Type</span>=<span class="n">oneshot</span>
-<span class="n">ExecStart</span>=<span class="n">curl</span> -<span class="n">sfSLR</span> -<span class="n">o</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> -<span class="n">z</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_4</span>.<span class="n">conf</span>
-<span class="n">ExecStart</span>=<span class="n">curl</span> -<span class="n">sfSLR</span> -<span class="n">o</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> -<span class="n">z</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_6</span>.<span class="n">conf</span>
+<span class="n">ExecStart</span>=<span class="n">curl</span> -<span class="n">sfSLR</span> {-<span class="n">o</span>,-<span class="n">z</span>}/<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_4</span>.<span class="n">conf</span>
+<span class="n">ExecStart</span>=<span class="n">curl</span> -<span class="n">sfSLR</span> {-<span class="n">o</span>,-<span class="n">z</span>}/<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_6</span>.<span class="n">conf</span>
 <span class="n">ExecStart</span>=<span class="n">birdc</span> <span class="n">configure</span></code></pre>
 
 <pre class="highlight"><code><span class="c"># /etc/systemd/system/dn42-roa.timer
@@ -602,15 +597,6 @@ if </span>birdc configure <span class="p">;</span> <span class="k">then
   <span class="n">retry</span> <span class="n">keep</span> <span class="m">90</span>;
   <span class="n">refresh</span> <span class="n">keep</span> <span class="m">900</span>;
   <span class="n">expire</span> <span class="n">keep</span> <span class="m">172800</span>;
-}</code></pre>
-
-<h2><a class="anchor" id="filter-configuration" href="#filter-configuration"></a>Filter configuration</h2>
-
-<p>In your import filter add the following to reject invalid routes:</p>
-
-<pre class="highlight"><code><span class="n">if</span> (<span class="n">roa_check</span>(<span class="n">dn42_roa</span>, <span class="n">net</span>, <span class="n">bgp_path</span>.<span class="n">last</span>) != <span class="n">ROA_VALID</span>) <span class="n">then</span> {
-   <span class="n">print</span> <span class="s2">"[dn42] ROA check failed for "</span>, <span class="n">net</span>, <span class="s2">" ASN "</span>, <span class="n">bgp_path</span>.<span class="n">last</span>;
-   <span class="n">reject</span>;
 }</code></pre>
 
 	      </div>
