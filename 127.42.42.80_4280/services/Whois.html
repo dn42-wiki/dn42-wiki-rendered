@@ -246,11 +246,17 @@ Mirrors are hosted at <code>asn.grmml.dn42</code> and <code>asn.lorkep.dn42</cod
 
 <p>The Python code for generating the zone from the registry is available on the monotone repository.</p>
 
-<p>An alternative version to query the registry is it <code>ip.catgirls.dn42</code> (Source code <a href="https://git.catgirls.systems/famfo/ipinfo">https://git.catgirls.systems/famfo/ipinfo</a>).</p>
+<p>An alternative version to query the registry is it <code>ip.catgirls.dn42</code> (IPv6 only) (Source code <a href="https://git.catgirls.systems/famfo/ipinfo">https://git.catgirls.systems/famfo/ipinfo</a>). Note: if there is no <code>route</code>/<code>route6</code> object for the <code>inetnum</code>/<code>inet6num</code>, the ip address will not be found.</p>
+
+<p>This can be used together with <code>mtr</code> using the <code>--ipinfo_provider4</code> and <code>--ipinfo_provider6</code> flags (mtr has to be build from source for that, there hasn't been a release in a while).</p>
 
 <p>Example:
-</p><pre class="highlight"><code>$ dig +short TXT as4242421411.ip.catgirls.dn42
-"4242421411 | C4TG1RL5-MNT | 172.23.196.32/27 | fd42:deca:fbad::/48"</code></pre>
+</p><pre class="highlight"><code><span class="nv">$ </span>dig +short TXT as4242421411.ip.catgirls.dn42
+<span class="s2">"4242421411 | C4TG1RL5-MNT | 172.20.0.81/32 | 172.23.196.32/27 | 172.20.0.80/32 | fd42:d42:d42:2080::/64 | fd42:deca:fbad::/48 | fd42:d42:d42:81::/64"</span>
+<span class="nv">$ </span>dig +short TXT 32.196.23.172.ip.catgirls.dn42
+<span class="s2">"4242421411 | C4TG1RL5-MNT | 172.20.0.81/32 | 172.23.196.32/27 | 172.20.0.80/32 | fd42:d42:d42:2080::/64 | fd42:deca:fbad::/48 | fd42:d42:d42:81::/64"</span>
+<span class="nv">$ </span>dig +short TXT 1.d.a.b.f.a.c.e.d.2.4.d.f.ip.catgirls.dn42
+<span class="s2">"4242421411 | C4TG1RL5-MNT | 172.20.0.81/32 | 172.23.196.32/27 | 172.20.0.80/32 | fd42:d42:d42:2080::/64 | fd42:deca:fbad::/48 | fd42:d42:d42:81::/64"</span></code></pre>
 
 <p>The idea comes from the guys at cymru.com, who provide this service for the Internet (e.g. <code>AS1.asn.cymru.com</code>), see <a href="https://www.team-cymru.org/Services/ip-to-asn.html#dns">https://www.team-cymru.org/Services/ip-to-asn.html#dns</a></p>
 
