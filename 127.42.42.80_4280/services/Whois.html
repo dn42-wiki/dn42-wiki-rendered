@@ -246,6 +246,12 @@ Mirrors are hosted at <code>asn.grmml.dn42</code> and <code>asn.lorkep.dn42</cod
 
 <p>The Python code for generating the zone from the registry is available on the monotone repository.</p>
 
+<p>An alternative version to query the registry is it <code>ip.catgirls.dn42</code> (Source code <a href="https://git.catgirls.systems/famfo/ipinfo">https://git.catgirls.systems/famfo/ipinfo</a>).</p>
+
+<p>Example:
+</p><pre class="highlight"><code>$ dig +short TXT as4242421411.ip.catgirls.dn42
+"4242421411 | C4TG1RL5-MNT | 172.23.196.32/27 | fd42:deca:fbad::/48"</code></pre>
+
 <p>The idea comes from the guys at cymru.com, who provide this service for the Internet (e.g. <code>AS1.asn.cymru.com</code>), see <a href="https://www.team-cymru.org/Services/ip-to-asn.html#dns">https://www.team-cymru.org/Services/ip-to-asn.html#dns</a></p>
 
 <h1><a class="anchor" id="software" href="#software"></a>Software</h1>
@@ -255,6 +261,8 @@ Mirrors are hosted at <code>asn.grmml.dn42</code> and <code>asn.lorkep.dn42</cod
 <a href="../howto/lglass.html">lglass</a> is a python implementation for working with the registry. It features a whois server, tools to manipulate the data (DNS zone generation, etc).</li>
 <li>
 <a href="https://git.dn42.dev/registry/whois42d">whois42d</a> written in golang, lightweight/fast, whois server with support for all registry objects, type filtering and systemd socket activation.</li>
+<li>
+<a href="https://git.dn42.dev/C4TG1RL5/who42rs">who42rs</a> a reimplementation of whois42d written in Rust</li>
 </ul>
 
 <h1><a class="anchor" id="whois-daemons" href="#whois-daemons"></a>Whois daemons</h1>
@@ -302,7 +310,7 @@ Mirrors are hosted at <code>asn.grmml.dn42</code> and <code>asn.lorkep.dn42</cod
 </tr>
 <tr>
 <td>C4TG1RL5</td>
-<td>at-vie1.catgirls.dn42</td>
+<td>de-fsn1.catgirls.dn42</td>
 <td>172.23.196.33 / fd42:deca:fbad::1</td>
 </tr>
 <tr>
