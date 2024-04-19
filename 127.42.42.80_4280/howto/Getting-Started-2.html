@@ -25,7 +25,7 @@
     var pageFormat   = 'markdown';
 
   </script>
-  <script src="../gollum/assets/app-f05401ee374f0c7f48fc2bc08e30b4f4db705861fd5895ed70998683b383bfb5.js" type="text/javascript"></script>
+  <script src="../gollum/assets/app-e63ab45773141139cffcd04474f73c21042c7267568325d4e00775b4f9eaa022.js" type="text/javascript"></script>
   
 
   <title>Getting-Started</title>
@@ -165,9 +165,9 @@
 <h1><a class="anchor" id="requirements" href="#requirements"></a>Requirements</h1>
 
 <ul>
-<li>you have at least one router running 24/7. Any Linux or BSD box can be turned into a router. If your home router runs OpenWRT, you might consider using it for dn42.</li>
-<li>your router is able to establish network tunnels over the Internet (Wireguard, GRE, OpenVPN, IPSec, Tinc...). Beware, your network operator might filter this kind of traffic, e.g. in schools or universities.</li>
-<li>you are generally knowledgeable with networking and routing (i.e. you've heard about BGP, IGP, forwarding, and you're willing to configure a BGP router such as FRR or Bird)</li>
+  <li>you have at least one router running 24/7. Any Linux or BSD box can be turned into a router. If your home router runs OpenWRT, you might consider using it for dn42.</li>
+  <li>your router is able to establish network tunnels over the Internet (Wireguard, GRE, OpenVPN, IPSec, Tinc…). Beware, your network operator might filter this kind of traffic, e.g. in schools or universities.</li>
+  <li>you are generally knowledgeable with networking and routing (i.e. you've heard about BGP, IGP, forwarding, and you're willing to configure a BGP router such as FRR or Bird)</li>
 </ul>
 
 <h1><a class="anchor" id="formalities" href="#formalities"></a>Formalities</h1>
@@ -176,7 +176,7 @@
 
 <h2><a class="anchor" id="subscribe-to-the-mailing-list" href="#subscribe-to-the-mailing-list"></a>Subscribe to the mailing list</h2>
 
-<p>This is important, as it allows to stay up-to-date on best practices, new services, security issues...</p>
+<p>This is important, as it allows to stay up-to-date on best practices, new services, security issues…</p>
 
 <p>See <a href="../contact.html#contact_mailing-list">Contact</a> to subscribe.</p>
 
@@ -188,26 +188,26 @@
 
 <p>While filling out the objects in the DN42 registry make sure to refer to the <a href="https://explorer.dn42.dev/#/schema">schema</a> to speed up the review process.</p>
 
-<p>When submitting your pull request, you must squash multiple changes to a single commit, again there are instructions in the <a href="https://git.dn42.dev/dn42/registry/src/branch/master/README.md">README</a> for how to do this. </p>
+<p>When submitting your pull request, you must squash multiple changes to a single commit, again there are instructions in the <a href="https://git.dn42.dev/dn42/registry/src/branch/master/README.md">README</a> for how to do this.</p>
 
 <p>Remember to add authentication to your <code>mntner</code> object, and <a href="Registry-Authentication.html">sign your commit</a></p>
 
 <p>The registry includes a number of scripts to help check your request:</p>
 
 <ul>
-<li>
+  <li>
 <code>fmt-my-stuff &lt;FOO&gt;-MNT</code>: automatically fixes minor formatting errors</li>
-<li>
+  <li>
 <code>check-my-stuff &lt;FOO&gt;-MNT</code>: validates your objects against the registry schema</li>
-<li>
+  <li>
 <code>check-pol origin/master &lt;FOO&gt;-MNT</code>: checks for policy violations</li>
-<li>
+  <li>
 <code>squash-my-commits</code>: automatically update and squash your local commits</li>
-<li>
+  <li>
 <code>sign-my-commit</code>: sign your commit using a pgp key or standard SSH signing</li>
 </ul>
 
-<p>The registry maintainers run the checking scripts against each request, so please run these yourself first to check for simple errors. </p>
+<p>The registry maintainers run the checking scripts against each request, so please run these yourself first to check for simple errors.</p>
 
 <p>Do browse through the registry and look at the <a href="https://git.dn42.dev/dn42/registry/pulls">pull request queue</a> to see examples, understand how the process works and see the types of questions asked by the registry maintainers.</p>
 
@@ -217,36 +217,33 @@
 
 <p>This example assumes that your name is <code>&lt;FOO&gt;</code>, part of an organisation called <code>&lt;FOO-ORG&gt;</code> (for instance, your hackerspace). <em>Organisation objects are not required if your are registering as an individual</em>. Obviously, these should be replaced by the appropriate values in all examples below.</p>
 
-<p>We will create several types of objects: </p>
-
+<p>We will create several types of objects:</p>
 <ul>
-<li>
+  <li>
 <strong>maintainer</strong> objects, which are authenticated so that only you can edit your own objects</li>
-<li>
+  <li>
 <strong>person</strong> objects, which describe people or organisations and provide contact information</li>
-<li>and <strong>resource</strong> objects (AS number, IP subnet, DNS zone, etc).</li>
+  <li>and <strong>resource</strong> objects (AS number, IP subnet, DNS zone, etc).</li>
 </ul>
 
-<p>All objects are simple text files in the specific subfolders, but the files do have a particular format. The files should use spaces and not tabs, and the attribute values must start on the 20th column. </p>
+<p>All objects are simple text files in the specific subfolders, but the files do have a particular format. The files should use spaces and not tabs, and the attribute values must start on the 20th column.</p>
 
 <h3><a class="anchor" id="create-a-maintainer-object" href="#create-a-maintainer-object"></a>Create a maintainer object</h3>
 
 <p>Create a <code>mntner</code> object in <code>data/mntner/</code> named <code>&lt;FOO&gt;-MNT</code>. It will be used to edit all the objects that are under your responsibility.</p>
 
 <ul>
-<li>use <code>&lt;FOO&gt;-MNT</code> as <code>mnt-by</code>, otherwise, you won't be able to edit your maintainer object.</li>
-<li>Add an 'auth' attribute so that changes to your objects can be verified.<br />
-</li>
+  <li>use <code>&lt;FOO&gt;-MNT</code> as <code>mnt-by</code>, otherwise, you won't be able to edit your maintainer object.</li>
+  <li>Add an 'auth' attribute so that changes to your objects can be verified.</li>
 </ul>
 
-<p>The <code>auth</code> attribute is used to verify changes to your object. There is a separate page on <a href="Registry-Authentication.html">registry authentication</a> which details what to include in your mntner object, how to sign and verify your commits. </p>
+<p>The <code>auth</code> attribute is used to verify changes to your object. There is a separate page on <a href="Registry-Authentication.html">registry authentication</a> which details what to include in your mntner object, how to sign and verify your commits.</p>
 
 <p>Common authentication methods are:</p>
-
 <ul>
-<li>PGP Key: <code>auth: pgp-fingerprint &lt;pgp-fingerprint&gt;</code>
+  <li>PGP Key: <code>auth: pgp-fingerprint &lt;pgp-fingerprint&gt;</code>
 </li>
-<li>SSH Key: <code>auth: ssh-{rsa,ed25519} &lt;key&gt;</code>
+  <li>SSH Key: <code>auth: ssh-{rsa,ed25519} &lt;key&gt;</code>
 </li>
 </ul>
 
@@ -263,12 +260,12 @@
 <p>Create a  <code>person</code> object in <code>data/person/</code> for <strong>yourself</strong> (not your organisation/hackerspace/whatever).</p>
 
 <ul>
-<li>use something like <code>&lt;FOO&gt;-DN42</code> as <code>nic-hdl</code>, it should end with <code>-DN42</code>.</li>
-<li>the <code>person</code> field is more freeform, you may use your nickname or even real name here.</li>
-<li>provide an email.</li>
-<li>you may provide additional ways of contacting you, using one or more <code>contact</code> field. For instance <code>xmpp:luke@theforce.net</code>, <code>irc:luke42@hackint</code>, <code>twitter: TheGreatLuke</code>.</li>
-<li>you may wish to add other fields, such as <code>pgp-fingerprint</code>, <code>remarks</code>, and so on.</li>
-<li>don't forget to set <code>mnt-by</code> to <code>&lt;FOO&gt;-MNT</code>.</li>
+  <li>use something like <code>&lt;FOO&gt;-DN42</code> as <code>nic-hdl</code>, it should end with <code>-DN42</code>.</li>
+  <li>the <code>person</code> field is more freeform, you may use your nickname or even real name here.</li>
+  <li>provide an email.</li>
+  <li>you may provide additional ways of contacting you, using one or more <code>contact</code> field. For instance <code>xmpp:luke@theforce.net</code>, <code>irc:luke42@hackint</code>, <code>twitter: TheGreatLuke</code>.</li>
+  <li>you may wish to add other fields, such as <code>pgp-fingerprint</code>, <code>remarks</code>, and so on.</li>
+  <li>don't forget to set <code>mnt-by</code> to <code>&lt;FOO&gt;-MNT</code>.</li>
 </ul>
 
 <p><strong>Data Privacy</strong></p>
@@ -290,16 +287,16 @@
 <p>If you intend to register resources for an organisation (e.g. your hackerspace), you must also create an <code>organisation</code> object for your organisation:</p>
 
 <ul>
-<li>
+  <li>
 <code>organisation</code> is of the form <code>&lt;ORG-FOO&gt;</code>.</li>
-<li>
+  <li>
 <code>org-name</code> should be the name of your organisation.</li>
-<li>
+  <li>
 <code>e-mail</code> should be a contact address for your organisation, or maybe a mailing list (but people should be able to send email without subscribing).</li>
-<li>
+  <li>
 <code>admin-c</code>, <code>tech-c</code>, and <code>abuse-c</code> may point to <code>person</code> objects responsible for the respective role in your organisation.</li>
-<li>you may provide a website (<code>www</code> field).</li>
-<li>don't forget to set <code>mnt-by</code> to <code>&lt;FOO&gt;-MNT</code>, since you're managing this object on behalf of your organisation.</li>
+  <li>you may provide a website (<code>www</code> field).</li>
+  <li>don't forget to set <code>mnt-by</code> to <code>&lt;FOO&gt;-MNT</code>, since you're managing this object on behalf of your organisation.</li>
 </ul>
 
 <p>Example: data/organisation/ORG-EXAMPLE
@@ -315,30 +312,30 @@
 <p>From now on, you should use:</p>
 
 <ul>
-<li>
+  <li>
 <code>admin-c: &lt;FOO&gt;-DN42</code> and <code>tech-c: &lt;FOO&gt;-DN42</code> for your own resources.</li>
-<li>
+  <li>
 <code>admin-c: &lt;FOO&gt;-DN42</code>, <code>tech-c: &lt;FOO&gt;-DN42</code> and <code>org: &lt;ORG-FOO&gt;</code> for the resources of your organisation.</li>
-<li>
+  <li>
 <code>mnt-by: &lt;FOO&gt;-MNT</code> for all objects, so that you can edit them later.</li>
 </ul>
 
-<p>This applies to AS numbers, network prefixes, routes, DNS records...</p>
+<p>This applies to AS numbers, network prefixes, routes, DNS records…</p>
 
 <h3><a class="anchor" id="register-an-as-number" href="#register-an-as-number"></a>Register an AS number</h3>
 
 <p>To register an AS number, create an <code>aut-num</code> object in <code>data/aut-num/</code>.<br />
 <code>as-name</code> should be a name for your AS.</p>
 
-<p>Your AS number can be chosen arbitrarily in the dn42 ASN space, see the <a href="https://git.dn42.dev/dn42/registry/src/master/data/as-block">as-block objects</a> in the registry. </p>
+<p>Your AS number can be chosen arbitrarily in the dn42 ASN space, see the <a href="https://git.dn42.dev/dn42/registry/src/master/data/as-block">as-block objects</a> in the registry.</p>
 
 <p><strong>You should allocate your AS number in the 4242420000-4242423999 range</strong></p>
 
 <p><a href="https://explorer.burble.com/free#/asn">dn42regsrv</a> includes a page for finding free ASN. For a list of currently assigned AS numbers browse the registry data/aut-num/ directory or <a href="https://explorer.burble.com/#/aut-num/">online</a>.</p>
 
-<p>If you intend to use an ASN outside of the native dn42 ranges, please check that it doesn't clash with the <a href="http://wiki.freifunk.net/AS-Nummern">Freifunk AS-Numbers</a> or other networks (ChaosVPN, etc). </p>
+<p>If you intend to use an ASN outside of the native dn42 ranges, please check that it doesn't clash with the [Freifunk AS-Numbers] (http://wiki.freifunk.net/AS-Nummern) or other networks (ChaosVPN, etc).</p>
 
-<p>Internet ASNs may be used, but you must take care to clearly separate Internet and DN42 routes and prevent routes leaking between the networks. For Internet ASNs, the <code>source</code> attribute must be the originating registry and you will be required to prove you are the owner of the ASN. </p>
+<p>Internet ASNs may be used, but you must take care to clearly separate Internet and DN42 routes and prevent routes leaking between the networks. For Internet ASNs, the <code>source</code> attribute must be the originating registry and you will be required to prove you are the owner of the ASN.</p>
 
 <p>If unsure, ask on the mailing list or IRC.</p>
 
@@ -354,16 +351,16 @@
 
 <h4><a class="anchor" id="ipv6" href="#ipv6"></a>IPv6</h4>
 
-<p>To register an IPv6 prefix, you create an <code>inet6num</code> object. dn42 uses the fd00::/8 (<a href="https://tools.ietf.org/html/rfc4193">ULA</a>) range. A single /48 allocation is typical and will likely provide more than enough room for all devices you will ever connect. </p>
+<p>To register an IPv6 prefix, you create an <code>inet6num</code> object. dn42 uses the fd00::/8 (<a href="https://tools.ietf.org/html/rfc4193">ULA</a>) range. A single /48 allocation is typical and will likely provide more than enough room for all devices you will ever connect.</p>
 
-<p>dn42 is interconnected with other networks, like icvpn, which also use the same ULA range so a registration in the dn42 registry can't prevent IPv6 conflicts. A fully random prefix (see <a href="https://tools.ietf.org/html/rfc4193">RFC4193</a>) is recommended; finding a conflict and needing to renumber your network is no fun. </p>
+<p>dn42 is interconnected with other networks, like icvpn, which also use the same ULA range so a registration in the dn42 registry can't prevent IPv6 conflicts. A fully random prefix (see <a href="https://tools.ietf.org/html/rfc4193">RFC4193</a>) is recommended; finding a conflict and needing to renumber your network is no fun.</p>
 
 <p>A few websites can generate random ULA prefixes for you:</p>
 
 <ul>
-<li><a href="https://explorer.burble.com/free#/6">dn42regsrv</a></li>
-<li><a href="https://simpledns.com/private-ipv6">SimpleDNS</a></li>
-<li><a href="https://www.ultratools.com/tools/rangeGenerator">Ultratools</a></li>
+  <li><a href="https://explorer.burble.com/free#/6">dn42regsrv</a></li>
+  <li><a href="https://simpledns.com/private-ipv6">SimpleDNS</a></li>
+  <li><a href="https://www.ultratools.com/tools/rangeGenerator">Ultratools</a></li>
 </ul>
 
 <p>or a small script is available: <a href="https://git.dn42.dev/netravnen/dn42-repo-utils/src/master/ulagen.py">ulagen.py</a></p>
@@ -382,57 +379,57 @@
 
 <h4><a class="anchor" id="ipv4-legacy" href="#ipv4-legacy"></a>IPv4 (Legacy)</h4>
 
-<p>If you also want to register an IPv4 network prefix, simply create an <code>inetnum</code> object. </p>
+<p>If you also want to register an IPv4 network prefix, simply create an <code>inetnum</code> object.</p>
 
 <p>You may choose your network prefix in one of the currently open netblocks. You can get a list of unassigned subnets on the following site, please mind the allocation guideline below.</p>
 
 <ul>
-<li><a href="https://explorer.burble.com/free#/4">Free blocks in dn42regsrv</a></li>
-<li><a href="https://dn42.us/peers/free">Open Netblocks</a></li>
+  <li><a href="https://explorer.burble.com/free#/4">Free blocks in dn42regsrv</a></li>
+  <li><a href="https://dn42.us/peers/free">Open Netblocks</a></li>
 </ul>
 
 <p>If there are no free subnets of the size you want, you may split a larger block as required.</p>
 
-<p>Check the registry (data/inetnum) to make sure no-one else has allocated the same prefix. There are some IP ranges that are not open for assignments or are reserved for specific uses, so you should also check that the parent block has an 'open' policy. A quick and simple way to see the block policies is to run <code>grep "^policy" data/inetnum/*</code>. </p>
+<p>Check the registry (data/inetnum) to make sure no-one else has allocated the same prefix. There are some IP ranges that are not open for assignments or are reserved for specific uses, so you should also check that the parent block has an 'open' policy. A quick and simple way to see the block policies is to run <code>grep "^policy" data/inetnum/*</code>.</p>
 
 <table>
-<thead>
-<tr>
-<th align="right">Size</th>
-<th align="left">Comment</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="right">/29</td>
-<td align="left">starter pack</td>
-</tr>
-<tr>
-<td align="right">/28</td>
-<td align="left">usually enough</td>
-</tr>
-<tr>
-<td align="right"><strong>/27</strong></td>
-<td align="left"><strong>default allocation</strong></td>
-</tr>
-<tr>
-<td align="right">/26</td>
-<td align="left">usually enough</td>
-</tr>
-<tr>
-<td align="right">/25</td>
-<td align="left">still a lot of IPs!</td>
-</tr>
-<tr>
-<td align="right">/24</td>
-<td align="left">are you an organization?</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th style="text-align:right;">Size</th>
+      <th style="text-align:left;">Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:right;">/29</td>
+      <td style="text-align:left;">starter pack</td>
+    </tr>
+    <tr>
+      <td style="text-align:right;">/28</td>
+      <td style="text-align:left;">usually enough</td>
+    </tr>
+    <tr>
+      <td style="text-align:right;"><strong>/27</strong></td>
+      <td style="text-align:left;"><strong>default allocation</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align:right;">/26</td>
+      <td style="text-align:left;">usually enough</td>
+    </tr>
+    <tr>
+      <td style="text-align:right;">/25</td>
+      <td style="text-align:left;">still a lot of IPs!</td>
+    </tr>
+    <tr>
+      <td style="text-align:right;">/24</td>
+      <td style="text-align:left;">are you an organization?</td>
+    </tr>
+  </tbody>
 </table>
 
-<p>The current guideline is to allocate a /27 or smaller by default, keeping space for up to a /26 if possible. Don't allocate more than a /25 worth of addresses and please <strong>think before you allocate</strong>. </p>
+<p>The current guideline is to allocate a /27 or smaller by default, keeping space for up to a /26 if possible. Don't allocate more than a /25 worth of addresses and please <strong>think before you allocate</strong>.</p>
 
-<p>dn42 typically uses point-to-point addressing in VPN tunnels making transit network unnecessary, a single IP address per host should be sufficient. If you are going to have 2-3 servers, a /28 is plenty; same will go for most home-networks. dn42 is not the public internet, but our IPv4-space is valuable too! </p>
+<p>dn42 typically uses point-to-point addressing in VPN tunnels making transit network unnecessary, a single IP address per host should be sufficient. If you are going to have 2-3 servers, a /28 is plenty; same will go for most home-networks. dn42 is not the public internet, but our IPv4-space is valuable too!</p>
 
 <p>If you need a /24 or larger, please ask in the IRC chan or on the mailing list and expect to provide justification. You should also ensure the range you've requested is in a suitable block.</p>
 
@@ -515,7 +512,7 @@ Domain names and nserver attributes must be lowercase.</p>
 
 <h2><a class="anchor" id="establishing-tunnels" href="#establishing-tunnels"></a>Establishing tunnels</h2>
 
-<p>Unless your dn42 peers are on the same network, you must establish tunnels. Choose anything you like: Wireguard, OpenVPN, GRE, GRE + IPSec, IPIP, Tinc, ...</p>
+<p>Unless your dn42 peers are on the same network, you must establish tunnels. Choose anything you like: Wireguard, OpenVPN, GRE, GRE + IPSec, IPIP, Tinc, …</p>
 
 <p>There is some documentation in this wiki, like <a href="GRE-plus-IPsec.html">gre-plus-ipsec</a>.</p>
 
@@ -528,33 +525,31 @@ Domain names and nserver attributes must be lowercase.</p>
 <h2><a class="anchor" id="configuration-examples" href="#configuration-examples"></a>Configuration Examples</h2>
 
 <ul>
-<li><p><a href="networksettings.html">Important Network configuration</a></p></li>
-<li>
-<p>VPN/Tunnel:</p>
-
-<ul>
-<li><a href="wireguard.html">Wireguard</a></li>
-<li><a href="openvpn.html">Openvpn</a></li>
-<li><a href="tinc.html">Tinc</a></li>
-<li><a href="IPsec-with-PublicKeys.html">IPsec with public key authentication</a></li>
-</ul>
-</li>
-<li>BGP:
-
-<ul>
-<li><a href="Bird2.html">Bird</a></li>
-<li><a href="frr.html">FRR</a></li>
-</ul>
-</li>
-<li>Router specific:
-
-<ul>
-<li><a href="OpenWRT.html">dn42 on OpenWRT</a></li>
-<li><a href="EdgeOS-Config-Example.html">EdgeOS Configuration</a></li>
-<li><a href="EdgeOS-GRE-IPsec-Example.html">EdgeOS GRE/IPsec Example</a></li>
-<li><a href="BGP-on-Extreme-Summit1i.html">BGP on Extreme Networks Summit 1i</a></li>
-</ul>
-</li>
+  <li>
+    <p><a href="networksettings.html">Important Network configuration</a></p>
+  </li>
+  <li>VPN/Tunnel:
+    <ul>
+      <li><a href="wireguard.html">Wireguard</a></li>
+      <li><a href="openvpn.html">Openvpn</a></li>
+      <li><a href="tinc.html">Tinc</a></li>
+      <li><a href="IPsec-with-PublicKeys.html">IPsec with public key authentication</a></li>
+    </ul>
+  </li>
+  <li>BGP:
+    <ul>
+      <li><a href="Bird2.html">Bird</a></li>
+      <li><a href="frr.html">FRR</a></li>
+    </ul>
+  </li>
+  <li>Router specific:
+    <ul>
+      <li><a href="OpenWRT.html">dn42 on OpenWRT</a></li>
+      <li><a href="EdgeOS-Config-Example.html">EdgeOS Configuration</a></li>
+      <li><a href="EdgeOS-GRE-IPsec-Example.html">EdgeOS GRE/IPsec Example</a></li>
+      <li><a href="BGP-on-Extreme-Summit1i.html">BGP on Extreme Networks Summit 1i</a></li>
+    </ul>
+  </li>
 </ul>
 
 <h1><a class="anchor" id="configure-dns" href="#configure-dns"></a>Configure DNS</h1>
@@ -571,90 +566,78 @@ Domain names and nserver attributes must be lowercase.</p>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
 	          <ul>
-<li>
-<p><a href="../Home.html" rel="nofollow">Home</a></p>
-
-<ul>
-<li><a href="Getting-Started.html" rel="nofollow">Getting Started</a></li>
-<li><a href="Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-<li><a href="Address-Space.html" rel="nofollow">Address Space</a></li>
-<li><a href="BGP-communities.html" rel="nofollow">BGP communities</a></li>
-<li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
-</ul>
-</li>
-<li>
-<p>How-To</p>
-
-<ul>
-<li><a href="wireguard.html" rel="nofollow">Wireguard</a></li>
-<li><a href="openvpn.html" rel="nofollow">Openvpn</a></li>
-<li><a href="IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-<li><a href="tinc.html" rel="nofollow">Tinc</a></li>
-<li><a href="GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-<li><a href="GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-<li><a href="IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
-<li><a href="multicast.html" rel="nofollow">SSM Multicast</a></li>
-<li><a href="mpls.html" rel="nofollow">MPLS</a></li>
-<li><a href="Bird2.html" rel="nofollow">Bird2</a></li>
-<li><a href="frr.html" rel="nofollow">FRRouting</a></li>
-<li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-<li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-<li><a href="EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-<li><a href="Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-<li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-<li><a href="vyos1.4.html" rel="nofollow">VyOS</a></li>
-<li><a href="nixos.html" rel="nofollow">NixOS</a></li>
-</ul>
-</li>
-<li>
-<p>Services</p>
-
-<ul>
-<li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
-<li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
-<li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
-<li><a href="../services/IX-Collection.html" rel="nofollow">IX Collection</a></li>
-<li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-<li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-<li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-<li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-<li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-<li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-<li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
-</ul>
-</li>
-<li>
-<p>Internal</p>
-
-<ul>
-<li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
-<li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
-<li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
-<li>
-<a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a><br />
-</li>
-<li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
-</ul>
-</li>
-<li>
-<p>Historical</p>
-
-<ul>
-<li><a href="../historical/Bird.html" rel="nofollow">Bird 1</a></li>
-<li><a href="../historical/Quagga.html" rel="nofollow">Quagga</a></li>
-</ul>
-</li>
-<li>
-<p>External Tools</p>
-
-<ul>
-<li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
-<li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
-</ul>
-</li>
+  <li>
+<a href="../Home.html" rel="nofollow">Home</a>
+    <ul>
+      <li><a href="Getting-Started.html" rel="nofollow">Getting Started</a></li>
+      <li><a href="Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+      <li><a href="Address-Space.html" rel="nofollow">Address Space</a></li>
+      <li><a href="BGP-communities.html" rel="nofollow">BGP communities</a></li>
+      <li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
+    </ul>
+  </li>
+  <li>How-To
+    <ul>
+      <li><a href="wireguard.html" rel="nofollow">Wireguard</a></li>
+      <li><a href="openvpn.html" rel="nofollow">Openvpn</a></li>
+      <li><a href="IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+      <li><a href="tinc.html" rel="nofollow">Tinc</a></li>
+      <li><a href="GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+      <li><a href="GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+      <li><a href="IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+      <li><a href="multicast.html" rel="nofollow">SSM Multicast</a></li>
+      <li><a href="mpls.html" rel="nofollow">MPLS</a></li>
+      <li><a href="Bird2.html" rel="nofollow">Bird2</a></li>
+      <li><a href="frr.html" rel="nofollow">FRRouting</a></li>
+      <li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+      <li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+      <li><a href="EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+      <li><a href="Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+      <li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+      <li><a href="vyos1.4.html" rel="nofollow">VyOS</a></li>
+      <li><a href="nixos.html" rel="nofollow">NixOS</a></li>
+    </ul>
+  </li>
+  <li>Services
+    <ul>
+      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="../services/IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+    </ul>
+  </li>
+  <li>Internal
+    <ul>
+      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+    </ul>
+  </li>
+  <li>Historical
+    <ul>
+      <li><a href="../historical/Bird.html" rel="nofollow">Bird 1</a></li>
+      <li><a href="../historical/Quagga.html" rel="nofollow">Quagga</a></li>
+    </ul>
+  </li>
+  <li>External Tools
+    <ul>
+      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+    </ul>
+  </li>
 </ul>
 
 <hr />
+
 
 	        </div>
 	      </div>
@@ -662,7 +645,16 @@ Domain names and nserver attributes must be lowercase.</p>
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a> | Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a></p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>
+</td>
+    </tr>
+  </tbody>
+</table>
 
 	    </div>
 	  </div>

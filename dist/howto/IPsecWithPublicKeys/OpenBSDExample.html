@@ -25,7 +25,7 @@
     var pageFormat   = 'markdown';
 
   </script>
-  <script src="../../gollum/assets/app-f05401ee374f0c7f48fc2bc08e30b4f4db705861fd5895ed70998683b383bfb5.js" type="text/javascript"></script>
+  <script src="../../gollum/assets/app-e63ab45773141139cffcd04474f73c21042c7267568325d4e00775b4f9eaa022.js" type="text/javascript"></script>
   
 
   <title>OpenBSDExample</title>
@@ -162,28 +162,22 @@
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
 	        <h1><a class="anchor" id="introduction" href="#introduction"></a>Introduction</h1>
-
 <p>Here be dragons. This section should cover the basics:</p>
-
 <ul>
-<li>IKEv1</li>
-<li>Three stages: Key distribution, IPSec setup, GRE setup</li>
-<li>In theory, BGPd can set up IPSec flows itself, but we're not using that here because that prevents you from using another BGP daemon such as bird</li>
-<li>Debugging</li>
+  <li>IKEv1</li>
+  <li>Three stages: Key distribution, IPSec setup, GRE setup</li>
+  <li>In theory, BGPd can set up IPSec flows itself, but we're not using that here because that prevents you from using another BGP daemon such as bird</li>
+  <li>Debugging</li>
 </ul>
 
 <h1><a class="anchor" id="key-generation-and-distribution" href="#key-generation-and-distribution"></a>Key generation and distribution</h1>
-
 <h2><a class="anchor" id="using-pre-generated-keys" href="#using-pre-generated-keys"></a>Using pre-generated keys</h2>
-
 <p>OpenBSD generates keys suitables for IPSec usage during the installation. The public key can be found in <code>/etc/isakmpd/local.pub</code></p>
 
 <h2><a class="anchor" id="generating-your-own-keys" href="#generating-your-own-keys"></a>Generating your own keys</h2>
-
 <p>If you don't want to use a pre-generated key, refer to <a href="http://man.openbsd.org/isakmpd.8#X.509_AUTHENTICATION">isakmpd(8)</a>.</p>
 
 <h2><a class="anchor" id="distributing-keys" href="#distributing-keys"></a>Distributing keys</h2>
-
 <p>Send your public key to your peer, preferrably digitally signed. A signature can be created with <code>gpg -sb -a local.pub</code> and checked with <code>gpg --verify local.pub.asc</code>. Since the key is not private, it can be transmitted in the open and on a public forum, such as a Pastebin service.</p>
 
 <p>Once your peer sent you their public key, it under <code>/etc/isakmpd/pubkeys/fqdn</code>, <code>/etc/isakmpd/pubkeys/ipv4</code> or <code>/etc/isakmpd/ipv6</code>, depending on the ID type the peer is using. The key file should be named after the peers ID. For example, if your peer is <code>1.3.3.7</code>, you place their public key under <code>/etc/isakmpd/pubkeys/ipv4/1.3.3.7</code>.</p>
@@ -191,20 +185,19 @@
 <p>If your peers public key is not in PEM format, you can use <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl">pubkey-converter</a> to convert between key formats.</p>
 
 <h1><a class="anchor" id="ipsec-setup" href="#ipsec-setup"></a>IPSec Setup</h1>
-
 <p>Change the value of the <code>isakmpd_flags</code> variable in <a href="http://man.openbsd.org/rc.conf.local.8"><code>/etc/rc.conf.local</code></a> to <code>"-K"</code>, or add the <code>"-K"</code> flag if you already have flags in there.</p>
 
 <p>Next, add the right flow parameters to <a href="http://man.openbsd.org/ipsec.conf.5"><code>/etc/ipsec.conf</code></a>. We are using the following parameters in this example:</p>
 
 <ul>
-<li>Encryption: AES-128</li>
-<li>Authentication hash: HMAC-SHA1</li>
-<li>DH Group: <code>modp1536</code>
+  <li>Encryption: AES-128</li>
+  <li>Authentication hash: HMAC-SHA1</li>
+  <li>DH Group: <code>modp1536</code>
 </li>
-<li>Phase 1 lifetime: 28800 seconds</li>
-<li>Phase 2 lifetime: 3600 seconds</li>
-<li>Peer address: 1.3.3.7</li>
-<li>Local address: 3.4.5.6</li>
+  <li>Phase 1 lifetime: 28800 seconds</li>
+  <li>Phase 2 lifetime: 3600 seconds</li>
+  <li>Peer address: 1.3.3.7</li>
+  <li>Local address: 3.4.5.6</li>
 </ul>
 
 <p>The configuration file should look like this:</p>
@@ -227,7 +220,6 @@ esp transport from 1.3.3.7 to 3.4.5.6 spi 0xdeadbeef auth hmac-sha1 enc aes
 esp transport from 3.4.5.6 to 1.3.3.7 spi 0xf00df00d auth hmac-sha1 enc aes</code></pre>
 
 <h1><a class="anchor" id="gre-setup" href="#gre-setup"></a>GRE Setup</h1>
-
 <p>Next, we will set up the GRE device. The <a href="http://man.openbsd.org/gre.4">gre(4)</a> device encapsulates IPv4 and IPv6 traffic, which allows you to speak both address families over one tunnel if you only have native connectivity for one address family. The addresses configured onto the GRE device should come from a private address range that is not used anywhere in DN42, or a registered transfer net. For IPv6, you should use either ULAs or Link-Local addresses. In this example, we assume you are using 10.20.30.0/31 as the IPv4 transfer "net" (it has only two addresses, so calling it a network is a bit of an overstatement) and Link-Local addresses for IPv6.</p>
 
 <pre class="highlight"><code><span class="c"># ifconfig gre0 tunnel 3.4.5.6 1.3.3.7</span>
@@ -244,90 +236,78 @@ esp transport from 3.4.5.6 to 1.3.3.7 spi 0xf00df00d auth hmac-sha1 enc aes</cod
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
 	          <ul>
-<li>
-<p><a href="../../Home.html" rel="nofollow">Home</a></p>
-
-<ul>
-<li><a href="../Getting-Started.html" rel="nofollow">Getting Started</a></li>
-<li><a href="../Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-<li><a href="../Address-Space.html" rel="nofollow">Address Space</a></li>
-<li><a href="../BGP-communities.html" rel="nofollow">BGP communities</a></li>
-<li><a href="../../FAQ.html" rel="nofollow">FAQ</a></li>
-</ul>
-</li>
-<li>
-<p>How-To</p>
-
-<ul>
-<li><a href="../wireguard.html" rel="nofollow">Wireguard</a></li>
-<li><a href="../openvpn.html" rel="nofollow">Openvpn</a></li>
-<li><a href="../IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-<li><a href="../tinc.html" rel="nofollow">Tinc</a></li>
-<li><a href="../GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-<li><a href="../GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-<li><a href="../IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
-<li><a href="../multicast.html" rel="nofollow">SSM Multicast</a></li>
-<li><a href="../mpls.html" rel="nofollow">MPLS</a></li>
-<li><a href="../Bird2.html" rel="nofollow">Bird2</a></li>
-<li><a href="../frr.html" rel="nofollow">FRRouting</a></li>
-<li><a href="../OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-<li><a href="../mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-<li><a href="../EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-<li><a href="../Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-<li><a href="../networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-<li><a href="../vyos1.4.html" rel="nofollow">VyOS</a></li>
-<li><a href="../nixos.html" rel="nofollow">NixOS</a></li>
-</ul>
-</li>
-<li>
-<p>Services</p>
-
-<ul>
-<li><a href="../../services/IRC.html" rel="nofollow">IRC</a></li>
-<li><a href="../../services/Whois.html" rel="nofollow">Whois registry</a></li>
-<li><a href="../../services/DNS.html" rel="nofollow">DNS</a></li>
-<li><a href="../../services/IX-Collection.html" rel="nofollow">IX Collection</a></li>
-<li><a href="../../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-<li><a href="../../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-<li><a href="../../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-<li><a href="../../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-<li><a href="../../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-<li><a href="../../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-<li><a href="../../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
-</ul>
-</li>
-<li>
-<p>Internal</p>
-
-<ul>
-<li><a href="../../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
-<li><a href="../../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
-<li><a href="../../internal/APIs.html" rel="nofollow">APIs</a></li>
-<li>
-<a href="../../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a><br />
-</li>
-<li><a href="../../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
-</ul>
-</li>
-<li>
-<p>Historical</p>
-
-<ul>
-<li><a href="../../historical/Bird.html" rel="nofollow">Bird 1</a></li>
-<li><a href="../../historical/Quagga.html" rel="nofollow">Quagga</a></li>
-</ul>
-</li>
-<li>
-<p>External Tools</p>
-
-<ul>
-<li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
-<li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
-</ul>
-</li>
+  <li>
+<a href="../../Home.html" rel="nofollow">Home</a>
+    <ul>
+      <li><a href="../Getting-Started.html" rel="nofollow">Getting Started</a></li>
+      <li><a href="../Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+      <li><a href="../Address-Space.html" rel="nofollow">Address Space</a></li>
+      <li><a href="../BGP-communities.html" rel="nofollow">BGP communities</a></li>
+      <li><a href="../../FAQ.html" rel="nofollow">FAQ</a></li>
+    </ul>
+  </li>
+  <li>How-To
+    <ul>
+      <li><a href="../wireguard.html" rel="nofollow">Wireguard</a></li>
+      <li><a href="../openvpn.html" rel="nofollow">Openvpn</a></li>
+      <li><a href="../IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+      <li><a href="../tinc.html" rel="nofollow">Tinc</a></li>
+      <li><a href="../GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+      <li><a href="../GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+      <li><a href="../IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+      <li><a href="../multicast.html" rel="nofollow">SSM Multicast</a></li>
+      <li><a href="../mpls.html" rel="nofollow">MPLS</a></li>
+      <li><a href="../Bird2.html" rel="nofollow">Bird2</a></li>
+      <li><a href="../frr.html" rel="nofollow">FRRouting</a></li>
+      <li><a href="../OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+      <li><a href="../mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+      <li><a href="../EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+      <li><a href="../Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+      <li><a href="../networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+      <li><a href="../vyos1.4.html" rel="nofollow">VyOS</a></li>
+      <li><a href="../nixos.html" rel="nofollow">NixOS</a></li>
+    </ul>
+  </li>
+  <li>Services
+    <ul>
+      <li><a href="../../services/IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="../../services/Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="../../services/DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="../../services/IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="../../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="../../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="../../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="../../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="../../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="../../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="../../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+    </ul>
+  </li>
+  <li>Internal
+    <ul>
+      <li><a href="../../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="../../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="../../internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="../../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+      <li><a href="../../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+    </ul>
+  </li>
+  <li>Historical
+    <ul>
+      <li><a href="../../historical/Bird.html" rel="nofollow">Bird 1</a></li>
+      <li><a href="../../historical/Quagga.html" rel="nofollow">Quagga</a></li>
+    </ul>
+  </li>
+  <li>External Tools
+    <ul>
+      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+    </ul>
+  </li>
 </ul>
 
 <hr />
+
 
 	        </div>
 	      </div>
@@ -335,7 +315,16 @@ esp transport from 3.4.5.6 to 1.3.3.7 spi 0xf00df00d auth hmac-sha1 enc aes</cod
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a> | Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a></p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>
+</td>
+    </tr>
+  </tbody>
+</table>
 
 	    </div>
 	  </div>

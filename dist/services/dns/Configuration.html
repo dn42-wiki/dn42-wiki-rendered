@@ -25,7 +25,7 @@
     var pageFormat   = 'markdown';
 
   </script>
-  <script src="../../gollum/assets/app-f05401ee374f0c7f48fc2bc08e30b4f4db705861fd5895ed70998683b383bfb5.js" type="text/javascript"></script>
+  <script src="../../gollum/assets/app-e63ab45773141139cffcd04474f73c21042c7267568325d4e00775b4f9eaa022.js" type="text/javascript"></script>
   
 
   <title>Configuration</title>
@@ -172,29 +172,29 @@
 <p>Two independent anycast services are also provided:</p>
 
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>IPv4</th>
-<th>IPv6</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>a0.recursive-servers.dn42</td>
-<td>172.20.0.53</td>
-<td>fd42:d42:d42:54::1</td>
-</tr>
-<tr>
-<td>a3.recursive-servers.dn42</td>
-<td>172.23.0.53</td>
-<td>fd42:d42:d42:53::1</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>IPv4</th>
+      <th>IPv6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>a0.recursive-servers.dn42</td>
+      <td>172.20.0.53</td>
+      <td>fd42:d42:d42:54::1</td>
+    </tr>
+    <tr>
+      <td>a3.recursive-servers.dn42</td>
+      <td>172.23.0.53</td>
+      <td>fd42:d42:d42:53::1</td>
+    </tr>
+  </tbody>
 </table>
 
 <p>All the examples here list 172.20.0.53/fd42:d42:d42:54::1, but users are encouraged to configure
-multiple services from *.recursive-servers.dn42 for redundancy. </p>
+multiple services from *.recursive-servers.dn42 for redundancy.</p>
 
 <h2><a class="anchor" id="note-on-icvpn-zones" href="#note-on-icvpn-zones"></a>Note on ICVPN Zones</h2>
 
@@ -265,7 +265,7 @@ by adding the following to /etc/bind/named.conf.local</p>
 
 <h2><a class="anchor" id="dnsmasq" href="#dnsmasq"></a>dnsmasq</h2>
 
-<p>If you are running dnsmasq under openwrt, you just have to add </p>
+<p>If you are running dnsmasq under openwrt, you just have to add</p>
 
 <pre class="highlight"><code><span class="n">config</span> <span class="n">dnsmasq</span>
         <span class="n">option</span> <span class="n">boguspriv</span> <span class="s1">'0'</span>
@@ -287,7 +287,7 @@ with the anycast DNS-Server, while your normal requests go to your standard DNS-
 
 <p>For normal dnsmasq use</p>
 
-<p></p><pre class="highlight"><code><span class="n">server</span>=/<span class="n">dn42</span>/<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
+<pre class="highlight"><code><span class="n">server</span>=/<span class="n">dn42</span>/<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 <span class="n">server</span>=/<span class="m">20</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>/<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 <span class="n">server</span>=/<span class="m">21</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>/<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 <span class="n">server</span>=/<span class="m">22</span>.<span class="m">172</span>.<span class="n">in</span>-<span class="n">addr</span>.<span class="n">arpa</span>/<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
@@ -297,7 +297,6 @@ with the anycast DNS-Server, while your normal requests go to your standard DNS-
 in <code>dnsmasq.conf</code>.
 
 <h2><a class="anchor" id="powerdns-recursor" href="#powerdns-recursor"></a>PowerDNS recursor</h2>
-
 <p>Add this to /etc/powerdns/recursor.conf (at least in Debian and CentOS).</p>
 
 <pre class="highlight"><code><span class="n">dont</span>-<span class="n">query</span>=<span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">8</span>, <span class="m">192</span>.<span class="m">168</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">16</span>, ::<span class="m">1</span>/<span class="m">128</span>, <span class="n">fe80</span>::/<span class="m">10</span>
@@ -310,7 +309,6 @@ in <code>dnsmasq.conf</code>.
 <span class="n">forward</span>-<span class="n">zones</span>-<span class="n">recurse</span>+=<span class="n">d</span>.<span class="n">f</span>.<span class="n">ip6</span>.<span class="n">arpa</span>=<span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span></code></pre>
 
 <h2><a class="anchor" id="maradns" href="#maradns"></a>MaraDNS</h2>
-
 <p>Put this in your mararc:</p>
 
 <pre class="highlight"><code><span class="n">ipv4_alias</span>[<span class="s2">"dn42_root"</span>] = <span class="s2">"172.20.0.53"</span>
@@ -370,7 +368,6 @@ point to a file with DNSKEY records for dn42.</p>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span></code></pre>
 
 <h2><a class="anchor" id="junos-srx-12-1x46" href="#junos-srx-12-1x46"></a>JunOS (SRX 12.1X46)</h2>
-
 <p>Should also work in 12.1X44 and 12.1X45. After making the changes below you may need to run:
 </p><pre class="highlight"><code>restart named-service</code></pre>
 Config (vlan.0 is presumed to be your LAN/Trust interface)
@@ -423,7 +420,6 @@ Config (vlan.0 is presumed to be your LAN/Trust interface)
 }</code></pre>
 
 <h2><a class="anchor" id="ms-dns" href="#ms-dns"></a>MS DNS</h2>
-
 <p>Add a "Conditional Forward" (de: "Bedingte Weiterleitung") for each of "dn42", "20.172.in-addr.arpa", "21.172.in-addr.arpa", "22.172.in-addr.arpa", "23.172.in-addr.arpa", "10.in-addr.arpa" using 172.20.0.53 as forwarder. Ignore the error message that the server is not authoritative.</p>
 
 <h1><a class="anchor" id="resolver-setup" href="#resolver-setup"></a>Resolver setup</h1>
@@ -437,37 +433,36 @@ Config (vlan.0 is presumed to be your LAN/Trust interface)
 <p>Current list of delegation servers (as of 03/04/2022):</p>
 
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>IPv4</th>
-<th>IPv6</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>b.delegation-servers.dn42</td>
-<td>172.20.129.1</td>
-<td>fd42:4242:2601:ac53::1</td>
-</tr>
-<tr>
-<td>j.delegation-servers.dn42</td>
-<td>172.20.1.254</td>
-<td>fd42:5d71:219:0:216:3eff:fe1e:22d6</td>
-</tr>
-<tr>
-<td>k.delegation-servers.dn42</td>
-<td>172.20.14.34</td>
-<td>fdcf:8538:9ad5:1111::2</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>IPv4</th>
+      <th>IPv6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>b.delegation-servers.dn42</td>
+      <td>172.20.129.1</td>
+      <td>fd42:4242:2601:ac53::1</td>
+    </tr>
+    <tr>
+      <td>j.delegation-servers.dn42</td>
+      <td>172.20.1.254</td>
+      <td>fd42:5d71:219:0:216:3eff:fe1e:22d6</td>
+    </tr>
+    <tr>
+      <td>k.delegation-servers.dn42</td>
+      <td>172.20.14.34</td>
+      <td>fdcf:8538:9ad5:1111::2</td>
+    </tr>
+  </tbody>
 </table>
 
 <p>All the examples here list 172.20.129.1/fd42:4242:2601:ac53::1, but users are encouraged to configure
-multiple services from *.delegation-servers.dn42 for redundancy. </p>
+multiple services from *.delegation-servers.dn42 for redundancy.</p>
 
 <h2><a class="anchor" id="dnssec" href="#dnssec"></a>Dnssec</h2>
-
 <p>All delegation servers have DNSSEC support and all record are signed, for more information about DNSSEC visit <a href="../New-DNS.html#dnssec">New-DNS#dnssec</a>.</p>
 
 <p>Following is a list of links to the DS record for TLD and reverse zone, to configure the key file, extract the value of ds-rdata and format it as follows, you must add all ds-rdata to the key file for dnssec to work. P.S. each ds-rdata or DS record should contain 4 numbers.</p>
@@ -482,7 +477,6 @@ multiple services from *.delegation-servers.dn42 for redundancy. </p>
 </p><pre class="highlight"><code><span class="n">d</span>.<span class="n">f</span>.<span class="n">ip6</span>.<span class="n">arpa</span>.	<span class="m">86400</span>	<span class="n">IN</span>	<span class="n">DS</span>	<span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="m">456</span></code></pre>
 
 <h3><a class="anchor" id="dn42-ds-record" href="#dn42-ds-record"></a>DN42 DS record</h3>
-
 <p><a href="https://git.dn42.dev/dn42/registry/src/branch/master/data/dns/dn42">dn42. TLD</a></p>
 
 <p><a href="https://git.dn42.dev/dn42/registry/src/branch/master/data/inetnum/172.20.0.0_16">172.20.0.0/16 range</a></p>
@@ -496,13 +490,11 @@ multiple services from *.delegation-servers.dn42 for redundancy. </p>
 <p><a href="https://git.dn42.dev/dn42/registry/src/branch/master/data/inet6num/fd00::_8">fd00::/8 range</a></p>
 
 <h3><a class="anchor" id="non-dn42-ds-record" href="#non-dn42-ds-record"></a>Non DN42 DS record</h3>
-
 <p><a href="https://git.dn42.dev/dn42/registry/src/branch/master/data/inetnum/172.31.0.0_16">172.31.0.0/16 (chaosvpn) range</a></p>
 
 <p><a href="https://git.dn42.dev/dn42/registry/src/branch/master/data/inetnum/10.0.0.0_8">10.0.0.0/8 (Freifunk) range</a></p>
 
 <h2><a class="anchor" id="unbound-1" href="#unbound-1"></a>Unbound</h2>
-
 <pre class="highlight"><code><span class="n">trust</span>-<span class="n">anchor</span>-<span class="n">file</span>: &lt;<span class="n">path</span> <span class="n">to</span> <span class="n">key</span> <span class="n">file</span>&gt;
 
 <span class="n">server</span>:
@@ -560,94 +552,83 @@ multiple services from *.delegation-servers.dn42 for redundancy. </p>
 	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
 </code></pre>
 
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
 	          <ul>
-<li>
-<p><a href="../../Home.html" rel="nofollow">Home</a></p>
-
-<ul>
-<li><a href="../../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
-<li><a href="../../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-<li><a href="../../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
-<li><a href="../../howto/BGP-communities.html" rel="nofollow">BGP communities</a></li>
-<li><a href="../../FAQ.html" rel="nofollow">FAQ</a></li>
-</ul>
-</li>
-<li>
-<p>How-To</p>
-
-<ul>
-<li><a href="../../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
-<li><a href="../../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
-<li><a href="../../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-<li><a href="../../howto/tinc.html" rel="nofollow">Tinc</a></li>
-<li><a href="../../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-<li><a href="../../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-<li><a href="../../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
-<li><a href="../../howto/multicast.html" rel="nofollow">SSM Multicast</a></li>
-<li><a href="../../howto/mpls.html" rel="nofollow">MPLS</a></li>
-<li><a href="../../howto/Bird2.html" rel="nofollow">Bird2</a></li>
-<li><a href="../../howto/frr.html" rel="nofollow">FRRouting</a></li>
-<li><a href="../../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-<li><a href="../../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-<li><a href="../../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-<li><a href="../../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-<li><a href="../../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-<li><a href="../../howto/vyos1.4.html" rel="nofollow">VyOS</a></li>
-<li><a href="../../howto/nixos.html" rel="nofollow">NixOS</a></li>
-</ul>
-</li>
-<li>
-<p>Services</p>
-
-<ul>
-<li><a href="../IRC.html" rel="nofollow">IRC</a></li>
-<li><a href="../Whois.html" rel="nofollow">Whois registry</a></li>
-<li><a href="../DNS.html" rel="nofollow">DNS</a></li>
-<li><a href="../IX-Collection.html" rel="nofollow">IX Collection</a></li>
-<li><a href="../Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-<li><a href="../Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-<li><a href="../Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-<li><a href="../Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-<li><a href="../Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-<li><a href="../Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-<li><a href="../Route-Collector.html" rel="nofollow">Route Collector</a></li>
-</ul>
-</li>
-<li>
-<p>Internal</p>
-
-<ul>
-<li><a href="../../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
-<li><a href="../../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
-<li><a href="../../internal/APIs.html" rel="nofollow">APIs</a></li>
-<li>
-<a href="../../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a><br />
-</li>
-<li><a href="../../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
-</ul>
-</li>
-<li>
-<p>Historical</p>
-
-<ul>
-<li><a href="../../historical/Bird.html" rel="nofollow">Bird 1</a></li>
-<li><a href="../../historical/Quagga.html" rel="nofollow">Quagga</a></li>
-</ul>
-</li>
-<li>
-<p>External Tools</p>
-
-<ul>
-<li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
-<li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
-</ul>
-</li>
+  <li>
+<a href="../../Home.html" rel="nofollow">Home</a>
+    <ul>
+      <li><a href="../../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
+      <li><a href="../../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+      <li><a href="../../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
+      <li><a href="../../howto/BGP-communities.html" rel="nofollow">BGP communities</a></li>
+      <li><a href="../../FAQ.html" rel="nofollow">FAQ</a></li>
+    </ul>
+  </li>
+  <li>How-To
+    <ul>
+      <li><a href="../../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
+      <li><a href="../../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
+      <li><a href="../../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+      <li><a href="../../howto/tinc.html" rel="nofollow">Tinc</a></li>
+      <li><a href="../../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+      <li><a href="../../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+      <li><a href="../../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+      <li><a href="../../howto/multicast.html" rel="nofollow">SSM Multicast</a></li>
+      <li><a href="../../howto/mpls.html" rel="nofollow">MPLS</a></li>
+      <li><a href="../../howto/Bird2.html" rel="nofollow">Bird2</a></li>
+      <li><a href="../../howto/frr.html" rel="nofollow">FRRouting</a></li>
+      <li><a href="../../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+      <li><a href="../../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+      <li><a href="../../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+      <li><a href="../../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+      <li><a href="../../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+      <li><a href="../../howto/vyos1.4.html" rel="nofollow">VyOS</a></li>
+      <li><a href="../../howto/nixos.html" rel="nofollow">NixOS</a></li>
+    </ul>
+  </li>
+  <li>Services
+    <ul>
+      <li><a href="../IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="../Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="../DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="../IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="../Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="../Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="../Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="../Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="../Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="../Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="../Route-Collector.html" rel="nofollow">Route Collector</a></li>
+    </ul>
+  </li>
+  <li>Internal
+    <ul>
+      <li><a href="../../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="../../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="../../internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="../../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+      <li><a href="../../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+    </ul>
+  </li>
+  <li>Historical
+    <ul>
+      <li><a href="../../historical/Bird.html" rel="nofollow">Bird 1</a></li>
+      <li><a href="../../historical/Quagga.html" rel="nofollow">Quagga</a></li>
+    </ul>
+  </li>
+  <li>External Tools
+    <ul>
+      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+    </ul>
+  </li>
 </ul>
 
 <hr />
+
 
 	        </div>
 	      </div>
@@ -655,7 +636,16 @@ multiple services from *.delegation-servers.dn42 for redundancy. </p>
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a> | Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a></p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>
+</td>
+    </tr>
+  </tbody>
+</table>
 
 	    </div>
 	  </div>
