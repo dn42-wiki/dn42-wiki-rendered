@@ -357,9 +357,12 @@ Additionally Bird2 before 2.0.8 cannot automatically update filtered bgp routes 
 
 <span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt;<span class="err">_</span><span class="n">v6</span> <span class="n">from</span> <span class="n">dnpeers</span> {
         <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IPv6</span>&gt;%&lt;<span class="n">NEIGHBOR_INTERFACE</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
-}</code></pre>
+        <span class="c"># Or:
+</span>        <span class="c"># neighbor &lt;NEIGHBOR_IPv6&gt; as &lt;NEIGHBOR_ASN&gt;;
+</span>        <span class="c"># interface &lt;NEIGHBOR_INTERFACE&gt;;****
+</span>}</code></pre>
 
-<p>Due to the special link local addresses of IPv6, an interface has to be specified using the <code>%&lt;if&gt;</code> syntax if a link local address is used (Which is recommended)</p>
+<p>Due to the special link local addresses of IPv6, an interface has to be specified using the <code>%&lt;if&gt;</code> or the <code>interface &lt;if&gt;;</code> syntax if a link local address is used (Which is recommended)</p>
 
 <h1><a class="anchor" id="bgp-communities" href="#bgp-communities"></a>BGP communities</h1>
 
@@ -515,8 +518,8 @@ To reflect changes in the ROA table without a manual reload, <strong>ADD</strong
 
 [<span class="n">Service</span>]
 <span class="n">Type</span>=<span class="n">oneshot</span>
-<span class="n">ExecStart</span>=<span class="n">curl</span> -<span class="n">sfSLR</span> {-<span class="n">o</span>,-<span class="n">z</span>}/<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_4</span>.<span class="n">conf</span>
-<span class="n">ExecStart</span>=<span class="n">curl</span> -<span class="n">sfSLR</span> {-<span class="n">o</span>,-<span class="n">z</span>}/<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_6</span>.<span class="n">conf</span>
+<span class="n">ExecStart</span>=<span class="n">curl</span> -<span class="n">sfSLR</span> -<span class="n">o</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> -<span class="n">z</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_4</span>.<span class="n">conf</span>
+<span class="n">ExecStart</span>=<span class="n">curl</span> -<span class="n">sfSLR</span> -<span class="n">o</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> -<span class="n">z</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_6</span>.<span class="n">conf</span>
 <span class="n">ExecStart</span>=<span class="n">birdc</span> <span class="n">configure</span></code></pre>
 
 <pre class="highlight"><code><span class="c"># /etc/systemd/system/dn42-roa.timer
@@ -563,24 +566,24 @@ if </span>birdc configure <span class="p">;</span> <span class="k">then
 <h3><a class="anchor" id="use-rpki-roa-in-bird2" href="#use-rpki-roa-in-bird2"></a>Use RPKI ROA in bird2</h3>
 
 <ul>
-  <li>Download  gortr</li>
+  <li>Download stayrtr</li>
 </ul>
 
-<p><a href="https://github.com/cloudflare/gortr/releases">https://github.com/cloudflare/gortr/releases</a></p>
+<p><a href="https://github.com/bgp/stayrtr">https://github.com/bgp/stayrtr</a></p>
 
 <ul>
-  <li>Run gortr.</li>
+  <li>Run stayrtr.</li>
 </ul>
 
-<pre class="highlight"><code>./gortr <span class="nt">-verify</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-checktime</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-cache</span><span class="o">=</span>https://dn42.burble.com/roa/dn42_roa_46.json</code></pre>
+<pre class="highlight"><code>./stayrtr <span class="nt">-verify</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-checktime</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-cache</span><span class="o">=</span>https://dn42.burble.com/roa/dn42_roa_46.json</code></pre>
 
 <ul>
   <li>Run with docker</li>
 </ul>
 
-<pre class="highlight"><code>docker pull cloudflare/gortr</code></pre>
+<pre class="highlight"><code>docker pull rpki/stayrtr</code></pre>
 
-<pre class="highlight"><code>docker run <span class="nt">--name</span> dn42rpki <span class="nt">-p</span> 8282:8282 <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">-d</span> cloudflare/gortr <span class="nt">-verify</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-checktime</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-cache</span><span class="o">=</span>https://dn42.burble.com/roa/dn42_roa_46.json</code></pre>
+<pre class="highlight"><code>docker run <span class="nt">--name</span> dn42rpki <span class="nt">-p</span> 8282:8282 <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">-d</span> rpki/stayrtr <span class="nt">-verify</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-checktime</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-cache</span><span class="o">=</span>https://dn42.burble.com/roa/dn42_roa_46.json</code></pre>
 
 <ul>
   <li>Add this to your bird configure file,other ROA protocol must removed.</li>

@@ -161,7 +161,80 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p>This page lists external DNS zones, provided by networks that are interconnected with dn42.</p>
+
+<h2><a class="anchor" id="authoritative-nameservers" href="#authoritative-nameservers"></a>Authoritative nameservers</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:center;"><strong>Network name</strong></th>
+      <th style="text-align:center;"><strong>Contact</strong></th>
+      <th style="text-align:center;"><strong>DNS zone</strong></th>
+      <th style="text-align:center;"><strong>Reverse zone</strong></th>
+      <th><strong>Authoritative nameservers</strong></th>
+      <th><strong>Last update</strong></th>
+      <th><strong>Comments</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:center;">ChaosVPN</td>
+      <td style="text-align:center;">-</td>
+      <td style="text-align:center;"><code>hack.</code></td>
+      <td style="text-align:center;">
+<code>31.172.in-addr.arpa.</code> <code>100.10.in-addr.arpa</code> <code>101.10.in-addr.arpa</code> <code>102.10.in-addr.arpa</code> <code>103.10.in-addr.arpa</code>
+</td>
+      <td>
+<code>172.31.0.5</code> <code>172.31.255.53</code> (anycast)</td>
+      <td>Nov. 2013</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td style="text-align:center;">NeoNetwork</td>
+      <td style="text-align:center;">-</td>
+      <td style="text-align:center;"><code>neo.</code></td>
+      <td style="text-align:center;">
+<code>127.10.in-addr.arpa</code> <code>7.2.1.0.0.1.d.f.ip6.arpa</code>
+</td>
+      <td>
+<code>10.127.255.53</code> <code>fd10:127:ffff:53::</code>
+</td>
+      <td>Jul. 2022</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2><a class="anchor" id="freifunk" href="#freifunk"></a>Freifunk</h2>
+
+<p>Freifunk generates its zone configuration from the <a href="https://github.com/freifunk/icvpn-meta">icvpn-meta</a> repositority via the <strong>mkdns</strong>-script contained in <a href="https://github.com/freifunk/icvpn-scripts">icvpn-scripts</a>. As there are many Freifunk-Communities this is the easiest way to get them all.</p>
+
+<pre><code>git clone https://github.com/freifunk/icvpn-scripts.git
+git clone https://github.com/freifunk/icvpn-meta.git
+cd icvpn-scripts
+./mkdns -f bind -s ../icvpn-meta/ -x dn42 -x chaosvpn -x rzl -x neonetwork
+</code></pre>
+
+<p><em>Note: dn42, chaosvpn (, rzl which has been removed, but is still in the script) and neonetwork are excluded (-x), because they are not part of Freifunk and you might want to configure them yourself.</em></p>
+
+<p>The mkdns script currently supports the following setups:</p>
+<ul>
+  <li>bind (static-stub)</li>
+  <li>bind-forward (forward zone)</li>
+  <li>dnsmasq</li>
+  <li>unbound (forward-zone)</li>
+</ul>
+
+<h2><a class="anchor" id="neonetwork" href="#neonetwork"></a>NeoNetwork</h2>
+
+<p>The NeoNetwork also has a recursive DNS server at <code>10.127.255.54</code> and <code>fd10:127:53:53::</code>.
+The zone files can be found here: <a href="https://github.com/NeoCloud/NeoNetwork/tree/master/dns">https://github.com/NeoCloud/NeoNetwork/tree/master/dns</a></p>
+
+<h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
+
+<p>See <a href="Configuration.html">DNS forwarding configuration</a>.</p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
