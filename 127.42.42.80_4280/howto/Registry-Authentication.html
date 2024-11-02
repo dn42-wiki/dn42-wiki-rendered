@@ -374,7 +374,7 @@ If you had already pushed your change to gitea, you must also do a force push (<
 <p>Use the following to sign the latest <code>&lt;commit hash&gt;</code> (that you found using <code>git log</code>)
 </p><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"&lt;commit hash&gt;"</span> | ssh-keygen <span class="nt">-Y</span> sign <span class="nt">-f</span> &lt;private key file&gt; <span class="nt">-n</span> dn42</code></pre>
 
-<p>Post the signature in to the 'Conversation' section of your pull request to allow the registry maintainers to verify it. It can help to also include the commit hash that you have signed, to avoid any confusion.</p>
+<p>Post the signature into the 'Conversation' section of your pull request to allow the registry maintainers to verify it. It can help to also include the commit hash that you have signed, to avoid any confusion.</p>
 
 <h4><a class="anchor" id="verifying-the-signature-3" href="#verifying-the-signature-3"></a>Verifying the signature</h4>
 
@@ -416,7 +416,7 @@ Where <code>&lt;pubkey&gt;</code> is the ssh public key copied from your id_rsa.
    <span class="nt">-inkey</span> ~/.ssh/id_rsa <span class="se">\</span>
    <span class="nt">-in</span> &lt;<span class="o">(</span><span class="nb">echo</span> <span class="s2">"&lt;commit hash&gt;"</span><span class="o">)</span> | <span class="nb">base64</span></code></pre>
 
-<p>Post the signature in to the 'Conversation' section of your pull request to allow the registry maintainers to verify it. It can help to also include the commit hash that you have signed, to avoid any confusion.</p>
+<p>Post the signature into the 'Conversation' section of your pull request to allow the registry maintainers to verify it. It can help to also include the commit hash that you have signed, to avoid any confusion.</p>
 
 <h4><a class="anchor" id="verifying-the-signature-4" href="#verifying-the-signature-4"></a>Verifying the signature</h4>
 
@@ -456,7 +456,7 @@ Make a copy and use the copy as the ssh-keygen command below will overwrite the 
     <span class="nt">-inkey</span> &lt;converted key file&gt; <span class="se">\</span>
     <span class="nt">-in</span> &lt;<span class="o">(</span><span class="nb">echo</span> <span class="s2">"&lt;commit hash&gt;"</span><span class="o">)</span> | <span class="nb">base64</span></code></pre>
 
-<p>Post the signature in to the 'Conversation' section of your pull request to allow the registry maintainers to verify it. It can help to also include the commit hash that you have signed, to avoid any confusion.</p>
+<p>Post the signature into the 'Conversation' section of your pull request to allow the registry maintainers to verify it. It can help to also include the commit hash that you have signed, to avoid any confusion.</p>
 
 <h4><a class="anchor" id="verifying-the-signature-5" href="#verifying-the-signature-5"></a>Verifying the signature</h4>
 
@@ -521,6 +521,7 @@ Make a copy and use the copy as the ssh-keygen command below will overwrite the 
       <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
       <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
       <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="../services/Registry.html" rel="nofollow">Registry</a></li>
     </ul>
   </li>
   <li>Internal

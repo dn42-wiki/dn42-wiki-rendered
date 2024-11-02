@@ -249,6 +249,25 @@
   };
 }</code></pre>
 
+<p>Example OpenBGPD config snippet (assumes config similar to
+the <a href="../howto/OpenBGPD.html">OpenBGPD setup guide</a>; note the GRC
+neighbor should be defined separately (outside the
+<code>dn42peers</code> group)):</p>
+
+<pre class="highlight"><code><span class="n">neighbor</span> <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac12</span>::<span class="m">1</span> {
+	<span class="n">local</span>-<span class="n">address</span> &lt;<span class="n">YOUR</span>-<span class="n">ROUTER</span>-<span class="n">DN42</span>-<span class="n">IPv6</span>&gt;
+	<span class="n">descr</span> <span class="n">dn42grc</span>
+	<span class="n">remote</span>-<span class="n">as</span> <span class="m">4242422602</span>
+	<span class="n">multihop</span> <span class="m">255</span>
+	<span class="n">announce</span> <span class="n">IPv4</span> <span class="n">unicast</span>
+	<span class="n">announce</span> <span class="n">IPv6</span> <span class="n">unicast</span>
+	<span class="n">announce</span> <span class="n">add</span>-<span class="n">path</span> <span class="n">send</span> <span class="n">all</span>
+}
+
+<span class="c"># [...]
+</span>
+<span class="n">allow</span> <span class="n">to</span> {<span class="n">group</span> <span class="n">dn42peers</span> <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac12</span>::<span class="m">1</span>} <span class="n">prefix</span>-<span class="n">set</span> <span class="n">dn42etc</span></code></pre>
+
 <p>Example VyOS 1.4 "Sagitta" config
 </p><pre class="highlight"><code># The route collector should never export routes, so let's make a route-map to reject them if it does.
 set policy route-map Deny-All rule 1 action deny

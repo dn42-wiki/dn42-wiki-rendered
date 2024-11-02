@@ -154,7 +154,8 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p><a href="../../index.html" rel="nofollow"><img src="../../dn42.png" alt="dn42" /></a></p>
+
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
@@ -421,6 +422,31 @@ Config (vlan.0 is presumed to be your LAN/Trust interface)
 <h2><a class="anchor" id="ms-dns" href="#ms-dns"></a>MS DNS</h2>
 <p>Add a "Conditional Forward" (de: "Bedingte Weiterleitung") for each of "dn42", "20.172.in-addr.arpa", "21.172.in-addr.arpa", "22.172.in-addr.arpa", "23.172.in-addr.arpa", "10.in-addr.arpa" using 172.20.0.53 as forwarder. Ignore the error message that the server is not authoritative.</p>
 
+<h2><a class="anchor" id="systemd-resolved" href="#systemd-resolved"></a>systemd-resolved</h2>
+
+<p>If you are using systemd-networkd and systemd-resolved in a version later then v240 you can set up split DNS by adding the dn42 anycast servers to a interface:</p>
+
+<pre class="highlight"><code>[Match]
+Name=dummy0
+
+[Network]
+ # don't try to resolve normal internet domains with theses resolvers
+DNSDefaultRoute=false
+# configure dn42 anycast servers
+DNS=fd42:d42:d42:54::1
+DNS=172.23.0.53
+DNS=fd42:d42:d42:53::1
+DNS=172.20.0.53
+
+# configure all relevant dn42 domains as route-only domains
+Domains=~dn42
+Domains=~20.172.in-addr.arpa
+Domains=~21.172.in-addr.arpa
+Domains=~22.172.in-addr.arpa
+Domains=~23.172.in-addr.arpa
+Domains=~10.in-addr.arpa
+Domains=~d.f.ip6.arpa</code></pre>
+
 <h1><a class="anchor" id="resolver-setup" href="#resolver-setup"></a>Resolver setup</h1>
 
 <p>Configuration of common resolver softwares to do full recursion DNS queries for <code>.dn42</code> (and reverse DNS) IPv4 and IPv6 anycast services.</p>
@@ -515,6 +541,7 @@ multiple services from *.delegation-servers.dn42 for redundancy.</p>
 	<span class="n">name</span>: <span class="s2">"dn42"</span>
 	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
 	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
+
 <span class="n">stub</span>-<span class="n">zone</span>:
 	<span class="n">name</span>: <span class="s2">"20.172.in-addr.arpa"</span>
 	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
@@ -532,16 +559,6 @@ multiple services from *.delegation-servers.dn42 for redundancy.</p>
 
 <span class="n">stub</span>-<span class="n">zone</span>:
 	<span class="n">name</span>: <span class="s2">"23.172.in-addr.arpa"</span>
-	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
-	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
-
-<span class="n">stub</span>-<span class="n">zone</span>: 
-    <span class="n">name</span>: <span class="s2">"23.172.in-addr.arpa"</span>
-	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
-	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
-
-<span class="n">stub</span>-<span class="n">zone</span>: 
-      <span class="n">name</span>: <span class="s2">"10.in-addr.arpa"</span>
 	<span class="n">stub</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="m">4242</span>:<span class="m">2601</span>:<span class="n">ac53</span>::<span class="m">1</span>
 	<span class="n">stub</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">129</span>.<span class="m">1</span>
 
@@ -601,6 +618,7 @@ multiple services from *.delegation-servers.dn42 for redundancy.</p>
       <li><a href="../Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
       <li><a href="../Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
       <li><a href="../Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="../Registry.html" rel="nofollow">Registry</a></li>
     </ul>
   </li>
   <li>Internal

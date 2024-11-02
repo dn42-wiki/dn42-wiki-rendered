@@ -21,14 +21,14 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'services/Old-Hierarchical-DNS.md';
+	  var pageFullPath = 'services/Registry.md';
     var pageFormat   = 'markdown';
 
   </script>
   <script src="../gollum/assets/app-e63ab45773141139cffcd04474f73c21042c7267568325d4e00775b4f9eaa022.js" type="text/javascript"></script>
   
 
-  <title>Old-Hierarchical-DNS</title>
+  <title>Registry</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -52,12 +52,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>Old-Hierarchical-DNS</div>
+            <div>Registry</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="https://hist.dn42.wiki/gollum/history/services/Old-Hierarchical-DNS.md"
+              href="http://127.42.42.80:4280/gollum/history/services/Registry.md"
               role="menuitem"
             >
               <span>History</span>
@@ -100,7 +100,7 @@
     class="TableObject-item TableObject-item--primary px-2"
     
   >
-    <form class="search-form" action="https://hist.dn42.wiki/gollum/search" method="get" id="search-form">
+    <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
     	<input type="text" class="form-control input-block" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
@@ -128,7 +128,7 @@
     <div class="BtnGroup d-flex">
         <a
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          href="https://hist.dn42.wiki/gollum/history/services/Old-Hierarchical-DNS.md/"
+          href="http://127.42.42.80:4280/gollum/history/services/Registry.md/"
           id="minibutton-history"
         >
           History
@@ -143,7 +143,7 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    Old-Hierarchical-DNS
+    Registry
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
 <li class="breadcrumb-item"><a href="../gollum/overview/services/index.html">services</a></li>
@@ -160,78 +160,39 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>This information is now <strong>deprecated</strong>. Please check <a href="New-DNS.html">New DNS</a> for the current architecture.</p>
+	        <h1><a class="anchor" id="registry-cleanup-process" href="#registry-cleanup-process"></a>Registry cleanup process</h1>
+<p>This process is used to remove inactive objects based on MRT data and the git commit history.
+The process is to be executed on a regular basis (yearly).</p>
 
-<hr />
+<p>A maintainer is classified as "inactive" if the following conditions have been fulfilled:</p>
+<ol>
+  <li>All of the ASNs the maintainer has been directly or indirectly associated with (in any way and by following all references, whether through mnt-by, admin-c, tech-c, etc. or through an ORG) have not been observed originating a prefix in the global routing table at any point within the last three years. (Determined by analyzing the daily MRT RIB dumps provided by the DN42 Global Route collector.)</li>
+  <li>The maintainer has not edited any of the ASNs they are associated with in the registry within the last three years. (Determined by analyzing the git commit history.)</li>
+</ol>
 
-<p>DNS in the global internet is designed as a tree starting from "." and traveling outward in layers. Currently in DN42 dns is flat. This leads to issues when trying to debug problems and makes it difficult to delegate to subnets smaller than /24. Another problem that arises is having the root dns setup as an anycast. If one of the anycast roots is having problems it creates inconsistent errors for some users. This has led to the problem of when a user has a poorly configured anycast available to create their own root anycast.</p>
+<p>Maintainers that are not affiliated with an ASN (whether directly or indirectly or through other maintainers) are also considered inactive regardless of whether they fulfill the above conditions.</p>
 
-<p>The purpose of this project is to create a system of high quality dns roots. With them in place, an anycast resolver would only need to be a simple caching resolver that uses the roots to query.</p>
+<h2><a class="anchor" id="process" href="#process"></a>Process</h2>
 
-<h2><a class="anchor" id="hierarchy-in-dn42" href="#hierarchy-in-dn42"></a>Hierarchy in DN42</h2>
+<p>Using <strong>registry_wizard (written for v0.3.11)</strong>:</p>
 
-<ul>
-  <li>. (dot)
-    <ul>
-      <li>arpa
-        <ul>
-          <li>in-addr
-            <ul>
-              <li>172
-                <ul>
-                  <li>20</li>
-                  <li>22</li>
-                  <li>23</li>
-                  <li>31</li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li>dn42
-        <ul>
-          <li>
-            
+<ol>
+  <li>Generate a list of active ASNs based on MRT data:
+<code>./registry_wizard /path/to/registry mrt_activity parse /path/to/mrt/files --cutoff-time &lt;value&gt; --list &gt; active_list.txt</code>
+</li>
+  <li>Based on the list of active ASNs and through referencing the registry git commit log, generate a list of inactive ASNs:
+<code>./registry_wizard /path/to/registry mrt_activity active_asn_to_inactive --list_file /path/to/active_list.txt --cutoff-time &lt;value&gt; &gt; inactive_list.txt</code>
+</li>
+  <li>Generate the removal commands to remove inactive objects based on the previous list:
+<code>./registry_wizard /path/to/registry remove aut-num --list_file /path/to/list.txt --enable_subgraph_check</code>
+</li>
+</ol>
 
-          </li>
-        </ul>
-      </li>
-      <li>hack</li>
-      <li>ffhh</li>
-      <li>&lt;Future Top Level Domains?&gt;</li>
-      <li>&lt;ano, bit or other organisation TLDs?&gt;</li>
-      <li>
-        
+<p>ASNs can be excluded from removal by removing them from the list produced in the second step.</p>
 
-
-      </li>
-    </ul>
-  </li>
-</ul>
-<p>Note: With this system it could be possible to merge the IANA root file.. but it would be beyond the scope of this project.</p>
-
-<h2><a class="anchor" id="servers" href="#servers"></a>Servers</h2>
-
-<p>For all of these servers they have a specific IP assigned, only respond to their authoritative zones, and do not allow recursion.</p>
-
-<p>**.root-servers.dn42** - This server is authoritative for "." (root zone). Is authorative for ICANN root as well. "172.in-addr.arpa" is delegated to ICANN, except rfc1918 zones which are delegated to dn42. The rest of rfc1918 as well as rfc4193 address space is delegated to dn42.</p>
-
-<p>**.zone-servers.dn42** - This server is authoritative for "dn42", "hack", .. This would be where the records for all forward dns nameservers would be. Similar to our current root setup.</p>
-
-<p>**.in-addr-servers.arpa** - This server is authoritative for "arpa", "in-addr", and each of the 172 zones for dn42 ip space. For non dn42 ip space NS records to the respective darknet would need to be registered.</p>
-
-<p>**.dn42-servers.arpa** - This server is authoritative for RFC 2317 delegations. For any inetnum object smaller than /24 and whos parent has no nameserver records, a C class parent zone is created (all its subnetworks are delegated to appropriate nameservers with CNAME)</p>
-
-<p>Real-time server monitor is available at <a href="http://nixnodes.net/dn42/dnsview">http://nixnodes.net/dn42/dnsview</a></p>
-
-<h2><a class="anchor" id="setup" href="#setup"></a>Setup</h2>
-
-<p>Contact one of the root-servers.dn42 operators if you wish to set up a root/zone/dn42 server.</p>
-
-<p>You may want to set up a resolver, see link below or use 172.23.0.53 directly.</p>
-
-<p>Techical information available <a href="https://nixnodes.net/wiki/n/DN42_DNS">here</a></p>
+<p>Manual review of a few resources (primarily those affiliated with "DN42-MNT") will be required as they cannot be removed in an automated way (for example, resources associated with an inactive maintainer that used to host the DN42 anycast DNS will be affiliated with DN42-MNT and will require manual removal).
+To identify the exact conflicts leading to the manual review requirement the following command can be used:
+<code>./registry_wizard /path/to/registry graph path mntner YAMAKAYA-MNT mntner DN42-MNT</code> (To list conflicts between YAMAKAYA-MNT and DN42-MNT)</p>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -336,13 +297,13 @@
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="services/Old-Hierarchical-DNS.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="services/Registry.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="https://hist.dn42.wiki/gollum/rename/services/Old-Hierarchical-DNS.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/services/Registry.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>

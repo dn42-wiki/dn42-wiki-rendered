@@ -160,144 +160,7 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>This guide describes a simple configuration for <a href="https://openbgpd.org/">OpenBGPD</a> running on <a href="https://openbsd.org/">OpenBSD</a>.
-The <a href="https://openbgpd.org/ftp.html">portable version</a> should run with little to no configuration changes on other operating systems as well.</p>
-
-<h1><a class="anchor" id="setup" href="#setup"></a>Setup</h1>
-<p>Only IPv6 is used for the sake of simplicity.
-Neighbors use ULA addresses (/127 transfer net) assigned from one of the peer's allocation.</p>
-
-<p>The goal is to have a small, yet complete setup for all peers with ROA validation and other safety measurements in place.</p>
-
-<h1><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h1>
-<p><a href="https://man.openbsd.org/bgpd.conf.5"><code>/etc/bgpd.conf</code></a> contains all information and may include further (automatically generated) files, as is done in this guide.</p>
-
-<p>As per the manual, configuration is divided into logical sections;  <a href="http://cvsweb.openbsd.org/cgi-bin/cvsweb/~checkout~/src/etc/examples/bgpd.conf?rev=HEAD&amp;content-type=text/plain&amp;only_with_tag=MAIN"><code>/etc/examples/bgpd.conf</code></a> is a complete and commented example which this guide is roughly based on.</p>
-
-<p>By default, <a href="http://man.openbsd.org/bgpd.8">bgpd(8)</a> listens on all local addresses (on the current default <a href="http://man.openbsd.org/rdomain.4"><code>routing domain</code></a>), but this guide explicitly listens on the configured transfer ULA only for each peer to better illustrate of this setup.</p>
-
-<h2><a class="anchor" id="local-host" href="#local-host"></a>local host</h2>
-<p>Information such as ASN, router ID and allocated networks are required:
-</p><pre class="highlight"><code><span class="c"># macros
-</span><span class="n">ASN</span>=<span class="s2">"4242421234"</span>
-
-<span class="c"># global configuration
-</span><span class="n">AS</span> $<span class="n">ASN</span>
-<span class="n">router</span>-<span class="n">id</span> <span class="m">1</span>.<span class="m">2</span>.<span class="m">3</span>.<span class="m">4</span>
-
-<span class="n">prefix</span>-<span class="n">set</span> <span class="n">mynetworks</span> {
-        <span class="n">fd00</span>:<span class="m">12</span>:<span class="m">34</span>::/<span class="m">48</span>
-}</code></pre>
-
-<p>These can be used in subsequent filter rules.
-The local peer's announcements is then defined as follows:
-</p><pre class="highlight"><code><span class="c"># Generate routes for the networks our ASN will originate.
-# The communities (read 'tags') are later used to match on what
-# is announced to EBGP neighbors
-</span><span class="n">network</span> <span class="n">prefix</span>-<span class="n">set</span> <span class="n">mynetworks</span> <span class="n">set</span> <span class="n">large</span>-<span class="n">community</span> $<span class="n">ASN</span>:<span class="m">1</span>:<span class="m">1</span></code></pre>
-
-<h2><a class="anchor" id="neighbors" href="#neighbors"></a>neighbors</h2>
-<p>For each neighbor its ASN and transfer ULA is required.
-An optional description is provided such that <a href="http://man.openbsd.org/bgpctl.8">bgpctl(8)</a> for example can be used with mnemonic names instead of AS numbers:
-</p><pre class="highlight"><code><span class="c"># peer A, transport over IPSec/GRE
-</span>$<span class="n">A_local</span>=<span class="s2">"fd00:12:34:A::1"</span>
-$<span class="n">A_remote</span>=<span class="s2">"fd00:12:34:A::2"</span>
-$<span class="n">A_ASN</span>=<span class="s2">"4242425678"</span>
-
-<span class="n">listen</span> <span class="n">on</span> $<span class="n">A_local</span>
-
-<span class="n">neighbor</span>  $<span class="n">A_remote</span> {
-    <span class="n">remote</span>-<span class="n">as</span> $<span class="n">A_ASN</span>
-    <span class="n">descr</span> <span class="s2">"A"</span>
-}</code></pre>
-
-<h2><a class="anchor" id="filter-rules" href="#filter-rules"></a>filter rules</h2>
-<p><strong>bgpd</strong> blocks all BGP <strong>UPDATE</strong> messages by default.
-The filter rules are evaluated in sequential order, form first to last.
-The last matching allow or deny rule decides what action is taken.</p>
-
-<p>Start off with basic protection and sanity rules:
-</p><pre class="highlight"><code><span class="c"># deny more-specifics of our own originated prefixes
-</span><span class="n">deny</span> <span class="n">quick</span> <span class="n">from</span> <span class="n">ebgp</span> <span class="n">prefix</span>-<span class="n">set</span> <span class="n">mynetworks</span> <span class="n">or</span>-<span class="n">longer</span>
-
-<span class="c"># filter out too long paths, establish more peerings instead
-</span><span class="n">deny</span> <span class="n">quick</span> <span class="n">from</span> <span class="n">any</span> <span class="n">max</span>-<span class="n">as</span>-<span class="n">len</span> <span class="m">8</span></code></pre>
-
-<p><code>quick</code> rules are considered the last matching rule, and evaluation of subsequent rules is skipped.</p>
-
-<p>Allow own announcements:
-</p><pre class="highlight"><code><span class="c"># Outbound EBGP: only allow self originated networks to ebgp peers
-# Don't leak any routes from upstream or peering sessions. This is done
-# by checking for routes that are tagged with the large-community $ASN:1:1
-</span><span class="n">allow</span> <span class="n">to</span> <span class="n">ebgp</span> <span class="n">prefix</span>-<span class="n">set</span> <span class="n">mynetworks</span> <span class="n">large</span>-<span class="n">community</span> $<span class="n">ASN</span>:<span class="m">1</span>:<span class="m">1</span></code></pre>
-
-<p>Allow all remaining UPDATES based on <strong>O</strong>rigin <strong>V</strong>alidation <strong>S</strong>tates:
-</p><pre class="highlight"><code><span class="c"># enforce ROA
-</span><span class="n">allow</span> <span class="n">from</span> <span class="n">ebgp</span> <span class="n">ovs</span> <span class="n">valid</span></code></pre>
-
-<p>Note how the <code>ovs</code> filter requires the <code>roa-set {...}</code> to be defined;  see the <code>ROA</code> section below.</p>
-
-<h3><a class="anchor" id="path-attributes" href="#path-attributes"></a>path attributes</h3>
-<p>Besides <code>allow</code> and <code>deny</code> statements, filter rules can modify UPDATE messages, e.g.
-</p><pre class="highlight"><code><span class="c"># Scrub normal and large communities relevant to our ASN from EBGP neighbors
-# https://tools.ietf.org/html/rfc7454#section-11
-</span><span class="n">match</span> <span class="n">from</span> <span class="n">ebgp</span> <span class="n">set</span> { <span class="n">large</span>-<span class="n">community</span> <span class="n">delete</span> $<span class="n">ASN</span>:*:* }
-
-<span class="c"># Honor requests to gracefully shutdown BGP sessions
-# https://tools.ietf.org/html/rfc8326
-</span><span class="n">match</span> <span class="n">from</span> <span class="n">any</span> <span class="n">community</span> <span class="n">GRACEFUL_SHUTDOWN</span> <span class="n">set</span> { <span class="n">localpref</span> <span class="m">0</span> }</code></pre>
-
-<h1><a class="anchor" id="roa" href="#roa"></a>ROA</h1>
-
-<p>An roa-set can be generated from the registry directly or you can use the following pre-build tables.</p>
-
-<p>One single <code>roa-set</code> may be defined, against which <strong>bgpd</strong> will validate the origin of each prefix;  this allows filter rules to use the <code>ovs</code> keyword as demonstrated above.</p>
-
-<p>ROA files generated by <a href="https://git.dn42.dev/burble/dn42regsrv">dn42regsrv</a> are available from burble.dn42:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>URL</th>
-      <th> IPv4/IPv6 </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-<a href="https://dn42.burble.com/roa/dn42_roa_obgpd_46.conf">https://dn42.burble.com/roa/dn42_roa_obgpd_46.conf</a>  </td>
-      <td> Both </td>
-    </tr>
-    <tr>
-      <td>
-<a href="https://dn42.burble.com/roa/dn42_roa_obgpd_4.conf">https://dn42.burble.com/roa/dn42_roa_obgpd_4.conf</a>  </td>
-      <td> IPv4 Only </td>
-    </tr>
-    <tr>
-      <td>
-<a href="https://dn42.burble.com/roa/dn42_roa_obgpd_6.conf">https://dn42.burble.com/roa/dn42_roa_obgpd_6.conf</a>  </td>
-      <td> IPv6 Only </td>
-    </tr>
-  </tbody>
-</table>
-
-<p><code>/etc/dn42.roa-set</code> is the generated set:
-</p><pre class="highlight"><code><span class="n">roa</span>-<span class="n">set</span> {
-    <span class="n">fd00</span>:<span class="m">12</span>:<span class="m">34</span>::/<span class="m">48</span> <span class="n">source</span>-<span class="n">as</span> <span class="m">4242421234</span>
-    <span class="n">fd00</span>:<span class="n">ab</span>:<span class="n">cd</span>::/<span class="m">44</span> <span class="n">maxlen</span> <span class="m">64</span> <span class="n">source</span>-<span class="n">as</span> <span class="m">4242427890</span>
-    ...
-}</code></pre>
-
-<p>Include it in <code>/etc/bgpd.conf</code>:
-</p><pre class="highlight"><code><span class="c"># defines roat-set, see _rpki-client crontab
-</span><span class="n">include</span> <span class="s2">"/etc/dn42.roa-set"</span></code></pre>
-
-<h1><a class="anchor" id="looking-glass" href="#looking-glass"></a>Looking glass</h1>
-<p>This is mostly OpenBSD specific since <a href="http://man.openbsd.org/bgplg.8">bgplg(8)</a> and <a href="http://man.openbsd.org/httpd.8">httpd(8)</a> ship as part of the operating system.
-The <strong>bgplg</strong> manual contains the few steps and example <a href="http://man.openbsd.org/httpd.conf.5">httpd.conf(5)</a> required to enable the looking glass.</p>
-
-<p>See <a href="https://t4-2.high5.nl/bgplg">https://t4-2.high5.nl/bgplg</a> for a running instance operating within DN42.</p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -347,6 +210,7 @@ The <strong>bgplg</strong> manual contains the few steps and example <a href="ht
       <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
       <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
       <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="../services/Registry.html" rel="nofollow">Registry</a></li>
     </ul>
   </li>
   <li>Internal

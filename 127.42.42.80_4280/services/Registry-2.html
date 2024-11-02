@@ -21,14 +21,14 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'internal/Achievements.md';
+	  var pageFullPath = 'services/Registry.md';
     var pageFormat   = 'markdown';
 
   </script>
   <script src="../gollum/assets/app-e63ab45773141139cffcd04474f73c21042c7267568325d4e00775b4f9eaa022.js" type="text/javascript"></script>
   
 
-  <title>Achievements</title>
+  <title>Registry</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -52,12 +52,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>Achievements</div>
+            <div>Registry</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="https://hist.dn42.wiki/gollum/history/internal/Achievements.md"
+              href="http://127.42.42.80:4280/gollum/history/services/Registry.md"
               role="menuitem"
             >
               <span>History</span>
@@ -100,7 +100,7 @@
     class="TableObject-item TableObject-item--primary px-2"
     
   >
-    <form class="search-form" action="https://hist.dn42.wiki/gollum/search" method="get" id="search-form">
+    <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
     	<input type="text" class="form-control input-block" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
@@ -128,7 +128,7 @@
     <div class="BtnGroup d-flex">
         <a
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          href="https://hist.dn42.wiki/gollum/history/internal/Achievements.md/"
+          href="http://127.42.42.80:4280/gollum/history/services/Registry.md/"
           id="minibutton-history"
         >
           History
@@ -143,10 +143,10 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    Achievements
+    Registry
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
-<li class="breadcrumb-item"><a href="../gollum/overview/internal/index.html">internal</a></li>
+<li class="breadcrumb-item"><a href="../gollum/overview/services/index.html">services</a></li>
 </ol></nav></div>
 
 	<div class="has-header has-footer has-sidebar has-rightbar">
@@ -160,59 +160,39 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>Add what you did in/for dn42, yet:</p>
+	        <h1><a class="anchor" id="registry-cleanup-process" href="#registry-cleanup-process"></a>Registry cleanup process</h1>
+<p>This process is used to remove inactive objects based on MRT data and the git commit history.
+The process is to be executed on a regular basis (yearly).</p>
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Who</th>
-      <th style="text-align:left;">#peerings</th>
-      <th style="text-align:left;">Bandwidth</th>
-      <th style="text-align:left;">DNS</th>
-      <th style="text-align:left;">Fileserver</th>
-      <th style="text-align:left;">Network service</th>
-      <th style="text-align:left;">Website</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">allo</td>
-      <td style="text-align:left;">7</td>
-      <td style="text-align:left;">1 GBit/s</td>
-      <td style="text-align:left;">auth. only</td>
-      <td style="text-align:left;">no</td>
-      <td style="text-align:left;">no</td>
-      <td style="text-align:left;">yes</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">stv0g</td>
-      <td style="text-align:left;">8</td>
-      <td style="text-align:left;">1 GBit/s</td>
-      <td style="text-align:left;">no</td>
-      <td style="text-align:left;">no</td>
-      <td style="text-align:left;">no</td>
-      <td style="text-align:left;"><a href="https://dev.0l.dn42/">yes</a></td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">fsteinel</td>
-      <td style="text-align:left;">2</td>
-      <td style="text-align:left;">2 MBit/s</td>
-      <td style="text-align:left;">auth. only</td>
-      <td style="text-align:left;">no</td>
-      <td style="text-align:left;">no</td>
-      <td style="text-align:left;"><a href="http://www.flonet.dn42/">yes</a></td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">haksrpd</td>
-      <td style="text-align:left;">32</td>
-      <td style="text-align:left;">3 gbps maximum approx.</td>
-      <td style="text-align:left;">auth. only</td>
-      <td style="text-align:left;">no</td>
-      <td style="text-align:left;">MPLS L3VPN, EVPN, DN42 Service Hosting, etc.</td>
-      <td style="text-align:left;">temporary unavailiable</td>
-    </tr>
-  </tbody>
-</table>
+<p>A maintainer is classified as "inactive" if the following conditions have been fulfilled:</p>
+<ol>
+  <li>All of the ASNs the maintainer has been directly or indirectly associated with (in any way and by following all references, whether through mnt-by, admin-c, tech-c, etc. or through an ORG) have not been observed originating a prefix in the global routing table at any point within the last three years. (Determined by analyzing the daily MRT RIB dumps provided by the DN42 Global Route collector.)</li>
+  <li>The maintainer has not edited any of the ASNs they are associated with in the registry within the last three years. (Determined by analyzing the git commit history.)</li>
+</ol>
+
+<p>Maintainers that are not affiliated with an ASN (whether directly or indirectly or through other maintainers) are also considered inactive regardless of whether they fulfill the above conditions.</p>
+
+<h2><a class="anchor" id="process" href="#process"></a>Process</h2>
+
+<p>Using <strong>registry_wizard (written for v0.3.11)</strong>:</p>
+
+<ol>
+  <li>Generate a list of active ASNs based on MRT data:
+<code>./registry_wizard /path/to/registry mrt_activity parse /path/to/mrt/files --cutoff-time &lt;value&gt; --list &gt; active_list.txt</code>
+</li>
+  <li>Based on the list of active ASNs and through referencing the registry git commit log, generate a list of inactive ASNs:
+<code>./registry_wizard /path/to/registry mrt_activity active_asn_to_inactive --list_file /path/to/active_list.txt --cutoff-time &lt;value&gt; &gt; inactive_list.txt</code>
+</li>
+  <li>Generate the removal commands to remove inactive objects based on the previous list:
+<code>./registry_wizard /path/to/registry remove aut-num --list_file /path/to/list.txt --enable_subgraph_check</code>
+</li>
+</ol>
+
+<p>ASNs can be excluded from removal by removing them from the list produced in the second step.</p>
+
+<p>Manual review of a few resources (primarily those affiliated with "DN42-MNT") will be required as they cannot be removed in an automated way (for example, resources associated with an inactive maintainer that used to host the DN42 anycast DNS will be affiliated with DN42-MNT and will require manual removal).
+To identify the exact conflicts leading to the manual review requirement the following command can be used:
+<code>./registry_wizard /path/to/registry graph path mntner YAMAKAYA-MNT mntner DN42-MNT</code> (To list conflicts between YAMAKAYA-MNT and DN42-MNT)</p>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -252,26 +232,27 @@
   </li>
   <li>Services
     <ul>
-      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="../services/IX-Collection.html" rel="nofollow">IX Collection</a></li>
-      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="Registry.html" rel="nofollow">Registry</a></li>
     </ul>
   </li>
   <li>Internal
     <ul>
-      <li><a href="Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="Historical-Services.html" rel="nofollow">Historical services</a></li>
+      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
     </ul>
   </li>
   <li>Historical
@@ -316,13 +297,13 @@
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="internal/Achievements.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="services/Registry.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="https://hist.dn42.wiki/gollum/rename/internal/Achievements.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/services/Registry.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
