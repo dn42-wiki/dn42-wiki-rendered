@@ -6,8 +6,9 @@
   <meta name="MobileOptimized" content="width">
   <meta name="HandheldFriendly" content="true">
   <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" type="text/css" href="../gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css" media="all">
+  <link rel="stylesheet" type="text/css" href="../gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css" media="all">
   <link rel="stylesheet" type="text/css" href="../gollum/assets/print-512498c368be0d3fb1ba105dfa84289ae48380ec9fcbef948bd4e23b0b095bfb.css" media="print">
+
 
   <link rel="stylesheet" type="text/css" href="../custom.css" media="all">
   
@@ -25,9 +26,24 @@
     var pageFormat   = 'markdown';
 
   </script>
-  <script src="../gollum/assets/app-e63ab45773141139cffcd04474f73c21042c7267568325d4e00775b4f9eaa022.js" type="text/javascript"></script>
+  <script src="../gollum/assets/app-05adca32f8f4f3effe10f8f4cf26dfd6a419ba986bce60d3f51a97e4055d4113.js" type="text/javascript"></script>
+
+
+  
+  <script>
+  var mermaid_conf = {
+    startOnLoad: true,
+    securityLevel: 'sandbox'
+  };
+  </script>
   
 
+
+  <script src="../gollum/assets/gollum.mermaid-ccc590b7d9655deec94c9975f25d74fbe38f703c927e26cf81169d63fea7cd50.js" type="text/javascript"></script>
+  <script>
+    mermaid.initialize(mermaid_conf);
+  </script>
+  
   <title>Whois</title>
 </head>
 <body>
@@ -91,9 +107,11 @@
   </div>
 
   <div class="TableObject-item hide-sm hide-md">
-    <a class="btn btn-sm" id="minibutton-home" href="../index.html">
+    <button class="btn btn-sm" id="minibutton-home" 
+      onclick="window.location.href='../index.html';"
+    >
       Home
-    </a>
+    </button>
   </div>
 
   <div
@@ -101,38 +119,38 @@
     
   >
     <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
-    	<input type="text" class="form-control input-block" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
+    	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
   <div class="TableObject-item hide-sm hide-md">
     <div class="BtnGroup d-flex">
-        <a
+        <button
           class="btn BtnGroup-item btn-sm"
-          href="../gollum/overview.html"
+          onclick="window.location.href='../gollum/overview.html';"
           id="minibutton-overview"
         >
           Overview
-        </a>
+        </button>
 
-        <a
+        <button
           class="btn BtnGroup-item btn-sm"
-          href="../gollum/latest_changes.html"
+          onclick="window.location.href='../gollum/latest_changes.html';"
           id="minibutton-latest-changes"
         >
           Latest Changes
-        </a>
+        </button>
     </div>
   </div>
 
   <div class="TableObject-item px-2">
     <div class="BtnGroup d-flex">
-        <a
+        <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          href="http://127.42.42.80:4280/gollum/history/services/Whois.md/"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/services/Whois.md/';"
           id="minibutton-history"
         >
           History
-        </a>
+        </button>
 
     </div>
   </div>
@@ -160,102 +178,265 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="whois-registry" href="#whois-registry"></a>Whois registry</h1>
+<p><strong>aka</strong> <em>The registry</em> contains:</p>
+
+<ul>
+  <li>AS numbers assignations</li>
+  <li>Subnet assignations</li>
+  <li>DNS root zone for <code>dn42.</code>
+</li>
+</ul>
+
+<p>The registry is a git repository, hosted here: <a href="https://git.dn42.dev/dn42/registry.git">https://git.dn42.dev/dn42/registry.git</a>, Changes to the registry are managed by submitting pull requests to the repository, these are then reviewed by the registry maintainers before acceptance.</p>
+
+<h1><a class="anchor" id="names-and-numbers" href="#names-and-numbers"></a>Names and numbers</h1>
+
+<p>dn42 uses some names and numbers, which are declared in the registry.  Whenever possible, we try to stick to names and numbers that do not conflict with the ICANN-net or other networks similar to dn42, for instance by using private numbers space.</p>
+
+<h2><a class="anchor" id="address-space" href="#address-space"></a>Address space</h2>
+
+<p>dn42 uses <strong>172.20.0.0/14</strong> for IPv4.</p>
+
+<p>For IPv6, we use ULA (that is, <strong>fd00::/8</strong>).</p>
+
+<p>See also the howto page covering the <a href="../howto/Address-Space.html">DN42 address space</a>.</p>
+
+<h2><a class="anchor" id="as-numbers" href="#as-numbers"></a>AS numbers</h2>
+
+<p>Since June 2014, dn42 is using the <strong>4242420000-4242429999</strong> ASN range for allocations. This range is further subdivided:</p>
+<ul>
+  <li>
+<strong>4242420000-4242423999</strong> for end-users allocations</li>
+  <li>
+<strong>4242424000-4242426999</strong> reserved for future use</li>
+  <li>
+<strong>4242427000-4242429999</strong> for sub-allocations</li>
+</ul>
+
+<p>If you are running a project similar to dn42, please use another range of ASN. The "sub-allocations" range is meant for dn42 users willing to have administrative control over a small, consecutive range of ASN (e.g. to use them directly or to distribute them).</p>
+
+<p>Note that currently, most AS are using one of the legacy ASN range (and will probably continue to do so, as renumbering is painful). See the <a href="../FAQ.html#frequently-asked-questions_why-are-you-using-asn-in-the-76100-76199-range">FAQ</a> for a discussion on AS ranges.</p>
+
+<h2><a class="anchor" id="dns-zones" href="#dns-zones"></a>DNS zones</h2>
+
+<p>dn42 uses the <code>dn42.</code> TLD, which is not present in the root DNS zone of the ICANN-net.  For details, see <a href="DNS.html">DNS</a>.</p>
+
+<p>Note that other TLDs should also be usable from dn42, most notably from Freifunk and ChaosVPN. A tentative list is available at <a href="dns/External-DNS.html">External DNS</a>.</p>
+
+<h1><a class="anchor" id="drone-ci-cd" href="#drone-ci-cd"></a>Drone CI/CD</h1>
+
+<p>The gitea instance hosting the registry has an associated <a href="https://drone.io/">Drone CI/CD</a> service:</p>
+
+<ul>
+  <li><a href="https://drone.git.dn42/">https://drone.git.dn42/</a></li>
+</ul>
+
+<p>Users are free to add drone pipelines to their own repositories. Repositories can be enabled using the Drone server <a href="https://drone.git.dn42/">user interface</a>.</p>
+
+<h1><a class="anchor" id="telegram-bot" href="#telegram-bot"></a>Telegram Bot</h1>
+<p>A telegram whois bot owned by <a href="https://t.me/oxygen233">@Oxygen233</a> is hosted on <a href="https://t.me/DN42WhoisBot">@DN42WhoisBot</a>.</p>
+
+<p>Privacy mode is enabled, please call the bot with @DN42WhoisBot when necessary.</p>
+
+<h1><a class="anchor" id="web-interface-and-rest-api" href="#web-interface-and-rest-api"></a>Web interface and REST API</h1>
+
+<p><a href="https://explorer.burble.dn42/">https://explorer.burble.dn42/</a> (<a href="https://explorer.burble.com/">https://explorer.burble.com/</a> via clearnet) provides a web interface and REST API for querying the DN42 registry.</p>
+
+<p>The service is provided by <a href="https://git.burble.com/burble.dn42/dn42regsrv">dn42regsrv</a> which can also be run locally.</p>
+
+<h2><a class="anchor" id="authentication" href="#authentication"></a>Authentication</h2>
+
+<p>See the page on <a href="../howto/Registry-Authentication.html">Registry Authentication</a></p>
+
+<h1><a class="anchor" id="dns-interface" href="#dns-interface"></a>DNS interface</h1>
+
+<p>There is also a DNS-based interface to query AS information from the registry. The DNS zone is <code>asn.dn42</code>. 
+Mirrors are hosted at <code>asn.grmml.dn42</code> and <code>asn.lorkep.dn42</code>.</p>
+
+<p>Example:</p>
+
+<pre class="highlight"><code><span class="nv">$ </span>dig +short AS4242420000.asn.dn42 TXT
+<span class="s2">"4242420000 | DN42 | dn42 |  | PYROPETER-AS PyroPeters AS"</span></code></pre>
+
+<p>The Python code for generating the zone from the registry is available on the monotone repository.</p>
+
+<p>An alternative version to query the registry is it <code>ip.catgirls.dn42</code> (IPv6 only) (Source code <a href="https://git.catgirls.systems/famfo/ipinfo">https://git.catgirls.systems/famfo/ipinfo</a>). Note: if there is no <code>route</code>/<code>route6</code> object for the <code>inetnum</code>/<code>inet6num</code>, the ip address will not be found.</p>
+
+<p>This can be used together with <code>mtr</code> using the <code>--ipinfo_provider4</code> and <code>--ipinfo_provider6</code> flags (mtr has to be built from source for that, there hasn't been a release in a while).</p>
+
+<p>Example:
+</p><pre class="highlight"><code><span class="nv">$ </span>dig +short TXT as4242421411.ip.catgirls.dn42
+<span class="s2">"4242421411 | C4TG1RL5-MNT | 172.20.0.81/32 | 172.23.196.32/27 | 172.20.0.80/32 | fd42:d42:d42:2080::/64 | fd42:deca:fbad::/48 | fd42:d42:d42:81::/64"</span>
+<span class="nv">$ </span>dig +short TXT 32.196.23.172.ip.catgirls.dn42
+<span class="s2">"4242421411 | C4TG1RL5-MNT | 172.20.0.81/32 | 172.23.196.32/27 | 172.20.0.80/32 | fd42:d42:d42:2080::/64 | fd42:deca:fbad::/48 | fd42:d42:d42:81::/64"</span>
+<span class="nv">$ </span>dig +short TXT 1.d.a.b.f.a.c.e.d.2.4.d.f.ip.catgirls.dn42
+<span class="s2">"4242421411 | C4TG1RL5-MNT | 172.20.0.81/32 | 172.23.196.32/27 | 172.20.0.80/32 | fd42:d42:d42:2080::/64 | fd42:deca:fbad::/48 | fd42:d42:d42:81::/64"</span></code></pre>
+
+<p>The idea comes from the guys at cymru.com, who provide this service for the Internet (e.g. <code>AS1.asn.cymru.com</code>), see <a href="https://www.team-cymru.org/Services/ip-to-asn.html#dns">https://www.team-cymru.org/Services/ip-to-asn.html#dns</a></p>
+
+<h1><a class="anchor" id="software" href="#software"></a>Software</h1>
+
+<ul>
+  <li>
+<a href="../howto/lglass.html">lglass</a> is a python implementation for working with the registry. It features a whois server, tools to manipulate the data (DNS zone generation, etc).</li>
+  <li>
+<a href="https://git.dn42.dev/registry/whois42d">whois42d</a> written in golang, lightweight/fast, whois server with support for all registry objects, type filtering and systemd socket activation.</li>
+  <li>
+<a href="https://git.dn42.dev/C4TG1RL5/who42rs">who42rs</a> a reimplementation of whois42d written in Rust</li>
+</ul>
+
+<h1><a class="anchor" id="whois-daemons" href="#whois-daemons"></a>Whois daemons</h1>
+
+<p>We have anycast IPv4 and IPv6, both reachable under whois.dn42. IPs are 172.22.0.43 respective fd42:d42:d42:43::1. Please consider joining these anycast adresses when you set up your server. Updates every 1 hour would be nice for a start.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>person</strong></th>
+      <th><strong>dns</strong></th>
+      <th><strong>ip</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>org-cccda</td>
+      <td>whois.cda.dn42</td>
+      <td>172.23.96.1 / fd42:23:cda::1</td>
+    </tr>
+    <tr>
+      <td>StrExp / NIA</td>
+      <td>whois.nia.dn42</td>
+      <td>fd00:1926:817:43::1</td>
+    </tr>
+    <tr>
+      <td>Lan Tian</td>
+      <td>whois.lantian.dn42</td>
+      <td>172.22.76.108 / fdbc:f9dc:67ad:2547::43</td>
+    </tr>
+    <tr>
+      <td>burble</td>
+      <td>whois.burble.dn42</td>
+      <td>172.20.129.8 / fd42:4242:2601:ac43::1</td>
+    </tr>
+    <tr>
+      <td>p3bk4c</td>
+      <td>whois.pebkac.dn42</td>
+      <td>172.21.83.27 / fd63:672f:38e7:27::1</td>
+    </tr>
+    <tr>
+      <td>scooter</td>
+      <td>whois.scooter.dn42</td>
+      <td>172.23.109.170 / fd38:cfa3:7091:2::1</td>
+    </tr>
+    <tr>
+      <td>C4TG1RL5</td>
+      <td>whois.catgirls.dn42</td>
+      <td>172.23.196.33 / fd42:deca:fbad::1</td>
+    </tr>
+    <tr>
+      <td>Bandura</td>
+      <td>whois.bandura.dn42</td>
+      <td>172.22.149.225 / fd04:234e:fc31::1 (may change in the future)</td>
+    </tr>
+    <tr>
+      <td>SUNNET</td>
+      <td>whois.sun.dn42</td>
+      <td>172.21.100.253 / fdc8:dc88:ee11:253::1</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2><a class="anchor" id="down" href="#down"></a>Down?</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>person</strong></th>
+      <th><strong>dns</strong></th>
+      <th><strong>ip</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>welterde</td>
+      <td>thinkbase.srv.welterde.de</td>
+      <td>46.4.248.201</td>
+    </tr>
+    <tr>
+      <td>prauscher</td>
+      <td>sheldon.prauscher.dn42</td>
+      <td>172.22.120.1</td>
+    </tr>
+    <tr>
+      <td>w0h</td>
+      <td>whois.w0h.dn42</td>
+      <td>172.22.232.6 / fd2d:a6da:8d1a:1408::6</td>
+    </tr>
+    <tr>
+      <td>Mic92</td>
+      <td>whois.evenet.dn42 (<a href="https://git.dn42.dev/registry/whois42d">whois42d</a>)</td>
+      <td>172.23.75.1 / fd42:4992:6a6d::6</td>
+    </tr>
+    <tr>
+      <td>Fritz</td>
+      <td>whois.flhb.de</td>
+      <td>172.22.70.69 / 2001:67c:708:102:5054:ff:fe57:9573 / fdd6:aff6:5f6f:102:5054:ff:fe57:9573</td>
+    </tr>
+    <tr>
+      <td>weiti</td>
+      <td>whois.weiti.dn42</td>
+      <td>172.20.175.253 / fdf7:17d5:de49::43</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2><a class="anchor" id="usage" href="#usage"></a>Usage</h2>
+<pre class="highlight"><code>whois <span class="nt">-h</span> <span class="nv">$host</span> <span class="nv">$query</span></code></pre>
+
+<h2><a class="anchor" id="using-a-whois-config" href="#using-a-whois-config"></a>Using a whois config</h2>
+
+<pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /etc/whois.conf 
+<span class="se">\.</span>dn42<span class="nv">$ </span>          whois.dn42
+<span class="se">\-</span>DN42<span class="nv">$ </span>          whois.dn42
+<span class="c"># dn42 range 64512-65534</span>
+^as6<span class="o">(</span>4<span class="o">(</span>5<span class="o">(</span>1[2-9]|[2-9][0-9]<span class="o">)</span>|[6-9][0-9]<span class="o">{</span>2<span class="o">})</span>|5<span class="o">([</span>0-4][0-9]<span class="o">{</span>2<span class="o">}</span>|5<span class="o">([</span>0-2][0-9]|3[0-4]<span class="o">)))</span><span class="nv">$ </span>whois.dn42
+<span class="c"># dn42 range 76100-76199</span>
+^as761[0-9][0-9]<span class="nv">$ </span>  whois.dn42
+<span class="c"># dn42 range 4242420000-4242429999</span>
+^as424242[0-9]<span class="o">{</span>4<span class="o">}</span><span class="nv">$ </span>whois.dn42
+<span class="c"># NeoNetwork range</span>
+^as420127[0-9]<span class="o">{</span>4<span class="o">}</span><span class="nv">$ </span>whois.bandura.dn42
+<span class="c"># dn42 ipv4 address space</span>
+^172<span class="se">\.</span>2[0-3]<span class="se">\.</span><span class="o">[</span>0-9]<span class="o">{</span>1,3<span class="o">}</span><span class="se">\.</span><span class="o">[</span>0-9]<span class="o">{</span>1,3<span class="o">}(</span>/<span class="o">(</span>1[56789]|2[0-9]|3[012]<span class="o">))</span>?<span class="nv">$ </span>whois.dn42
+
+<span class="c"># dn42 ula ipv6 address space</span>
+^fd<span class="k">**</span>:<span class="k">****</span>:<span class="k">****</span>:<span class="k">****</span>:<span class="k">****</span>:<span class="k">****</span>:<span class="k">****</span>:<span class="k">****</span> whois.dn42
+</code></pre>
+
+<p>You can then use whois without specifying the server. Works at least with Marco d'Itri's whois client.</p>
+
+<h2><a class="anchor" id="running-your-own-whoisd" href="#running-your-own-whoisd"></a>Running your own whoisd</h2>
+<pre class="highlight"><code><span class="nb">cd</span> /home/some/path/to/store/branch
+<span class="nb">sudo </span>aptitude <span class="nb">install </span>ruby rubygems
+<span class="nb">sudo </span>gem <span class="nb">install </span>netaddr
+<span class="nb">cd </span>whoisd/ruby
+<span class="nb">sudo </span>ruby whoisd.rb nobody</code></pre>
+<h2><a class="anchor" id="whois-restful-api" href="#whois-restful-api"></a>Whois restful API</h2>
+<p>Note: this service is in beta testing, use at your own risk.
+<a href="https://whois.rest.dn42/">https://whois.rest.dn42/</a></p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
-	          <ul>
-  <li>
-<a href="../Home.html" rel="nofollow">Home</a>
-    <ul>
-      <li><a href="../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
-      <li><a href="../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-      <li><a href="../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
-      <li><a href="../howto/BGP-communities.html" rel="nofollow">BGP communities</a></li>
-      <li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
-    </ul>
-  </li>
-  <li>How-To
-    <ul>
-      <li><a href="../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
-      <li><a href="../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
-      <li><a href="../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-      <li><a href="../howto/tinc.html" rel="nofollow">Tinc</a></li>
-      <li><a href="../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-      <li><a href="../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-      <li><a href="../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
-      <li><a href="../howto/multicast.html" rel="nofollow">SSM Multicast</a></li>
-      <li><a href="../howto/mpls.html" rel="nofollow">MPLS</a></li>
-      <li><a href="../howto/Bird2.html" rel="nofollow">Bird2</a></li>
-      <li><a href="../howto/frr.html" rel="nofollow">FRRouting</a></li>
-      <li><a href="../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-      <li><a href="../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-      <li><a href="../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-      <li><a href="../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-      <li><a href="../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-      <li><a href="../howto/vyos1.4.html" rel="nofollow">VyOS</a></li>
-      <li><a href="../howto/nixos.html" rel="nofollow">NixOS</a></li>
-    </ul>
-  </li>
-  <li>Services
-    <ul>
-      <li><a href="IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="IX-Collection.html" rel="nofollow">IX Collection</a></li>
-      <li><a href="Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="Route-Collector.html" rel="nofollow">Route Collector</a></li>
-      <li><a href="Registry.html" rel="nofollow">Registry</a></li>
-    </ul>
-  </li>
-  <li>Internal
-    <ul>
-      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
-    </ul>
-  </li>
-  <li>Historical
-    <ul>
-      <li><a href="../historical/Bird.html" rel="nofollow">Bird 1</a></li>
-      <li><a href="../historical/Quagga.html" rel="nofollow">Quagga</a></li>
-    </ul>
-  </li>
-  <li>External Tools
-    <ul>
-      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
-      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
-    </ul>
-  </li>
-</ul>
-
-<hr />
-
-
+	          <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	        </div>
 	      </div>
 	    </div>
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <table>
-  <tbody>
-    <tr>
-      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>
-</td>
-      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>
-</td>
-    </tr>
-  </tbody>
-</table>
-
+	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	    </div>
 	  </div>
 

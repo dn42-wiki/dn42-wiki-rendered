@@ -6,8 +6,9 @@
   <meta name="MobileOptimized" content="width">
   <meta name="HandheldFriendly" content="true">
   <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" type="text/css" href="../gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css" media="all">
+  <link rel="stylesheet" type="text/css" href="../gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css" media="all">
   <link rel="stylesheet" type="text/css" href="../gollum/assets/print-512498c368be0d3fb1ba105dfa84289ae48380ec9fcbef948bd4e23b0b095bfb.css" media="print">
+
 
   <link rel="stylesheet" type="text/css" href="../custom.css" media="all">
   
@@ -25,9 +26,24 @@
     var pageFormat   = 'markdown';
 
   </script>
-  <script src="../gollum/assets/app-e63ab45773141139cffcd04474f73c21042c7267568325d4e00775b4f9eaa022.js" type="text/javascript"></script>
+  <script src="../gollum/assets/app-05adca32f8f4f3effe10f8f4cf26dfd6a419ba986bce60d3f51a97e4055d4113.js" type="text/javascript"></script>
+
+
+  
+  <script>
+  var mermaid_conf = {
+    startOnLoad: true,
+    securityLevel: 'sandbox'
+  };
+  </script>
   
 
+
+  <script src="../gollum/assets/gollum.mermaid-ccc590b7d9655deec94c9975f25d74fbe38f703c927e26cf81169d63fea7cd50.js" type="text/javascript"></script>
+  <script>
+    mermaid.initialize(mermaid_conf);
+  </script>
+  
   <title>Internal-Services</title>
 </head>
 <body>
@@ -91,9 +107,11 @@
   </div>
 
   <div class="TableObject-item hide-sm hide-md">
-    <a class="btn btn-sm" id="minibutton-home" href="../index.html">
+    <button class="btn btn-sm" id="minibutton-home" 
+      onclick="window.location.href='../index.html';"
+    >
       Home
-    </a>
+    </button>
   </div>
 
   <div
@@ -101,38 +119,38 @@
     
   >
     <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
-    	<input type="text" class="form-control input-block" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
+    	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
   <div class="TableObject-item hide-sm hide-md">
     <div class="BtnGroup d-flex">
-        <a
+        <button
           class="btn BtnGroup-item btn-sm"
-          href="../gollum/overview.html"
+          onclick="window.location.href='../gollum/overview.html';"
           id="minibutton-overview"
         >
           Overview
-        </a>
+        </button>
 
-        <a
+        <button
           class="btn BtnGroup-item btn-sm"
-          href="../gollum/latest_changes.html"
+          onclick="window.location.href='../gollum/latest_changes.html';"
           id="minibutton-latest-changes"
         >
           Latest Changes
-        </a>
+        </button>
     </div>
   </div>
 
   <div class="TableObject-item px-2">
     <div class="BtnGroup d-flex">
-        <a
+        <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          href="http://127.42.42.80:4280/gollum/history/internal/Internal-Services.md/"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/internal/Internal-Services.md/';"
           id="minibutton-history"
         >
           History
-        </a>
+        </button>
 
     </div>
   </div>
@@ -153,8 +171,7 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
@@ -848,98 +865,14 @@ constructed using the MNTNER name, lowercased and without the '-MNT' suffix. SSH
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
-	          <ul>
-  <li>
-<a href="../Home.html" rel="nofollow">Home</a>
-    <ul>
-      <li><a href="../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
-      <li><a href="../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-      <li><a href="../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
-      <li><a href="../howto/BGP-communities.html" rel="nofollow">BGP communities</a></li>
-      <li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
-    </ul>
-  </li>
-  <li>How-To
-    <ul>
-      <li><a href="../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
-      <li><a href="../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
-      <li><a href="../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-      <li><a href="../howto/tinc.html" rel="nofollow">Tinc</a></li>
-      <li><a href="../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-      <li><a href="../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-      <li><a href="../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
-      <li><a href="../howto/multicast.html" rel="nofollow">SSM Multicast</a></li>
-      <li><a href="../howto/mpls.html" rel="nofollow">MPLS</a></li>
-      <li><a href="../howto/Bird2.html" rel="nofollow">Bird2</a></li>
-      <li><a href="../howto/frr.html" rel="nofollow">FRRouting</a></li>
-      <li><a href="../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-      <li><a href="../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-      <li><a href="../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-      <li><a href="../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-      <li><a href="../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-      <li><a href="../howto/vyos1.4.html" rel="nofollow">VyOS</a></li>
-      <li><a href="../howto/nixos.html" rel="nofollow">NixOS</a></li>
-    </ul>
-  </li>
-  <li>Services
-    <ul>
-      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="../services/IX-Collection.html" rel="nofollow">IX Collection</a></li>
-      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
-      <li><a href="../services/Registry.html" rel="nofollow">Registry</a></li>
-    </ul>
-  </li>
-  <li>Internal
-    <ul>
-      <li><a href="Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="Historical-Services.html" rel="nofollow">Historical services</a></li>
-    </ul>
-  </li>
-  <li>Historical
-    <ul>
-      <li><a href="../historical/Bird.html" rel="nofollow">Bird 1</a></li>
-      <li><a href="../historical/Quagga.html" rel="nofollow">Quagga</a></li>
-    </ul>
-  </li>
-  <li>External Tools
-    <ul>
-      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
-      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
-    </ul>
-  </li>
-</ul>
-
-<hr />
-
-
+	          <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	        </div>
 	      </div>
 	    </div>
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <table>
-  <tbody>
-    <tr>
-      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>
-</td>
-      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>
-</td>
-    </tr>
-  </tbody>
-</table>
-
+	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	    </div>
 	  </div>
 

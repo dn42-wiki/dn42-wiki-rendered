@@ -6,8 +6,9 @@
   <meta name="MobileOptimized" content="width">
   <meta name="HandheldFriendly" content="true">
   <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" type="text/css" href="../gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css" media="all">
+  <link rel="stylesheet" type="text/css" href="../gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css" media="all">
   <link rel="stylesheet" type="text/css" href="../gollum/assets/print-512498c368be0d3fb1ba105dfa84289ae48380ec9fcbef948bd4e23b0b095bfb.css" media="print">
+
 
   <link rel="stylesheet" type="text/css" href="../custom.css" media="all">
   
@@ -25,9 +26,24 @@
     var pageFormat   = 'markdown';
 
   </script>
-  <script src="../gollum/assets/app-e63ab45773141139cffcd04474f73c21042c7267568325d4e00775b4f9eaa022.js" type="text/javascript"></script>
+  <script src="../gollum/assets/app-05adca32f8f4f3effe10f8f4cf26dfd6a419ba986bce60d3f51a97e4055d4113.js" type="text/javascript"></script>
+
+
+  
+  <script>
+  var mermaid_conf = {
+    startOnLoad: true,
+    securityLevel: 'sandbox'
+  };
+  </script>
   
 
+
+  <script src="../gollum/assets/gollum.mermaid-ccc590b7d9655deec94c9975f25d74fbe38f703c927e26cf81169d63fea7cd50.js" type="text/javascript"></script>
+  <script>
+    mermaid.initialize(mermaid_conf);
+  </script>
+  
   <title>IPsec-with-PublicKeys</title>
 </head>
 <body>
@@ -91,9 +107,11 @@
   </div>
 
   <div class="TableObject-item hide-sm hide-md">
-    <a class="btn btn-sm" id="minibutton-home" href="../index.html">
+    <button class="btn btn-sm" id="minibutton-home" 
+      onclick="window.location.href='../index.html';"
+    >
       Home
-    </a>
+    </button>
   </div>
 
   <div
@@ -101,38 +119,38 @@
     
   >
     <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
-    	<input type="text" class="form-control input-block" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
+    	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
   <div class="TableObject-item hide-sm hide-md">
     <div class="BtnGroup d-flex">
-        <a
+        <button
           class="btn BtnGroup-item btn-sm"
-          href="../gollum/overview.html"
+          onclick="window.location.href='../gollum/overview.html';"
           id="minibutton-overview"
         >
           Overview
-        </a>
+        </button>
 
-        <a
+        <button
           class="btn BtnGroup-item btn-sm"
-          href="../gollum/latest_changes.html"
+          onclick="window.location.href='../gollum/latest_changes.html';"
           id="minibutton-latest-changes"
         >
           Latest Changes
-        </a>
+        </button>
     </div>
   </div>
 
   <div class="TableObject-item px-2">
     <div class="BtnGroup d-flex">
-        <a
+        <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          href="http://127.42.42.80:4280/gollum/history/howto/IPsec-with-PublicKeys.md/"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/IPsec-with-PublicKeys.md/';"
           id="minibutton-history"
         >
           History
-        </a>
+        </button>
 
     </div>
   </div>
@@ -153,74 +171,13 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="ipsec-with-public-key-authentication" href="#ipsec-with-public-key-authentication"></a>IPsec with public key authentication</h1>
-<h2><a class="anchor" id="stop-using-pre-shared-keys" href="#stop-using-pre-shared-keys"></a>Stop using pre-shared keys!</h2>
-<h3><a class="anchor" id="pre-shared-keys-suck-because-reasons" href="#pre-shared-keys-suck-because-reasons"></a>Pre-shared keys suck, because <em>reasons</em>
-</h3>
-
-<ul>
-  <li>
-<strong>The key must be kept secret</strong>, which means it must be shared only over a secure channel e.g. PGP, face-to-face</li>
-  <li>Most implementations will accept insecure (too short, too simple) keys</li>
-  <li>The <a href="http://www.sersc.org/journals/IJAST/vol8/2.pdf" title="Vulnerabilities of VPN using IPSec and Defensive Measures">insecure</a> <a href="http://carnal0wnage.attackresearch.com/2011/12/aggressive-mode-vpn-ike-scan-psk-crack.html" title="Aggressive Mode VPN -- IKE-Scan, PSK-Crack, and Cain">IKE</a> <a href="http://rayas-security.blogspot.com/2013/06/ipsec-vpn-main-mode-vs-aggressive-mode.html" title="IPsec VPN, Main mode Vs Aggressive mode">aggressive mode</a> must be used to support distinct PSKs for multiple dynamic peers, or</li>
-  <li>All dynamic peers must use the same PSK in order to use the more secure IKE main mode</li>
-</ul>
-
-<h3><a class="anchor" id="public-keys-are-better" href="#public-keys-are-better"></a>Public keys are <em>better</em>
-</h3>
-<ul>
-  <li>They can be transmitted over insecure channels without compromising security</li>
-  <li>No need to generate a new key for each connection; just send the same public key to each new peer</li>
-  <li>Most implementations generate keys using high quality random numbers by default; one must <em>try</em> to generate an insecure key</li>
-  <li>Dynamic peers can all have distinct public keys and still use IKE main mode</li>
-</ul>
-
-<h3><a class="anchor" id="so-why-isn-t-everyone-using-public-keys-already" href="#so-why-isn-t-everyone-using-public-keys-already"></a>So why isn't everyone using public keys already?</h3>
-<ul>
-  <li>The various IKE implementations don't all use the same format to represent public keys <em>(but we can <strong>easily</strong> <a href="#Conversion-tool">convert</a> between them)</em>
-</li>
-  <li>Documentation on <a href="#How-To-examples">how to</a>, and why you should, configure public keys instead of PSKs is lacking <em>(which is why this page exists)</em>
-</li>
-  <li>Some implementations don't expose the ability to use public keys directly, only allowing a choice between PSKs and X.509 certificates</li>
-</ul>
-
-<h3><a class="anchor" id="public-keys-means-certificates-right-certificates-are-hard" href="#public-keys-means-certificates-right-certificates-are-hard"></a>Public keys means certificates, right? Certificates are hard :(</h3>
-<p>Many IKE implementations support manually configuring trusted public keys, without having to create a CA, generate CSRs, sign certificates, or remember/look up the commands to do those things.</p>
-
-<p>Keep in mind that certificates are just public keys wrapped with some extra metadata so that your router can automatically verify that it belongs to someone you trust. Certificates are useful for instances where there are so many peers that it's infeasible to manually configure each one's public key, such as a "road warrior" configuration or DMVPN. In those scenarios it makes sense to set up a Certificate Authority to handle it.</p>
-
-<h2><a class="anchor" id="ok-fine-how-do-i-public-key" href="#ok-fine-how-do-i-public-key"></a>Ok fine, how do I public key?</h2>
-<h3><a class="anchor" id="conversion-tool" href="#conversion-tool"></a>Conversion tool</h3>
-<p>Different implementations use different formats to represent public keys, and it's necessary to be able to convert between them. Here is a script for that purpose:</p>
-
-<p><a href="https://raw.githubusercontent.com/zeroae/pubkey-converter/master/pubkey-converter.pl">https://raw.githubusercontent.com/zeroae/pubkey-converter/master/pubkey-converter.pl</a></p>
-
-<h3><a class="anchor" id="how-to-examples" href="#how-to-examples"></a>How-To examples</h3>
-<p>| Implementation           | Key format      |
-| :———————– | ————–: |
-| <a href="IPsecWithPublicKeys/strongSwan5Example.html">strongSwan &gt;= 5.0.0</a> | PEM             |
-| <a href="IPsecWithPublicKeys/CiscoIOSExample.html">Cisco IOS</a>           | Hexadecimal DER |
-| <a href="IPsecWithPublicKeys/RouterOSExample.html">Mikrotik RouterOS</a>   | PEM             |
-| <a href="IPsecWithPublicKeys/OpenBSDExample.html">OpenBSD</a>             | PEM             |
-| <a href="IPsecWithPublicKeys/RacoonExample.html">Racoon</a>              | Base64 RFC 3110 |
-| <a href="IPsecWithPublicKeys/strongSwan4Example.html">strongSwan &lt; 5.0.0</a>  | Base64 RFC 3110 |
-| <a href="IPsecWithPublicKeys/VyOSExample.html">VyOS/EdgeOS</a>         | Base64 RFC 3110 |</p>
-
-<h3><a class="anchor" id="notes" href="#notes"></a>Notes</h3>
-<ol>
-  <li>Best practice is to generate the private key on the router itself, and not transfer it to another machine. This part should be kept secret!</li>
-  <li>Generate a key of at least 2048 bits, preferably 4096 if both ends support it.</li>
-  <li>Some implementations support more than one key format. The examples here only show how to use one of them (usually PEM) for brevity.</li>
-  <li>RFC 3110 format is the same as that described in RFC 2537. The former obsoletes the latter.</li>
-</ol>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">

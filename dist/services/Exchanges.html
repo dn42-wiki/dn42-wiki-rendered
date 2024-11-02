@@ -6,8 +6,9 @@
   <meta name="MobileOptimized" content="width">
   <meta name="HandheldFriendly" content="true">
   <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" type="text/css" href="../gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css" media="all">
+  <link rel="stylesheet" type="text/css" href="../gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css" media="all">
   <link rel="stylesheet" type="text/css" href="../gollum/assets/print-512498c368be0d3fb1ba105dfa84289ae48380ec9fcbef948bd4e23b0b095bfb.css" media="print">
+
 
   <link rel="stylesheet" type="text/css" href="../custom.css" media="all">
   
@@ -25,9 +26,24 @@
     var pageFormat   = 'markdown';
 
   </script>
-  <script src="../gollum/assets/app-e63ab45773141139cffcd04474f73c21042c7267568325d4e00775b4f9eaa022.js" type="text/javascript"></script>
+  <script src="../gollum/assets/app-05adca32f8f4f3effe10f8f4cf26dfd6a419ba986bce60d3f51a97e4055d4113.js" type="text/javascript"></script>
+
+
+  
+  <script>
+  var mermaid_conf = {
+    startOnLoad: true,
+    securityLevel: 'sandbox'
+  };
+  </script>
   
 
+
+  <script src="../gollum/assets/gollum.mermaid-ccc590b7d9655deec94c9975f25d74fbe38f703c927e26cf81169d63fea7cd50.js" type="text/javascript"></script>
+  <script>
+    mermaid.initialize(mermaid_conf);
+  </script>
+  
   <title>Exchanges</title>
 </head>
 <body>
@@ -91,9 +107,11 @@
   </div>
 
   <div class="TableObject-item hide-sm hide-md">
-    <a class="btn btn-sm" id="minibutton-home" href="../index.html">
+    <button class="btn btn-sm" id="minibutton-home" 
+      onclick="window.location.href='../index.html';"
+    >
       Home
-    </a>
+    </button>
   </div>
 
   <div
@@ -101,38 +119,38 @@
     
   >
     <form class="search-form" action="https://hist.dn42.wiki/gollum/search" method="get" id="search-form">
-    	<input type="text" class="form-control input-block" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
+    	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
   <div class="TableObject-item hide-sm hide-md">
     <div class="BtnGroup d-flex">
-        <a
+        <button
           class="btn BtnGroup-item btn-sm"
-          href="../gollum/overview.html"
+          onclick="window.location.href='../gollum/overview.html';"
           id="minibutton-overview"
         >
           Overview
-        </a>
+        </button>
 
-        <a
+        <button
           class="btn BtnGroup-item btn-sm"
-          href="../gollum/latest_changes.html"
+          onclick="window.location.href='../gollum/latest_changes.html';"
           id="minibutton-latest-changes"
         >
           Latest Changes
-        </a>
+        </button>
     </div>
   </div>
 
   <div class="TableObject-item px-2">
     <div class="BtnGroup d-flex">
-        <a
+        <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          href="https://hist.dn42.wiki/gollum/history/services/Exchanges.md/"
+          onclick="window.location.href='https://hist.dn42.wiki/gollum/history/services/Exchanges.md/';"
           id="minibutton-history"
         >
           History
-        </a>
+        </button>
 
     </div>
   </div>

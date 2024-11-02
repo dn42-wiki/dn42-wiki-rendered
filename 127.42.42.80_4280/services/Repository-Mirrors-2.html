@@ -6,8 +6,9 @@
   <meta name="MobileOptimized" content="width">
   <meta name="HandheldFriendly" content="true">
   <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" type="text/css" href="../gollum/assets/app-309be032396e783b13a47df58f389b7c8e11c2b2d42640560b874f677c25f6e5.css" media="all">
+  <link rel="stylesheet" type="text/css" href="../gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css" media="all">
   <link rel="stylesheet" type="text/css" href="../gollum/assets/print-512498c368be0d3fb1ba105dfa84289ae48380ec9fcbef948bd4e23b0b095bfb.css" media="print">
+
 
   <link rel="stylesheet" type="text/css" href="../custom.css" media="all">
   
@@ -25,9 +26,24 @@
     var pageFormat   = 'markdown';
 
   </script>
-  <script src="../gollum/assets/app-e63ab45773141139cffcd04474f73c21042c7267568325d4e00775b4f9eaa022.js" type="text/javascript"></script>
+  <script src="../gollum/assets/app-05adca32f8f4f3effe10f8f4cf26dfd6a419ba986bce60d3f51a97e4055d4113.js" type="text/javascript"></script>
+
+
+  
+  <script>
+  var mermaid_conf = {
+    startOnLoad: true,
+    securityLevel: 'sandbox'
+  };
+  </script>
   
 
+
+  <script src="../gollum/assets/gollum.mermaid-ccc590b7d9655deec94c9975f25d74fbe38f703c927e26cf81169d63fea7cd50.js" type="text/javascript"></script>
+  <script>
+    mermaid.initialize(mermaid_conf);
+  </script>
+  
   <title>Repository-Mirrors</title>
 </head>
 <body>
@@ -91,9 +107,11 @@
   </div>
 
   <div class="TableObject-item hide-sm hide-md">
-    <a class="btn btn-sm" id="minibutton-home" href="../index.html">
+    <button class="btn btn-sm" id="minibutton-home" 
+      onclick="window.location.href='../index.html';"
+    >
       Home
-    </a>
+    </button>
   </div>
 
   <div
@@ -101,38 +119,38 @@
     
   >
     <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
-    	<input type="text" class="form-control input-block" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
+    	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
   <div class="TableObject-item hide-sm hide-md">
     <div class="BtnGroup d-flex">
-        <a
+        <button
           class="btn BtnGroup-item btn-sm"
-          href="../gollum/overview.html"
+          onclick="window.location.href='../gollum/overview.html';"
           id="minibutton-overview"
         >
           Overview
-        </a>
+        </button>
 
-        <a
+        <button
           class="btn BtnGroup-item btn-sm"
-          href="../gollum/latest_changes.html"
+          onclick="window.location.href='../gollum/latest_changes.html';"
           id="minibutton-latest-changes"
         >
           Latest Changes
-        </a>
+        </button>
     </div>
   </div>
 
   <div class="TableObject-item px-2">
     <div class="BtnGroup d-flex">
-        <a
+        <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          href="http://127.42.42.80:4280/gollum/history/services/Repository-Mirrors.md/"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/services/Repository-Mirrors.md/';"
           id="minibutton-history"
         >
           History
-        </a>
+        </button>
 
     </div>
   </div>
@@ -159,7 +177,43 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="repository-mirrors" href="#repository-mirrors"></a>Repository Mirrors</h1>
+
+<p>There are some mirrors available in DN42. All mirrors are subdomains of "mirror.dn42". DNS Round-Robin is set up for Load Balancing.</p>
+
+<h2><a class="anchor" id="ubuntu" href="#ubuntu"></a>Ubuntu</h2>
+<p><strong><a href="http://mirror.dn42/ubuntu">http://mirror.dn42/ubuntu</a></strong></p>
+
+<p>Hosted by:</p>
+<ul>
+  <li>mephisto</li>
+</ul>
+
+<h2><a class="anchor" id="mirror-yandex-ru-proxy" href="#mirror-yandex-ru-proxy"></a>mirror.yandex.ru proxy</h2>
+<p><strong><a href="http://172.23.158.41/">http://172.23.158.41/</a></strong>
+<strong><a href="http://[fd91:9191:9191:3::1]/">http://[fd91:9191:9191:3::1]/</a></strong></p>
+
+<p>Hosted by:</p>
+<ul>
+  <li>ne-vlezay80</li>
+</ul>
+
+<h2><a class="anchor" id="mirrors-nia-dn42" href="#mirrors-nia-dn42"></a>mirrors.nia.dn42</h2>
+<p><strong><a href="http://mirrors.nia.dn42/">http://mirrors.nia.dn42/</a></strong>
+<strong><a href="http://[fd01:1926:817:1000::ac14:a8c5]/">http://[fd01:1926:817:1000::ac14:a8c5]/</a></strong></p>
+
+<h2><a class="anchor" id="mirror-z-dn42" href="#mirror-z-dn42"></a>mirror.z.dn42</h2>
+
+<p>Not hosting repositories itself, it collects other mirrors</p>
+
+<ul>
+  <li>Dynamic page: <strong><a href="http://mirror.z.dn42/">http://mirror.z.dn42/</a></strong>
+</li>
+  <li>Static page: <strong><a href="http://mirror.z.dn42/_/">http://mirror.z.dn42/_/</a></strong>
+</li>
+</ul>
+
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
