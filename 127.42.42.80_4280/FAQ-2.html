@@ -231,7 +231,7 @@ issues. There may still be references back to monotone in some of the documentat
 
 <p>By default, Docker overlaps with the entire DN42 range and then some. (172.16.0.0/12 == 172.16.0.0 - 172.31.255.255)</p>
 
-<p>In order to prevent this, you need to supply a different subnet range to the Docker daemon. This can be done by creating or updating <code>/etc/docker/daemon.json</code> with something along the following (this will use 192.168.128.0/18 == 192.168.128.0 - 192.168.128.0 - 192.168.191.255)
+<p>In order to prevent this, you need to supply a different subnet range to the Docker daemon. This can be done by creating or updating <code>/etc/docker/daemon.json</code> with something along the following (this will use 192.168.128.0/18 == 192.168.128.0 - 192.168.191.255)
 </p><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"default-address-pools"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">

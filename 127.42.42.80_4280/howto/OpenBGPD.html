@@ -375,7 +375,7 @@ die<span class="o">()</span> <span class="o">{</span>
 <span class="k">if</span> <span class="o">!</span> cmp <span class="nt">-s</span> <span class="s2">"</span><span class="nv">$metafile</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$metafile</span><span class="s2">"</span>.old <span class="o">&gt;</span>/dev/null 2&gt;&amp;1<span class="p">;</span> <span class="k">then
   </span><span class="nb">mv</span> <span class="s2">"</span><span class="nv">$metafile</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$metafile</span><span class="s2">"</span>.old
   <span class="nv">roafile</span><span class="o">=</span>/var/db/openbgpd/dn42_roa_obgpd_46.conf
-  <span class="k">if </span><span class="nv">err</span><span class="o">=</span><span class="si">$(</span>ftp <span class="nt">-To</span> <span class="s2">"</span><span class="nv">$roafile</span><span class="s2">"</span>.new <span class="se">\</span>
+  <span class="k">if </span><span class="nv">err</span><span class="o">=</span><span class="si">$(</span>ftp <span class="nt">-o</span> <span class="s2">"</span><span class="nv">$roafile</span><span class="s2">"</span>.new <span class="se">\</span>
     https://dn42.burble.com/roa/dn42_roa_obgpd_46.conf <span class="se">\</span>
     2&gt;&amp;1 <span class="o">&gt;</span>/dev/null<span class="si">)</span><span class="p">;</span> <span class="k">then
     </span><span class="nb">mv</span> <span class="s2">"</span><span class="nv">$roafile</span><span class="s2">"</span>.new <span class="s2">"</span><span class="nv">$roafile</span><span class="s2">"</span>
