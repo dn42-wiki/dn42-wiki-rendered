@@ -203,7 +203,7 @@
   <li>You can't use /31 subnet for Point-to-Point (PtP) links</li>
 </ul>
 
-<p>Mikrotik/RouterOS can't handle very well /32 on Point-to-Point links (like GRE). There is a <a href="mikrotik/ptp32-2.html">separate howto</a> to explain how to setup /32 between in a GRE link (or even a OpenVPN). What is the easy way? Just use any /30 on the GRE Link, either from your assigned DN42 pool address or use a private address like 192.168. Please don't choose from 172.16.0.0/12 or 10.0.0.0/8 because they may overlap with DN42 or ChaosVPN.</p>
+<p>Mikrotik/RouterOS can't handle very well /32 on Point-to-Point links (like GRE). There is a <a href="mikrotik/ptp32.html">separate howto</a> to explain how to setup /32 between in a GRE link (or even a OpenVPN). What is the easy way? Just use any /30 on the GRE Link, either from your assigned DN42 pool address or use a private address like 192.168. Please don't choose from 172.16.0.0/12 or 10.0.0.0/8 because they may overlap with DN42 or ChaosVPN.</p>
 
 <p>RouterOS v7.2 has some nasty bugs when using PTP configuration or IPv6 link local addresses as NEXTHOP. It won't work (confirmed for v7.2 by their support staff).</p>
 
@@ -233,7 +233,7 @@ remote-address=1.1.1.1</code></pre>
 <h3><a class="anchor" id="ips-inside-the-gre-tunnel" href="#ips-inside-the-gre-tunnel"></a>IPs inside the GRE tunnel</h3>
 <p>Your peer most likely provided you with IP adresses for GRE tunnel.<br />
 As I said before, you can't use /31 for PtP links, so, in the "easy way" we will be using /30.
-If you want to avoid wasting a whole /30 for your peering, please check the <a href="mikrotik/ptp32-2.html">point-to-point configuration for RouterOS</a></p>
+If you want to avoid wasting a whole /30 for your peering, please check the <a href="mikrotik/ptp32.html">point-to-point configuration for RouterOS</a></p>
 
 <p>Add the IP your peer provided you:</p>
 
