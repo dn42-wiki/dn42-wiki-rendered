@@ -186,7 +186,7 @@
 
 <h1><a class="anchor" id="example-configuration-for-dn42" href="#example-configuration-for-dn42"></a>Example configuration for dn42</h1>
 
-<p>Wireguard is a Layer3 VPN. In theory it allows multiple peers to be served with one interface/port, but it does internal routing based on the peer's public key. This means you will need one interface per peering on dn42
+<p>Wireguard is a Layer3 VPN. In theory it allows multiple peers to be served with one interface/port, but it does internal routing based on the peer's public key. This means <strong>you will need one interface per peering</strong> on dn42
 to allow your BGP daemon instead to do routing. This approach is comparable to <a href="openvpn.html">OpenVPN p2p tunnels</a>.</p>
 
 <p>First generate on each peer public and private keys.</p>
@@ -210,6 +210,8 @@ to allow your BGP daemon instead to do routing. This approach is comparable to <
 # however it is easier to do this with iptables/bgp filters/routing table 
 # instead just like for openvpn-based peerings
 </span><span class="n">AllowedIPs</span> = <span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">0</span>,::/<span class="m">0</span></code></pre>
+
+<p><strong>Make sure that your AllowedIPs include the full dn42 ranges (<code>172.20.0.0/14</code>, <code>fd00::/8</code>) and not just your peer's next hop IPs!</strong> AllowedIPs functions as a data plane restriction on which target IPs can go over each WireGuard tunnel. If this is misconfigured, you may see errors such as: <code>ping: sendmsg: Destination address required</code>.</p>
 
 <h2><a class="anchor" id="configure-tunnel" href="#configure-tunnel"></a>Configure tunnel:</h2>
 
