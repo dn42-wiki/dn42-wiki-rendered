@@ -171,8 +171,7 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
@@ -381,6 +380,23 @@ Additionally Bird2 before 2.0.8 cannot automatically update filtered bgp routes 
 </span>}</code></pre>
 
 <p>Due to the special link local addresses of IPv6, an interface has to be specified using the <code>%&lt;if&gt;</code> or the <code>interface &lt;if&gt;;</code> syntax if a link local address is used (Which is recommended)</p>
+
+<h1><a class="anchor" id="getting-routes-installed-to-the-kernal-automatically" href="#getting-routes-installed-to-the-kernal-automatically"></a>Getting routes installed to the kernal automatically</h1>
+
+<p>If you do not do this, your bird logs <em>will</em> be full of <code>Netlink: Invalid argument</code> errors and you will not be able to access the DN42 network.</p>
+
+<p>You will need to create a loopback dummy interface with your DN42 router IP, for both IPv4 and IPv6</p>
+
+<p>Create the dummy interface with these commands:</p>
+
+<pre class="highlight"><code>ip link add dn42-dummy type dummy
+ip link set dev dn42-dummy up</code></pre>
+
+<p>Then, give it your router IP addresses:</p>
+
+<pre class="highlight"><code>ip addr add dev dn42-dummy &lt;router ip&gt;/&lt;subnet&gt;</code></pre>
+
+<p>Do this for both IPv4 and IPv6.</p>
 
 <h2><a class="anchor" id="note-on-multiprotocol-bgp-and-extended-next-hops" href="#note-on-multiprotocol-bgp-and-extended-next-hops"></a>Note on multiprotocol BGP and extended next hops</h2>
 <p>This configuration example shows the required configuration without using multiprotocol BGP and extended next hops.
