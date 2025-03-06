@@ -1,5 +1,5 @@
 http://127.42.42.80:4280 -iC2 -%F "" -O /srv/dn42-wiki/dn42-wiki-rendered -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes?* -*/*.md/*
-File generated automatically on Thu, 06 Mar 2025 15:12:43, do NOT edit
+File generated automatically on Thu, 06 Mar 2025 18:12:42, do NOT edit
 
 To update a mirror, just launch httrack without any parameters
 The existing cache will be used (and modified)
