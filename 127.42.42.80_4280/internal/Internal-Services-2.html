@@ -203,9 +203,9 @@ n0emis maintains an <a href="https://acme.dn42/">ACME server</a> (with accompany
 
 <ul>
   <li>See <a href="../services/Looking-Glasses.html">Looking Glasses</a> for more network diagnostic tools</li>
-  <li>Realtime network map: <a href="https://map.dn42/">map.dn42</a> (DN42) or <a href="https://map.iedon.net/">map.iedon.net</a> (IANA) <em>(This map is currently using MRT dump from GRC as source. We will pull new dumps from GRC every 15 minutes.)</em>
+  <li>Realtime network map: <a href="https://map.dn42/">map.dn42</a> (DN42) or <a href="https://map.iedon.net/">map.iedon.net</a> (via clearnet) <em>(This map currently uses MRT dumps from GRC as its source. It refreshes whenever the collector provides a new MRT file, generally 10-15 minutes.)</em>
 </li>
-  <li>Network Information Service: <a href="http://info.nia.dn42/">info.nia.dn42</a> (DN42) or <a href="https://bgp42.strexp.net/">bgp42.strexp.net</a> (IANA). Main functions including <em>network information</em>, <em>network map (from map.dn42, require WebGL)</em>, <em>network ranking (based on centrality)</em>, <em>ROA alerting</em> and <em>path finder</em>.</li>
+  <li>Network Information Service: <a href="http://info.nia.dn42/">info.nia.dn42</a> (DN42) or <a href="https://bgp42.strexp.net/">bgp42.strexp.net</a> (via clearnet). Main functions including <em>network information</em>, <em>network map (from map.dn42, require WebGL)</em>, <em>network ranking (based on centrality)</em>, <em>ROA alerting</em> and <em>path finder</em>.</li>
   <li>Yet Another network map: <a href="https://map.jerry.dn42/">map.jerry.dn42</a> (DN42) or <a href="https://map.meson.cc/">map.meson.cc</a> (via clearnet) <em>(uses MRT dump as source, updated every 15 minutes.)</em>
 </li>
   <li>Various DN42-related tools: <a href="https://dn42.g-load.eu/toolbox/">dn42.g-load.eu/toolbox/</a>
@@ -234,6 +234,57 @@ n0emis maintains an <a href="https://acme.dn42/">ACME server</a> (with accompany
   <li>BGP flap detector (FlapAlertedPro by Kioubit) hosted by AS4242422092: <a href="https://flaps.pebkac.dn42/">flaps.pebkac.dn42</a>
 </li>
 </ul>
+
+<h3><a class="anchor" id="map-dn42-api-services" href="#map-dn42-api-services"></a>Map.dn42 API Services</h3>
+
+<p>Data refreshes whenever the collector provides a new MRT file, generally 10-15 minutes.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>API</th>
+      <th>URL</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>/map</code></td>
+      <td>
+<a href="https://map.dn42/map">https://map.dn42/map</a> <br /> <a href="https://api.iedon.com/dn42/map">https://api.iedon.com/dn42/map</a>
+</td>
+      <td>Raw binary map data</td>
+    </tr>
+    <tr>
+      <td><code>/map?type=json</code></td>
+      <td>
+<a href="https://map.dn42/map?type=json">https://map.dn42/map?type=json</a> <br /> <a href="https://api.iedon.com/dn42/map?type=json">https://api.iedon.com/dn42/map?type=json</a>
+</td>
+      <td>Raw map data, in JSON</td>
+    </tr>
+    <tr>
+      <td><code>/asn/{asn}</code></td>
+      <td>
+<a href="https://map.dn42/asn/4242422189">https://map.dn42/asn/4242422189</a> <br /> <a href="https://api.iedon.com/dn42/asn/4242422189">https://api.iedon.com/dn42/asn/4242422189</a>
+</td>
+      <td>Real-time node information from the map, including WHOIS data, in JSON</td>
+    </tr>
+    <tr>
+      <td><code>/ranking</code></td>
+      <td>
+<a href="https://map.dn42/ranking">https://map.dn42/ranking</a> <br /> <a href="https://api.iedon.com/dn42/ranking">https://api.iedon.com/dn42/ranking</a>
+</td>
+      <td>DN42 Global Ranking, based on the map.dn42 index</td>
+    </tr>
+    <tr>
+      <td><code>/myip/[raw|api]</code></td>
+      <td>
+<a href="https://map.dn42/myip/">https://map.dn42/myip/</a> <br /> <a href="https://map.dn42/myip/api">https://map.dn42/myip/api</a> <br /> <a href="https://map.dn42/myip/raw">https://map.dn42/myip/raw</a>
+</td>
+      <td>What's My IP instance by map.dn42, including <code>netname</code> and <code>country</code> information if available</td>
+    </tr>
+  </tbody>
+</table>
 
 <h3><a class="anchor" id="ix-services" href="#ix-services"></a>IX Services</h3>
 
