@@ -171,97 +171,13 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="dn42-on-openwrt" href="#dn42-on-openwrt"></a>dn42 on OpenWRT</h1>
-
-<p>This page gives hints on how to participate to dn42 with an OpenWRT router. It assumes Attitude Adjustment (12.09), but you can adapt it for other versions.</p>
-
-<p>The intended target is a home router, acting as the default gateway for its LAN clients. The goal is to have one or more dn42 peers, announce the LAN subnet with BGP, and thus transparently provide dn42 access to the LAN clients.</p>
-
-<p>This documentation assumes that the LAN is addressed in the dn42 space (<code>172.22.0.0/15</code>), but it's not a big deal to add NAT if it's not.</p>
-
-<h2><a class="anchor" id="initial-configuration" href="#initial-configuration"></a>Initial configuration</h2>
-
-<h2><a class="anchor" id="peerings" href="#peerings"></a>Peerings</h2>
-
-<p>Nothing fancy: use GRE tunnels, openvpn, anything. Don't forget to install the relevant packages with <code>opkg</code> (<code>kmod-gre</code> for instance).</p>
-
-<p>You can't manage GRE tunnels with OpenWRT, so just create them in <code>/etc/rc.local</code> (and assign addresses if needed).</p>
-
-<h2><a class="anchor" id="bgp" href="#bgp"></a>BGP</h2>
-
-<p><code>quagga</code> and <code>bird</code> are both packaged in OpenWRT. Note that quagga is split in many packages, you probably need <code>quagga-bgpd</code>, <code>quagga-vtysh</code> and <code>quagga-zebra</code>.</p>
-
-<p>Of course, you should announce the prefix of your home network.</p>
-
-<h2><a class="anchor" id="interface-definition" href="#interface-definition"></a>Interface definition</h2>
-
-<p>This is needed so that OpenWRT is aware of the new interfaces (for firewall and stuff).</p>
-
-<p>In <code>/etc/config/network</code>, add entries for each dn42 interface:</p>
-
-<pre class="highlight"><code><span class="n">config</span> <span class="n">interface</span> <span class="n">dn42peer1</span>
-    <span class="n">option</span> <span class="n">ifname</span> <span class="n">tun</span>-<span class="n">peer1</span>
-    <span class="n">option</span> <span class="n">proto</span> <span class="n">none</span></code></pre>
-
-<h2><a class="anchor" id="firewall" href="#firewall"></a>Firewall</h2>
-
-<p>There are two goals:</p>
-
-<ul>
-  <li>Allowing traffic from LAN to dn42 (and maybe from dn42 to LAN too)</li>
-  <li>If you have more than one peer, allowing traffic from dn42 to dn42 (forwarding)</li>
-</ul>
-
-<p>Everything is done in <code>/etc/config/firewall</code>.</p>
-
-<h3><a class="anchor" id="zone-declaration" href="#zone-declaration"></a>Zone declaration</h3>
-
-<pre class="highlight"><code><span class="n">config</span> <span class="n">zone</span>
-    <span class="n">option</span> <span class="n">name</span>             <span class="n">dn42</span>
-    <span class="n">option</span> <span class="n">network</span>          <span class="s1">'dn42peer1 dn42peer2 dn42peer3'</span>
-    <span class="n">option</span> <span class="n">input</span>            <span class="n">REJECT</span>
-    <span class="n">option</span> <span class="n">output</span>           <span class="n">ACCEPT</span>
-    <span class="n">option</span> <span class="n">forward</span>          <span class="n">REJECT</span></code></pre>
-
-<p>If you need to NAT your home network into dn42, you probably just need to add:</p>
-
-<pre class="highlight"><code><span class="n">option</span> <span class="n">masq</span>             <span class="m">1</span></code></pre>
-
-<h3><a class="anchor" id="dn42-lan-forwarding" href="#dn42-lan-forwarding"></a>dn42 ↔ LAN forwarding</h3>
-
-<pre class="highlight"><code><span class="n">config</span> <span class="n">forwarding</span>                   
-    <span class="n">option</span> <span class="n">src</span>              <span class="n">lan</span>
-    <span class="n">option</span> <span class="n">dest</span>             <span class="n">dn42</span></code></pre>
-
-<p>If you're confident enough, you can also forward dn42 into your LAN:</p>
-
-<pre class="highlight"><code><span class="n">config</span> <span class="n">forwarding</span>                   
-    <span class="n">option</span> <span class="n">src</span>              <span class="n">dn42</span>
-    <span class="n">option</span> <span class="n">dest</span>             <span class="n">lan</span></code></pre>
-
-<p>Or you can forward only certain ports, to certain hosts, etc (standard <code>config rule</code> stuff)</p>
-
-<h3><a class="anchor" id="dn42-dn42-forwarding" href="#dn42-dn42-forwarding"></a>dn42 ↔ dn42 forwarding</h3>
-
-<p>This is more tricky. In theory, all you have to do is to set</p>
-
-<pre class="highlight"><code><span class="n">option</span> <span class="n">forward</span>          <span class="n">ACCEPT</span></code></pre>
-
-<p>in the definition of the zone. However, due to a bug in Attitude Adjustment (see <a href="https://dev.openwrt.org/ticket/12945">https://dev.openwrt.org/ticket/12945</a>), this will allow forwarding <strong>everything everywhere</strong>.</p>
-
-<p>You have to use this patch: <a href="https://dev.openwrt.org/changeset/35484">https://dev.openwrt.org/changeset/35484</a> (monkeypatching the relevant files in <code>/lib</code> should work).</p>
-
-<h2><a class="anchor" id="dns" href="#dns"></a>DNS</h2>
-
-<p>See <a href="../services/dns/Configuration.html">DNS Configuration</a>. This will use the anycast dn42 DNS server to resolve <code>dn42</code> and relevant reverse domains.</p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
