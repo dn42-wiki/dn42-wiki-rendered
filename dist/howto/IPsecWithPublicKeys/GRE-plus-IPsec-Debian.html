@@ -179,90 +179,7 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="gre-ipsec-on-debian-based-distros" href="#gre-ipsec-on-debian-based-distros"></a>GRE + IPsec on Debian based distros</h1>
-
-<ul>
-  <li>Install racoon from ipsec-tools.</li>
-  <li>Define an IPsec security policy in /etc/ipsec-tools.conf</li>
-  <li>Load the IPsec security policy into the IPsec security policy database.</li>
-  <li>Configure the racoon daemon.</li>
-  <li>Configure a GRE tunnel.</li>
-</ul>
-
-<h2><a class="anchor" id="used-resources-in-this-example" href="#used-resources-in-this-example"></a>Used resources in this example:</h2>
-<ul>
-  <li>tunnel endpoints: 1.2.3.4 and 5.6.7.8</li>
-  <li>internal IPv4 addresses: 10.0.0.1 and 10.0.0.2</li>
-</ul>
-
-<h2><a class="anchor" id="define-an-ipsec-security-policy" href="#define-an-ipsec-security-policy"></a>Define an IPsec security policy</h2>
-<p>Example policy on 1.2.3.4:
-</p><pre class="highlight"><code><span class="c">#!/usr/sbin/setkey -f</span>
-spdadd 1.2.3.4 5.6.7.8 gre <span class="nt">-P</span> out ipsec esp/transport//require<span class="p">;</span>
-spdadd 5.6.7.8 1.2.3.4 gre <span class="nt">-P</span> <span class="k">in  </span>ipsec esp/transport//require<span class="p">;</span></code></pre>
-Change the direction on 5.6.7.8.
-
-<h2><a class="anchor" id="load-the-ipsec-security-policy-into-the-ipsec-security-policy-database" href="#load-the-ipsec-security-policy-into-the-ipsec-security-policy-database"></a>Load the IPsec security policy into the IPsec security policy database</h2>
-<p>Load the policy with the setkey command.
-</p><pre class="highlight"><code>setkey <span class="nt">-f</span> /etc/ipsec-tools.conf</code></pre>
-Afterward check the policy database with:
-<pre class="highlight"><code>setkey <span class="nt">-DP</span></code></pre>
-
-<h2><a class="anchor" id="configure-the-racoon-daemon" href="#configure-the-racoon-daemon"></a>Configure the racoon daemon</h2>
-<p>An example /etc/racoon/racoon.conf.
-</p><pre class="highlight"><code><span class="n">path</span> <span class="n">pre_shared_key</span> <span class="s2">"/etc/racoon/psk.txt"</span>;
-<span class="n">path</span> <span class="n">certificate</span>    <span class="s2">"/etc/racoon/certs"</span>;
-<span class="n">log</span> <span class="n">info</span>;
-
-<span class="n">listen</span> {
-  <span class="c"># replace with local tunnel endpoint
-</span>  <span class="n">isakmp</span>      <span class="m">1</span>.<span class="m">2</span>.<span class="m">3</span>.<span class="m">4</span> [<span class="m">500</span>];
-  <span class="n">isakmp_natt</span> <span class="m">1</span>.<span class="m">2</span>.<span class="m">3</span>.<span class="m">4</span> [<span class="m">4500</span>];
-}
-
-<span class="c"># replace with remote tunnel endpoint
-</span><span class="n">remote</span> <span class="m">5</span>.<span class="m">6</span>.<span class="m">7</span>.<span class="m">8</span> [<span class="m">500</span>] {
-  <span class="n">exchange_mode</span>    <span class="n">main</span>;
-  <span class="n">proposal_check</span>   <span class="n">strict</span>;
-  <span class="n">my_identifier</span>    <span class="n">asn1dn</span>;
-  <span class="n">peers_identifier</span> <span class="n">asn1dn</span>;
-  <span class="n">lifetime</span>         <span class="n">time</span> <span class="m">1</span> <span class="n">hour</span>;
-  <span class="n">certificate_type</span> <span class="n">x509</span> <span class="s2">"local.crt"</span> <span class="s2">"local.key"</span>;
-  <span class="n">peers_certfile</span>   <span class="n">x509</span> <span class="s2">"remote.crt"</span>;
-  <span class="n">ca_type</span>          <span class="n">x509</span> <span class="s2">"ca.crt"</span>;
-  <span class="n">verify_cert</span>      <span class="n">on</span>;
-  <span class="n">send_cert</span>        <span class="n">off</span>;
-  <span class="n">send_cr</span>          <span class="n">off</span>;
-
-  <span class="n">proposal</span> {
-    <span class="n">encryption_algorithm</span>  <span class="n">aes</span> <span class="m">256</span>;
-    <span class="n">hash_algorithm</span>        <span class="n">sha256</span>;
-    <span class="n">authentication_method</span> <span class="n">rsasig</span>;
-    <span class="n">dh_group</span>              <span class="n">modp4096</span>;
-  }
-}
-
-<span class="c"># local tunnel endpoint, GRE ip protocol number, remote tunnel endpoint, GRE ip protocol number
-</span><span class="n">sainfo</span> <span class="n">address</span> <span class="m">1</span>.<span class="m">2</span>.<span class="m">3</span>.<span class="m">4</span> <span class="m">47</span> <span class="n">address</span> <span class="m">5</span>.<span class="m">6</span>.<span class="m">7</span>.<span class="m">8</span> <span class="m">47</span> {
-  <span class="n">pfs_group</span>                <span class="n">modp4096</span>;
-  <span class="n">lifetime</span>                 <span class="n">time</span> <span class="m">1</span> <span class="n">hour</span>;
-  <span class="n">encryption_algorithm</span>     <span class="n">aes</span> <span class="m">256</span>;
-  <span class="n">authentication_algorithm</span> <span class="n">hmac_sha1</span>;
-  <span class="n">compression_algorithm</span>    <span class="n">deflate</span>;
-}</code></pre>
-
-<h2><a class="anchor" id="configure-a-gre-tunnel" href="#configure-a-gre-tunnel"></a>Configure a GRE tunnel</h2>
-<p>Add this to /etc/network/interfaces:
-</p><pre class="highlight"><code>auto gre1
-iface gre1 inet tunnel
-  mode gre
-  netmask 255.255.255.255
-  address 10.0.0.1
-  dstaddr 10.0.0.2
-  endpoint 5.6.7.8
-  local 1.2.3.4
-  ttl 255</code></pre>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -347,7 +264,17 @@ iface gre1 inet tunnel
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>
+</td>
+    </tr>
+  </tbody>
+</table>
+
 	    </div>
 	  </div>
 
