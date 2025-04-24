@@ -22,7 +22,7 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'services/Virtual-Machines.md';
+	  var pageFullPath = 'internal/Home.md';
     var pageFormat   = 'markdown';
 
   </script>
@@ -44,7 +44,7 @@
     mermaid.initialize(mermaid_conf);
   </script>
   
-  <title>Virtual-Machines</title>
+  <title>Home</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -68,12 +68,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>Virtual-Machines</div>
+            <div>Home</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="http://127.42.42.80:4280/gollum/history/services/Virtual-Machines.md"
+              href="http://127.42.42.80:4280/gollum/history/internal/Home.md"
               role="menuitem"
             >
               <span>History</span>
@@ -146,7 +146,7 @@
     <div class="BtnGroup d-flex">
         <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/services/Virtual-Machines.md/';"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/internal/Home.md/';"
           id="minibutton-history"
         >
           History
@@ -161,10 +161,10 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    Virtual-Machines
+    Home
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
-<li class="breadcrumb-item"><a href="../gollum/overview/services/index.html">services</a></li>
+<li class="breadcrumb-item"><a href="../gollum/overview/internal/index.html">internal</a></li>
 </ol></nav></div>
 
 	<div class="has-header has-footer has-sidebar has-rightbar">
@@ -178,7 +178,8 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -217,27 +218,27 @@
   </li>
   <li>Services
     <ul>
-      <li><a href="IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="IX-Collection.html" rel="nofollow">IX Collection</a></li>
-      <li><a href="Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="Route-Collector.html" rel="nofollow">Route Collector</a></li>
-      <li><a href="Registry.html" rel="nofollow">Registry</a></li>
+      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="../services/IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="../services/Registry.html" rel="nofollow">Registry</a></li>
     </ul>
   </li>
   <li>Internal
     <ul>
-      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+      <li><a href="Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+      <li><a href="Historical-Services.html" rel="nofollow">Historical services</a></li>
     </ul>
   </li>
   <li>Historical
@@ -282,13 +283,13 @@
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="services/Virtual-Machines.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="internal/Home.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/services/Virtual-Machines.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/internal/Home.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
