@@ -178,471 +178,85 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="installation-notes" href="#installation-notes"></a>Installation notes</h1>
-<p>This page is applicable to bird versions 2.x</p>
-<h2><a class="anchor" id="arch-linux" href="#arch-linux"></a>Arch Linux</h2>
-
-<p>The <code>extra/bird</code> package in the arch repositories will usually have a relatively recent version and there is (usually) no need for a manual install over the usual <code># pacman -S bird</code>.</p>
-
-<h2><a class="anchor" id="bird2-version-2-0-8-debian" href="#bird2-version-2-0-8-debian"></a>Bird2 Version &lt;2.0.8 / Debian</h2>
-
-<p>Please note, that Bird2 versions before 2.0.8 don't support IPv6 extended nexthops for IPv4 destinations (<a href="https://bird.network.cz/pipermail/bird-users/2020-April/014412.html">https://bird.network.cz/pipermail/bird-users/2020-April/014412.html</a>).
-Additionally Bird2 before 2.0.8 cannot automatically update filtered bgp routes when a used RPKI source changes.</p>
-
-<p>Debian 11 Bullseye delivers Bird 2.0.7. But you can use the Debian Bullseye backport-repository which provides version 2.0.8 (see <a href="https://backports.debian.org/Instructions/">https://backports.debian.org/Instructions/</a> for adding backports repository and install packages from the repository).</p>
-
-<h1><a class="anchor" id="example-configuration" href="#example-configuration"></a>Example configuration</h1>
-
-<p>Please note: This example configuration is made for use with IPv4 and IPv6 (Really, there is no excuse not to get started with IPv6 networking! :) )</p>
-
-<p>The default config location in bird version 2.x is <code>/etc/bird.conf</code>, but this may vary depending on how your distribution compiled bird.</p>
-
-<p>When copying the configuration below onto your system, you will have to enter the following values in the file header:</p>
-
-<ul>
-  <li>Replace <code>&lt;OWNAS&gt;</code> with your autonomous system number, e.g. <code>4242421234</code>
-</li>
-  <li>Replace <code>&lt;OWNIP&gt;</code> with the ip that your router is going to have, this is usually the first non-zero ip in your subnet. (E.g. x.x.x.65 in an x.x.x.64/28 network)</li>
-  <li>Similarly, replace <code>&lt;OWNIPv6&gt;</code> with the first non-zero ip in your ipv6 subnet.</li>
-  <li>Then replace <code>&lt;OWNNET&gt;</code> with the IPv4 subnet that was assigned to you.</li>
-  <li>The same goes for <code>&lt;OWNNETv6&gt;</code>, but it takes an IPv6 subnet (Who'd have thought).</li>
-  <li>Keep in mind that you'll have to enter both networks in the OWNNET{,v6} and OWNNETSET{,v6}, the two variables are required due to set parsing difficulties with variables.</li>
-</ul>
-
-<pre class="highlight"><code><span class="c">################################################
-#               Variable header                #
-################################################
-</span>
-<span class="n">define</span> <span class="n">OWNAS</span> =  &lt;<span class="n">OWNAS</span>&gt;;
-<span class="n">define</span> <span class="n">OWNIP</span> =  &lt;<span class="n">OWNIP</span>&gt;;
-<span class="n">define</span> <span class="n">OWNIPv6</span> = &lt;<span class="n">OWNIPv6</span>&gt;;
-<span class="n">define</span> <span class="n">OWNNET</span> = &lt;<span class="n">OWNNET</span>&gt;;
-<span class="n">define</span> <span class="n">OWNNETv6</span> = &lt;<span class="n">OWNNETv6</span>&gt;;
-<span class="n">define</span> <span class="n">OWNNETSET</span> = [&lt;<span class="n">OWNNET</span>&gt;+];
-<span class="n">define</span> <span class="n">OWNNETSETv6</span> = [&lt;<span class="n">OWNNETv6</span>&gt;+];
-
-<span class="c">################################################
-#                 Header end                   #
-################################################
-</span>
-<span class="n">router</span> <span class="n">id</span> <span class="n">OWNIP</span>;
-
-<span class="n">protocol</span> <span class="n">device</span> {
-    <span class="n">scan</span> <span class="n">time</span> <span class="m">10</span>;
-}
-
-/*
- *  <span class="n">Utility</span> <span class="n">functions</span>
- */
-
-<span class="n">function</span> <span class="n">is_self_net</span>() {
-  <span class="n">return</span> <span class="n">net</span> ~ <span class="n">OWNNETSET</span>;
-}
-
-<span class="n">function</span> <span class="n">is_self_net_v6</span>() {
-  <span class="n">return</span> <span class="n">net</span> ~ <span class="n">OWNNETSETv6</span>;
-}
-
-<span class="n">function</span> <span class="n">is_valid_network</span>() {
-  <span class="n">return</span> <span class="n">net</span> ~ [
-    <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">14</span>{<span class="m">21</span>,<span class="m">29</span>}, <span class="c"># dn42
-</span>    <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">24</span>{<span class="m">28</span>,<span class="m">32</span>}, <span class="c"># dn42 Anycast
-</span>    <span class="m">172</span>.<span class="m">21</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">24</span>{<span class="m">28</span>,<span class="m">32</span>}, <span class="c"># dn42 Anycast
-</span>    <span class="m">172</span>.<span class="m">22</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">24</span>{<span class="m">28</span>,<span class="m">32</span>}, <span class="c"># dn42 Anycast
-</span>    <span class="m">172</span>.<span class="m">23</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">24</span>{<span class="m">28</span>,<span class="m">32</span>}, <span class="c"># dn42 Anycast
-</span>    <span class="m">172</span>.<span class="m">31</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">16</span>+,       <span class="c"># ChaosVPN
-</span>    <span class="m">10</span>.<span class="m">100</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">14</span>+,       <span class="c"># ChaosVPN
-</span>    <span class="m">10</span>.<span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">16</span>+,       <span class="c"># neonetwork
-</span>    <span class="m">10</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">8</span>{<span class="m">15</span>,<span class="m">24</span>}     <span class="c"># Freifunk.net
-</span>  ];
-}
-
-<span class="n">roa4</span> <span class="n">table</span> <span class="n">dn42_roa</span>;
-<span class="n">roa6</span> <span class="n">table</span> <span class="n">dn42_roa_v6</span>;
-
-<span class="n">protocol</span> <span class="n">static</span> {
-    <span class="n">roa4</span> { <span class="n">table</span> <span class="n">dn42_roa</span>; };
-    <span class="n">include</span> <span class="s2">"/etc/bird/roa_dn42.conf"</span>;
-};
-
-<span class="n">protocol</span> <span class="n">static</span> {
-    <span class="n">roa6</span> { <span class="n">table</span> <span class="n">dn42_roa_v6</span>; };
-    <span class="n">include</span> <span class="s2">"/etc/bird/roa_dn42_v6.conf"</span>;
-};
-
-<span class="n">function</span> <span class="n">is_valid_network_v6</span>() {
-  <span class="n">return</span> <span class="n">net</span> ~ [
-    <span class="n">fd00</span>::/<span class="m">8</span>{<span class="m">44</span>,<span class="m">64</span>} <span class="c"># ULA address space as per RFC 4193
-</span>  ];
-}
-
-<span class="n">protocol</span> <span class="n">kernel</span> {
-    <span class="n">scan</span> <span class="n">time</span> <span class="m">20</span>;
-
-    <span class="n">ipv6</span> {
-        <span class="n">import</span> <span class="n">none</span>;
-        <span class="n">export</span> <span class="n">filter</span> {
-            <span class="n">if</span> <span class="n">source</span> = <span class="n">RTS_STATIC</span> <span class="n">then</span> <span class="n">reject</span>;
-            <span class="n">krt_prefsrc</span> = <span class="n">OWNIPv6</span>;
-            <span class="n">accept</span>;
-        };
-    };
-};
-
-<span class="n">protocol</span> <span class="n">kernel</span> {
-    <span class="n">scan</span> <span class="n">time</span> <span class="m">20</span>;
-
-    <span class="n">ipv4</span> {
-        <span class="n">import</span> <span class="n">none</span>;
-        <span class="n">export</span> <span class="n">filter</span> {
-            <span class="n">if</span> <span class="n">source</span> = <span class="n">RTS_STATIC</span> <span class="n">then</span> <span class="n">reject</span>;
-            <span class="n">krt_prefsrc</span> = <span class="n">OWNIP</span>;
-            <span class="n">accept</span>;
-        };
-    };
-}
-
-<span class="n">protocol</span> <span class="n">static</span> {
-    <span class="n">route</span> <span class="n">OWNNET</span> <span class="n">reject</span>;
-
-    <span class="n">ipv4</span> {
-        <span class="n">import</span> <span class="n">all</span>;
-        <span class="n">export</span> <span class="n">none</span>;
-    };
-}
-
-<span class="n">protocol</span> <span class="n">static</span> {
-    <span class="n">route</span> <span class="n">OWNNETv6</span> <span class="n">reject</span>;
-
-    <span class="n">ipv6</span> {
-        <span class="n">import</span> <span class="n">all</span>;
-        <span class="n">export</span> <span class="n">none</span>;
-    };
-}
-
-<span class="n">template</span> <span class="n">bgp</span> <span class="n">dnpeers</span> {
-    <span class="n">local</span> <span class="n">as</span> <span class="n">OWNAS</span>;
-    <span class="n">path</span> <span class="n">metric</span> <span class="m">1</span>;
-
-    <span class="n">ipv4</span> {
-        <span class="n">import</span> <span class="n">filter</span> {
-          <span class="n">if</span> <span class="n">is_valid_network</span>() &amp;&amp; !<span class="n">is_self_net</span>() <span class="n">then</span> {
-            <span class="n">if</span> (<span class="n">roa_check</span>(<span class="n">dn42_roa</span>, <span class="n">net</span>, <span class="n">bgp_path</span>.<span class="n">last</span>) != <span class="n">ROA_VALID</span>) <span class="n">then</span> {
-              <span class="c"># Reject when unknown or invalid according to ROA
-</span>              <span class="n">print</span> <span class="s2">"[dn42] ROA check failed for "</span>, <span class="n">net</span>, <span class="s2">" ASN "</span>, <span class="n">bgp_path</span>.<span class="n">last</span>;
-              <span class="n">reject</span>;
-            } <span class="n">else</span> <span class="n">accept</span>;
-          } <span class="n">else</span> <span class="n">reject</span>;
-        };
-
-        <span class="n">export</span> <span class="n">filter</span> { <span class="n">if</span> <span class="n">is_valid_network</span>() &amp;&amp; <span class="n">source</span> ~ [<span class="n">RTS_STATIC</span>, <span class="n">RTS_BGP</span>] <span class="n">then</span> <span class="n">accept</span>; <span class="n">else</span> <span class="n">reject</span>; };
-        <span class="n">import</span> <span class="n">limit</span> <span class="m">9000</span> <span class="n">action</span> <span class="n">block</span>;
-    };
-
-    <span class="n">ipv6</span> {   
-        <span class="n">import</span> <span class="n">filter</span> {
-          <span class="n">if</span> <span class="n">is_valid_network_v6</span>() &amp;&amp; !<span class="n">is_self_net_v6</span>() <span class="n">then</span> {
-            <span class="n">if</span> (<span class="n">roa_check</span>(<span class="n">dn42_roa_v6</span>, <span class="n">net</span>, <span class="n">bgp_path</span>.<span class="n">last</span>) != <span class="n">ROA_VALID</span>) <span class="n">then</span> {
-              <span class="c"># Reject when unknown or invalid according to ROA
-</span>              <span class="n">print</span> <span class="s2">"[dn42] ROA check failed for "</span>, <span class="n">net</span>, <span class="s2">" ASN "</span>, <span class="n">bgp_path</span>.<span class="n">last</span>;
-              <span class="n">reject</span>;
-            } <span class="n">else</span> <span class="n">accept</span>;
-          } <span class="n">else</span> <span class="n">reject</span>;
-        };
-        <span class="n">export</span> <span class="n">filter</span> { <span class="n">if</span> <span class="n">is_valid_network_v6</span>() &amp;&amp; <span class="n">source</span> ~ [<span class="n">RTS_STATIC</span>, <span class="n">RTS_BGP</span>] <span class="n">then</span> <span class="n">accept</span>; <span class="n">else</span> <span class="n">reject</span>; };
-        <span class="n">import</span> <span class="n">limit</span> <span class="m">9000</span> <span class="n">action</span> <span class="n">block</span>; 
-    };
-}
-
-
-<span class="n">include</span> <span class="s2">"/etc/bird/peers/*"</span>;</code></pre>
-
-<h1><a class="anchor" id="setting-up-peers" href="#setting-up-peers"></a>Setting up peers</h1>
-
-<p>Please note: This section assumes that you've already got a tunnel to your peering partner set up.</p>
-
-<p>First, make sure the /etc/bird/peers directory exists:</p>
-
-<pre class="highlight"><code><span class="c"># mkdir -p /etc/bird/peers</span></code></pre>
-
-<p>Then for each peer, create a configuration file similar to this one:</p>
-
-<p><code>/etc/bird/peers/&lt;NEIGHBOR_NAME&gt;.conf</code>:</p>
-
-<pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt; <span class="n">from</span> <span class="n">dnpeers</span> {
-        <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IP</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
-}
-
-<span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt;<span class="err">_</span><span class="n">v6</span> <span class="n">from</span> <span class="n">dnpeers</span> {
-        <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IPv6</span>&gt;%&lt;<span class="n">NEIGHBOR_INTERFACE</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
-        <span class="c"># Or:
-</span>        <span class="c"># neighbor &lt;NEIGHBOR_IPv6&gt; as &lt;NEIGHBOR_ASN&gt;;
-</span>        <span class="c"># interface &lt;NEIGHBOR_INTERFACE&gt;;****
-</span>}</code></pre>
-
-<p>Due to the special link local addresses of IPv6, an interface has to be specified using the <code>%&lt;if&gt;</code> or the <code>interface &lt;if&gt;;</code> syntax if a link local address is used (Which is recommended)</p>
-
-<h1><a class="anchor" id="getting-routes-installed-to-the-kernal-automatically" href="#getting-routes-installed-to-the-kernal-automatically"></a>Getting routes installed to the kernal automatically</h1>
-
-<p>If you do not do this, your bird logs <em>will</em> be full of <code>Netlink: Invalid argument</code> errors and you will not be able to access the DN42 network.</p>
-
-<p>You will need to create a loopback dummy interface with your DN42 router IP, for both IPv4 and IPv6</p>
-
-<p>Create the dummy interface with these commands:</p>
-
-<pre class="highlight"><code>ip link add dn42-dummy type dummy
-ip link set dev dn42-dummy up</code></pre>
-
-<p>Then, give it your router IP addresses:</p>
-
-<pre class="highlight"><code>ip addr add dev dn42-dummy &lt;router ip&gt;/&lt;subnet&gt;</code></pre>
-
-<p>Do this for both IPv4 and IPv6.</p>
-
-<h2><a class="anchor" id="note-on-multiprotocol-bgp-and-extended-next-hops" href="#note-on-multiprotocol-bgp-and-extended-next-hops"></a>Note on multiprotocol BGP and extended next hops</h2>
-<p>This configuration example shows the required configuration without using multiprotocol BGP and extended next hops.
-These two options are helpful if one desires to optimize their peering by reducing the session count per peer to 1 (in the case of multiprotocol BGP) and remove the need to have IPv4 tunnel IP addresses (in the case of Extended next hops over IPv6)</p>
-
-<h1><a class="anchor" id="bgp-communities" href="#bgp-communities"></a>BGP communities</h1>
-
-<p>Communities can be used to prioritize traffic based on different flags, in DN42 we are using communities to prioritize based on latency, bandwidth and encryption. It is really easy to get started with communities and we encourage all of you to get the basic configuration done and to mark your peerings with the correct flags for improved routing.
-More information can be found <a href="BGP-communities.html">here</a>.</p>
-
-<h1><a class="anchor" id="route-origin-authorization" href="#route-origin-authorization"></a>Route Origin Authorization</h1>
-
-<p>Route Origin Authorizations should be used in BIRD to authenticate prefix announcements. These check the originating AS and validate that they are allowed to advertise a prefix.</p>
-
-<h2><a class="anchor" id="rpki-rtr-for-roa" href="#rpki-rtr-for-roa"></a>RPKI / RTR for ROA</h2>
-
-<p>To use an RTR server for ROA information, replace this config in your bird2 configuration file:</p>
-
-<pre class="highlight"><code><span class="n">protocol</span> <span class="n">static</span> {
-    <span class="n">roa4</span> { <span class="n">table</span> <span class="n">dn42_roa</span>; };
-    <span class="n">include</span> <span class="s2">"/etc/bird/roa_dn42.conf"</span>;
-};
-
-<span class="n">protocol</span> <span class="n">static</span> {
-    <span class="n">roa6</span> { <span class="n">table</span> <span class="n">dn42_roa_v6</span>; };
-    <span class="n">include</span> <span class="s2">"/etc/bird/roa_dn42_v6.conf"</span>;
-};</code></pre>
-
-<p>… with this one (by changing address and port so it points to your RTR server)</p>
-
-<pre class="highlight"><code><span class="n">protocol</span> <span class="n">rpki</span> <span class="n">roa_dn42</span> {
-        <span class="n">roa4</span> { <span class="n">table</span> <span class="n">dn42_roa</span>; };
-        <span class="n">roa6</span> { <span class="n">table</span> <span class="n">dn42_roa_v6</span>; };
-        <span class="n">remote</span> <span class="m">10</span>.<span class="m">1</span>.<span class="m">3</span>.<span class="m">3</span>;
-        <span class="n">port</span> <span class="m">323</span>;
-        <span class="n">refresh</span> <span class="m">600</span>;
-        <span class="n">retry</span> <span class="m">300</span>;
-        <span class="n">expire</span> <span class="m">7200</span>;
-}</code></pre>
-To reflect changes in the ROA table without a manual reload, <strong>ADD</strong> "import table" switch for both channels in your DN42 BGP template:
-
-<pre class="highlight"><code><span class="n">template</span> <span class="n">bgp</span> <span class="n">dnpeers</span> {
-  <span class="n">ipv4</span> {
-    ...<span class="n">existing</span> <span class="n">configuration</span>
-    <span class="n">import</span> <span class="n">table</span>;
-  };
-  <span class="n">ipv6</span> {
-    ...<span class="n">existing</span> <span class="n">configuration</span>
-    <span class="n">import</span> <span class="n">table</span>;
-  };
-}</code></pre>
-
-<h2><a class="anchor" id="roa-tables" href="#roa-tables"></a>ROA Tables</h2>
-
-<p>The ROA table can be generated from the registry directly or you can use the following pre-built ROA tables for BIRD:</p>
-
-<p>ROA files generated by <a href="https://git.burble.com/burble.dn42/dn42regsrv">dn42regsrv</a> are available from burble.dn42:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>URL</th>
-      <th> IPv4/IPv6 </th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-<a href="https://dn42.burble.com/roa/dn42_roa_46.json">https://dn42.burble.com/roa/dn42_roa_46.json</a>  </td>
-      <td> Both </td>
-      <td>JSON format for use with RPKI</td>
-    </tr>
-    <tr>
-      <td>
-<a href="https://dn42.burble.com/roa/dn42_roa_bird1_46.conf">https://dn42.burble.com/roa/dn42_roa_bird1_46.conf</a>  </td>
-      <td> Both </td>
-      <td>Bird1 format</td>
-    </tr>
-    <tr>
-      <td>
-<a href="https://dn42.burble.com/roa/dn42_roa_bird1_4.conf">https://dn42.burble.com/roa/dn42_roa_bird1_4.conf</a>  </td>
-      <td> IPv4 Only </td>
-      <td>Bird1 format</td>
-    </tr>
-    <tr>
-      <td>
-<a href="https://dn42.burble.com/roa/dn42_roa_bird1_6.conf">https://dn42.burble.com/roa/dn42_roa_bird1_6.conf</a>  </td>
-      <td> IPv6 Only </td>
-      <td>Bird1 format</td>
-    </tr>
-    <tr>
-      <td>
-<a href="https://dn42.burble.com/roa/dn42_roa_bird2_46.conf">https://dn42.burble.com/roa/dn42_roa_bird2_46.conf</a>  </td>
-      <td> Both </td>
-      <td>Bird2 format</td>
-    </tr>
-    <tr>
-      <td>
-<a href="https://dn42.burble.com/roa/dn42_roa_bird2_4.conf">https://dn42.burble.com/roa/dn42_roa_bird2_4.conf</a>  </td>
-      <td> IPv4 Only </td>
-      <td>Bird2 format</td>
-    </tr>
-    <tr>
-      <td>
-<a href="https://dn42.burble.com/roa/dn42_roa_bird2_6.conf">https://dn42.burble.com/roa/dn42_roa_bird2_6.conf</a>  </td>
-      <td> IPv6 Only </td>
-      <td>Bird2 format</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>ROA files generated by <a href="https://git.dn42.dev/Kioubit/registry_wizard_rs">roa_wizard</a> are available from kioubit.dn42:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>URL</th>
-      <th> IPv4/IPv6 </th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-<a href="https://kioubit-roa.dn42.dev/?type=v4">https://kioubit-roa.dn42.dev/?type=v4</a>  </td>
-      <td> IPv4 Only </td>
-      <td>Bird2 format</td>
-    </tr>
-    <tr>
-      <td>
-<a href="https://kioubit-roa.dn42.dev/?type=v6">https://kioubit-roa.dn42.dev/?type=v6</a>  </td>
-      <td> IPv6 Only </td>
-      <td>Bird2 format</td>
-    </tr>
-    <tr>
-      <td>
-<a href="https://kioubit-roa.dn42.dev/?type=json">https://kioubit-roa.dn42.dev/?type=json</a>  </td>
-      <td> Both </td>
-      <td>JSON format for use with RPKI</td>
-    </tr>
-  </tbody>
-</table>
-
-<h3><a class="anchor" id="updating-roa-tables" href="#updating-roa-tables"></a>Updating ROA tables</h3>
-
-<p>You can add cron entries to periodically update the tables:</p>
-
-<pre class="highlight"><code>*/<span class="m">15</span> * * * * <span class="n">curl</span> -<span class="n">sfSLR</span> {-<span class="n">o</span>,-<span class="n">z</span>}/<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_4</span>.<span class="n">conf</span> &amp;&amp; <span class="n">birdc</span> <span class="n">configure</span> &gt; /<span class="n">dev</span>/<span class="n">null</span>
-*/<span class="m">15</span> * * * * <span class="n">curl</span> -<span class="n">sfSLR</span> {-<span class="n">o</span>,-<span class="n">z</span>}/<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_6</span>.<span class="n">conf</span> &amp;&amp; <span class="n">birdc</span> <span class="n">configure</span> &gt; /<span class="n">dev</span>/<span class="n">null</span></code></pre>
-
-<p>Or use a systemd timer: (check the commands before copy-pasting)</p>
-
-<pre class="highlight"><code><span class="c"># /etc/systemd/system/dn42-roa.service
-</span>[<span class="n">Unit</span>]
-<span class="n">Description</span>=<span class="n">Update</span> <span class="n">DN42</span> <span class="n">ROA</span>
-
-[<span class="n">Service</span>]
-<span class="n">Type</span>=<span class="n">oneshot</span>
-<span class="n">ExecStart</span>=<span class="n">curl</span> -<span class="n">sfSLR</span> -<span class="n">o</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> -<span class="n">z</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_4</span>.<span class="n">conf</span>
-<span class="n">ExecStart</span>=<span class="n">curl</span> -<span class="n">sfSLR</span> -<span class="n">o</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> -<span class="n">z</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_6</span>.<span class="n">conf</span>
-<span class="n">ExecStart</span>=<span class="n">birdc</span> <span class="n">configure</span></code></pre>
-
-<pre class="highlight"><code><span class="c"># /etc/systemd/system/dn42-roa.timer
-</span>[<span class="n">Unit</span>]
-<span class="n">Description</span>=<span class="n">Update</span> <span class="n">DN42</span> <span class="n">ROA</span> <span class="n">periodically</span>
-
-[<span class="n">Timer</span>]
-<span class="n">OnBootSec</span>=<span class="m">2</span><span class="n">m</span>
-<span class="n">OnUnitActiveSec</span>=<span class="m">15</span><span class="n">m</span>
-<span class="n">AccuracySec</span>=<span class="m">1</span><span class="n">m</span>
-
-[<span class="n">Install</span>]
-<span class="n">WantedBy</span>=<span class="n">timers</span>.<span class="n">target</span></code></pre>
-
-<p>then enable and start the timer with <code>systemctl enable --now dn42-roa.timer</code>.</p>
-
-<p>More advanced script with error checking:
-</p><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="nv">roa4URL</span><span class="o">=</span><span class="s2">""</span>
-<span class="nv">roa6URL</span><span class="o">=</span><span class="s2">""</span>
-
-<span class="nv">roa4FILE</span><span class="o">=</span><span class="s2">"/etc/bird/roa/roa_dn42.conf"</span>
-<span class="nv">roa6FILE</span><span class="o">=</span><span class="s2">"/etc/bird/roa/roa_dn42_v6.conf"</span>
-
-<span class="nb">cp</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">.old"</span>
-<span class="nb">cp</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">.old"</span>
-
-<span class="k">if </span>curl <span class="nt">-f</span> <span class="nt">-o</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">.new"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4URL</span><span class="k">}</span><span class="s2">"</span> <span class="p">;</span><span class="k">then
-    </span><span class="nb">mv</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">.new"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">"</span>
-<span class="k">fi
-
-if </span>curl <span class="nt">-f</span> <span class="nt">-o</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">.new"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6URL</span><span class="k">}</span><span class="s2">"</span> <span class="p">;</span><span class="k">then
-    </span><span class="nb">mv</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">.new"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">"</span>
-<span class="k">fi
-
-if </span>birdc configure <span class="p">;</span> <span class="k">then
-    </span><span class="nb">rm</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">.old"</span>
-    <span class="nb">rm</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">.old"</span>
-<span class="k">else
-    </span><span class="nb">mv</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">.old"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa4FILE</span><span class="k">}</span><span class="s2">"</span>
-    <span class="nb">mv</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">.old"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">roa6FILE</span><span class="k">}</span><span class="s2">"</span>
-<span class="k">fi</span></code></pre>
-
-<h3><a class="anchor" id="use-rpki-roa-in-bird2" href="#use-rpki-roa-in-bird2"></a>Use RPKI ROA in bird2</h3>
-
-<ul>
-  <li>Download stayrtr</li>
-</ul>
-
-<p><a href="https://github.com/bgp/stayrtr">https://github.com/bgp/stayrtr</a></p>
-
-<ul>
-  <li>Run stayrtr.</li>
-</ul>
-
-<pre class="highlight"><code>./stayrtr <span class="nt">-verify</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-checktime</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-cache</span><span class="o">=</span>https://dn42.burble.com/roa/dn42_roa_46.json</code></pre>
-
-<ul>
-  <li>Run with docker</li>
-</ul>
-
-<pre class="highlight"><code>docker pull rpki/stayrtr</code></pre>
-
-<pre class="highlight"><code>docker run <span class="nt">--name</span> dn42rpki <span class="nt">-p</span> 8282:8282 <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">-d</span> rpki/stayrtr <span class="nt">-verify</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-checktime</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-cache</span><span class="o">=</span>https://dn42.burble.com/roa/dn42_roa_46.json</code></pre>
-
-<ul>
-  <li>Add this to your bird configure file (and remove other conflicting ROA setup, if present):</li>
-</ul>
-
-<pre class="highlight"><code><span class="n">protocol</span> <span class="n">rpki</span> <span class="n">rpki_dn42</span>{
-  <span class="n">roa4</span> { <span class="n">table</span> <span class="n">dn42_roa</span>; };
-  <span class="n">roa6</span> { <span class="n">table</span> <span class="n">dn42_roa_v6</span>; };
-
-  <span class="n">remote</span> <span class="s2">"&lt;your rpki server ip or domain&gt;"</span> <span class="n">port</span> <span class="m">8282</span>;
-
-  <span class="n">retry</span> <span class="n">keep</span> <span class="m">90</span>;
-  <span class="n">refresh</span> <span class="n">keep</span> <span class="m">900</span>;
-  <span class="n">expire</span> <span class="n">keep</span> <span class="m">172800</span>;
-}</code></pre>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
-	          <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	          <ul>
+  <li>
+<a href="../Home.html" rel="nofollow">Home</a>
+    <ul>
+      <li><a href="Getting-Started.html" rel="nofollow">Getting Started</a></li>
+      <li><a href="Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+      <li><a href="Address-Space.html" rel="nofollow">Address Space</a></li>
+      <li><a href="BGP-communities.html" rel="nofollow">BGP communities</a></li>
+      <li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
+    </ul>
+  </li>
+  <li>How-To
+    <ul>
+      <li><a href="wireguard.html" rel="nofollow">Wireguard</a></li>
+      <li><a href="openvpn.html" rel="nofollow">Openvpn</a></li>
+      <li><a href="IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+      <li><a href="tinc.html" rel="nofollow">Tinc</a></li>
+      <li><a href="GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+      <li><a href="GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+      <li><a href="IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+      <li><a href="multicast.html" rel="nofollow">SSM Multicast</a></li>
+      <li><a href="mpls.html" rel="nofollow">MPLS</a></li>
+      <li><a href="Bird2.html" rel="nofollow">Bird2</a></li>
+      <li><a href="frr.html" rel="nofollow">FRRouting</a></li>
+      <li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+      <li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+      <li><a href="EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+      <li><a href="Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+      <li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+      <li><a href="vyos1.4.html" rel="nofollow">VyOS</a></li>
+      <li><a href="nixos.html" rel="nofollow">NixOS</a></li>
+    </ul>
+  </li>
+  <li>Services
+    <ul>
+      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="../services/IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="../services/Registry.html" rel="nofollow">Registry</a></li>
+    </ul>
+  </li>
+  <li>Internal
+    <ul>
+      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+    </ul>
+  </li>
+  <li>Historical
+    <ul>
+      <li><a href="../historical/Bird.html" rel="nofollow">Bird 1</a></li>
+      <li><a href="../historical/Quagga.html" rel="nofollow">Quagga</a></li>
+    </ul>
+  </li>
+  <li>External Tools
+    <ul>
+      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+
 	        </div>
 	      </div>
 	    </div>
