@@ -171,92 +171,48 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="tahoe-lafs" href="#tahoe-lafs"></a>Tahoe LAFS</h1>
+
+<h2><a class="anchor" id="the-idea" href="#the-idea"></a>The idea</h2>
+<p>Tahoe-LAFS provides a distributed, reliable and crypted file system.</p>
+
+<h2><a class="anchor" id="how" href="#how"></a>How?</h2>
+<p>Some people run Tahoe-LAFS nodes, providing space. With clients files can be published and received to the cloud. Everything will be encrypted on client side and keep redundant in the cloud.</p>
+
+<h2><a class="anchor" id="benefit" href="#benefit"></a>Benefit</h2>
+<p>Default you need only 3 of 10 parts of a file to reconstruct it. So a downtime of a tahoe node doesn't means data loss.</p>
+
+<p>Because of the encryption an owner of a node don't know anything about the stored content.</p>
+
+<h2><a class="anchor" id="usage" href="#usage"></a>Usage</h2>
+<p>To provide storage to the cloud you have to run a node.</p>
+
+<h2><a class="anchor" id="install-and-configuration" href="#install-and-configuration"></a>Install and configuration</h2>
+<p>To run a node you have to install tahoe-lafs at least in version 1.10.2. You can get source code from <a href="https://tahoe-lafs.org/source/tahoe-lafs/releases/allmydata-tahoe-1.10.2.zip">https://tahoe-lafs.org/source/tahoe-lafs/releases/allmydata-tahoe-1.10.2.zip</a>, if the version of the package in the distribution not at least 1.10. Then you have to extract it and install with <code>python2 setup.py build &amp;&amp; sudo python2 setup.py install</code>.</p>
+
+<p>Before the first start you have to create a node with <code>bin/tahoe create-node</code> or a client (doesn't provide storage) with <code>bin/tahoe create-client</code>. This will create the folder .tahoe in your home dir. In the file .tahoe/tahoe.cfg you have to enter on <code>introducer.furl</code> the link to our introducer node (UPDATED):</p>
+
+<pre class="highlight"><code>introducer.furl = pb://shvdnad4bqey27ff7ngtschexamvdmmr@tahoe-lafs.e-utp.dn42:44412/kmvmrcforeeet7isgq7ftuymywqp3obb
+helper.furl = pb://ru7miwm74bfkd6ytchfoq4wgvo3vikq3@fido.e-utp.dn42:44412/iiiopiclr2gszw2fmckbx3eob6krxk7x</code></pre>
+
+<p>With <code>bin/tahoe start</code> you start your local node.</p>
+
+<h2><a class="anchor" id="client" href="#client"></a>Client</h2>
+<p>You can reach the local node via web browser at <a href="http://localhost:3456/">http://localhost:3456</a>.</p>
+
+<h2><a class="anchor" id="further-informations" href="#further-informations"></a>Further informations</h2>
+<p>Look at <a href="https://tahoe-lafs.org/">https://tahoe-lafs.org</a> for further information.</p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
-	          <ul>
-  <li>
-<a href="../Home.html" rel="nofollow">Home</a>
-    <ul>
-      <li><a href="../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
-      <li><a href="../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-      <li><a href="../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
-      <li><a href="../howto/BGP-communities.html" rel="nofollow">BGP communities</a></li>
-      <li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
-    </ul>
-  </li>
-  <li>How-To
-    <ul>
-      <li><a href="../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
-      <li><a href="../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
-      <li><a href="../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-      <li><a href="../howto/tinc.html" rel="nofollow">Tinc</a></li>
-      <li><a href="../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-      <li><a href="../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-      <li><a href="../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
-      <li><a href="../howto/multicast.html" rel="nofollow">SSM Multicast</a></li>
-      <li><a href="../howto/mpls.html" rel="nofollow">MPLS</a></li>
-      <li><a href="../howto/Bird2.html" rel="nofollow">Bird2</a></li>
-      <li><a href="../howto/frr.html" rel="nofollow">FRRouting</a></li>
-      <li><a href="../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-      <li><a href="../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-      <li><a href="../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-      <li><a href="../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-      <li><a href="../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-      <li><a href="../howto/vyos1.4.html" rel="nofollow">VyOS</a></li>
-      <li><a href="../howto/nixos.html" rel="nofollow">NixOS</a></li>
-    </ul>
-  </li>
-  <li>Services
-    <ul>
-      <li><a href="IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="IX-Collection.html" rel="nofollow">IX Collection</a></li>
-      <li><a href="Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="Route-Collector.html" rel="nofollow">Route Collector</a></li>
-      <li><a href="Registry.html" rel="nofollow">Registry</a></li>
-    </ul>
-  </li>
-  <li>Internal
-    <ul>
-      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
-    </ul>
-  </li>
-  <li>Historical
-    <ul>
-      <li><a href="../historical/Bird.html" rel="nofollow">Bird 1</a></li>
-      <li><a href="../historical/Quagga.html" rel="nofollow">Quagga</a></li>
-    </ul>
-  </li>
-  <li>External Tools
-    <ul>
-      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
-      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
-    </ul>
-  </li>
-</ul>
-
-<hr />
-
-
+	          <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	        </div>
 	      </div>
 	    </div>
