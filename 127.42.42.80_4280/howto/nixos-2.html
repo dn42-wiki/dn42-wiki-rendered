@@ -368,10 +368,8 @@ If the dn42 address is not bound at any other Interface, you need to add it to t
         <span class="nv">dn42-roa</span> <span class="o">=</span> <span class="p">{</span>
             <span class="nv">after</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">"network.target"</span> <span class="p">];</span>
             <span class="nv">description</span> <span class="o">=</span> <span class="s2">"DN42 ROA Updated"</span><span class="p">;</span>
-            <span class="nv">unitConfig</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="nv">Type</span> <span class="o">=</span> <span class="s2">"one-shot"</span><span class="p">;</span>
-            <span class="p">};</span>
             <span class="nv">serviceConfig</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="nv">Type</span> <span class="o">=</span> <span class="s2">"oneshot"</span><span class="p">;</span>
                 <span class="nv">ExecStart</span> <span class="o">=</span> <span class="s2">"</span><span class="si">${</span><span class="nv">script</span><span class="si">}</span><span class="s2">/bin/update-roa"</span><span class="p">;</span>
             <span class="p">};</span>
         <span class="p">};</span>
