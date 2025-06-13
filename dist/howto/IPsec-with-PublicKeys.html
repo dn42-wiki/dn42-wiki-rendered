@@ -216,20 +216,49 @@
 
 <h2><a class="anchor" id="ok-fine-how-do-i-public-key" href="#ok-fine-how-do-i-public-key"></a>Ok fine, how do I public key?</h2>
 <h3><a class="anchor" id="conversion-tool" href="#conversion-tool"></a>Conversion tool</h3>
-<p>Different implementations use different formats to represent public keys, and it's necessary to be able to convert between them. Here is a script for that purpose:</p>
-
-<p><a href="https://raw.githubusercontent.com/zeroae/pubkey-converter/master/pubkey-converter.pl">https://raw.githubusercontent.com/zeroae/pubkey-converter/master/pubkey-converter.pl</a></p>
+<p>Different implementations use different formats to represent public keys, and it's necessary to be able to convert between them.
+A script for that purpose can be found in this git repository: <a href="https://github.com/zeroae/pubkey-converter">github.com/zeroae/pubkey-converter</a> (it can also be <a href="https://raw.githubusercontent.com/zeroae/pubkey-converter/master/pubkey-converter.pl">downloaded directly here</a>).</p>
 
 <h3><a class="anchor" id="how-to-examples" href="#how-to-examples"></a>How-To examples</h3>
-<p>| Implementation           | Key format      |
-| :———————– | ————–: |
-| <a href="IPsecWithPublicKeys/strongSwan5Example.html">strongSwan &gt;= 5.0.0</a> | PEM             |
-| <a href="IPsecWithPublicKeys/CiscoIOSExample.html">Cisco IOS</a>           | Hexadecimal DER |
-| <a href="IPsecWithPublicKeys/RouterOSExample.html">Mikrotik RouterOS</a>   | PEM             |
-| <a href="IPsecWithPublicKeys/OpenBSDExample.html">OpenBSD</a>             | PEM             |
-| <a href="IPsecWithPublicKeys/RacoonExample.html">Racoon</a>              | Base64 RFC 3110 |
-| <a href="IPsecWithPublicKeys/strongSwan4Example.html">strongSwan &lt; 5.0.0</a>  | Base64 RFC 3110 |
-| <a href="IPsecWithPublicKeys/VyOSExample.html">VyOS/EdgeOS</a>         | Base64 RFC 3110 |</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left;">Implementation</th>
+      <th style="text-align:right;">Key format</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/strongSwan5Example.html">strongSwan &gt;= 5.0.0</a></td>
+      <td style="text-align:right;">PEM</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/CiscoIOSExample.html">Cisco IOS</a></td>
+      <td style="text-align:right;">Hexadecimal DER</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/RouterOSExample.html">Mikrotik RouterOS</a></td>
+      <td style="text-align:right;">PEM</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/OpenBSDExample.html">OpenBSD</a></td>
+      <td style="text-align:right;">PEM</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/RacoonExample.html">Racoon</a></td>
+      <td style="text-align:right;">Base64 RFC 3110</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/strongSwan4Example.html">strongSwan &lt; 5.0.0</a></td>
+      <td style="text-align:right;">Base64 RFC 3110</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/VyOSExample.html">VyOS/EdgeOS</a></td>
+      <td style="text-align:right;">Base64 RFC 3110</td>
+    </tr>
+  </tbody>
+</table>
 
 <h3><a class="anchor" id="notes" href="#notes"></a>Notes</h3>
 <ol>
