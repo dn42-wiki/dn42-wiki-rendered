@@ -178,7 +178,79 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p>This information is now <strong>deprecated</strong>. Please check <a href="New-DNS.html">New DNS</a> for the current architecture.</p>
+
+<hr />
+
+<p>DNS in the global internet is designed as a tree starting from "." and traveling outward in layers. Currently in DN42 dns is flat. This leads to issues when trying to debug problems and makes it difficult to delegate to subnets smaller than /24. Another problem that arises is having the root dns setup as an anycast. If one of the anycast roots is having problems it creates inconsistent errors for some users. This has led to the problem of when a user has a poorly configured anycast available to create their own root anycast.</p>
+
+<p>The purpose of this project is to create a system of high quality dns roots. With them in place, an anycast resolver would only need to be a simple caching resolver that uses the roots to query.</p>
+
+<h2><a class="anchor" id="hierarchy-in-dn42" href="#hierarchy-in-dn42"></a>Hierarchy in DN42</h2>
+
+<ul>
+  <li>. (dot)
+    <ul>
+      <li>arpa
+        <ul>
+          <li>in-addr
+            <ul>
+              <li>172
+                <ul>
+                  <li>20</li>
+                  <li>22</li>
+                  <li>23</li>
+                  <li>31</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>dn42
+        <ul>
+          <li>
+            
+
+          </li>
+        </ul>
+      </li>
+      <li>hack</li>
+      <li>ffhh</li>
+      <li>&lt;Future Top Level Domains?&gt;</li>
+      <li>&lt;ano, bit or other organisation TLDs?&gt;</li>
+      <li>
+        
+
+
+      </li>
+    </ul>
+  </li>
+</ul>
+<p>Note: With this system it could be possible to merge the IANA root file.. but it would be beyond the scope of this project.</p>
+
+<h2><a class="anchor" id="servers" href="#servers"></a>Servers</h2>
+
+<p>For all of these servers they have a specific IP assigned, only respond to their authoritative zones, and do not allow recursion.</p>
+
+<p>**.root-servers.dn42** - This server is authoritative for "." (root zone). Is authorative for ICANN root as well. "172.in-addr.arpa" is delegated to ICANN, except rfc1918 zones which are delegated to dn42. The rest of rfc1918 as well as rfc4193 address space is delegated to dn42.</p>
+
+<p>**.zone-servers.dn42** - This server is authoritative for "dn42", "hack", .. This would be where the records for all forward dns nameservers would be. Similar to our current root setup.</p>
+
+<p>**.in-addr-servers.arpa** - This server is authoritative for "arpa", "in-addr", and each of the 172 zones for dn42 ip space. For non dn42 ip space NS records to the respective darknet would need to be registered.</p>
+
+<p>**.dn42-servers.arpa** - This server is authoritative for RFC 2317 delegations. For any inetnum object smaller than /24 and whos parent has no nameserver records, a C class parent zone is created (all its subnetworks are delegated to appropriate nameservers with CNAME)</p>
+
+<p>Real-time server monitor is available at <a href="http://nixnodes.net/dn42/dnsview">http://nixnodes.net/dn42/dnsview</a></p>
+
+<h2><a class="anchor" id="setup" href="#setup"></a>Setup</h2>
+
+<p>Contact one of the root-servers.dn42 operators if you wish to set up a root/zone/dn42 server.</p>
+
+<p>You may want to set up a resolver, see link below or use 172.23.0.53 directly.</p>
+
+<p>Techical information available <a href="https://nixnodes.net/wiki/n/DN42_DNS">here</a></p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
