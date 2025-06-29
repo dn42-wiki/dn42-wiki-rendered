@@ -22,7 +22,7 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'howto/IPsecWithPublicKeys/CiscoIOSExample.md';
+	  var pageFullPath = 'howto/mikrotik/ptp32.md';
     var pageFormat   = 'markdown';
 
   </script>
@@ -44,7 +44,7 @@
     mermaid.initialize(mermaid_conf);
   </script>
   
-  <title>CiscoIOSExample</title>
+  <title>ptp32</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -68,12 +68,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>CiscoIOSExample</div>
+            <div>ptp32</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/CiscoIOSExample.md"
+              href="http://127.42.42.80:4280/gollum/history/howto/mikrotik/ptp32.md"
               role="menuitem"
             >
               <span>History</span>
@@ -146,7 +146,7 @@
     <div class="BtnGroup d-flex">
         <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/CiscoIOSExample.md/';"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/mikrotik/ptp32.md/';"
           id="minibutton-history"
         >
           History
@@ -161,11 +161,11 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    CiscoIOSExample
+    ptp32
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
 <li class="breadcrumb-item"><a href="../../gollum/overview/howto/index.html">howto</a></li>
-<li class="breadcrumb-item"><a href="../../gollum/overview/howto/IPsecWithPublicKeys/index.html">IPsecWithPublicKeys</a></li>
+<li class="breadcrumb-item"><a href="../../gollum/overview/howto/mikrotik/index.html">mikrotik</a></li>
 </ol></nav></div>
 
 	<div class="has-header has-footer has-sidebar has-rightbar">
@@ -179,176 +179,64 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="ipsec-with-public-key-authentication-on-cisco-ios" href="#ipsec-with-public-key-authentication-on-cisco-ios"></a>IPsec with public key authentication on Cisco IOS</h1>
+	        <h1><a class="anchor" id="how-to-setup-mikrotik-with-point-to-point-32-address-on-interfaces" href="#how-to-setup-mikrotik-with-point-to-point-32-address-on-interfaces"></a>How to setup Mikrotik with point-to-point /32 address on interfaces</h1>
+
+<h2><a class="anchor" id="routeros-issues" href="#routeros-issues"></a>RouterOS issues</h2>
+
+<ul>
+  <li>RouterOS doesn't have direct Point-to-Point addresses.</li>
+  <li>BGP doesn't resolve the next-hop for their routes using a rescursive route that uses a interface as next-hop</li>
+</ul>
+
+<p>The long explanation about how mikrotik resolves recursive routes is documentated at <a href="https://wiki.mikrotik.com/wiki/Manual:IP/Route#Nexthop_lookup">Mikrotik's page</a>.</p>
+
+<p>How can we workaround these issues? Simple. We setup a /32 on the Point-to-Point interface, we setup a direct route to the other peer (using the interface as next-hop for this route) and use bgp filters to change the next-hop interface.</p>
+
+<h2><a class="anchor" id="legend" href="#legend"></a>Legend</h2>
+
+<ul>
+  <li>172.24.0.1 -&gt; Your /32 inside tunnel address</li>
+  <li>172.26.2.2 -&gt; Peer's /32 inside tunnel address.</li>
+  <li>gre-dn42-peer -&gt; This is the name of the interface</li>
+  <li>1.1.1.1 - peer external IP</li>
+  <li>2.2.2.2 - your external IP</li>
+  <li>bgp-dn42-peer-in -&gt; This is the name of the chain filter. You need to use a different chain per point to point link</li>
+</ul>
+
 <h2><a class="anchor" id="setup" href="#setup"></a>Setup</h2>
-<h3><a class="anchor" id="generate-an-rsa-keypair" href="#generate-an-rsa-keypair"></a>Generate an RSA keypair</h3>
-<p><em>Note: You may already have completed this step, since it's required to enable SSH.</em></p>
 
-<ol>
-  <li>Configure a hostname and domain name.</li>
-</ol>
+<p>You create the GRE interface in the same way the <a href="../mikrotik.html">Mikrotik Guide</a> does.</p>
 
-<pre class="highlight"><code>Router#conf t
-Router(config)#hostname foo
-foo(config)#ip domain-name bar</code></pre>
+<pre class="highlight"><code>/interface gre
+add allow-fast-path=no comment="DN42 somepeer" local-address=2.2.2.2 name=gre-dn42-peer \
+remote-address=1.1.1.1</code></pre>
 
-<ol>
-  <li>Generate an RSA key. The maximum length was increased from 2048 to 4096 as of release 15.1(1)T</li>
-</ol>
+<p>Next you add the /32 address on the interface. You can install this address on a loop interface (on RouterOS this means an empty bridge) if you plan to use the same address over several GRE tunnels or other OpenVPN interfaces.</p>
 
-<pre class="highlight"><code>foo(config)#crypto key generate rsa general-keys modulus 2048
-% The key modulus size is 2048 bits
-% Generating 2048 bit RSA keys, keys will be non-exportable...
-foo(config)#exit</code></pre>
+<pre class="highlight"><code>/ip address add address=172.24.0.1/32 interface=gre-dn42-peer</code></pre>
 
-<h3><a class="anchor" id="exchange-public-keys-with-your-peer" href="#exchange-public-keys-with-your-peer"></a>Exchange public keys with your peer</h3>
-<ol>
-  <li>Display the public key. Send the key data portion to your peer.</li>
-</ol>
+<p>Next, we add the direct route as next-hop using the interface</p>
 
-<pre class="highlight"><code>foo#show crypto key mypubkey rsa foo.bar
-% Key pair was generated at: 19:24:02 UTC Jul 19 2014
-Key name: foo.bar
-Storage Device: not specified
-Usage: General Purpose Key
-Key is not exportable.
-Key Data:
- 30820122 300D0609 2A864886 F70D0101 01050003 82010F00 3082010A 02820101
- 00ABF25E 090CBDFC 47B3763B 01E38993 584F1D47 49DEE0FC 6A766D95 F416C5A8
- 83E16EF2 19C00BC9 64B3E351 D6F43E57 461AC689 912C22FE C4BE10EE 05750F27
- FEBB9C8C 2DFC7DD7 C0D1E8B2 7F022F54 04101205 60E47D99 2307E625 404F1130
- CBD1759B BBDBBF89 0C0F6B09 52E50A81 BFCC6AA6 96AFF612 B700AEA5 0EDFCDDB
- D3C7E014 2A59CD82 29A403CA 01EE580A CC4A3A2C C36369FE D2FA0FEF 2DC32D50
- 1C55A296 3CBD6AAC 6AA66C73 FAB30A12 CFD1341D C261E013 8A7DA310 8D0E6C99
- C248D554 D0D68508 3EA53F0F 971DA7A6 203CA186 A79F9D93 0D2E54EF F7E311B2
- F7A8B486 D980661D DEB6C0B3 80A82583 4936F131 57C6D204 0AA5ED7F 7749F044
- 8F020301 0001</code></pre>
+<pre class="highlight"><code>/ip route add distance=1 dst-address=172.26.2.2/32 gateway=gre-dn42-peer pref-src=172.24.0.1</code></pre>
 
-<ol>
-  <li>Convert your peer's public key to the hexadecimal DER format using the <a href="https://git.dn42.dev/ryan/pubkey-converter/raw/master/pubkey-converter.pl" title="Public key conversion script">pubkey-converter</a> script, if necessary.</li>
-</ol>
+<p>At this point, the ping with the peer should work. Also, the bgp session can be established, but the routes will not work. We need a input filter to fix the next-hop routes.</p>
 
-<h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
-<h3><a class="anchor" id="configure-the-phase-1-ike-parameters" href="#configure-the-phase-1-ike-parameters"></a>Configure the phase 1 IKE parameters</h3>
-<p>In this example, we'll use the following settings:</p>
+<pre class="highlight"><code>/routing filter add chain=bgp-dn42-peer-in protocol=bgp set-in-nexthop-direct=gre-dn42-peer</code></pre>
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Key</th>
-      <th style="text-align:left;">Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">Encryption</td>
-      <td style="text-align:left;">AES-128</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Hash</td>
-      <td style="text-align:left;">HMAC-SHA1</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">DH Group</td>
-      <td style="text-align:left;">5 (modp1536)</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Lifetime</td>
-      <td style="text-align:left;">28800 seconds</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Peer address</td>
-      <td style="text-align:left;">192.0.2.2</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Local address</td>
-      <td style="text-align:left;">192.0.2.1</td>
-    </tr>
-  </tbody>
-</table>
+<p>if you have other global input chain filters, you should add a jump in the same chain, like this:
+</p><pre class="highlight"><code>/routing filter add action=jump chain=bgp-dn42-peer-in protocol=bgp jump-target=bgp-global-dn42-input</code></pre>
 
-<ol>
-  <li>Add your peer's public key</li>
-</ol>
+<p>If you haven't created the BGP session, create it now from the <a href="../mikrotik.html#how-to-connect-to-dn42-using-mikrotik-routeros_bgp">Mikrotik guide</a>. Change the peer input filter to use the chain we've just created:</p>
 
-<pre class="highlight"><code>foo#conf t
-Enter configuration commands, one per line.  End with CNTL/Z.
-foo(config)#crypto key pubkey-chain rsa
-foo(config-pubkey-chain)#addressed-key 192.0.2.2
-foo(config-pubkey-key)#key-string
-Enter a public key as a hexidecimal number ....
+<pre class="highlight"><code>/routing bgp peer set bgp-dn42-somename in-filter=bgp-dn42-peer-in</code></pre>
 
-foo(config-pubkey)#30820122 300D0609 2A864886 F70D0101 01050003 82010F00 3082010A 02820101
-foo(config-pubkey)#00F3E0AA 8924E512 C08BA87C 73820A15 E5180DDC EF827221 2B3864BF B2D2A5E0
-foo(config-pubkey)#33D04C1D 43A0CAF8 617EEEBA 7DB5BD38 429660CC 3144618E 4F386201 52483DA7
-foo(config-pubkey)#FDDF7AAC DCA8C19D FF5B1956 14F63831 ACE70D0F 4C557CE7 220C7E8B 9A2C837F
-foo(config-pubkey)#065A2B41 23B68074 C57F6F78 2F222DA1 915A095C CED77FF3 F1DF849C 3FD086EA
-foo(config-pubkey)#0A74901D 99DA97D5 0CFB22E7 C6C827E6 E53BE215 8D4928D2 458B02E2 1600F1F1
-foo(config-pubkey)#F1128D63 3A55EC4B 54E6A8E1 0B197E1E 7DA31CC2 54C30A2D 03BE5B8A 16A5E324
-foo(config-pubkey)#F3B15B67 C3FB2831 7F31610A 3BD59E74 E749DC25 74424F3F 7EC305AD 0BFA5008
-foo(config-pubkey)#E36C6E00 854433B6 A0E8DBF1 7A4741DD A91A5320 1D5150FA 28F12273 56A3E9A2
-foo(config-pubkey)#D5020301 0001
-foo(config-pubkey)#quit
-foo(config-pubkey-key)#exit
-foo(config-pubkey-chain)#exit</code></pre>
+<p>With this fix, all the routes will have set next-hop the GRE interface and there will be no need to use RouterOS' recursive route resolve.</p>
 
-<ol>
-  <li>Configure an ISAKMP policy</li>
-</ol>
+<p>Check the routes with:
+</p><pre class="highlight"><code>/ip routes print detail where received-from=bgp-dn42-somename</code></pre>
 
-<pre class="highlight"><code>foo(config)#crypto isakmp policy 10
-foo(config-isakmp)#encryption aes
-foo(config-isakmp)#hash sha
-foo(config-isakmp)#group 5
-foo(config-isakmp)#lifetime 28800
-foo(config-isakmp)#authentication rsa-sig
-foo(config-isakmp)#exit</code></pre>
-
-<ol>
-  <li>All done! Configure the phase 2 parameters as you otherwise would.</li>
-</ol>
-
-<h2><a class="anchor" id="full-gre-ipsec-example" href="#full-gre-ipsec-example"></a>Full GRE/IPsec example</h2>
-
-<pre class="highlight"><code>crypto key pubkey-chain rsa
- addressed-key 192.0.2.2
-  address 192.0.2.2
-   key-string
-    30820122 300D0609 2A864886 F70D0101 01050003 82010F00 3082010A 02820101
-    00F3E0AA 8924E512 C08BA87C 73820A15 E5180DDC EF827221 2B3864BF B2D2A5E0
-    33D04C1D 43A0CAF8 617EEEBA 7DB5BD38 429660CC 3144618E 4F386201 52483DA7
-    FDDF7AAC DCA8C19D FF5B1956 14F63831 ACE70D0F 4C557CE7 220C7E8B 9A2C837F
-    065A2B41 23B68074 C57F6F78 2F222DA1 915A095C CED77FF3 F1DF849C 3FD086EA
-    0A74901D 99DA97D5 0CFB22E7 C6C827E6 E53BE215 8D4928D2 458B02E2 1600F1F1
-    F1128D63 3A55EC4B 54E6A8E1 0B197E1E 7DA31CC2 54C30A2D 03BE5B8A 16A5E324
-    F3B15B67 C3FB2831 7F31610A 3BD59E74 E749DC25 74424F3F 7EC305AD 0BFA5008
-    E36C6E00 854433B6 A0E8DBF1 7A4741DD A91A5320 1D5150FA 28F12273 56A3E9A2
-    D5020301 0001
-   quit
-  !
-  crypto isakmp policy 10
-   encr aes
-   group 5
-   lifetime 28800
-  !
-  crypto ipsec transform-set tset esp-aes esp-sha-hmac
-   mode transport
-  !
-  crypto ipsec profile FOO
-   set transform-set tset
-   set pfs group5
-  !
-  interface Tunnel0
-   ip address 10.1.2.0 255.255.255.254
-   ip mtu 1400
-   tunnel source 192.0.2.1
-   tunnel destination 192.0.2.2
-   tunnel protection ipsec profile FOO
-  !
-  interface FastEthernet0/0
-   description WAN
-   ip address 192.0.2.1 255.255.255.0
-   duplex full</code></pre>
+<p>There should an attribute like:
+</p><pre class="highlight"><code>gateway=gre-dn42-peer gateway-status=gre-dn42-peer reachable</code></pre>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -456,13 +344,13 @@ foo(config-isakmp)#exit</code></pre>
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/IPsecWithPublicKeys/CiscoIOSExample.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/mikrotik/ptp32.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/IPsecWithPublicKeys/CiscoIOSExample.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/mikrotik/ptp32.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
