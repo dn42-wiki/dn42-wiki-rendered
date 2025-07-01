@@ -178,7 +178,79 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="dn42-rpki" href="#dn42-rpki"></a>DN42 RPKI</h1>
+<p>This page covers guidance and examples on using RPKI within DN42.</p>
+
+<h2><a class="anchor" id="quick-start" href="#quick-start"></a>Quick Start</h2>
+
+<p>It is recommended to run your own RPKI validator, as this provides you with the most security and control over your routing decisions. However, to get started, or if running your own validator isn’t desirable, a public RPKI RTR server is available. The service supports full RPKI validation for all relevant DN42 and affiliated networks’ prefixes.</p>
+
+<h3><a class="anchor" id="using-public-rpki-services" href="#using-public-rpki-services"></a>Using Public RPKI Services</h3>
+
+<p>DN42’s RPKI RTR service endpoints are hosted by multiple operators. By configuring multiple RTR servers in your BGP daemon, you gain additional resiliency and improved validation coverage.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Server</th>
+      <th>Port</th>
+      <th><strong>IPv4/IPv6</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>rpki.akae.re</td>
+      <td>8082</td>
+      <td>both</td>
+    </tr>
+    <tr>
+      <td>rpki.dn42.milu.moe</td>
+      <td>8082</td>
+      <td>both</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>To configure the service, connect your BGP software’s RPKI client to one or more of these RTR servers.</p>
+
+<h4><a class="anchor" id="example-configuration-bird-2" href="#example-configuration-bird-2"></a>Example Configuration (Bird 2)</h4>
+
+<pre class="highlight"><code><span class="n">protocol</span> <span class="n">rpki</span> <span class="n">roa_dn42_1</span> {
+        <span class="n">roa4</span> { <span class="n">table</span> <span class="n">dn42_roa</span>; };
+        <span class="n">roa6</span> { <span class="n">table</span> <span class="n">dn42_roa_v6</span>; };
+        <span class="n">remote</span> <span class="s2">"rpki1.example.com"</span>;
+        <span class="n">port</span> <span class="m">8082</span>;
+        <span class="n">refresh</span> <span class="m">600</span>;
+        <span class="n">retry</span> <span class="m">300</span>;
+        <span class="n">expire</span> <span class="m">7200</span>;
+}
+
+<span class="n">protocol</span> <span class="n">rpki</span> <span class="n">roa_dn42_2</span> {
+        <span class="n">roa4</span> { <span class="n">table</span> <span class="n">dn42_roa</span>; };
+        <span class="n">roa6</span> { <span class="n">table</span> <span class="n">dn42_roa_v6</span>; };
+        <span class="n">remote</span> <span class="s2">"rpki2.example.com"</span>;
+        <span class="n">port</span> <span class="m">8082</span>;
+        <span class="n">refresh</span> <span class="m">600</span>;
+        <span class="n">retry</span> <span class="m">300</span>;
+        <span class="n">expire</span> <span class="m">7200</span>;
+}</code></pre>
+
+<h3><a class="anchor" id="running-your-own-rpki-server" href="#running-your-own-rpki-server"></a>Running Your Own RPKI Server</h3>
+
+<h4><a class="anchor" id="with-docker" href="#with-docker"></a>With Docker</h4>
+
+<pre class="highlight"><code>docker run <span class="nt">--name</span> dn42rpki <span class="nt">-p</span> 8082:8282 <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">-d</span> rpki/stayrtr <span class="nt">-verify</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-checktime</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-cache</span><span class="o">=</span>https://dn42.burble.com/roa/dn42_roa_46.json</code></pre>
+
+<h4><a class="anchor" id="with-docker-compose" href="#with-docker-compose"></a>With Docker Compose</h4>
+
+<pre class="highlight"><code><span class="n">services</span>:
+  <span class="n">stayrtr</span>:
+    <span class="n">image</span>: <span class="n">rpki</span>/<span class="n">stayrtr</span>:<span class="n">latest</span>
+    <span class="n">ports</span>:
+      - <span class="s2">"8082:8282"</span>
+    <span class="n">command</span>: &gt;
+      -<span class="n">cache</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_46</span>.<span class="n">json</span></code></pre>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
