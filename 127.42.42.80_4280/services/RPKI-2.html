@@ -171,8 +171,7 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
@@ -250,6 +249,32 @@
       - <span class="s2">"8082:8282"</span>
     <span class="n">command</span>: &gt;
       -<span class="n">cache</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_46</span>.<span class="n">json</span></code></pre>
+
+<h3><a class="anchor" id="using-kioubit-s-dn42-registry-wizard" href="#using-kioubit-s-dn42-registry-wizard"></a>Using Kioubit's DN42 Registry Wizard</h3>
+
+<p><a href="https://github.com/Kioubit/dn42_registry_wizard">DN42 Registry Wizard</a> is a comprehensive tool for DN42 registry interactions. <strong>Unlike other solutions, it can parse the registry and host an RTR server all-in-one</strong> without requiring separate components.</p>
+
+<h4><a class="anchor" id="all-in-one-rtr-server" href="#all-in-one-rtr-server"></a>All-in-One RTR Server</h4>
+
+<pre class="highlight"><code><span class="c"># Clone the DN42 registry</span>
+git clone https://git.dn42.dev/dn42/registry.git
+
+<span class="c"># Start RTR server directly from registry</span>
+./registry_wizard &lt;path to registry&gt; rtr 
+
+<span class="c"># Setup a cronjob to continously update the registry and notify registry_wizard</span>
+git fetch <span class="nt">--all</span>
+git reset <span class="nt">--hard</span> origin/master
+<span class="nb">kill</span> <span class="nt">-SIGUSR1</span> <span class="s2">"</span><span class="si">$(</span>pidof <span class="s1">'registry_wizard'</span><span class="si">)</span><span class="s2">"</span></code></pre>
+
+<pre class="highlight"><code>Usage: registry_wizard &lt;registry_root&gt; rtr [OPTIONS]
+
+Options:
+  -p, --port &lt;port&gt;        Port to listen on [default: 9323]
+      --refresh &lt;refresh&gt;  RTR refresh timing [default: 3600]
+      --expire &lt;expire&gt;    RTR expire timing [default: 7200]
+      --retry &lt;retry&gt;      RTR retry timing [default: 600]
+  -h, --help               Print help</code></pre>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
