@@ -231,21 +231,21 @@ Since gollum is built on top of Git, it is not overly complicated to keep the lo
     <p>Setup cron for periodic pull/push jobs for the repo (simple example):</p>
   </li>
   <li>
-<strong>wiki-sync.sh</strong>:</li>
-</ul>
+    <p><strong>wiki-sync.sh</strong>:</p>
 
-<pre class="highlight"><code><span class="c">#!/bin/bash</span>
-
+    <div class="language-sh highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+    
 <span class="nv">WIKI_PATH</span><span class="o">=</span>&lt;repo path&gt;
 <span class="nv">GIT</span><span class="o">=</span>/usr/bin/git
-
+    
 <span class="nb">cd</span> <span class="s2">"</span><span class="k">${</span><span class="nv">WIKI_PATH</span><span class="k">}</span><span class="s2">"</span>
 <span class="k">${</span><span class="nv">GIT</span><span class="k">}</span> push
 <span class="k">${</span><span class="nv">GIT</span><span class="k">}</span> pull
-
-<span class="nb">exit </span>0</code></pre>
-
-<ul>
+    
+<span class="nb">exit </span>0
+</code></pre></div>    </div>
+  </li>
   <li>
 <strong>Cron entry</strong>:</li>
 </ul>
@@ -262,12 +262,10 @@ Since gollum is built on top of Git, it is not overly complicated to keep the lo
   <li>
     <p>Start two gollum instances, read-only and read/write on <code>127.0.0.1</code>:</p>
 
-    <p>Read/write (SSL only):</p>
-    <pre><code>RACK_ENV=production gollum --css --host 127.0.0.1  --port 4568 &lt;path&gt;
-</code></pre>
-    <p>Read-only:</p>
-    <pre><code>RACK_ENV=production gollum --css --host 127.0.0.1  --port 4567 --no-edit &lt;path&gt;
-</code></pre>
+    <p>Read/write (SSL only):
+</p><pre class="highlight"><code>RACK_ENV=production gollum --css --host 127.0.0.1  --port 4568 &lt;path&gt;</code></pre>
+Read-only:
+<pre class="highlight"><code>RACK_ENV=production gollum --css --host 127.0.0.1  --port 4567 --no-edit &lt;path&gt;</code></pre>
 
     <p>Set <code>&lt;path&gt;</code> to the location where wiki Git repo was cloned.</p>
   </li>
