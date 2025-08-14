@@ -178,15 +178,19 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>Bird is a commonly used BGP daemon. This page provides configuration and help for using BGP communities with Bird for dn42.</p>
+	        <p>Bird2 is a commonly used BGP daemon. This page provides configuration and help for using BGP communities with Bird2 for dn42.</p>
 
 <p>Communities can be used to prioritize traffic based on different flags, in DN42 we are using communities to prioritize based on latency, bandwidth and encryption. Please note that everyone should be using community 64511.</p>
 
-<p>The community is applied to the route when it is imported and exported, therefore you need to change your bird configuration, in /etc/bird/peers4 if you followed the Bird guide.</p>
+<p>The community is applied to the route when it is imported and exported, therefore you need to change your bird configuration
+in /etc/bird/peers/*</p>
 
 <p>The filter helpers can be stored in a separate file, for example /etc/bird/community_filters.conf.</p>
 
-<p>Below, you will see an example config for peers4 based on the original filter implementation by Jplitza.</p>
+<p>Below, you will see an example config for peers based on the original filter implementation by Jplitza.
+Additionally the below configuration applied BGP MED on exports using the communities
+as an example for what they can be used for. 
+This is based on mk16's lab implemenation at <a href="https://mk16.de/blog/lab-en/">https://mk16.de/blog/lab-en/</a></p>
 
 <p>To properly assign the right community to your peer, please reference the table below. If you are running your own network and peering internally, please also apply the communities inside your network.</p>
 
@@ -295,15 +299,8 @@ just above <code>update_flags</code> in <code>dn42_export_filter</code> function
   </li>
 </ul>
 
-<h2><a class="anchor" id="example-configurations" href="#example-configurations"></a>Example configurations</h2>
-<pre class="highlight"><code><span class="c"># /etc/bird/peers4/tombii.conf
-</span><span class="n">protocol</span> <span class="n">bgp</span> <span class="n">tombii</span> <span class="n">from</span> <span class="n">dnpeers</span> {
-  <span class="n">neighbor</span> <span class="m">172</span>.<span class="m">23</span>.<span class="m">102</span>.<span class="n">x</span> <span class="n">as</span> <span class="m">4242420321</span>;
-  <span class="n">import</span> <span class="n">where</span> <span class="n">dn42_import_filter</span>(<span class="m">3</span>,<span class="m">24</span>,<span class="m">33</span>);
-  <span class="n">export</span> <span class="n">where</span> <span class="n">dn42_export_filter</span>(<span class="m">3</span>,<span class="m">24</span>,<span class="m">33</span>);
-};</code></pre>
-<pre class="highlight"><code><span class="c">#/etc/bird/community_filters.conf
-</span><span class="n">function</span> <span class="n">update_latency</span>(<span class="n">int</span> <span class="n">link_latency</span>) {
+<h2><a class="anchor" id="example-configuration-for-bird2" href="#example-configuration-for-bird2"></a>Example configuration for BIRD2</h2>
+<pre class="highlight"><code><span class="n">function</span> <span class="n">update_latency</span>(<span class="n">int</span> <span class="n">link_latency</span>) {
   <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">link_latency</span>));
        <span class="n">if</span> (<span class="m">64511</span>, <span class="m">9</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">1</span>..<span class="m">8</span>)]); <span class="n">return</span> <span class="m">9</span>; }
   <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">8</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">1</span>..<span class="m">7</span>)]); <span class="n">return</span> <span class="m">8</span>; }
@@ -315,6 +312,7 @@ just above <code>update_flags</code> in <code>dn42_export_filter</code> function
   <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">2</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">1</span>..<span class="m">1</span>)]); <span class="n">return</span> <span class="m">2</span>; }
   <span class="n">else</span> <span class="n">return</span> <span class="m">1</span>;
 }
+
 
 <span class="n">function</span> <span class="n">update_bandwidth</span>(<span class="n">int</span> <span class="n">link_bandwidth</span>) {
   <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">link_bandwidth</span>));
@@ -336,7 +334,13 @@ just above <code>update_flags</code> in <code>dn42_export_filter</code> function
   <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">33</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">34</span>..<span class="m">34</span>)]); <span class="n">return</span> <span class="m">33</span>; }
   <span class="n">else</span> <span class="n">return</span> <span class="m">34</span>;
 }
-
+<span class="c">#Remove the following function if you do not want to advertize your region in the BGP community.
+</span><span class="n">function</span> <span class="n">update_geo_flags</span>() {
+    <span class="n">if</span> <span class="n">is_self_net</span>() || <span class="n">is_self_net_v6</span>() <span class="n">then</span> {
+        <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">DN_REGION_GEO</span>));
+	    <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">DN_REGION_COUNTRY</span>));
+    }
+}
 <span class="n">function</span> <span class="n">update_flags</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>)
 <span class="n">int</span> <span class="n">dn42_latency</span>;
 <span class="n">int</span> <span class="n">dn42_bandwidth</span>;
@@ -350,34 +354,84 @@ just above <code>update_flags</code> in <code>dn42_export_filter</code> function
   <span class="n">return</span> <span class="n">true</span>;
 }
 
-<span class="c"># Combines filter from local4.conf/local6.conf and filter4.conf/filter6.conf,
-# which means, these must included before this file
+<span class="c">#Uses ROA, which means it should be imported before these functions
 </span>
 <span class="n">function</span> <span class="n">dn42_import_filter</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>) {
-  <span class="n">if</span> <span class="n">is_valid_network</span>() &amp;&amp; !<span class="n">is_self_net</span>() <span class="n">then</span> {
+  <span class="c"># IPv4 routes with ROA
+</span>  <span class="n">if</span> <span class="n">is_valid_network</span>() &amp;&amp; !<span class="n">is_self_net</span>() <span class="n">then</span> {
+    <span class="n">if</span> (<span class="n">roa_check</span>(<span class="n">dn42_roa</span>, <span class="n">net</span>, <span class="n">bgp_path</span>.<span class="n">last</span>) != <span class="n">ROA_VALID</span>) <span class="n">then</span> {
+      <span class="c"># Reject when unknown or invalid according to ROA
+</span>      <span class="n">print</span> <span class="s2">"[dn42] IPv4 ROA check failed for "</span>, <span class="n">net</span>, <span class="s2">" ASN "</span>, <span class="n">bgp_path</span>.<span class="n">last</span>;
+      <span class="n">reject</span>;
+    }
+
     <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>);
+
+    <span class="n">if</span> (<span class="n">bgp_path</span>.<span class="n">len</span> = <span class="m">1</span>) <span class="n">then</span>
+      <span class="n">bgp_local_pref</span> = <span class="n">bgp_local_pref</span> + <span class="m">500</span>;
+
+    <span class="n">accept</span>;
+  }
+
+  <span class="c"># IPv6 routes with ROA
+</span>  <span class="n">if</span> <span class="n">is_valid_network_v6</span>() &amp;&amp; !<span class="n">is_self_net_v6</span>() <span class="n">then</span> {
+    <span class="n">if</span> (<span class="n">roa_check</span>(<span class="n">dn42_roa_v6</span>, <span class="n">net</span>, <span class="n">bgp_path</span>.<span class="n">last</span>) != <span class="n">ROA_VALID</span>) <span class="n">then</span> {
+      <span class="c"># Reject when unknown or invalid according to ROA
+</span>      <span class="n">print</span> <span class="s2">"[dn42] IPv6 ROA check failed for "</span>, <span class="n">net</span>, <span class="s2">" ASN "</span>, <span class="n">bgp_path</span>.<span class="n">last</span>;
+      <span class="n">reject</span>;
+    }
+
+    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>);
+
+    <span class="n">if</span> (<span class="n">bgp_path</span>.<span class="n">len</span> = <span class="m">1</span>) <span class="n">then</span>
+      <span class="n">bgp_local_pref</span> = <span class="n">bgp_local_pref</span> + <span class="m">500</span>;
+
+    <span class="n">accept</span>;
+  }
+
+  <span class="c"># Re
+</span>  <span class="n">reject</span>;
+}
+<span class="n">function</span> <span class="n">dn42_export_filter</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>) {
+  <span class="n">if</span> <span class="n">is_valid_network</span>() || <span class="n">is_valid_network_v6</span>() <span class="n">then</span> {
+    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>);
+    <span class="n">update_geo_flags</span>();
+    <span class="n">bgp_med</span> = <span class="m">0</span>;
+    <span class="n">bgp_med</span> = <span class="n">bgp_med</span> + ( ( <span class="m">4</span> - ( <span class="n">link_crypto</span> - <span class="m">30</span> ) ) * <span class="m">600</span> );
+    <span class="n">bgp_med</span> = <span class="n">bgp_med</span> + ( ( <span class="m">9</span> - ( <span class="n">link_bandwidth</span> - <span class="m">20</span> ) ) * <span class="m">100</span>);
+    <span class="n">bgp_med</span> = <span class="n">bgp_med</span> + ( ( <span class="n">link_latency</span> - <span class="m">1</span>) * <span class="m">300</span>);
+
     <span class="n">accept</span>;
   }
   <span class="n">reject</span>;
 }
+</code></pre>
+And in your /etc/bird/peers/example.conf peer where  your  parameters as as such
+11 ms, 1000 mbit/s, pfs tunnel example with MP-BGP with ENH
+<pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> <span class="n">example</span> <span class="n">from</span> <span class="n">dnpeers</span> {
+    <span class="n">neighbor</span> <span class="n">neighbor</span> &lt;<span class="n">neighborip</span>&gt;&lt;%<span class="n">interface</span> <span class="n">if</span> <span class="n">Link</span> <span class="n">Local</span> <span class="n">is</span> <span class="n">used</span>&gt; <span class="n">as</span> &lt;<span class="n">AUT_NUM</span>&gt;;
+    <span class="n">ipv4</span> {
+        <span class="n">extended</span> <span class="n">next</span> <span class="n">hop</span> <span class="n">on</span>;
+		<span class="n">import</span> <span class="n">where</span> <span class="n">dn42_import_filter</span>(<span class="m">3</span>,<span class="m">25</span>,<span class="m">34</span>);
+		<span class="n">export</span> <span class="n">where</span> <span class="n">dn42_export_filter</span>(<span class="m">3</span>,<span class="m">25</span>,<span class="m">34</span>);
+    };
 
-<span class="n">function</span> <span class="n">dn42_export_filter</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>) {
-  <span class="n">if</span> <span class="n">is_valid_network</span>() <span class="n">then</span> {
-    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>);
-    <span class="n">accept</span>;
-  }
-  <span class="n">reject</span>;
-}</code></pre>
-Please remember to include /etc/bird/community_filters.conf in your bird.conf/birdc6.conf
+    <span class="n">ipv6</span> {
+		<span class="n">import</span> <span class="n">where</span> <span class="n">dn42_import_filter</span>(<span class="m">3</span>,<span class="m">25</span>,<span class="m">34</span>);
+		<span class="n">export</span> <span class="n">where</span> <span class="n">dn42_export_filter</span>(<span class="m">3</span>,<span class="m">25</span>,<span class="m">34</span>);
+    };</code></pre>
+Please remember to include /etc/bird/community_filters.conf and to define your GEO regions in your bird.conf 
 <pre class="highlight"><code><span class="c"># local configuration
 ######################
-</span><span class="n">include</span> <span class="s2">"bird/local4.conf"</span>;
-
-<span class="c"># filter helpers
-#################
+# In the variable header or anywhere before the include for the community filters add
+</span><span class="n">define</span> <span class="n">DN_REGION_GEO</span> = <span class="n">xx</span>;
+<span class="n">define</span> <span class="n">DN_REGION_COUNTRY</span> = <span class="n">xxxx</span>;
+<span class="c">#If you wish to add the BGP Geographical Communities.
 </span>
-<span class="n">include</span> <span class="s2">"/etc/bird/filter4.conf"</span>;
-<span class="n">include</span> <span class="s2">"/etc/bird/community_filters.conf"</span>;</code></pre>
+<span class="c">#before you import your peers add  the community filters eg
+#include "/etc/bird/community_filters.conf";
+#include "/etc/bird/peers/*";
+</span><span class="n">include</span> <span class="s2">"/etc/bird/community_filters.conf"</span>;</code></pre>
 
 <hr />
 

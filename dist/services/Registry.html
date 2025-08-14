@@ -178,40 +178,7 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="registry-cleanup-process" href="#registry-cleanup-process"></a>Registry cleanup process</h1>
-<p>This process is used to remove inactive objects based on MRT data and the git commit history.
-The process is to be executed on a regular basis (yearly).</p>
-
-<p>A maintainer is classified as "inactive" if the following conditions have been fulfilled:</p>
-<ol>
-  <li>All of the ASNs the maintainer has been directly or indirectly associated with (in any way and by following all references, whether through mnt-by, admin-c, tech-c, etc. or through an ORG) have not been observed originating a prefix in the global routing table at any point within the last three years. (Determined by analyzing the daily MRT RIB dumps provided by the DN42 Global Route collector.)</li>
-  <li>The maintainer has not edited any of the ASNs they are associated with in the registry within the last three years. (Determined by analyzing the git commit history.)</li>
-</ol>
-
-<p>Maintainers that are not affiliated with an ASN (whether directly or indirectly or through other maintainers) are also considered inactive regardless of whether they fulfill the above conditions.</p>
-
-<h2><a class="anchor" id="process" href="#process"></a>Process</h2>
-
-<p>Using <strong>registry_wizard (written for v0.3.11)</strong>:</p>
-
-<ol>
-  <li>Generate a list of active ASNs based on MRT data:
-<code>./registry_wizard /path/to/registry mrt_activity parse /path/to/mrt/files --cutoff-time &lt;value&gt; --list &gt; active_list.txt</code>
-</li>
-  <li>Based on the list of active ASNs and through referencing the registry git commit log, generate a list of inactive ASNs:
-<code>./registry_wizard /path/to/registry mrt_activity active_asn_to_inactive --list_file /path/to/active_list.txt --cutoff-time &lt;value&gt; &gt; inactive_list.txt</code>
-</li>
-  <li>Generate the removal commands to remove inactive objects based on the previous list:
-<code>./registry_wizard /path/to/registry remove aut-num --list_file /path/to/list.txt --enable_subgraph_check</code>
-</li>
-</ol>
-
-<p>ASNs can be excluded from removal by removing them from the list produced in the second step.</p>
-
-<p>Manual review of a few resources (primarily those affiliated with "DN42-MNT") will be required as they cannot be removed in an automated way (for example, resources associated with an inactive maintainer that used to host the DN42 anycast DNS will be affiliated with DN42-MNT and will require manual removal).
-To identify the exact conflicts leading to the manual review requirement the following command can be used:
-<code>./registry_wizard /path/to/registry graph path mntner YAMAKAYA-MNT mntner DN42-MNT</code> (To list conflicts between YAMAKAYA-MNT and DN42-MNT)</p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
