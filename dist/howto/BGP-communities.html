@@ -300,7 +300,7 @@ just above <code>update_flags</code> in <code>dn42_export_filter</code> function
 </ul>
 
 <h2><a class="anchor" id="example-configuration-for-bird2" href="#example-configuration-for-bird2"></a>Example configuration for BIRD2</h2>
-<pre class="highlight"><code><span class="n">function</span> <span class="n">update_latency</span>(<span class="n">int</span> <span class="n">link_latency</span>) {
+<pre class="highlight"><code><span class="n">function</span> <span class="n">update_latency</span>(<span class="n">int</span> <span class="n">link_latency</span>) -&gt; <span class="n">int</span> {
   <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">link_latency</span>));
        <span class="n">if</span> (<span class="m">64511</span>, <span class="m">9</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">1</span>..<span class="m">8</span>)]); <span class="n">return</span> <span class="m">9</span>; }
   <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">8</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">1</span>..<span class="m">7</span>)]); <span class="n">return</span> <span class="m">8</span>; }
@@ -314,7 +314,7 @@ just above <code>update_flags</code> in <code>dn42_export_filter</code> function
 }
 
 
-<span class="n">function</span> <span class="n">update_bandwidth</span>(<span class="n">int</span> <span class="n">link_bandwidth</span>) {
+<span class="n">function</span> <span class="n">update_bandwidth</span>(<span class="n">int</span> <span class="n">link_bandwidth</span>) -&gt; <span class="n">int</span> {
   <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">link_bandwidth</span>));
        <span class="n">if</span> (<span class="m">64511</span>, <span class="m">21</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">22</span>..<span class="m">29</span>)]); <span class="n">return</span> <span class="m">21</span>; }
   <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">22</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">23</span>..<span class="m">29</span>)]); <span class="n">return</span> <span class="m">22</span>; }
@@ -327,7 +327,7 @@ just above <code>update_flags</code> in <code>dn42_export_filter</code> function
   <span class="n">else</span> <span class="n">return</span> <span class="m">29</span>;
 }
 
-<span class="n">function</span> <span class="n">update_crypto</span>(<span class="n">int</span> <span class="n">link_crypto</span>) {
+<span class="n">function</span> <span class="n">update_crypto</span>(<span class="n">int</span> <span class="n">link_crypto</span>) -&gt; <span class="n">int</span> {
   <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">link_crypto</span>));
        <span class="n">if</span> (<span class="m">64511</span>, <span class="m">31</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">32</span>..<span class="m">34</span>)]); <span class="n">return</span> <span class="m">31</span>; }
   <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">32</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">33</span>..<span class="m">34</span>)]); <span class="n">return</span> <span class="m">32</span>; }
@@ -335,13 +335,13 @@ just above <code>update_flags</code> in <code>dn42_export_filter</code> function
   <span class="n">else</span> <span class="n">return</span> <span class="m">34</span>;
 }
 <span class="c">#Remove the following function if you do not want to advertize your region in the BGP community.
-</span><span class="n">function</span> <span class="n">update_geo_flags</span>() {
+</span><span class="n">function</span> <span class="n">update_geo_flags</span>() -&gt; <span class="n">bool</span> {
     <span class="n">if</span> <span class="n">is_self_net</span>() || <span class="n">is_self_net_v6</span>() <span class="n">then</span> {
         <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">DN_REGION_GEO</span>));
 	    <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">DN_REGION_COUNTRY</span>));
     }
 }
-<span class="n">function</span> <span class="n">update_flags</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>)
+<span class="n">function</span> <span class="n">update_flags</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>) -&gt; <span class="n">bool</span>
 <span class="n">int</span> <span class="n">dn42_latency</span>;
 <span class="n">int</span> <span class="n">dn42_bandwidth</span>;
 <span class="n">int</span> <span class="n">dn42_crypto</span>;
