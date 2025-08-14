@@ -172,13 +172,84 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p><a href="../../index.html" rel="nofollow"><img src="../../dn42.png" alt="dn42" /></a></p>
+
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="introduction" href="#introduction"></a>Introduction</h1>
+<p>Here be dragons. This section should cover the basics:</p>
+<ul>
+  <li>IKEv1</li>
+  <li>Three stages: Key distribution, IPSec setup, GRE setup</li>
+  <li>In theory, BGPd can set up IPSec flows itself, but we're not using that here because that prevents you from using another BGP daemon such as bird</li>
+  <li>Debugging</li>
+</ul>
+
+<h1><a class="anchor" id="key-generation-and-distribution" href="#key-generation-and-distribution"></a>Key generation and distribution</h1>
+<h2><a class="anchor" id="using-pre-generated-keys" href="#using-pre-generated-keys"></a>Using pre-generated keys</h2>
+<p>OpenBSD generates keys suitables for IPSec usage during the installation. The public key can be found in <code>/etc/isakmpd/local.pub</code></p>
+
+<h2><a class="anchor" id="generating-your-own-keys" href="#generating-your-own-keys"></a>Generating your own keys</h2>
+<p>If you don't want to use a pre-generated key, refer to <a href="http://man.openbsd.org/isakmpd.8#X.509_AUTHENTICATION">isakmpd(8)</a>.</p>
+
+<h2><a class="anchor" id="distributing-keys" href="#distributing-keys"></a>Distributing keys</h2>
+<p>Send your public key to your peer, preferrably digitally signed. A signature can be created with <code>gpg -sb -a local.pub</code> and checked with <code>gpg --verify local.pub.asc</code>. Since the key is not private, it can be transmitted in the open and on a public forum, such as a Pastebin service.</p>
+
+<p>Once your peer sent you their public key, it under <code>/etc/isakmpd/pubkeys/fqdn</code>, <code>/etc/isakmpd/pubkeys/ipv4</code> or <code>/etc/isakmpd/ipv6</code>, depending on the ID type the peer is using. The key file should be named after the peers ID. For example, if your peer is <code>1.3.3.7</code>, you place their public key under <code>/etc/isakmpd/pubkeys/ipv4/1.3.3.7</code>.</p>
+
+<p>If your peers public key is not in PEM format, you can use <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl">pubkey-converter</a> to convert between key formats.</p>
+
+<h1><a class="anchor" id="ipsec-setup" href="#ipsec-setup"></a>IPSec Setup</h1>
+<p>Change the value of the <code>isakmpd_flags</code> variable in <a href="http://man.openbsd.org/rc.conf.local.8"><code>/etc/rc.conf.local</code></a> to <code>"-K"</code>, or add the <code>"-K"</code> flag if you already have flags in there.</p>
+
+<p>Next, add the right flow parameters to <a href="http://man.openbsd.org/ipsec.conf.5"><code>/etc/ipsec.conf</code></a>. We are using the following parameters in this example:</p>
+
+<ul>
+  <li>Encryption: AES-128</li>
+  <li>Authentication hash: HMAC-SHA1</li>
+  <li>DH Group: <code>modp1536</code>
+</li>
+  <li>Phase 1 lifetime: 28800 seconds</li>
+  <li>Phase 2 lifetime: 3600 seconds</li>
+  <li>Peer address: 1.3.3.7</li>
+  <li>Local address: 3.4.5.6</li>
+</ul>
+
+<p>The configuration file should look like this:</p>
+
+<pre class="highlight"><code><span class="n">mymachine</span> = <span class="s2">"3.4.5.6"</span>
+<span class="n">mypeer</span>    = <span class="s2">"1.3.3.7"</span>
+<span class="n">ike</span> <span class="n">esp</span> <span class="n">transport</span> <span class="n">proto</span> <span class="n">gre</span> <span class="n">from</span> $<span class="n">mymachine</span> <span class="n">to</span> $<span class="n">mypeer</span> \
+  <span class="n">main</span> <span class="n">auth</span> <span class="n">hmac</span>-<span class="n">sha1</span> <span class="n">enc</span> <span class="n">aes</span>-<span class="m">128</span> <span class="n">group</span> <span class="n">modp1536</span> <span class="n">lifetime</span> <span class="m">28800</span> \
+  <span class="n">quick</span> <span class="n">auth</span> <span class="n">hmac</span>-<span class="n">sha1</span> <span class="n">enc</span> <span class="n">aes</span>-<span class="m">128</span> <span class="n">group</span> <span class="n">modp1536</span> <span class="n">lifetime</span> <span class="m">3600</span></code></pre>
+
+<p>Load the configuration file into isakmpd: <code>ipsecctl -f /etc/ipsec.conf</code>. Once the connection is established, the IPSec flows can be listed with <code>ipsecctl -sa</code>:</p>
+
+<pre class="highlight"><code># ipsecctl -sa
+FLOWS:
+flow esp in proto gre from 1.3.3.7 to 3.4.5.6 peer 1.3.3.7 srcid 3.4.5.6/32 dstid 1.3.3.7/32 type use
+flow esp out proto gre from 3.4.5.6 to 1.3.3.7 peer 1.3.3.7 srcid 3.4.5.6/32 dstid 1.3.3.7/32 type require
+
+SAD:
+esp transport from 1.3.3.7 to 3.4.5.6 spi 0xdeadbeef auth hmac-sha1 enc aes
+esp transport from 3.4.5.6 to 1.3.3.7 spi 0xf00df00d auth hmac-sha1 enc aes</code></pre>
+
+<h1><a class="anchor" id="gre-setup" href="#gre-setup"></a>GRE Setup</h1>
+<p>Next, we will set up the GRE device. The <a href="http://man.openbsd.org/gre.4">gre(4)</a> device encapsulates IPv4 and IPv6 traffic, which allows you to speak both address families over one tunnel if you only have native connectivity for one address family. The addresses configured onto the GRE device should come from a private address range that is not used anywhere in DN42, or a registered transfer net. For IPv6, you should use either ULAs or Link-Local addresses. In this example, we assume you are using 10.20.30.0/31 as the IPv4 transfer "net" (it has only two addresses, so calling it a network is a bit of an overstatement) and Link-Local addresses for IPv6.</p>
+
+<pre class="highlight"><code><span class="c"># ifconfig gre0 tunnel 3.4.5.6 1.3.3.7</span>
+<span class="c"># ifconfig gre0 inet 10.20.30.0 10.20.30.1 # reverse these on your peer's side</span>
+<span class="c"># ifconfig gre0 inet6 eui64</span></code></pre>
+
+<p>These settings should also be added to <a href="http://man.openbsd.org/hostname.if.5"><code>/etc/hostname.gre0</code></a>, .i.e.</p>
+
+<pre class="highlight"><code><span class="n">tunnel</span> <span class="m">3</span>.<span class="m">4</span>.<span class="m">5</span>.<span class="m">6</span> <span class="m">1</span>.<span class="m">3</span>.<span class="m">3</span>.<span class="m">7</span>
+<span class="n">inet</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">0</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">1</span>
+<span class="n">inet6</span> <span class="n">eui64</span></code></pre>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">

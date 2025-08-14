@@ -294,13 +294,12 @@ etc. Please follow the ISO-3166-1 Numeric standard
 just above <code>update_flags</code> in <code>dn42_export_filter</code> function</li>
   <li>Unlike the other community values, <strong>the DN42_REGION community should only be set on routes originating from your network!</strong> (This is what the <code>source = RTS_STATIC</code> check does).
     <ul>
-      <li>Otherwise, if you export routes across multiple regions within your network, you may be sending incorrect origin information to other peers.</li>
-    </ul>
-  </li>
-</ul>
-
-<h2><a class="anchor" id="example-configuration-for-bird2" href="#example-configuration-for-bird2"></a>Example configuration for BIRD2</h2>
-<pre class="highlight"><code><span class="n">function</span> <span class="n">update_latency</span>(<span class="n">int</span> <span class="n">link_latency</span>) -&gt; <span class="n">int</span> {
+      <li>Otherwise, if you export routes across multiple regions within your network, you may be sending incorrect origin information to other peers.
+This is not applicable  for the below example configurations
+that have it included, since networks usually use the region to do 
+routing policies like cold_potato.
+        <h2><a class="anchor" id="example-configuration-for-bird2" href="#example-configuration-for-bird2"></a>Example configuration for BIRD2</h2>
+        <pre class="highlight"><code><span class="n">function</span> <span class="n">update_latency</span>(<span class="n">int</span> <span class="n">link_latency</span>) -&gt; <span class="n">int</span> {
   <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">link_latency</span>));
        <span class="n">if</span> (<span class="m">64511</span>, <span class="m">9</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">1</span>..<span class="m">8</span>)]); <span class="n">return</span> <span class="m">9</span>; }
   <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">8</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">1</span>..<span class="m">7</span>)]); <span class="n">return</span> <span class="m">8</span>; }
@@ -432,6 +431,10 @@ Please remember to include /etc/bird/community_filters.conf and to define your G
 #include "/etc/bird/community_filters.conf";
 #include "/etc/bird/peers/*";
 </span><span class="n">include</span> <span class="s2">"/etc/bird/community_filters.conf"</span>;</code></pre>
+      </li>
+    </ul>
+  </li>
+</ul>
 
 <hr />
 
