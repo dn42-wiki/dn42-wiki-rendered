@@ -365,11 +365,12 @@ Additionally Bird2 before 2.0.8 cannot automatically update filtered bgp routes 
 
 <pre class="highlight"><code><span class="c"># mkdir -p /etc/bird/peers</span></code></pre>
 
-<p>Then for each peer, create a configuration file similar to this one:</p>
+<p>Each peer can use different methods to peer. Most usually this is either two seperate sessions,
+one for ipv4 and one for ipv6, or  Multi protocol BGP with Extended Next Hop, as detailed below.</p>
 
-<p><code>/etc/bird/peers/&lt;NEIGHBOR_NAME&gt;.conf</code>:</p>
-
-<pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt; <span class="n">from</span> <span class="n">dnpeers</span> {
+<p><code>/etc/bird/peers/&lt;NEIGHBOR&gt;.conf</code>:
+For the case with seperate BGP sessions
+</p><pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt; <span class="n">from</span> <span class="n">dnpeers</span> {
         <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IP</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
 }
 
@@ -379,6 +380,17 @@ Additionally Bird2 before 2.0.8 cannot automatically update filtered bgp routes 
 </span>        <span class="c"># neighbor &lt;NEIGHBOR_IPv6&gt; as &lt;NEIGHBOR_ASN&gt;;
 </span>        <span class="c"># interface &lt;NEIGHBOR_INTERFACE&gt;;****
 </span>}</code></pre>
+And for the case of MP-BGP over IPV6 with ENH
+<pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt; <span class="n">from</span> <span class="n">dnpeers</span> {
+    <span class="n">enable</span> <span class="n">extended</span> <span class="n">messages</span> <span class="n">on</span>;
+    <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IPv6</span>&gt;%&lt;<span class="n">NEIGHBOR_INTERFACE</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
+        <span class="c"># Or:
+</span>        <span class="c"># neighbor &lt;NEIGHBOR_IPv6&gt; as &lt;NEIGHBOR_ASN&gt;;
+</span>        <span class="c"># interface &lt;NEIGHBOR_INTERFACE&gt;;****
+</span>     <span class="n">ipv4</span> {
+        <span class="n">extended</span> <span class="n">next</span> <span class="n">hop</span> <span class="n">on</span>;
+    };
+};</code></pre>
 
 <p>Due to the special link local addresses of IPv6, an interface has to be specified using the <code>%&lt;if&gt;</code> or the <code>interface &lt;if&gt;;</code> syntax if a link local address is used (Which is recommended)</p>
 
@@ -638,6 +650,29 @@ if </span>birdc configure <span class="p">;</span> <span class="k">then
   <span class="n">refresh</span> <span class="n">keep</span> <span class="m">900</span>;
   <span class="n">expire</span> <span class="n">keep</span> <span class="m">172800</span>;
 }</code></pre>
+<h3><a class="anchor" id="use-bfd-in-bird2" href="#use-bfd-in-bird2"></a>Use BFD in bird2</h3>
+<p>BFD is an additional protocol with extremely low overhead to detect failures in the switching plane between peers,
+it is used widely by cleanet peerings and some networks already have enabled it globally.
+To do a basic configuration you need to add 1 line to your bird.conf and enable it per peer or globally by defining it in the
+template. 
+It is currently recommended that you only enable it for each peer that supports it and has it enabled.
+Add this above the template for dnpeers.
+</p><pre class="highlight"><code><span class="n">protocol</span> <span class="n">bfd</span> {};</code></pre>
+And below is an example for a MP-BGP over IPV6 with ENH peering 
+<code>/etc/bird/peers/&lt;NEIGHBOR&gt;.conf</code>
+Note bfd graceful; only activates when both sides have bfd configured and does not cause issues in peerings without BFD
+<pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt; <span class="n">from</span> <span class="n">dnpeers</span> {
+    <span class="n">enable</span> <span class="n">extended</span> <span class="n">messages</span> <span class="n">on</span>;
+    <span class="n">bfd</span> <span class="n">graceful</span>;
+    <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IPv6</span>&gt;%&lt;<span class="n">NEIGHBOR_INTERFACE</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
+        <span class="c"># Or:
+</span>        <span class="c"># neighbor &lt;NEIGHBOR_IPv6&gt; as &lt;NEIGHBOR_ASN&gt;;
+</span>        <span class="c"># interface &lt;NEIGHBOR_INTERFACE&gt;;****
+</span>     <span class="n">ipv4</span> {
+        <span class="n">extended</span> <span class="n">next</span> <span class="n">hop</span> <span class="n">on</span>;
+    };
+};</code></pre>
+Additional documentation about the BFD protocol is available at <a href="https://bird.network.cz/?get_doc&amp;v=20&amp;f=bird-6.html#ss6.3">the BIRD2 documentation</a> .
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
