@@ -178,110 +178,7 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="dn42-rpki" href="#dn42-rpki"></a>DN42 RPKI</h1>
-<p>This page covers guidance and examples on using RPKI within DN42.</p>
-
-<h2><a class="anchor" id="quick-start" href="#quick-start"></a>Quick Start</h2>
-
-<p>It is recommended to run your own RPKI validator, as this provides you with the most security and control over your routing decisions. However, to get started, or if running your own validator isn’t desirable, a public RPKI RTR server is available. The service supports full RPKI validation for all relevant DN42 and affiliated networks’ prefixes.</p>
-
-<h3><a class="anchor" id="using-public-rpki-services" href="#using-public-rpki-services"></a>Using Public RPKI Services</h3>
-
-<p>DN42’s RPKI RTR service endpoints are hosted by multiple operators. By configuring multiple RTR servers in your BGP daemon, you gain additional resiliency and improved validation coverage.</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Server</th>
-      <th>Port</th>
-      <th><strong>IPv4/IPv6</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>rpki.akae.re</td>
-      <td>8082</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <td>rpki.dn42.launchpadx.top</td>
-      <td>8082</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <td>rpki.dn42.milu.moe</td>
-      <td>8082</td>
-      <td>both</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>To configure the service, connect your BGP software’s RPKI client to one or more of these RTR servers.</p>
-
-<h4><a class="anchor" id="example-configuration-bird-2" href="#example-configuration-bird-2"></a>Example Configuration (Bird 2)</h4>
-
-<pre class="highlight"><code><span class="n">protocol</span> <span class="n">rpki</span> <span class="n">roa_dn42_1</span> {
-        <span class="n">roa4</span> { <span class="n">table</span> <span class="n">dn42_roa</span>; };
-        <span class="n">roa6</span> { <span class="n">table</span> <span class="n">dn42_roa_v6</span>; };
-        <span class="n">remote</span> <span class="s2">"rpki1.example.com"</span>;
-        <span class="n">port</span> <span class="m">8082</span>;
-        <span class="n">refresh</span> <span class="m">600</span>;
-        <span class="n">retry</span> <span class="m">300</span>;
-        <span class="n">expire</span> <span class="m">7200</span>;
-}
-
-<span class="n">protocol</span> <span class="n">rpki</span> <span class="n">roa_dn42_2</span> {
-        <span class="n">roa4</span> { <span class="n">table</span> <span class="n">dn42_roa</span>; };
-        <span class="n">roa6</span> { <span class="n">table</span> <span class="n">dn42_roa_v6</span>; };
-        <span class="n">remote</span> <span class="s2">"rpki2.example.com"</span>;
-        <span class="n">port</span> <span class="m">8082</span>;
-        <span class="n">refresh</span> <span class="m">600</span>;
-        <span class="n">retry</span> <span class="m">300</span>;
-        <span class="n">expire</span> <span class="m">7200</span>;
-}</code></pre>
-
-<h3><a class="anchor" id="running-your-own-rpki-server" href="#running-your-own-rpki-server"></a>Running Your Own RPKI Server</h3>
-
-<h4><a class="anchor" id="with-docker" href="#with-docker"></a>With Docker</h4>
-
-<pre class="highlight"><code>docker run <span class="nt">--name</span> dn42rpki <span class="nt">-p</span> 8082:8282 <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">-d</span> rpki/stayrtr <span class="nt">-verify</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-checktime</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-cache</span><span class="o">=</span>https://dn42.burble.com/roa/dn42_roa_46.json</code></pre>
-
-<h4><a class="anchor" id="with-docker-compose" href="#with-docker-compose"></a>With Docker Compose</h4>
-
-<pre class="highlight"><code><span class="n">services</span>:
-  <span class="n">stayrtr</span>:
-    <span class="n">image</span>: <span class="n">rpki</span>/<span class="n">stayrtr</span>:<span class="n">latest</span>
-    <span class="n">ports</span>:
-      - <span class="s2">"8082:8282"</span>
-    <span class="n">command</span>: &gt;
-      -<span class="n">cache</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_46</span>.<span class="n">json</span></code></pre>
-
-<h3><a class="anchor" id="using-kioubit-s-dn42-registry-wizard" href="#using-kioubit-s-dn42-registry-wizard"></a>Using Kioubit's DN42 Registry Wizard</h3>
-
-<p><a href="https://github.com/Kioubit/dn42_registry_wizard">DN42 Registry Wizard</a> is a comprehensive tool for DN42 registry interactions. <strong>Unlike other solutions, it can parse the registry and host an RTR server all-in-one</strong> without requiring separate components.</p>
-
-<h4><a class="anchor" id="all-in-one-rtr-server" href="#all-in-one-rtr-server"></a>All-in-One RTR Server</h4>
-
-<pre class="highlight"><code><span class="c"># Clone the DN42 registry</span>
-git clone https://git.dn42.dev/dn42/registry.git
-
-<span class="c"># Start RTR server directly from registry</span>
-./registry_wizard &lt;path to registry&gt; rtr 
-
-<span class="c"># Setup a cronjob to continously update the registry and notify registry_wizard</span>
-git fetch <span class="nt">--all</span>
-git reset <span class="nt">--hard</span> origin/master
-<span class="nb">kill</span> <span class="nt">-SIGUSR1</span> <span class="s2">"</span><span class="si">$(</span>pidof <span class="s1">'registry_wizard'</span><span class="si">)</span><span class="s2">"</span></code></pre>
-
-<pre class="highlight"><code>Usage: registry_wizard &lt;registry_root&gt; rtr [OPTIONS]
-
-Options:
-  -p, --port &lt;port&gt;        Port to listen on [default: 9323]
-      --refresh &lt;refresh&gt;  RTR refresh timing [default: 3600]
-      --expire &lt;expire&gt;    RTR expire timing [default: 7200]
-      --retry &lt;retry&gt;      RTR retry timing [default: 600]
-  -h, --help               Print help</code></pre>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -369,7 +266,17 @@ Options:
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>
+</td>
+    </tr>
+  </tbody>
+</table>
+
 	    </div>
 	  </div>
 
