@@ -177,7 +177,66 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="what-s-freephone" href="#what-s-freephone"></a>What's FreePhone?</h1>
+<p>Where's the point in using a phone flat just for a single person? !FreePhone is a project aimed to develop a VPN wide SIP phone service. Calling german landline is possible at the moment, as well as local participants (eg. maxx).</p>
+
+<h2><a class="anchor" id="how-does-this-work" href="#how-does-this-work"></a>How does this work?</h2>
+<h3><a class="anchor" id="public-proxy" href="#public-proxy"></a>Public proxy</h3>
+<p>Set up your softphone or hardware implementation to use:</p>
+<ul>
+  <li>SIP-Proxy/Proxy domain: maxx.spaceboyz.net (SRV-Record)</li>
+  <li>Username/Account/Login: vpn</li>
+  <li>Password: vpn  <br />
+The proxy is strictly outbound, registration is impossible and unintended.</li>
+</ul>
+
+<h2><a class="anchor" id="special-needs" href="#special-needs"></a>Special needs</h2>
+<p>Just contact me if you like to use your SIP hardware (eg. Fritz!Box FON). You'll get a special account allowing registrations plus a local extension.</p>
+
+<h2><a class="anchor" id="restrictions" href="#restrictions"></a>Restrictions</h2>
+<ul>
+  <li>Any call under the terms of the flatrate is allowed, so to speak: no mobile phones or pr0n calls</li>
+  <li>One call at a time for FreePhone users (stupid bandwidth restrictions :/).</li>
+  <li>Internal calls are more or less unrestricted.</li>
+  <li>alaw/ulaw are disallowed for bandwidth reasons</li>
+</ul>
+
+<h2><a class="anchor" id="additional-extensions" href="#additional-extensions"></a>Additional extensions</h2>
+<p>| <strong>Extension</strong> | <strong>Target</strong> |
+|—|—|
+| maxx | myself, almost anywhere wireless lan is availiable |
+| grim | sometimes, sometimes not |
+| equinox | i think nokia prevents but you may try |
+| helios | did not connect for some time now |</p>
+
+<p>If you like listening to german news, dial 787326353 (Vanity: STREAMDLF). Just contact me in case you want more.</p>
+
+<h2><a class="anchor" id="configuration-examples" href="#configuration-examples"></a>Configuration examples</h2>
+<p>Just look at the german version, you'll get the idea.</p>
+
+<h2><a class="anchor" id="what-s-next" href="#what-s-next"></a>What's next?</h2>
+<h3><a class="anchor" id="real-dn42-phone-system" href="#real-dn42-phone-system"></a>Real dn42 phone system</h3>
+<p>If i'm bored some day i might implement the following:</p>
+<ul>
+  <li>SIP extensions for every participant</li>
+  <li>Voicemail</li>
+  <li>Funny games</li>
+  <li>FreePhone integration (maybe with redundancy)</li>
+  <li>…</li>
+</ul>
+
+<p>If someone is willing to experiment we could try allowing reinvites. This way all SIP endpoints inside the VPN could connect their media streams directly, thus saving bandwidth and raising call quality.</p>
+
+<h2><a class="anchor" id="latest-changes" href="#latest-changes"></a>Latest changes</h2>
+<ul>
+  <li>G.729 now is the preferred codec because of bandwith issues</li>
+  <li>My "Homezone" works perfectly, moving with me</li>
+  <li>Phone #: +493727/959023</li>
+  <li>Sipgate: 5884293</li>
+  <li>SIP: maxx(at)maxx.spaceboyz.net</li>
+  <li>Transcoding from/into G.729 works fine now, thanks to some precompiled versions for asterisk.</li>
+</ul>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
