@@ -241,7 +241,7 @@ service and configure the other service as the secondary or backup nameserver.</
 
 <p>There are multiple top level domains (TLDs) associated with DN42, its affiliated networks and for reverse DNS that must
 be configured in order to run your own resolver. The registry is the authoritative source of active TLDs, but see also
-this page <a href="dns/External-DNS.html">dns/External-DNS</a> in the wiki.</p>
+this page <a href="dns/External-DNS-2.html">dns/External-DNS</a> in the wiki.</p>
 
 <h3><a class="anchor" id="split-horizon-dns" href="#split-horizon-dns"></a>Split horizon DNS</h3>
 
@@ -251,7 +251,14 @@ to the anycast service. Example configurations for different recursor implementa
 <h3><a class="anchor" id="full-recursion" href="#full-recursion"></a>Full recursion</h3>
 
 <p>Authoritative DNS for DN42 is provided by the *.delegation-servers.dn42 servers, see the DNS architecture here 
-<a href="New-DNS.html">New DNS</a> Delegations servers have full support for DNSSEC. Example configuration unbound implementations are included in the <a href="dns/Configuration.html#resolver-setup">dns/Configuration</a> page.</p>
+<a href="New-DNS-2.html">New DNS</a> Delegations servers have full support for DNSSEC. Example configuration unbound implementations are included in the <a href="dns/Configuration.html#resolver-setup">dns/Configuration</a> page.</p>
+
+<h2><a class="anchor" id="additional-client-configuration" href="#additional-client-configuration"></a>Additional client configuration</h2>
+
+<ul>
+  <li>
+<strong>Firefox</strong>: Set <code>browser.fixup.domainsuffixwhitelist.dn42</code> to <code>true</code> in <code>about:config</code> to prevent Firefox from confusing dn42 domains with search queries.</li>
+</ul>
 
 <h2><a class="anchor" id="further-information" href="#further-information"></a>Further Information</h2>
 
@@ -259,13 +266,13 @@ to the anycast service. Example configurations for different recursor implementa
   <li>
 <a href="dns/Configuration.html">dns/Configuration</a> - Forwarder/Resolver configuration examples</li>
   <li>
-<a href="New-DNS.html">New DNS</a> - current architecture</li>
+<a href="New-DNS-2.html">New DNS</a> - current architecture</li>
   <li>
-<a href="dns/External-DNS.html">dns/External-DNS</a> - external DNS zones from interconnected networks</li>
+<a href="dns/External-DNS-2.html">dns/External-DNS</a> - external DNS zones from interconnected networks</li>
   <li>
-<a href="Old-Hierarchical-DNS.html">Old Hierarchical DNS</a> - deprecated</li>
+<a href="Old-Hierarchical-DNS-2.html">Old Hierarchical DNS</a> - deprecated</li>
   <li>
-<a href="Original-DNS-(deprecated).html">Original DNS (deprecated)</a> - deprecated</li>
+<a href="Original-DNS-(deprecated)-2.html">Original DNS (deprecated)</a> - deprecated</li>
 </ul>
 
 	      </div>
