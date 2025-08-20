@@ -22,7 +22,7 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'howto/IPsecWithPublicKeys/CiscoIOSExample.md';
+	  var pageFullPath = 'howto/IPsecWithPublicKeys/OpenBSDExample.md';
     var pageFormat   = 'markdown';
 
   </script>
@@ -44,7 +44,7 @@
     mermaid.initialize(mermaid_conf);
   </script>
   
-  <title>CiscoIOSExample</title>
+  <title>OpenBSDExample</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -68,12 +68,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>CiscoIOSExample</div>
+            <div>OpenBSDExample</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/CiscoIOSExample.md"
+              href="http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/OpenBSDExample.md"
               role="menuitem"
             >
               <span>History</span>
@@ -146,7 +146,7 @@
     <div class="BtnGroup d-flex">
         <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/CiscoIOSExample.md/';"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/OpenBSDExample.md/';"
           id="minibutton-history"
         >
           History
@@ -161,7 +161,7 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    CiscoIOSExample
+    OpenBSDExample
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
 <li class="breadcrumb-item"><a href="../../gollum/overview/howto/index.html">howto</a></li>
@@ -179,176 +179,76 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="ipsec-with-public-key-authentication-on-cisco-ios" href="#ipsec-with-public-key-authentication-on-cisco-ios"></a>IPsec with public key authentication on Cisco IOS</h1>
-<h2><a class="anchor" id="setup" href="#setup"></a>Setup</h2>
-<h3><a class="anchor" id="generate-an-rsa-keypair" href="#generate-an-rsa-keypair"></a>Generate an RSA keypair</h3>
-<p><em>Note: You may already have completed this step, since it's required to enable SSH.</em></p>
+	        <h1><a class="anchor" id="introduction" href="#introduction"></a>Introduction</h1>
+<p>Here be dragons. This section should cover the basics:</p>
+<ul>
+  <li>IKEv1</li>
+  <li>Three stages: Key distribution, IPSec setup, GRE setup</li>
+  <li>In theory, BGPd can set up IPSec flows itself, but we're not using that here because that prevents you from using another BGP daemon such as bird</li>
+  <li>Debugging</li>
+</ul>
 
-<ol>
-  <li>Configure a hostname and domain name.</li>
-</ol>
+<h1><a class="anchor" id="key-generation-and-distribution" href="#key-generation-and-distribution"></a>Key generation and distribution</h1>
+<h2><a class="anchor" id="using-pre-generated-keys" href="#using-pre-generated-keys"></a>Using pre-generated keys</h2>
+<p>OpenBSD generates keys suitables for IPSec usage during the installation. The public key can be found in <code>/etc/isakmpd/local.pub</code></p>
 
-<pre class="highlight"><code>Router#conf t
-Router(config)#hostname foo
-foo(config)#ip domain-name bar</code></pre>
+<h2><a class="anchor" id="generating-your-own-keys" href="#generating-your-own-keys"></a>Generating your own keys</h2>
+<p>If you don't want to use a pre-generated key, refer to <a href="http://man.openbsd.org/isakmpd.8#X.509_AUTHENTICATION">isakmpd(8)</a>.</p>
 
-<ol>
-  <li>Generate an RSA key. The maximum length was increased from 2048 to 4096 as of release 15.1(1)T</li>
-</ol>
+<h2><a class="anchor" id="distributing-keys" href="#distributing-keys"></a>Distributing keys</h2>
+<p>Send your public key to your peer, preferrably digitally signed. A signature can be created with <code>gpg -sb -a local.pub</code> and checked with <code>gpg --verify local.pub.asc</code>. Since the key is not private, it can be transmitted in the open and on a public forum, such as a Pastebin service.</p>
 
-<pre class="highlight"><code>foo(config)#crypto key generate rsa general-keys modulus 2048
-% The key modulus size is 2048 bits
-% Generating 2048 bit RSA keys, keys will be non-exportable...
-foo(config)#exit</code></pre>
+<p>Once your peer sent you their public key, it under <code>/etc/isakmpd/pubkeys/fqdn</code>, <code>/etc/isakmpd/pubkeys/ipv4</code> or <code>/etc/isakmpd/ipv6</code>, depending on the ID type the peer is using. The key file should be named after the peers ID. For example, if your peer is <code>1.3.3.7</code>, you place their public key under <code>/etc/isakmpd/pubkeys/ipv4/1.3.3.7</code>.</p>
 
-<h3><a class="anchor" id="exchange-public-keys-with-your-peer" href="#exchange-public-keys-with-your-peer"></a>Exchange public keys with your peer</h3>
-<ol>
-  <li>Display the public key. Send the key data portion to your peer.</li>
-</ol>
+<p>If your peers public key is not in PEM format, you can use <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl">pubkey-converter</a> to convert between key formats.</p>
 
-<pre class="highlight"><code>foo#show crypto key mypubkey rsa foo.bar
-% Key pair was generated at: 19:24:02 UTC Jul 19 2014
-Key name: foo.bar
-Storage Device: not specified
-Usage: General Purpose Key
-Key is not exportable.
-Key Data:
- 30820122 300D0609 2A864886 F70D0101 01050003 82010F00 3082010A 02820101
- 00ABF25E 090CBDFC 47B3763B 01E38993 584F1D47 49DEE0FC 6A766D95 F416C5A8
- 83E16EF2 19C00BC9 64B3E351 D6F43E57 461AC689 912C22FE C4BE10EE 05750F27
- FEBB9C8C 2DFC7DD7 C0D1E8B2 7F022F54 04101205 60E47D99 2307E625 404F1130
- CBD1759B BBDBBF89 0C0F6B09 52E50A81 BFCC6AA6 96AFF612 B700AEA5 0EDFCDDB
- D3C7E014 2A59CD82 29A403CA 01EE580A CC4A3A2C C36369FE D2FA0FEF 2DC32D50
- 1C55A296 3CBD6AAC 6AA66C73 FAB30A12 CFD1341D C261E013 8A7DA310 8D0E6C99
- C248D554 D0D68508 3EA53F0F 971DA7A6 203CA186 A79F9D93 0D2E54EF F7E311B2
- F7A8B486 D980661D DEB6C0B3 80A82583 4936F131 57C6D204 0AA5ED7F 7749F044
- 8F020301 0001</code></pre>
+<h1><a class="anchor" id="ipsec-setup" href="#ipsec-setup"></a>IPSec Setup</h1>
+<p>Change the value of the <code>isakmpd_flags</code> variable in <a href="http://man.openbsd.org/rc.conf.local.8"><code>/etc/rc.conf.local</code></a> to <code>"-K"</code>, or add the <code>"-K"</code> flag if you already have flags in there.</p>
 
-<ol>
-  <li>Convert your peer's public key to the hexadecimal DER format using the <a href="https://git.dn42.dev/ryan/pubkey-converter/raw/master/pubkey-converter.pl" title="Public key conversion script">pubkey-converter</a> script, if necessary.</li>
-</ol>
+<p>Next, add the right flow parameters to <a href="http://man.openbsd.org/ipsec.conf.5"><code>/etc/ipsec.conf</code></a>. We are using the following parameters in this example:</p>
 
-<h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
-<h3><a class="anchor" id="configure-the-phase-1-ike-parameters" href="#configure-the-phase-1-ike-parameters"></a>Configure the phase 1 IKE parameters</h3>
-<p>In this example, we'll use the following settings:</p>
+<ul>
+  <li>Encryption: AES-128</li>
+  <li>Authentication hash: HMAC-SHA1</li>
+  <li>DH Group: <code>modp1536</code>
+</li>
+  <li>Phase 1 lifetime: 28800 seconds</li>
+  <li>Phase 2 lifetime: 3600 seconds</li>
+  <li>Peer address: 1.3.3.7</li>
+  <li>Local address: 3.4.5.6</li>
+</ul>
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align:left;">Key</th>
-      <th style="text-align:left;">Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">Encryption</td>
-      <td style="text-align:left;">AES-128</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Hash</td>
-      <td style="text-align:left;">HMAC-SHA1</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">DH Group</td>
-      <td style="text-align:left;">5 (modp1536)</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Lifetime</td>
-      <td style="text-align:left;">28800 seconds</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Peer address</td>
-      <td style="text-align:left;">192.0.2.2</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Local address</td>
-      <td style="text-align:left;">192.0.2.1</td>
-    </tr>
-  </tbody>
-</table>
+<p>The configuration file should look like this:</p>
 
-<ol>
-  <li>Add your peer's public key</li>
-</ol>
+<pre class="highlight"><code><span class="n">mymachine</span> = <span class="s2">"3.4.5.6"</span>
+<span class="n">mypeer</span>    = <span class="s2">"1.3.3.7"</span>
+<span class="n">ike</span> <span class="n">esp</span> <span class="n">transport</span> <span class="n">proto</span> <span class="n">gre</span> <span class="n">from</span> $<span class="n">mymachine</span> <span class="n">to</span> $<span class="n">mypeer</span> \
+  <span class="n">main</span> <span class="n">auth</span> <span class="n">hmac</span>-<span class="n">sha1</span> <span class="n">enc</span> <span class="n">aes</span>-<span class="m">128</span> <span class="n">group</span> <span class="n">modp1536</span> <span class="n">lifetime</span> <span class="m">28800</span> \
+  <span class="n">quick</span> <span class="n">auth</span> <span class="n">hmac</span>-<span class="n">sha1</span> <span class="n">enc</span> <span class="n">aes</span>-<span class="m">128</span> <span class="n">group</span> <span class="n">modp1536</span> <span class="n">lifetime</span> <span class="m">3600</span></code></pre>
 
-<pre class="highlight"><code>foo#conf t
-Enter configuration commands, one per line.  End with CNTL/Z.
-foo(config)#crypto key pubkey-chain rsa
-foo(config-pubkey-chain)#addressed-key 192.0.2.2
-foo(config-pubkey-key)#key-string
-Enter a public key as a hexidecimal number ....
+<p>Load the configuration file into isakmpd: <code>ipsecctl -f /etc/ipsec.conf</code>. Once the connection is established, the IPSec flows can be listed with <code>ipsecctl -sa</code>:</p>
 
-foo(config-pubkey)#30820122 300D0609 2A864886 F70D0101 01050003 82010F00 3082010A 02820101
-foo(config-pubkey)#00F3E0AA 8924E512 C08BA87C 73820A15 E5180DDC EF827221 2B3864BF B2D2A5E0
-foo(config-pubkey)#33D04C1D 43A0CAF8 617EEEBA 7DB5BD38 429660CC 3144618E 4F386201 52483DA7
-foo(config-pubkey)#FDDF7AAC DCA8C19D FF5B1956 14F63831 ACE70D0F 4C557CE7 220C7E8B 9A2C837F
-foo(config-pubkey)#065A2B41 23B68074 C57F6F78 2F222DA1 915A095C CED77FF3 F1DF849C 3FD086EA
-foo(config-pubkey)#0A74901D 99DA97D5 0CFB22E7 C6C827E6 E53BE215 8D4928D2 458B02E2 1600F1F1
-foo(config-pubkey)#F1128D63 3A55EC4B 54E6A8E1 0B197E1E 7DA31CC2 54C30A2D 03BE5B8A 16A5E324
-foo(config-pubkey)#F3B15B67 C3FB2831 7F31610A 3BD59E74 E749DC25 74424F3F 7EC305AD 0BFA5008
-foo(config-pubkey)#E36C6E00 854433B6 A0E8DBF1 7A4741DD A91A5320 1D5150FA 28F12273 56A3E9A2
-foo(config-pubkey)#D5020301 0001
-foo(config-pubkey)#quit
-foo(config-pubkey-key)#exit
-foo(config-pubkey-chain)#exit</code></pre>
+<pre class="highlight"><code># ipsecctl -sa
+FLOWS:
+flow esp in proto gre from 1.3.3.7 to 3.4.5.6 peer 1.3.3.7 srcid 3.4.5.6/32 dstid 1.3.3.7/32 type use
+flow esp out proto gre from 3.4.5.6 to 1.3.3.7 peer 1.3.3.7 srcid 3.4.5.6/32 dstid 1.3.3.7/32 type require
 
-<ol>
-  <li>Configure an ISAKMP policy</li>
-</ol>
+SAD:
+esp transport from 1.3.3.7 to 3.4.5.6 spi 0xdeadbeef auth hmac-sha1 enc aes
+esp transport from 3.4.5.6 to 1.3.3.7 spi 0xf00df00d auth hmac-sha1 enc aes</code></pre>
 
-<pre class="highlight"><code>foo(config)#crypto isakmp policy 10
-foo(config-isakmp)#encryption aes
-foo(config-isakmp)#hash sha
-foo(config-isakmp)#group 5
-foo(config-isakmp)#lifetime 28800
-foo(config-isakmp)#authentication rsa-sig
-foo(config-isakmp)#exit</code></pre>
+<h1><a class="anchor" id="gre-setup" href="#gre-setup"></a>GRE Setup</h1>
+<p>Next, we will set up the GRE device. The <a href="http://man.openbsd.org/gre.4">gre(4)</a> device encapsulates IPv4 and IPv6 traffic, which allows you to speak both address families over one tunnel if you only have native connectivity for one address family. The addresses configured onto the GRE device should come from a private address range that is not used anywhere in DN42, or a registered transfer net. For IPv6, you should use either ULAs or Link-Local addresses. In this example, we assume you are using 10.20.30.0/31 as the IPv4 transfer "net" (it has only two addresses, so calling it a network is a bit of an overstatement) and Link-Local addresses for IPv6.</p>
 
-<ol>
-  <li>All done! Configure the phase 2 parameters as you otherwise would.</li>
-</ol>
+<pre class="highlight"><code><span class="c"># ifconfig gre0 tunnel 3.4.5.6 1.3.3.7</span>
+<span class="c"># ifconfig gre0 inet 10.20.30.0 10.20.30.1 # reverse these on your peer's side</span>
+<span class="c"># ifconfig gre0 inet6 eui64</span></code></pre>
 
-<h2><a class="anchor" id="full-gre-ipsec-example" href="#full-gre-ipsec-example"></a>Full GRE/IPsec example</h2>
+<p>These settings should also be added to <a href="http://man.openbsd.org/hostname.if.5"><code>/etc/hostname.gre0</code></a>, .i.e.</p>
 
-<pre class="highlight"><code>crypto key pubkey-chain rsa
- addressed-key 192.0.2.2
-  address 192.0.2.2
-   key-string
-    30820122 300D0609 2A864886 F70D0101 01050003 82010F00 3082010A 02820101
-    00F3E0AA 8924E512 C08BA87C 73820A15 E5180DDC EF827221 2B3864BF B2D2A5E0
-    33D04C1D 43A0CAF8 617EEEBA 7DB5BD38 429660CC 3144618E 4F386201 52483DA7
-    FDDF7AAC DCA8C19D FF5B1956 14F63831 ACE70D0F 4C557CE7 220C7E8B 9A2C837F
-    065A2B41 23B68074 C57F6F78 2F222DA1 915A095C CED77FF3 F1DF849C 3FD086EA
-    0A74901D 99DA97D5 0CFB22E7 C6C827E6 E53BE215 8D4928D2 458B02E2 1600F1F1
-    F1128D63 3A55EC4B 54E6A8E1 0B197E1E 7DA31CC2 54C30A2D 03BE5B8A 16A5E324
-    F3B15B67 C3FB2831 7F31610A 3BD59E74 E749DC25 74424F3F 7EC305AD 0BFA5008
-    E36C6E00 854433B6 A0E8DBF1 7A4741DD A91A5320 1D5150FA 28F12273 56A3E9A2
-    D5020301 0001
-   quit
-  !
-  crypto isakmp policy 10
-   encr aes
-   group 5
-   lifetime 28800
-  !
-  crypto ipsec transform-set tset esp-aes esp-sha-hmac
-   mode transport
-  !
-  crypto ipsec profile FOO
-   set transform-set tset
-   set pfs group5
-  !
-  interface Tunnel0
-   ip address 10.1.2.0 255.255.255.254
-   ip mtu 1400
-   tunnel source 192.0.2.1
-   tunnel destination 192.0.2.2
-   tunnel protection ipsec profile FOO
-  !
-  interface FastEthernet0/0
-   description WAN
-   ip address 192.0.2.1 255.255.255.0
-   duplex full</code></pre>
+<pre class="highlight"><code><span class="n">tunnel</span> <span class="m">3</span>.<span class="m">4</span>.<span class="m">5</span>.<span class="m">6</span> <span class="m">1</span>.<span class="m">3</span>.<span class="m">3</span>.<span class="m">7</span>
+<span class="n">inet</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">0</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">1</span>
+<span class="n">inet6</span> <span class="n">eui64</span></code></pre>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -456,13 +356,13 @@ foo(config-isakmp)#exit</code></pre>
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/IPsecWithPublicKeys/CiscoIOSExample.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/IPsecWithPublicKeys/OpenBSDExample.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/IPsecWithPublicKeys/CiscoIOSExample.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/IPsecWithPublicKeys/OpenBSDExample.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
