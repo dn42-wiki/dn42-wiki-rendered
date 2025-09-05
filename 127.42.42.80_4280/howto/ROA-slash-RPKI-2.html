@@ -22,7 +22,7 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'howto/lglass.md';
+	  var pageFullPath = 'howto/ROA-slash-RPKI.md';
     var pageFormat   = 'markdown';
 
   </script>
@@ -44,7 +44,7 @@
     mermaid.initialize(mermaid_conf);
   </script>
   
-  <title>lglass</title>
+  <title>ROA-slash-RPKI</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -68,12 +68,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>lglass</div>
+            <div>ROA-slash-RPKI</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="http://127.42.42.80:4280/gollum/history/howto/lglass.md"
+              href="http://127.42.42.80:4280/gollum/history/howto/ROA-slash-RPKI.md"
               role="menuitem"
             >
               <span>History</span>
@@ -146,7 +146,7 @@
     <div class="BtnGroup d-flex">
         <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/lglass.md/';"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/ROA-slash-RPKI.md/';"
           id="minibutton-history"
         >
           History
@@ -161,7 +161,7 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    lglass
+    ROA-slash-RPKI
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
 <li class="breadcrumb-item"><a href="../gollum/overview/howto/index.html">howto</a></li>
@@ -178,137 +178,126 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>lglass is a Python software package designed for Internet Registries like the DN42. You can generate zone files for DNS and rDNS IPv4/v6, and handle the registry. It is available on GitHub as free software:</p>
+	        <h2><a class="anchor" id="what-is-roa" href="#what-is-roa"></a>What is ROA?</h2>
 
-<pre class="highlight"><code><span class="nv">$ </span>git clone git://github.com/fritz0705/lglass.git</code></pre>
+<p>A Route Origination Authorization details which AS is authorised to advertise which originating IP prefixes. A ROA may also include prefix length information.</p>
 
-<h2><a class="anchor" id="links" href="#links"></a>Links</h2>
+<h2><a class="anchor" id="what-is-rpki" href="#what-is-rpki"></a>What is RPKI?</h2>
+
+<p>Resource Public Key Infrastructure is basically a framework for securing the routing infrastructure.<br />
+It provides a way to connect number resource information to a trust anchor.</p>
+
+<h2><a class="anchor" id="what-is-rtr" href="#what-is-rtr"></a>What is RTR?</h2>
+
+<p>The Resource Public Key Infrastructure (RPKI) to Router Protocol provides a way for a router to access RPKI validation information.<br />
+It provides the router with validity information regarding prefix origination:</p>
+
 <ul>
-  <li><a href="https://github.com/fritz0705/lglass">Fritz Gihub repo</a></li>
-  <li><a href="http://lglass.flonet.dn42/">lglass Manual</a></li>
+  <li>VALID<br />
+The route announcement is covered by a ROA and the announcing AS is validated</li>
+  <li>INVALID<br />
+The route announcement is covered by a ROA and the announcing AS is invalid (possibly hijacking)</li>
+  <li>UNKNOWN<br />
+There exists no ROA for the route announcement</li>
 </ul>
 
-<h2><a class="anchor" id="running-your-own-whois-daemon" href="#running-your-own-whois-daemon"></a>Running your own Whois daemon</h2>
+<h2><a class="anchor" id="how-can-i-implement-roa-on-dn42" href="#how-can-i-implement-roa-on-dn42"></a>How can I implement ROA on dn42?</h2>
 
-<p>lglass provides an event-based whois daemon with internal caching, which was written in Python. It is very simple to run an instance:</p>
+<p>On dn42 we generate ROA information from the dn42 registry.<br />
+ROA json/bird files can be generated using <a href="https://git.burble.com/burble.dn42/dn42regsrv">dn42regsrv</a>.
+It is also possible to integrate this with a RTR cache server such as <a href="https://github.com/cloudflare/gortr">gortr</a>.</p>
 
-<pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-whoisd</code></pre>
+<h3><a class="anchor" id="dn42regsrv" href="#dn42regsrv"></a>dn42regsrv</h3>
 
-<p>without the configfile:</p>
+<p>You can find a hosted example of dn42regsrv at <a href="https://explorer.burble.com/">https://explorer.burble.com/</a></p>
 
-<pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-regtool whoisd <span class="nt">-H</span> <span class="nv">$HOST</span> <span class="nt">-p</span> <span class="nv">$PORT</span></code></pre>
+<p>Instructions on how to host dn42regsrv yourself can be found on the git repo of <a href="https://git.burble.com/burble.dn42/dn42regsrv">dn42regsrv</a>.</p>
 
-<pre class="highlight"><code>usage: lglass-whoisd [-h] [-4] [-6] [--host HOST] [--port PORT]
-                     [--cidr] [--no-cidr] [--inverse] [--no-inverse]
+<p>You can also run dn42regsrv via docker (then available at 127.0.0.1:8042):
+</p><pre class="highlight"><code>git checkout https://git.burble.com/burble.dn42/dn42regsrv.git <span class="nb">.</span>
+<span class="nb">cd </span>contrib/docker
+./build.sh
+docker-compose up <span class="nt">-d</span></code></pre>
 
-optional arguments:
-    -h, --help            show this help message and exit
-    -4                    Listen on IPv4
-    -6                    Listen on IPv6
-    --host HOST, -H HOST  Listen on host
-    --port PORT, -p PORT  Listen on port
-    --cidr, -c            Perform CIDR matching on queries
-    --no-cidr             Do not perform CIDR matching on queries
-    --inverse, -i         Perform inverse matching on queries
-    --no-inverse          Do not perform inverse matching on queries</code></pre>
+<p>Documentation for the api endpoints can be found here: <a href="https://git.burble.com/burble.dn42/dn42regsrv/src/master/API.md">https://git.burble.com/burble.dn42/dn42regsrv/src/master/API.md</a></p>
 
-<h2><a class="anchor" id="generate-zone-files" href="#generate-zone-files"></a>Generate zone files</h2>
+<h3><a class="anchor" id="gortr" href="#gortr"></a>gortr</h3>
 
-<p>lglass also provides a script to generate zone files from the registry. It's named zonegen.py and requires a registry dump from Monotone.</p>
+<p>burble kindly provides ready-to-use files for gortr here:</p>
 
-<p>To generate DNS zones:</p>
+<p><a href="https://dn42.burble.com/roa/dn42_roa_46.json">https://dn42.burble.com/roa/dn42_roa_46.json</a></p>
 
-<pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-zonegen <span class="nt">-d</span> <span class="nv">$PATH_TO_DATA_DIR</span> <span class="nt">-n</span> ns1... <span class="nt">-n</span> ns2... <span class="nt">-e</span> foo.bar.com dns <span class="nt">-z</span> dn42</code></pre>
+<p>You can use these to simply run gortr via docker:</p>
 
-<p>To generate IPv4 rDNS zones:</p>
+<pre class="highlight"><code>docker run <span class="nt">-ti</span> <span class="nt">-p</span> 8082:8082 cloudflare/gortr <span class="nt">-cache</span> https://dn42.burble.com/roa/dn42_roa_46.json <span class="nt">-verify</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-checktime</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-bind</span> :8082</code></pre>
 
-<pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-zonegen <span class="nt">-d</span> <span class="nv">$PATH_TO_DATA_DIR</span> <span class="nt">-n</span> ns1... <span class="nt">-n</span> ns2... <span class="nt">-e</span> foo.bar.com rdns4 <span class="nt">-N</span> 172.22.0.0/16</code></pre>
+<h3><a class="anchor" id="rtrtr" href="#rtrtr"></a>rtrtr</h3>
 
-<p>To generate IPv6 rDNS zones:
-</p><pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-zonegen <span class="nt">-d</span> <span class="nv">$PATH_TO_DATA_DIR</span> <span class="nt">-n</span> ns1... <span class="nt">-n</span> ns2... <span class="nt">-e</span> foo.bar.com rdns6 <span class="nt">-N</span> fd00::/8</code></pre>
+<p>rtrtr is a RTR server from NLNet Labs. It's compatible with the dn42regsrv ROA-JSON or burbles provided one (https://dn42.burble.com/roa/dn42_roa_46.json) too.</p>
 
-<h2><a class="anchor" id="reformat-rpsl-files" href="#reformat-rpsl-files"></a>Reformat RPSL files</h2>
+<p>NLNet Labs provides an official docker image. You just have to bind mount a suitable configuration file:</p>
 
-<p>You can also reformat RPSL files using lglass by using the lglass.rpsl module:</p>
+<pre class="highlight"><code>docker run <span class="nt">-d</span> <span class="nt">-v</span> /etc/rtrtr.conf:/etc/rtrtr.conf <span class="nt">-p</span> 323:323/tcp nlnetlabs/rtrtr <span class="nt">-c</span> /etc/rtrtr.conf</code></pre>
 
-<pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-rpsl &lt; <span class="nv">$DATA</span>/inetnum/172.22.0.53_32</code></pre>
+<p>This is a working configuration file for dn42. Maybe change the listen addresses:</p>
 
-<p>lglass.rpsl also supports in-place operation:</p>
+<pre class="highlight"><code><span class="n">log_level</span> = <span class="s2">"debug"</span>
+<span class="n">log_target</span> = <span class="s2">"stderr"</span>
+<span class="n">http</span>-<span class="n">listen</span> = []
+[<span class="n">units</span>.<span class="n">dn42</span>-<span class="n">json</span>]
+<span class="n">type</span> = <span class="s2">"json"</span>
+<span class="n">uri</span> = <span class="s2">"https://dn42.burble.com/roa/dn42_roa_46.json"</span>
+<span class="n">refresh</span> = <span class="m">600</span>
+[<span class="n">targets</span>.<span class="n">dn42</span>-<span class="n">rtr</span>]
+<span class="n">type</span> = <span class="s2">"rtr"</span>
+<span class="n">listen</span> = [<span class="s2">"0.0.0.0:323"</span>, <span class="s2">"[::]:323"</span>]
+<span class="n">unit</span> = <span class="s2">"dn42-json"</span></code></pre>
 
-<pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-rpsl <span class="nt">-i</span> <span class="nv">$DATA</span>/inetnum/172.22.0.53_32</code></pre>
+<p>For more information cosult the official documentation: <a href="https://rtrtr.docs.nlnetlabs.nl/en/stable/">https://rtrtr.docs.nlnetlabs.nl/en/stable/</a></p>
 
-<p>This opens the file, reads the content into memory, seeks to position 0, writes the formatted object and truncates the file.
-Simple web interface</p>
+<h3><a class="anchor" id="kioubit-s-dn42-registry-wizard" href="#kioubit-s-dn42-registry-wizard"></a>Kioubit's DN42 Registry Wizard</h3>
 
-<p>lglass also comes with a simple web interface written in Python3 using Bottle and Jinja2. It also provides a binary to run it using wsgiref:
-</p><pre class="highlight"><code><span class="nv">$ </span>./bin/lglass-web</code></pre>
+<p><a href="https://github.com/Kioubit/dn42_registry_wizard">DN42 Registry Wizard</a> is a comprehensive tool for DN42 registry interactions. <strong>Unlike other solutions, it can parse the registry and host an RTR server all-in-one</strong> without requiring separate components.</p>
 
-<p>Furthermore you can use any WSGI server like Gunicorn by using lglass.web.application:app as WSGI callback. You can provide a path to the configuration file in the environment variable <code>LGLASS_WEB_CFG</code>.</p>
+<h4><a class="anchor" id="all-in-one-rtr-server" href="#all-in-one-rtr-server"></a>All-in-One RTR Server</h4>
 
-<h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
+<pre class="highlight"><code><span class="c"># Clone the DN42 registry</span>
+git clone https://git.dn42.dev/dn42/registry.git
 
-<p>The configuration file format is JSON and allows configuration of the database chain, the listen parameters, the custom messages and the process management.</p>
+<span class="c"># Start RTR server directly from registry</span>
+./registry_wizard &lt;path to registry&gt; rtr 
 
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th style="text-align:left;">Meaning</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>listen.host</td>
-      <td style="text-align:left;">IP address for listening socket (Default: ::)</td>
-    </tr>
-    <tr>
-      <td>listen.port</td>
-      <td style="text-align:left;">TCP port for listening socket (Default: 4343)</td>
-    </tr>
-    <tr>
-      <td>listen.protocol</td>
-      <td style="text-align:left;">Protocol for listening socket (4 or 6, by default 6)</td>
-    </tr>
-    <tr>
-      <td>database</td>
-      <td style="text-align:left;">Array of database URLs to initialize database chain</td>
-    </tr>
-    <tr>
-      <td>database.types</td>
-      <td style="text-align:left;">Array of object types in database (Default: undefined) <br />Default chain:<br />[<br />  "whois+lglass.database.file+file:.",<br />  "whois+lglass.database.cidr+cidr:",<br />  "whois+lglass.database.schema+schema:",<br />  "whois+lglass.database.cache+cached:"<br />]</td>
-    </tr>
-    <tr>
-      <td>messages.preamble</td>
-      <td style="text-align:left;">String preamble for whois responses</td>
-    </tr>
-    <tr>
-      <td>messages.help</td>
-      <td style="text-align:left;">String help message for help requests</td>
-    </tr>
-    <tr>
-      <td>process.user</td>
-      <td style="text-align:left;">User to change after initialization</td>
-    </tr>
-    <tr>
-      <td>process.group</td>
-      <td style="text-align:left;">Group to change after initialization</td>
-    </tr>
-    <tr>
-      <td>process.pidfile</td>
-      <td style="text-align:left;">Path to PID file</td>
-    </tr>
-  </tbody>
-</table>
+<span class="c"># Setup a cronjob to continously update the registry and notify registry_wizard</span>
+git fetch <span class="nt">--all</span>
+git reset <span class="nt">--hard</span> origin/master
+<span class="nb">kill</span> <span class="nt">-SIGUSR1</span> <span class="s2">"</span><span class="si">$(</span>pidof <span class="s1">'registry_wizard'</span><span class="si">)</span><span class="s2">"</span></code></pre>
 
-<h2><a class="anchor" id="rpsl" href="#rpsl"></a>RPSL</h2>
+<pre class="highlight"><code>Usage: registry_wizard &lt;registry_root&gt; rtr [OPTIONS]
+
+Options:
+  -p, --port &lt;port&gt;        Port to listen on [default: 9323]
+      --refresh &lt;refresh&gt;  RTR refresh timing [default: 3600]
+      --expire &lt;expire&gt;    RTR expire timing [default: 7200]
+      --retry &lt;retry&gt;      RTR retry timing [default: 600]
+  -h, --help               Print help</code></pre>
+
+<h3><a class="anchor" id="other-tools-generators" href="#other-tools-generators"></a>Other tools / generators</h3>
 <ul>
-  <li>Routing Policy Specification Language <a href="https://tools.ietf.org/html/rfc2622">RFC2622</a>
+  <li>bauen1's dn42-roagen: <a href="https://gitlab.com/bauen1/dn42-roagen">https://gitlab.com/bauen1/dn42-roagen</a>
 </li>
-  <li>Routing Policy Specification Language next generation (RPSLng) <a href="https://tools.ietf.org/html/rfc4012">RFC4012</a>
+  <li>Kioubit's registry wizard: <a href="https://github.com/Kioubit/dn42_registry_wizard">https://github.com/Kioubit/dn42_registry_wizard</a>
 </li>
-  <li><a href="http://www.ripe.net/data-tools/db/rpsl">http://www.ripe.net/data-tools/db/rpsl</a></li>
-  <li><a href="http://www.ripe.net/data-tools/db/rpsl/transition-to-rpsl-version-of-the-ripe-database">http://www.ripe.net/data-tools/db/rpsl/transition-to-rpsl-version-of-the-ripe-database</a></li>
+  <li>chuangzhu's pure bash script: <a href="https://paste.sr.ht/~chuang/e98d2fe791de68a6cf5aade7877cd0dbc1cdb84e">https://paste.sr.ht/~chuang/e98d2fe791de68a6cf5aade7877cd0dbc1cdb84e</a>
+</li>
 </ul>
+
+<h3><a class="anchor" id="this-is-all-to-complicated-is-there-an-easy-all-in-one-package-for-rtr" href="#this-is-all-to-complicated-is-there-an-easy-all-in-one-package-for-rtr"></a>This is all to complicated, is there an easy all-in-one package for RTR?</h3>
+
+<p>TODO: Publish docker-compose-yml to git for gortr+dn42regsrv</p>
+
+<h3><a class="anchor" id="how-do-i-integrate-rtr-with-my-bgp-implementation" href="#how-do-i-integrate-rtr-with-my-bgp-implementation"></a>How do I integrate RTR with my BGP implementation</h3>
+
+<p>You have to consult the documentation of your implementation for that. We will provide configuration examples on the specific pages.</p>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -416,13 +405,13 @@ Simple web interface</p>
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/lglass.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/ROA-slash-RPKI.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/lglass.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/ROA-slash-RPKI.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
