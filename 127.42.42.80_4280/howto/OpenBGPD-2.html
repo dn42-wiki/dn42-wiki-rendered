@@ -312,10 +312,7 @@ peer via that address.</p>
 </span>
 <span class="n">group</span> <span class="n">dn42peers</span> {
 	<span class="c"># RFC7454 sec. 8
-</span>	<span class="c"># (currently no peer sends more than 800 prefixes for
-</span>	<span class="c"># a single address family; increase this if using
-</span>	<span class="c"># multi-protocol BGP (or when the network grows)!)
-</span>	<span class="n">max</span>-<span class="n">prefix</span> <span class="m">1000</span> <span class="n">restart</span> <span class="m">60</span>
+</span>	<span class="n">max</span>-<span class="n">prefix</span> <span class="m">2000</span> <span class="n">restart</span> <span class="m">60</span>
 	<span class="n">neighbor</span> &lt;<span class="n">PEER1</span>-<span class="n">IPv4</span>&gt; {
 		<span class="n">descr</span> <span class="n">peer1_4</span>
 		<span class="n">remote</span>-<span class="n">as</span> &lt;<span class="n">PEER1</span>-<span class="n">ASN</span>&gt;

@@ -172,8 +172,7 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../../index.html" rel="nofollow"><img src="../../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
@@ -190,17 +189,17 @@
 
 <h1><a class="anchor" id="key-generation-and-distribution" href="#key-generation-and-distribution"></a>Key generation and distribution</h1>
 <h2><a class="anchor" id="using-pre-generated-keys" href="#using-pre-generated-keys"></a>Using pre-generated keys</h2>
-<p>OpenBSD generates keys suitables for IPSec usage during the installation. The public key can be found in <code>/etc/isakmpd/local.pub</code></p>
+<p>OpenBSD generates keys suitable for IPSec usage during installation. The public key can be found in <code>/etc/isakmpd/local.pub</code>.</p>
 
 <h2><a class="anchor" id="generating-your-own-keys" href="#generating-your-own-keys"></a>Generating your own keys</h2>
 <p>If you don't want to use a pre-generated key, refer to <a href="http://man.openbsd.org/isakmpd.8#X.509_AUTHENTICATION">isakmpd(8)</a>.</p>
 
 <h2><a class="anchor" id="distributing-keys" href="#distributing-keys"></a>Distributing keys</h2>
-<p>Send your public key to your peer, preferrably digitally signed. A signature can be created with <code>gpg -sb -a local.pub</code> and checked with <code>gpg --verify local.pub.asc</code>. Since the key is not private, it can be transmitted in the open and on a public forum, such as a Pastebin service.</p>
+<p>Send your public key to your peer, preferably digitally signed. A signature can be created with <code>gpg -sb -a local.pub</code> and checked with <code>gpg --verify local.pub.asc</code>. Since the key is not private, it can be transmitted in the open and on a public forum, such as a Pastebin service.</p>
 
-<p>Once your peer sent you their public key, it under <code>/etc/isakmpd/pubkeys/fqdn</code>, <code>/etc/isakmpd/pubkeys/ipv4</code> or <code>/etc/isakmpd/ipv6</code>, depending on the ID type the peer is using. The key file should be named after the peers ID. For example, if your peer is <code>1.3.3.7</code>, you place their public key under <code>/etc/isakmpd/pubkeys/ipv4/1.3.3.7</code>.</p>
+<p>Once your peer sent you their public key, put it under <code>/etc/isakmpd/pubkeys/fqdn</code>, <code>/etc/isakmpd/pubkeys/ipv4</code> or <code>/etc/isakmpd/pubkeys/ipv6</code>, depending on the ID type the peer is using. The key file should be named after the peer ID. For example, if your peer is <code>1.3.3.7</code>, you place their public key under <code>/etc/isakmpd/pubkeys/ipv4/1.3.3.7</code>.</p>
 
-<p>If your peers public key is not in PEM format, you can use <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl">pubkey-converter</a> to convert between key formats.</p>
+<p>If your peer's public key is not in PEM format, you can use <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl">pubkey-converter</a> to convert between key formats.</p>
 
 <h1><a class="anchor" id="ipsec-setup" href="#ipsec-setup"></a>IPSec Setup</h1>
 <p>Change the value of the <code>isakmpd_flags</code> variable in <a href="http://man.openbsd.org/rc.conf.local.8"><code>/etc/rc.conf.local</code></a> to <code>"-K"</code>, or add the <code>"-K"</code> flag if you already have flags in there.</p>
