@@ -410,9 +410,8 @@ Mirrors are hosted at <code>asn.grmml.dn42</code> and <code>asn.lorkep.dn42</cod
 <span class="c"># dn42 ipv4 address space</span>
 ^172<span class="se">\.</span>2[0-3]<span class="se">\.</span><span class="o">[</span>0-9]<span class="o">{</span>1,3<span class="o">}</span><span class="se">\.</span><span class="o">[</span>0-9]<span class="o">{</span>1,3<span class="o">}(</span>/<span class="o">(</span>1[56789]|2[0-9]|3[012]<span class="o">))</span>?<span class="nv">$ </span>whois.dn42
 
-<span class="c"># dn42 ula ipv6 address space</span>
-^fd<span class="k">**</span>:<span class="k">****</span>:<span class="k">****</span>:<span class="k">****</span>:<span class="k">****</span>:<span class="k">****</span>:<span class="k">****</span>:<span class="k">****</span> whois.dn42
-</code></pre>
+<span class="c"># dn42 ipv6 address space</span>
+^fd[a-f0-9]<span class="o">{</span>2<span class="o">}(</span>:[a-f0-9]<span class="o">{</span>,4<span class="o">}){</span>,7<span class="o">}</span><span class="nv">$ </span>whois.dn42</code></pre>
 
 <p>You can then use whois without specifying the server. Works at least with Marco d'Itri's whois client.</p>
 
