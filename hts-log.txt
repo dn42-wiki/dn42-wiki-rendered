@@ -1,4 +1,4 @@
-HTTrack3.49-4+libhtsjava.so.2 launched on Thu, 25 Sep 2025 01:00:50 at http://127.42.42.80:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes?* -*/*.md/*
+HTTrack3.49-4+libhtsjava.so.2 launched on Fri, 26 Sep 2025 22:12:42 at http://127.42.42.80:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes?* -*/*.md/*
 (httrack http://127.42.42.80:4280 -iC2 -%F  -O /srv/dn42-wiki/dn42-wiki-rendered -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes?* -*/*.md/* )
 
 Information, Warnings and Errors reported for this mirror:
@@ -6,19 +6,19 @@ note:	the hts-log.txt file, and hts-cache folder, may contain sensitive informat
 	such as username/password authentication for websites mirrored in this project
 	do not share these files/folders if you want these information to remain private
 
-01:00:52	Warning: 	Found for 127.42.42.80:4280/
-01:00:52	Warning: 	File has moved from 127.42.42.80:4280/ to http://127.42.42.80:4280/Home
-01:01:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-16px.gif (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-01:01:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-01:01:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-01:01:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32.gif (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-01:01:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success@2x.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-01:01:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error@2x.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-01:01:27	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32-EAF2F5.gif (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-01:01:53	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/BGP-on-Extreme-Summit1i (from 127.42.42.80:4280/howto/Getting-Started)
-01:01:54	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/vyos (from 127.42.42.80:4280/howto/vyos1.4.x)
-01:01:59	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/anon@git.dn42:dn42/ca-client (from 127.42.42.80:4280/services/Automatic-CA)
-01:01:59	Error: 	"Not Found" (404) at link 127.42.42.80:4280/TODO (from 127.42.42.80:4280/services/New-DNS)
+22:12:44	Warning: 	Found for 127.42.42.80:4280/
+22:12:44	Warning: 	File has moved from 127.42.42.80:4280/ to http://127.42.42.80:4280/Home
+22:13:17	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-16px.gif (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+22:13:17	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+22:13:17	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+22:13:17	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32.gif (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+22:13:17	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success@2x.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+22:13:17	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error@2x.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+22:13:17	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32-EAF2F5.gif (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+22:13:44	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/BGP-on-Extreme-Summit1i (from 127.42.42.80:4280/howto/Getting-Started)
+22:13:44	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/vyos (from 127.42.42.80:4280/howto/vyos1.4.x)
+22:13:49	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/anon@git.dn42:dn42/ca-client (from 127.42.42.80:4280/services/Automatic-CA)
+22:13:49	Error: 	"Not Found" (404) at link 127.42.42.80:4280/TODO (from 127.42.42.80:4280/services/New-DNS)
 
-HTTrack Website Copier/3.49-4 mirror complete in 1 minutes 10 seconds : 211 links scanned, 198 files written (9723086 bytes overall), 186 files updated [3839735 bytes received at 54853 bytes/sec], 52.7 requests per connection
+HTTrack Website Copier/3.49-4 mirror complete in 1 minutes 8 seconds : 211 links scanned, 198 files written (9687743 bytes overall), 186 files updated [3804392 bytes received at 55946 bytes/sec], 52.7 requests per connection
 (11 errors, 2 warnings, 0 messages)
