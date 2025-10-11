@@ -177,7 +177,96 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="ipsec-with-public-key-authentication" href="#ipsec-with-public-key-authentication"></a>IPsec with public key authentication</h1>
+<h2><a class="anchor" id="stop-using-pre-shared-keys" href="#stop-using-pre-shared-keys"></a>Stop using pre-shared keys!</h2>
+<h3><a class="anchor" id="pre-shared-keys-suck-because-reasons" href="#pre-shared-keys-suck-because-reasons"></a>Pre-shared keys suck, because <em>reasons</em>
+</h3>
+
+<ul>
+  <li>
+<strong>The key must be kept secret</strong>, which means it must be shared only over a secure channel e.g. PGP, face-to-face</li>
+  <li>Most implementations will accept insecure (too short, too simple) keys</li>
+  <li>The <a href="http://www.sersc.org/journals/IJAST/vol8/2.pdf" title="Vulnerabilities of VPN using IPSec and Defensive Measures">insecure</a> <a href="http://carnal0wnage.attackresearch.com/2011/12/aggressive-mode-vpn-ike-scan-psk-crack.html" title="Aggressive Mode VPN -- IKE-Scan, PSK-Crack, and Cain">IKE</a> <a href="http://rayas-security.blogspot.com/2013/06/ipsec-vpn-main-mode-vs-aggressive-mode.html" title="IPsec VPN, Main mode Vs Aggressive mode">aggressive mode</a> must be used to support distinct PSKs for multiple dynamic peers, or</li>
+  <li>All dynamic peers must use the same PSK in order to use the more secure IKE main mode</li>
+</ul>
+
+<h3><a class="anchor" id="public-keys-are-better" href="#public-keys-are-better"></a>Public keys are <em>better</em>
+</h3>
+<ul>
+  <li>They can be transmitted over insecure channels without compromising security</li>
+  <li>No need to generate a new key for each connection; just send the same public key to each new peer</li>
+  <li>Most implementations generate keys using high quality random numbers by default; one must <em>try</em> to generate an insecure key</li>
+  <li>Dynamic peers can all have distinct public keys and still use IKE main mode</li>
+</ul>
+
+<h3><a class="anchor" id="so-why-isn-t-everyone-using-public-keys-already" href="#so-why-isn-t-everyone-using-public-keys-already"></a>So why isn't everyone using public keys already?</h3>
+<ul>
+  <li>The various IKE implementations don't all use the same format to represent public keys <em>(but we can <strong>easily</strong> <a href="#Conversion-tool">convert</a> between them)</em>
+</li>
+  <li>Documentation on <a href="#How-To-examples">how to</a>, and why you should, configure public keys instead of PSKs is lacking <em>(which is why this page exists)</em>
+</li>
+  <li>Some implementations don't expose the ability to use public keys directly, only allowing a choice between PSKs and X.509 certificates</li>
+</ul>
+
+<h3><a class="anchor" id="public-keys-means-certificates-right-certificates-are-hard" href="#public-keys-means-certificates-right-certificates-are-hard"></a>Public keys means certificates, right? Certificates are hard :(</h3>
+<p>Many IKE implementations support manually configuring trusted public keys, without having to create a CA, generate CSRs, sign certificates, or remember/look up the commands to do those things.</p>
+
+<p>Keep in mind that certificates are just public keys wrapped with some extra metadata so that your router can automatically verify that it belongs to someone you trust. Certificates are useful for instances where there are so many peers that it's infeasible to manually configure each one's public key, such as a "road warrior" configuration or DMVPN. In those scenarios it makes sense to set up a Certificate Authority to handle it.</p>
+
+<h2><a class="anchor" id="ok-fine-how-do-i-public-key" href="#ok-fine-how-do-i-public-key"></a>Ok fine, how do I public key?</h2>
+<h3><a class="anchor" id="conversion-tool" href="#conversion-tool"></a>Conversion tool</h3>
+<p>Different implementations use different formats to represent public keys, and it's necessary to be able to convert between them.
+A script for that purpose can be found in this git repository: <a href="https://github.com/zeroae/pubkey-converter">github.com/zeroae/pubkey-converter</a> (it can also be <a href="https://raw.githubusercontent.com/zeroae/pubkey-converter/master/pubkey-converter.pl">downloaded directly here</a>).</p>
+
+<h3><a class="anchor" id="how-to-examples" href="#how-to-examples"></a>How-To examples</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left;">Implementation</th>
+      <th style="text-align:right;">Key format</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/strongSwan5Example.html">strongSwan &gt;= 5.0.0</a></td>
+      <td style="text-align:right;">PEM</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/CiscoIOSExample.html">Cisco IOS</a></td>
+      <td style="text-align:right;">Hexadecimal DER</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/RouterOSExample.html">Mikrotik RouterOS</a></td>
+      <td style="text-align:right;">PEM</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/OpenBSDExample.html">OpenBSD</a></td>
+      <td style="text-align:right;">PEM</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/RacoonExample.html">Racoon</a></td>
+      <td style="text-align:right;">Base64 RFC 3110</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/strongSwan4Example.html">strongSwan &lt; 5.0.0</a></td>
+      <td style="text-align:right;">Base64 RFC 3110</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;"><a href="IPsecWithPublicKeys/VyOSExample.html">VyOS/EdgeOS</a></td>
+      <td style="text-align:right;">Base64 RFC 3110</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><a class="anchor" id="notes" href="#notes"></a>Notes</h3>
+<ol>
+  <li>Best practice is to generate the private key on the router itself, and not transfer it to another machine. This part should be kept secret!</li>
+  <li>Generate a key of at least 2048 bits, preferably 4096 if both ends support it.</li>
+  <li>Some implementations support more than one key format. The examples here only show how to use one of them (usually PEM) for brevity.</li>
+  <li>RFC 3110 format is the same as that described in RFC 2537. The former obsoletes the latter.</li>
+</ol>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
