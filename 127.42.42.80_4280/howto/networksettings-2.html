@@ -191,7 +191,8 @@ When the route to return a packet uses a different interface than it arrived fro
 Some attackers will set a wrong return address on their packets. This security measure was created to address when this happens. Core internet routing can however be asymmetric. This means that packets can take different routes on the return path.
 That is why <code>rp_filter</code> needs to be disabled.</p>
 
-<p><strong>Note</strong> using sysctl is not persistent. Depending on your linux distribution put it into <code>/etc/sysctl.conf</code> or <code>/etc/sysctl.d</code></p>
+<p><strong>Note</strong> using sysctl is not persistent. Depending on your linux distribution put it into <code>/etc/sysctl.conf</code> or <code>/etc/sysctl.d</code><br />
+<em>(see also the note below if you are running Debian Trixie or your OS is using systemd-sysctl)</em></p>
 
 <pre class="highlight"><code>sysctl <span class="nt">-w</span> net.ipv4.conf.all.rp_filter<span class="o">=</span>0 net.ipv4.conf.default.rp_filter<span class="o">=</span>0</code></pre>
 
@@ -205,6 +206,17 @@ That is why <code>rp_filter</code> needs to be disabled.</p>
 
 <p>Check that ALL your vpn interfaces allow ip forwarding for ipv6/ipv4.
 </p><pre class="highlight"><code><span class="nv">$ </span>sysctl <span class="nt">-a</span> | <span class="nb">grep </span>forwarding</code></pre>
+
+<p><strong>systemd-sysctl</strong></p>
+
+<p>systemd-sysctl parses files in <strong>lexical ordering</strong> regardless of which directory they are in.<br />
+See the <a href="https://www.freedesktop.org/software/systemd/man/latest/sysctl.d.html#Configuration%20Directories%20and%20Precedence">sysctl.d documentation</a> for more details on this; the documentation also notes:</p>
+
+<p><em>It is recommended to use the range 10-40 for configuration files in /usr/ and the range 60-90 for configuration files in /etc/ and /run/, to make sure that local and transient configuration files will always take priority over configuration files shipped by the OS vendor.</em></p>
+
+<p>Debian Trixie ships with a <code>/usr/lib/sysctl.d/50-default.conf</code> file which sets rp_filter to 2.</p>
+
+<p>The net result is you must ensure that the filenames you create in /etc/sysctl.d for overrides are lexically after '50-default.conf' or your settings will not have any effect.</p>
 
 <h2><a class="anchor" id="note-on-firewalls-conntrack-and-asymmetric-routing" href="#note-on-firewalls-conntrack-and-asymmetric-routing"></a>Note on firewalls, conntrack and asymmetric routing</h2>
 
