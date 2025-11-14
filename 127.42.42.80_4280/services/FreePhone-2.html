@@ -22,7 +22,7 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'internal/APIs.md';
+	  var pageFullPath = 'services/FreePhone.md';
     var pageFormat   = 'markdown';
 
   </script>
@@ -44,7 +44,7 @@
     mermaid.initialize(mermaid_conf);
   </script>
   
-  <title>APIs</title>
+  <title>FreePhone</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -68,12 +68,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>APIs</div>
+            <div>FreePhone</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="https://hist.dn42.wiki/gollum/history/internal/APIs.md"
+              href="http://127.42.42.80:4280/gollum/history/services/FreePhone.md"
               role="menuitem"
             >
               <span>History</span>
@@ -118,7 +118,7 @@
     class="TableObject-item TableObject-item--primary px-2"
     
   >
-    <form class="search-form" action="https://hist.dn42.wiki/gollum/search" method="get" id="search-form">
+    <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
     	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
@@ -146,7 +146,7 @@
     <div class="BtnGroup d-flex">
         <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          onclick="window.location.href='https://hist.dn42.wiki/gollum/history/internal/APIs.md/';"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/services/FreePhone.md/';"
           id="minibutton-history"
         >
           History
@@ -161,10 +161,10 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    APIs
+    FreePhone
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
-<li class="breadcrumb-item"><a href="../gollum/overview/internal/index.html">internal</a></li>
+<li class="breadcrumb-item"><a href="../gollum/overview/services/index.html">services</a></li>
 </ol></nav></div>
 
 	<div class="has-header has-footer has-sidebar has-rightbar">
@@ -178,26 +178,65 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="application-programming-interfaces-apis" href="#application-programming-interfaces-apis"></a>Application Programming Interfaces (APIs)</h1>
-<p>This page can be useful if you are trying to automate something or if you are trying to retrieve data programmatically.</p>
+	        <h1><a class="anchor" id="what-s-freephone" href="#what-s-freephone"></a>What's FreePhone?</h1>
+<p>Where's the point in using a phone flat just for a single person? !FreePhone is a project aimed to develop a VPN wide SIP phone service. Calling german landline is possible at the moment, as well as local participants (eg. maxx).</p>
 
-<h3><a class="anchor" id="asn-authentication-solution" href="#asn-authentication-solution"></a>ASN Authentication Solution</h3>
-<p>Authenticate your users by having them verify their ASN ownership with KIOUBIT-MNT using their registry-provided methods in an automated way. An example of this is the automatic peering system for the Kioubit Network.
-<a href="https://dn42.g-load.eu/about/authentication-services/">Documentation</a></p>
+<h2><a class="anchor" id="how-does-this-work" href="#how-does-this-work"></a>How does this work?</h2>
+<h3><a class="anchor" id="public-proxy" href="#public-proxy"></a>Public proxy</h3>
+<p>Set up your softphone or hardware implementation to use:</p>
+<ul>
+  <li>SIP-Proxy/Proxy domain: maxx.spaceboyz.net (SRV-Record)</li>
+  <li>Username/Account/Login: vpn</li>
+  <li>Password: vpn  <br />
+The proxy is strictly outbound, registration is impossible and unintended.</li>
+</ul>
 
-<h2><a class="anchor" id="registry-rest-api" href="#registry-rest-api"></a>Registry REST API</h2>
+<h2><a class="anchor" id="special-needs" href="#special-needs"></a>Special needs</h2>
+<p>Just contact me if you like to use your SIP hardware (eg. Fritz!Box FON). You'll get a special account allowing registrations plus a local extension.</p>
 
-<p><a href="https://git.burble.com/burble.dn42/dn42regsrv">dn42regsrv</a> is a REST API for the DN42 registry that provides a bridge between interactive applications and the registry.</p>
+<h2><a class="anchor" id="restrictions" href="#restrictions"></a>Restrictions</h2>
+<ul>
+  <li>Any call under the terms of the flatrate is allowed, so to speak: no mobile phones or pr0n calls</li>
+  <li>One call at a time for FreePhone users (stupid bandwidth restrictions :/).</li>
+  <li>Internal calls are more or less unrestricted.</li>
+  <li>alaw/ulaw are disallowed for bandwidth reasons</li>
+</ul>
 
-<p>As well as the main REST API to the DN42 registry, the server can also generate ROA tables and provides a small web application for exploring registry data.</p>
+<h2><a class="anchor" id="additional-extensions" href="#additional-extensions"></a>Additional extensions</h2>
+<p>| <strong>Extension</strong> | <strong>Target</strong> |
+|—|—|
+| maxx | myself, almost anywhere wireless lan is availiable |
+| grim | sometimes, sometimes not |
+| equinox | i think nokia prevents but you may try |
+| helios | did not connect for some time now |</p>
 
-<p>A public instance of the API and associated explorer web app is available at the following URLs:</p>
+<p>If you like listening to german news, dial 787326353 (Vanity: STREAMDLF). Just contact me in case you want more.</p>
 
-<p><a href="https://explorer.burble.com/">https://explorer.burble.com/</a> (public internet link)<br />
-<a href="https://explorer.burble.dn42/">https://explorer.burble.dn42/</a> (DN42 link)</p>
+<h2><a class="anchor" id="configuration-examples" href="#configuration-examples"></a>Configuration examples</h2>
+<p>Just look at the german version, you'll get the idea.</p>
 
-<p><a href="https://explorer.dn42.pebkac.gr/">https://explorer.dn42.pebkac.gr/</a> (public internet link)<br />
-<a href="https://explorer.pebkac.dn42/">https://explorer.pebkac.dn42/</a> (DN42 link)</p>
+<h2><a class="anchor" id="what-s-next" href="#what-s-next"></a>What's next?</h2>
+<h3><a class="anchor" id="real-dn42-phone-system" href="#real-dn42-phone-system"></a>Real dn42 phone system</h3>
+<p>If i'm bored some day i might implement the following:</p>
+<ul>
+  <li>SIP extensions for every participant</li>
+  <li>Voicemail</li>
+  <li>Funny games</li>
+  <li>FreePhone integration (maybe with redundancy)</li>
+  <li>…</li>
+</ul>
+
+<p>If someone is willing to experiment we could try allowing reinvites. This way all SIP endpoints inside the VPN could connect their media streams directly, thus saving bandwidth and raising call quality.</p>
+
+<h2><a class="anchor" id="latest-changes" href="#latest-changes"></a>Latest changes</h2>
+<ul>
+  <li>G.729 now is the preferred codec because of bandwith issues</li>
+  <li>My "Homezone" works perfectly, moving with me</li>
+  <li>Phone #: +493727/959023</li>
+  <li>Sipgate: 5884293</li>
+  <li>SIP: maxx(at)maxx.spaceboyz.net</li>
+  <li>Transcoding from/into G.729 works fine now, thanks to some precompiled versions for asterisk.</li>
+</ul>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -237,28 +276,28 @@
   </li>
   <li>Services
     <ul>
-      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="../services/RPKI.html" rel="nofollow">RPKI</a></li>
-      <li><a href="../services/IX-Collection.html" rel="nofollow">IX Collection</a></li>
-      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
-      <li><a href="../services/Registry.html" rel="nofollow">Registry</a></li>
+      <li><a href="IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="RPKI.html" rel="nofollow">RPKI</a></li>
+      <li><a href="IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="Registry.html" rel="nofollow">Registry</a></li>
     </ul>
   </li>
   <li>Internal
     <ul>
-      <li><a href="Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="Historical-Services.html" rel="nofollow">Historical services</a></li>
+      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
     </ul>
   </li>
   <li>Historical
@@ -305,13 +344,13 @@
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="internal/APIs.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="services/FreePhone.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="https://hist.dn42.wiki/gollum/rename/internal/APIs.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/services/FreePhone.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
