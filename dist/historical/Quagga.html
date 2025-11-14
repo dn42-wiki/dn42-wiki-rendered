@@ -177,151 +177,104 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="quagga" href="#quagga"></a>Quagga</h1>
-
-<p>Quagga is probably one of the oldest software router around.  It still works, of course, even though it has an unattractive configuration syntax (unfortunately inspired by  <a href="../howto/IPsecWithPublicKeys/CiscoIOSExample.html">Cisco's IOS</a>) and has some small issues with IPv6.  But since it's so old, you will find a lot of configuration examples around.</p>
-
-<h2><a class="anchor" id="source-address-selection" href="#source-address-selection"></a>Source address selection</h2>
-
-<p>Use this in your <code>zebra.conf</code>:</p>
-
-<pre class="highlight"><code><span class="n">route</span>-<span class="n">map</span> <span class="n">RM_SET_SRC</span> <span class="n">permit</span> <span class="m">10</span>
-    <span class="n">set</span> <span class="n">src</span> <span class="m">172</span>.<span class="m">22</span>.<span class="n">XX</span>.<span class="n">XX</span>
-<span class="n">ip</span> <span class="n">protocol</span> <span class="n">bgp</span> <span class="n">route</span>-<span class="n">map</span> <span class="n">RM_SET_SRC</span></code></pre>
-
-<p>Unfortunately, this is not possible with IPv6…</p>
-
-<h2><a class="anchor" id="important-bgp-commands" href="#important-bgp-commands"></a>Important bgp commands</h2>
-<p>To connect to bgpd use:</p>
-
-<pre class="highlight"><code><span class="nv">$ </span>vtysh</code></pre>
-
-<p>Which provides an interactive interface.
-In this interface '?' can be used to list the available commands or subcommands.</p>
-
-<h2><a class="anchor" id="configure-quagga" href="#configure-quagga"></a>Configure Quagga</h2>
-<p>a minimal config would look like this:</p>
-
-<pre class="highlight"><code>vtysh&gt; configure terminal
-vtysh<span class="o">(</span>config<span class="o">)&gt;</span> router bgp &lt;your-asn&gt;
-vtysh<span class="o">(</span>config-router<span class="o">)&gt;</span> neighbor &lt;neighbor-ip&gt; remote-as &lt;neighbor-asn&gt;
-vtysh<span class="o">(</span>config-router<span class="o">)&gt;</span> neighbor &lt;neighbor-ip&gt; interface &lt;interface&gt;
-vtysh<span class="o">(</span>config-router<span class="o">)&gt;</span> <span class="nb">exit
-</span>vtysh<span class="o">(</span>config<span class="o">)&gt;</span> <span class="nb">exit</span></code></pre>
-
-<h3><a class="anchor" id="ipv6" href="#ipv6"></a>IPv6</h3>
-<p>for IPv6 do something like</p>
-
-<pre class="highlight"><code>vtysh&gt; configure terminal
-vtysh<span class="o">(</span>config<span class="o">)&gt;</span> router bgp &lt;your-asn&gt;
-vtysh<span class="o">(</span>config-router<span class="o">)&gt;</span> neighbor &lt;neighbor-ip&gt; remote-as &lt;neighbor-asn&gt;
-vtysh<span class="o">(</span>config-router<span class="o">)&gt;</span> neighbor &lt;neighbor-ip&gt; interface &lt;interface&gt;
-vtysh<span class="o">(</span>config-router<span class="o">)&gt;</span> no neighbor &lt;neighbor-ip&gt; activate
-vtysh<span class="o">(</span>config-router<span class="o">)&gt;</span> address-family ipv6
-vtysh<span class="o">(</span>config-router-af<span class="o">)&gt;</span> neighbor &lt;neighbor-ip&gt; activate
-vtysh<span class="o">(</span>config-router-af<span class="o">)&gt;</span> <span class="nb">exit
-</span>vtysh<span class="o">(</span>config-router<span class="o">)&gt;</span> <span class="nb">exit
-</span>vtysh<span class="o">(</span>config<span class="o">)&gt;</span> <span class="nb">exit</span></code></pre>
-
-<h3><a class="anchor" id="peer-groups-prefix-lists-and-such" href="#peer-groups-prefix-lists-and-such"></a>peer groups, prefix lists and such</h3>
-<p>If you want to use 'prefix-list' to filter some of the prefixes quagga is receiving, you can use a 'peer-group' instead of apply the prefix list to every neighbor.</p>
-
-<p>Define a peer group:</p>
-
-<pre class="highlight"><code>vtysh<span class="o">(</span>config-router<span class="o">)&gt;</span> neighbor &lt;peer-group-name&gt; peer-group</code></pre>
-
-<p>Apply to a neighbor:</p>
-
-<pre class="highlight"><code>vtysh<span class="o">(</span>config-router<span class="o">)&gt;</span> neighbor &lt;neighbor-ip&gt; peer-group &lt;name&gt;</code></pre>
-
-<p>Apply a prefix list for incoming prefixes to your peer group:</p>
-
-<pre class="highlight"><code>vtysh<span class="o">(</span>config-router<span class="o">)&gt;</span> neighbor &lt;peer-group-name&gt; prefix-list &lt;prefix-list-name&gt; <span class="k">in</span></code></pre>
-
-<h4><a class="anchor" id="example-filter-list" href="#example-filter-list"></a>Example filter list</h4>
-
-<pre class="highlight"><code>ip prefix-list vpn-in description BGP IPv4 import filter
-<span class="o">!</span>old network:
-ip prefix-list vpn-in <span class="nb">seq </span>5 permit 172.22.0.0/15 ge 22 le 28
-<span class="o">!</span>new dn42 allocation:
-ip prefix-list vpn-in <span class="nb">seq </span>10 permit 172.20.0.0/16 ge 22 le 28
-
-<span class="o">!</span> Anycast /32s <span class="k">for </span>Whois and DNS:
-ip prefix-list vpn-in <span class="nb">seq </span>11 permit 172.22.0.43/32
-ip prefix-list vpn-in <span class="nb">seq </span>12 permit 172.22.0.53/32
-
-ip prefix-list vpn-in <span class="nb">seq </span>18 permit 192.175.48.0/24
-ip prefix-list vpn-in <span class="nb">seq </span>20 deny 10.10.10.0/24
-ip prefix-list vpn-in <span class="nb">seq </span>21 permit 10.0.0.0/8
-ip prefix-list vpn-in <span class="nb">seq </span>30 permit 172.31.0.0/16
-ip prefix-list vpn-in <span class="nb">seq </span>39 permit 100.64.0.0/10
-ip prefix-list vpn-in <span class="nb">seq </span>40 permit 195.160.168.0/23
-ip prefix-list vpn-in <span class="nb">seq </span>41 permit 91.204.4.0/22
-ip prefix-list vpn-in <span class="nb">seq </span>43 permit 193.43.220.0/23
-ip prefix-list vpn-in <span class="nb">seq </span>46 permit 83.133.178.0/23
-ip prefix-list vpn-in <span class="nb">seq </span>47 permit 87.106.29.254/32
-ip prefix-list vpn-in <span class="nb">seq </span>50 permit 85.25.246.16/28
-ip prefix-list vpn-in <span class="nb">seq </span>51 permit 46.4.248.192/27
-ip prefix-list vpn-in <span class="nb">seq </span>60 permit 94.45.224.0/19
-ip prefix-list vpn-in <span class="nb">seq </span>70 permit 195.191.196.0/23
-ip prefix-list vpn-in <span class="nb">seq </span>80 permit 80.244.241.224/27
-ip prefix-list vpn-in <span class="nb">seq </span>90 permit 46.19.90.48/28
-ip prefix-list vpn-in <span class="nb">seq </span>91 permit 46.19.90.96/28
-ip prefix-list vpn-in <span class="nb">seq </span>110 permit 188.40.34.241/32
-ip prefix-list vpn-in <span class="nb">seq </span>130 permit 37.1.89.192/26
-ip prefix-list vpn-in <span class="nb">seq </span>140 permit 178.33.32.123/32
-ip prefix-list vpn-in <span class="nb">seq </span>150 permit 87.98.246.19/32
-ip prefix-list vpn-in <span class="nb">seq </span>1000 deny 0.0.0.0/0
-
-ipv6 prefix-list vpn-in <span class="nb">seq </span>10 permit fd00::/8 ge 9
-ipv6 prefix-list vpn-in <span class="nb">seq </span>15 deny any</code></pre>
-
-<h4><a class="anchor" id="example-filter-list-script" href="#example-filter-list-script"></a>Example filter list script</h4>
-<pre class="highlight"><code><span class="c">#!/bin/bash</span>
-
-vtysh <span class="nt">-c</span> <span class="s1">'conf t'</span> <span class="nt">-c</span> <span class="s2">"no ip prefix-list dn42"</span><span class="p">;</span> <span class="c">#drop old prefix list</span>
-
-<span class="k">while </span><span class="nb">read </span>pl
-<span class="k">do
-   </span>vtysh <span class="nt">-c</span> <span class="s1">'conf t'</span> <span class="nt">-c</span> <span class="s2">"</span><span class="nv">$pl</span><span class="s2">"</span><span class="p">;</span> <span class="c">#insert prefix list row by row</span>
-<span class="k">done</span> &lt; &lt;<span class="o">(</span>curl <span class="nt">-s</span> https://ca.dn42.us/reg/filter.txt | <span class="nb">grep</span> <span class="nt">-e</span>  ^[0-9] | <span class="nb">awk</span> <span class="s1">'{ print "ip prefix-list dn42 seq " $1 " " $2 " " $3 " ge " $4 " le " $5}'</span> | <span class="nb">sed</span> <span class="s2">"s_/</span><span class="se">\(</span><span class="s2">[0-9]</span><span class="se">\+\)</span><span class="s2"> ge </span><span class="se">\1</span><span class="s2">_/</span><span class="se">\1</span><span class="s2">_g;s_/</span><span class="se">\(</span><span class="s2">[0-9]</span><span class="se">\+\)</span><span class="s2"> le </span><span class="se">\1</span><span class="s2">_/</span><span class="se">\1</span><span class="s2">_g"</span><span class="o">)</span><span class="p">;</span>
-vtysh <span class="nt">-c</span> <span class="s2">"wr"</span> <span class="c">#write new prefix list</span>
-</code></pre>
-
-<h2><a class="anchor" id="show-bpg-session-status" href="#show-bpg-session-status"></a>show bpg session status</h2>
-
-<p>in this example:</p>
-<ul>
-  <li>an active bgp session exists with peer 64713.</li>
-  <li>no (vpn) connection at all exists with peer 64692</li>
-  <li>a (vpn) connection with 4242421375 exists, but no bgp session</li>
-</ul>
-
-<pre class="highlight"><code>vtysh&gt; show ip bgp summary 
-BGP router identifier 172.22.100.254, local AS number 64698
-RIB entries 938, using 103 KiB of memory
-Peers 11, using 49 KiB of memory
-Peer groups 1, using 32 bytes of memory
-
-Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
-172.22.92.247   4 64692       0       0        0    0    0 never    Connect
-...
-172.22.113.2    4 64713    2206     865        0    0    0 01:23:11      322
-....
-172.23.64.1     4 4242421375  0       0        0    0    0 never    Active
-fe80::deca:fbad 4 64699     902     694        0    0    0 01:23:57      486</code></pre>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
-	          <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	          <ul>
+  <li>
+<a href="../Home.html" rel="nofollow">Home</a>
+    <ul>
+      <li><a href="../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
+      <li><a href="../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+      <li><a href="../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
+      <li><a href="../howto/BGP-communities.html" rel="nofollow">BGP communities</a></li>
+      <li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
+    </ul>
+  </li>
+  <li>How-To
+    <ul>
+      <li><a href="../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
+      <li><a href="../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
+      <li><a href="../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+      <li><a href="../howto/tinc.html" rel="nofollow">Tinc</a></li>
+      <li><a href="../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+      <li><a href="../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+      <li><a href="../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+      <li><a href="../howto/multicast.html" rel="nofollow">SSM Multicast</a></li>
+      <li><a href="../howto/mpls.html" rel="nofollow">MPLS</a></li>
+      <li><a href="../howto/Bird2.html" rel="nofollow">Bird2</a></li>
+      <li><a href="../howto/frr.html" rel="nofollow">FRRouting</a></li>
+      <li><a href="../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+      <li><a href="../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+      <li><a href="../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+      <li><a href="../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+      <li><a href="../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+      <li><a href="../howto/vyos1.4.html" rel="nofollow">VyOS</a></li>
+      <li><a href="../howto/nixos.html" rel="nofollow">NixOS</a></li>
+    </ul>
+  </li>
+  <li>Services
+    <ul>
+      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="../services/RPKI.html" rel="nofollow">RPKI</a></li>
+      <li><a href="../services/IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="../services/Registry.html" rel="nofollow">Registry</a></li>
+    </ul>
+  </li>
+  <li>Internal
+    <ul>
+      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+    </ul>
+  </li>
+  <li>Historical
+    <ul>
+      <li><a href="Bird.html" rel="nofollow">Bird 1</a></li>
+      <li><a href="Quagga.html" rel="nofollow">Quagga</a></li>
+    </ul>
+  </li>
+  <li>External Tools
+    <ul>
+      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+      <li><a href="https://hedgedoc.dn42.eu/" rel="nofollow">HedgeDoc</a></li>
+      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+      <li><a href="https://git.dn42.dev/dn42/registry" rel="nofollow">Registry</a></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+
 	        </div>
 	      </div>
 	    </div>
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
+    </tr>
+  </tbody>
+</table>
+
 	    </div>
 	  </div>
 
