@@ -22,7 +22,7 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'FAQ.md';
+	  var pageFullPath = 'pim-multicast-vs-unicast-issue.md';
     var pageFormat   = 'markdown';
 
   </script>
@@ -44,7 +44,7 @@
     mermaid.initialize(mermaid_conf);
   </script>
   
-  <title>FAQ</title>
+  <title>pim-multicast-vs-unicast-issue</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -68,12 +68,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>FAQ</div>
+            <div>pim-multicast-vs-unicast-issue</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="https://hist.dn42.wiki/gollum/history/FAQ.md"
+              href="http://127.42.42.80:4280/gollum/history/pim-multicast-vs-unicast-issue.md"
               role="menuitem"
             >
               <span>History</span>
@@ -118,7 +118,7 @@
     class="TableObject-item TableObject-item--primary px-2"
     
   >
-    <form class="search-form" action="https://hist.dn42.wiki/gollum/search" method="get" id="search-form">
+    <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
     	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
@@ -146,7 +146,7 @@
     <div class="BtnGroup d-flex">
         <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          onclick="window.location.href='https://hist.dn42.wiki/gollum/history/FAQ.md/';"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/pim-multicast-vs-unicast-issue.md/';"
           id="minibutton-history"
         >
           History
@@ -161,7 +161,7 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    FAQ
+    pim-multicast-vs-unicast-issue
   </h1>
 	<div class="breadcrumb"></div>
 
@@ -176,83 +176,74 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h2><a class="anchor" id="how-do-i-connect-to-dn42" href="#how-do-i-connect-to-dn42"></a>How do I connect to DN42?</h2>
+	        <h1><a class="anchor" id="issue-pim-multicast-vs-unicast-routes" href="#issue-pim-multicast-vs-unicast-routes"></a>Issue: PIM: Multicast vs. Unicast Routes</h1>
 
-<p>We have a <a href="howto/Getting-Started.html">page</a> for that!</p>
+<h2><a class="anchor" id="symptom" href="#symptom"></a>Symptom</h2>
 
-<h3><a class="anchor" id="what-bgp-daemon-should-i-use" href="#what-bgp-daemon-should-i-use"></a>What BGP daemon should I use?</h3>
+<p>With pim6sd you might have stumbled over the following message in your logs: <code>For src [...], iif is [...], next hop router is [...]: NOT A PIM ROUTER</code>. And your multicast routing somehow does not work even though according to your pim6stat output it looks like the correct multicast router was detected via PIM. Or it might have worked in the past and suddenly stopped working.</p>
 
-<p>This is really up to you: that's the magic of open protocols.</p>
+<p>This means that somehow the neighboring router which pim6sd has chosen is another router not capable of multicast routing via PIM. But how can that be, why did pim6sd chose that neighbor in the first place then?</p>
 
-<p>Many users run Bird or FRRouting in a VPS, but there is a variety of BGP implementations in use across the network and some networks even run hardware routers or experimental software. DN42 is a great place to try out and get familiar with your implementation of choice in a live network.</p>
+<h2><a class="anchor" id="background" href="#background"></a>Background</h2>
 
-<h3><a class="anchor" id="can-i-connect-to-dn42-from-home-through-my-isp" href="#can-i-connect-to-dn42-from-home-through-my-isp"></a>Can I connect to DN42 from home through my ISP?</h3>
+<p>One simple cause could be firewall rules filtering some PIM messages. But there can be another issue, which this page will dive into.</p>
 
-<p>Sure. As long as you have a 24/7 connection, can configure VPN tunnels and run BGP then you can connect to DN42. Do let your peers know if you have a dynamic IP address and you may also want to consider preventing transit traffic through your network if you have a relatively slow connection.</p>
+<p>PIM stands for <strong>Protocol Independent</strong> Multicast. Which confusingly does not mean that PIM would be a fully independent protocol… It is actually very dependent on the existence of preestablished unicast routes, so typically quite dependent on another unicast routing protocol. It is only independent of how those unicast routes were established exactly, which metric was used etc. Without unicast routes PIM does not work though. PIM then tries to establish its multicast routing trees via/over those unicast routes (and for PIM-SM in any-source multicast, ASM, mode might even use that to tunnel multicast packets to before a multicast routing tree could be established, to reduce delays or to avoid packet loss).</p>
 
-<p>Many users do use a virtual private server (VPS) for connecting to DN42. A VPS is a relatively cheap option that  is always on and which (typically) provides a faster, more stable connection than your home. VPS have another advantage that if you mess something up, you won't break your home access to the internet.</p>
+<p><strong>This means that for a PIM-SM daemon any unicast route configured in the kernel towards any PIM-SM router in the network must point to a next hop capable of PIM-SM.</strong> Otherwise the incapable next hop router will potentially be a black hole for multicast routing.</p>
 
-<h3><a class="anchor" id="does-the-registry-use-monotone-or-git" href="#does-the-registry-use-monotone-or-git"></a>Does the registry use monotone or git?</h3>
+<h2><a class="anchor" id="examples" href="#examples"></a>Examples</h2>
 
-<p>The DN42 registry used to be maintained in monotone, but was moved to git following resource and performance
-issues. There may still be references back to monotone in some of the documentation, but the registry location is now:</p>
+<h3><a class="anchor" id="example-1" href="#example-1"></a>Example 1</h3>
 
-<p><a href="https://git.dn42.dev/dn42/registry">https://git.dn42.dev/dn42/registry</a></p>
+<p>Nodes R1, R2, R3 are all peering via BGP on dedicated interface to each other. And have established unicast routes to each other through BGP. For PIM-SM all three routers are running a PIM daemon, but somehow PIM was not configured properly on the dedicated interfaces between R1 and R3 (acc. interfaces not added to the PIM daemon, incorrect filter rules, missing kernel multicast flag on these interfaces, …).</p>
 
-<h3><a class="anchor" id="can-i-use-windows-to-clone-and-update-the-registry" href="#can-i-use-windows-to-clone-and-update-the-registry"></a>Can I use Windows to clone and update the registry ?</h3>
+<p>PIM-SM between R1 and R3 will be broken, even though in theory between R1 and R3 via R2 could work.</p>
 
-<p>No. The registry includes IPv6 resources but NTFS does not support having a <code>:</code> in filenames.</p>
+<h3><a class="anchor" id="example-2" href="#example-2"></a>Example 2</h3>
 
-<p>A simple workaround is to use a non-Windows VM to do your changes, or use the <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">Windows Subsystem for Linux</a> when working with the registry.</p>
+<p>Same as example 1 but here multicast routing between R1 and R4 will be broken, as the selected unicast route between R1 and R4 is via R5, but R5 is not running any daemon capable of PIM-SM at all.</p>
 
-<h3><a class="anchor" id="can-i-reuse-my-public-as-number-ipv4-ipv6" href="#can-i-reuse-my-public-as-number-ipv4-ipv6"></a>Can I reuse my public AS number/IPv4/IPv6?</h3>
+<p>Here it is apparent that not only misconfiguration can lead to this unicast vs. multicast routes issue. But also potentially any router in the network which is only capable of a unicast routing protocol while not yet being capable of PIM.</p>
 
-<p>AS number: Yes, see AS206633/AS205532 for example</p>
+<h2><a class="anchor" id="example-3" href="#example-3"></a>Example 3</h2>
 
-<p>IP: Probably no. Globally routable IPs are not supported in DN42; whilst in theory they could be announced, there are filters in place used by almost all networks which prevent that, and some networks will filter traffic to the private DN42 range only to enhance security. It's literally impossible to convince the whole of dn42 to lift those filters.</p>
+<p>In this example R1 and R2 are routers for the same AS. Furthermore they serve several other client devices downstream. Therefore both R1 and R2 announce the same IPv6 /64 subnet for these client devices via BGP. However R1 and R2 have disabled PIM on their downstream interface, they only use MLD downstream while PIM is only used to their upstream routers R3 and R4.</p>
 
-<p>If you'd like to explore dn42 without too many changes to your network, you could announce both IPv6 GUA and ULA addresses to your network. IPv6 has a specified source address selection process which means that a host will always use an ULA address to talk to ULA destinations and a GUA address to talk to GUA destination.</p>
+<p>R3 wants to establish a multicast tree to R1 via PIM. The shortest/"best" path for R3 to R1 according to BGP is R3-&gt;R2(-&gt;R1).</p>
 
-<h3><a class="anchor" id="what-about-ipv6-in-dn42" href="#what-about-ipv6-in-dn42"></a>What about IPv6 in dn42?</h3>
+<p>But because R2 does not talk PIM on the downstream interface it will not forward PIM messages to R1, therefore creating a black hole for multicast.</p>
 
-<p>DN42 supports IPv6 and some users do run IPv6 only networks. DN42 uses the "Unique Local Address" range (ULA, <em>fd00::/8</em>) defined by <a href="https://tools.ietf.org/html/rfc4193">RFC 4193</a>.</p>
+<h2><a class="anchor" id="mitigations" href="#mitigations"></a>Mitigations</h2>
 
-<h3><a class="anchor" id="why-are-you-using-asn-in-the-76100-76199-range" href="#why-are-you-using-asn-in-the-76100-76199-range"></a>Why are you using ASN in the 76100-76199 range?</h3>
+<h3><a class="anchor" id="bgp-multicast-channels" href="#bgp-multicast-channels"></a>BGP multicast channels</h3>
 
-<p>DN42 now uses ASNs in the 4242420000-4242429999 range, but the 76100-76199 range was used historically, and there are still a very small number of networks using legacy ASNs that have not migrated.</p>
+<p>BGP allows using the dedicated BGP channels "IPv4 multicast" and "IPv6 multicast". This does <em>not</em> mean that with these channels BGP would distribute multicast routes. But it allows establishing an alternative unicast topology that is supposed to be dedicated for multicast protocols like PIM. And more notably distinct to the BGP topology used for unicast payload packets.</p>
 
-<p>Previously, DN42 has used a two other ASN ranges:</p>
+<p>This should especially make it easier to avoid the second example. However it does not help in the situation where for instance bird is used for BGP and pim6sd for PIM and the latter crashed at some point in the future. Then even though bird is using the "ipv{4,6} multicast" channel it will not be aware that PIM ceased to work.</p>
 
-<p>We used to assign ASN in the 64600-64855 range, where you would get ASN 64600+X if you had 172.22.X.0/24. Once the address range was extended to include additional blocks, this process was obsoleted. Another issue with the private ASN range 64512-65534 was that other projects are also using it (for instance, Freifunk, Anonet, etc), which can lead to conflicts.</p>
+<h3><a class="anchor" id="only-unicast-host-routes-for-multicast-routers-ipv4-32-ipv6-128" href="#only-unicast-host-routes-for-multicast-routers-ipv4-32-ipv6-128"></a>(Only?) unicast host routes for multicast routers (IPv4: /32, IPv6: /128)</h3>
 
-<p>Prior to using ASNs in the new private ASN range 4200000000-4294967294 (<a href="http://tools.ietf.org/html/rfc6996">RFC6996</a>) Some ASNs were allocated from the <a href="http://www.iana.org/assignments/as-numbers/as-numbers.xhtml">ASN reserved block</a> in the 76100-76199 range.</p>
+<p>On PIM capable routers announce /32 and /128 unicast host routes (in the dedicated BGP IPv4/IPv6 multicast channels?), the unicast address(es) of this specific multicast router. This would especially avoid the issue in example 3, as a /128 for R1 received on R3 via R4 would be more specific and prefered over a /64 received on R3 from R2. Also only announcing and accepting host routes on the BGP IPv4/v6 multicast channels might be sufficient and safer?</p>
 
-<h3><a class="anchor" id="why-can-t-my-docker-containers-connect-to-other-dn42-hosts" href="#why-can-t-my-docker-containers-connect-to-other-dn42-hosts"></a>Why can't my Docker containers connect to other DN42 hosts?</h3>
+<p>ToDo: Verify that for PIM-SM to work properly that unicast routes only to multicast routers are sufficient. That unicast routes to any non-PIM downstream clients are not needed. For PIM-SM in ASM mode this should work as we only need unicast connectivity to PIM-SM capable Rendezvous-Points? Would this also work for SSM?</p>
 
-<p>By default, Docker overlaps with the entire DN42 range and then some. (172.16.0.0/12 == 172.16.0.0 - 172.31.255.255)</p>
+<p>Typically there shouldn't be that many multicast routers for a subnet? So announcing only host routers shouldn't increase overhead that much on a BGP IPv4/v6 multicast channel? But might be a bit "unconventional" to announce such small subnets / host routes via BGP?</p>
 
-<p>In order to prevent this, you need to supply a different subnet range to the Docker daemon. This can be done by creating or updating <code>/etc/docker/daemon.json</code> with something along the following (this will use 192.168.128.0/18 == 192.168.128.0 - 192.168.191.255)
-</p><pre class="highlight"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"default-address-pools"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"base"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.128.0/18"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"size"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">]</span><span class="w">
-</span><span class="p">}</span></code></pre>
-Note, I (@bri / AS4242422825) have only tested this with Docker version 23.0.0, build e92dd87. But it should work with any current version. I don't know how Swarm etc. networking works, this might need additional tweaking for other versions. (Referenced from <a href="https://straz.to/2021-09-08-docker-address-pools/">https://straz.to/2021-09-08-docker-address-pools/</a> and <a href="https://docs.docker.com/network/bridge/">https://docs.docker.com/network/bridge/</a> — I used this to get my <code>thelounge</code> container to connect to hackint.dn42.)
+<h3><a class="anchor" id="watchdog" href="#watchdog"></a>Watchdog?</h3>
 
-<p>Another possible solution is to instead create a config-only docker network covering the DN42 range:
-</p><pre class="highlight"><code>docker network create dn42 <span class="nt">--subnet</span> 172.20.0.0/14 <span class="nt">--config-only</span></code></pre>
-This way Docker won't allocate addresses from this range for its <a href="https://github.com/docker/docs/issues/8663#issuecomment-956438889">default networks</a>.
+<p>Write some watchdog script/daemon which enables/disables/filters BGP exports(/imports?) if it detects that a/no PIM session was established to that neighbor?</p>
 
-<h3><a class="anchor" id="can-i-update-the-wiki" href="#can-i-update-the-wiki"></a>Can I update the wiki?</h3>
+<p>Question: Would there be a chicken &amp; egg situation, or at least (a) small timeframe(s) for potential packetloss? We need unicast routes for PIM a priori, but we want to retract unicast routes if PIM is not established to avoid black holing? Maybe a watchdog would actually need to:</p>
 
-<p>Yes, the wiki can be edited when browsing to <a href="https://wiki.dn42/">wiki.dn42</a>.</p>
+<p>1) Always run PIM on all interfaces to (potential) routers
+2) Initially only accept unicast routes from direct neighbors via BGP (on the IPv4/v6 multicast channel), no unicast routes from multi-hop routers yet
+3) If both BGP and PIM are established to a neighbor: Then start accepting unicast routes via BGP via multi-hop
+4) If PIM to a neighbor times out, retract/filter multi-hop unicast routes via BGP from this neighbor</p>
 
-<p>After you have registered and set up SSH key authentication,
-you can also clone and push to the
-<a href="https://git.dn42.dev/wiki/wiki">git repository</a> directly.</p>
+<h3><a class="anchor" id="roa" href="#roa"></a>ROA?</h3>
+
+<p>Use a dedicated ROA filter database for multicast, (manually? automaticaly?) delete entries of misbehaving nodes?</p>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -359,13 +350,13 @@ you can also clone and push to the
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="FAQ.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="pim-multicast-vs-unicast-issue.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="https://hist.dn42.wiki/gollum/rename/FAQ.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/pim-multicast-vs-unicast-issue.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
