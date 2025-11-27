@@ -224,13 +224,13 @@
 
 <h2><a class="anchor" id="mitigations" href="#mitigations"></a>Mitigations</h2>
 
-<h3><a class="anchor" id="bgp-multicast-channels" href="#bgp-multicast-channels"></a>BGP multicast channels</h3>
+<h3><a class="anchor" id="1-bgp-multicast-channels" href="#1-bgp-multicast-channels"></a>1) BGP multicast channels</h3>
 
 <p>BGP allows using the dedicated BGP channels "IPv4 multicast" and "IPv6 multicast". This does <em>not</em> mean that with these channels BGP would distribute multicast routes. But it allows establishing an alternative unicast topology that is supposed to be dedicated for multicast protocols like PIM. And more notably distinct to the BGP topology used for unicast payload packets.</p>
 
 <p>This should especially make it easier to avoid the second example. However it does not help in the situation where for instance bird is used for BGP and pim6sd for PIM and the latter crashed at some point in the future. Then even though bird is using the "ipv{4,6} multicast" channel it will not be aware that PIM ceased to work.</p>
 
-<h3><a class="anchor" id="only-unicast-host-routes-for-multicast-routers-ipv4-32-ipv6-128" href="#only-unicast-host-routes-for-multicast-routers-ipv4-32-ipv6-128"></a>(Only?) unicast host routes for multicast routers (IPv4: /32, IPv6: /128)</h3>
+<h3><a class="anchor" id="2-only-unicast-host-routes-for-multicast-routers-ipv4-32-ipv6-128" href="#2-only-unicast-host-routes-for-multicast-routers-ipv4-32-ipv6-128"></a>2) (Only?) unicast host routes for multicast routers (IPv4: /32, IPv6: /128)</h3>
 
 <p>On PIM capable routers announce /32 and /128 unicast host routes (in the dedicated BGP IPv4/IPv6 multicast channels?), the unicast address(es) of this specific multicast router. This would especially avoid the issue in example 3, as a /128 for R1 received on R3 via R4 would be more specific and prefered over a /64 received on R3 from R2. Also only announcing and accepting host routes on the BGP IPv4/v6 multicast channels might be sufficient and safer?</p>
 
@@ -238,7 +238,7 @@
 
 <p>Typically there shouldn't be that many multicast routers for a subnet? So announcing only host routers shouldn't increase overhead that much on a BGP IPv4/v6 multicast channel? But might be a bit "unconventional" to announce such small subnets / host routes via BGP?</p>
 
-<h3><a class="anchor" id="watchdog" href="#watchdog"></a>Watchdog?</h3>
+<h3><a class="anchor" id="3-watchdog" href="#3-watchdog"></a>3) Watchdog?</h3>
 
 <p>Write some watchdog script/daemon which enables/disables/filters BGP exports(/imports?) if it detects that a/no PIM session was established to that neighbor?</p>
 
@@ -249,7 +249,7 @@
 3) If both BGP and PIM are established to a neighbor: Then start accepting unicast routes via BGP via multi-hop
 4) If PIM to a neighbor times out, retract/filter multi-hop unicast routes via BGP from this neighbor</p>
 
-<h3><a class="anchor" id="roa" href="#roa"></a>ROA?</h3>
+<h3><a class="anchor" id="4-roa" href="#4-roa"></a>4) ROA?</h3>
 
 <p>Use a dedicated ROA filter database for multicast, (manually? automaticaly?) delete entries of misbehaving nodes?</p>
 
