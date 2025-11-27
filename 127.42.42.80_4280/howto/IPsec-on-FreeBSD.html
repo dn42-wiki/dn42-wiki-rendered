@@ -177,7 +177,77 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="ipsec-on-freebsd" href="#ipsec-on-freebsd"></a>IPsec on FreeBSD</h1>
+
+<p>These instructions are for IPsec in transport mode not IPsec in tunnel mode. IPsec in tunnel mode requires a too tight coupling with the routing table for dynamic routing because the policies can only be specified based on source/destination address and protocol not based on interfaces.</p>
+
+<h2><a class="anchor" id="requirements" href="#requirements"></a>Requirements</h2>
+<ul>
+  <li>Root access to both endpoints.</li>
+  <li>Static IPv4 addresses for both endpoints unless you want to write a small shell script as hook for racoon.</li>
+  <li>At least one static IPv4 on at least one endpoint unless you hate yourself.</li>
+</ul>
+
+<h2><a class="anchor" id="kernel-configuration" href="#kernel-configuration"></a>Kernel configuration</h2>
+<p>The FreeBSD GENERIC kernel lacks support for in-kernel IPsec processing. Add these two lines to your kernel config and (re-)build your own kernel.
+If you're new to FreeBSD, check chapters <a href="http://www.freebsd.org/doc/handbook/ipsec.html">15.9.1</a> and <a href="http://www.freebsd.org/doc/handbook/kernelconfig.html">9</a> of the FreeBSD handbook.
+</p><pre class="highlight"><code><span class="n">options</span>   <span class="n">IPSEC</span>        <span class="c">#IP security
+</span><span class="n">device</span>    <span class="n">crypto</span></code></pre>
+Reboot into your new kernel.
+
+<h2><a class="anchor" id="userland-configuration" href="#userland-configuration"></a>Userland configuration</h2>
+
+<p>Install the racoon daemon. It's included in the <a href="http://www.freshports.org/security/ipsec-tools/">security/ipsec-tools</a> port.
+Racoon is pain in the ass to configure the first time because its error messages aren't helping and the complexity of IPsec. Don't let this stop you.
+</p><pre class="highlight"><code><span class="n">path</span>    <span class="n">pre_shared_key</span>  <span class="s2">"/usr/local/etc/racoon/psk"</span>;
+<span class="n">path</span>    <span class="n">certificate</span>     <span class="s2">"/usr/local/etc/racoon/certs"</span>;
+<span class="n">log</span>     <span class="n">info</span>;
+
+<span class="n">listen</span> {
+        <span class="n">isakmp</span>          <span class="n">a</span>.<span class="n">b</span>.<span class="n">c</span>.<span class="n">d</span> [<span class="m">500</span>];
+        <span class="n">isakmp_natt</span>     <span class="n">a</span>.<span class="n">b</span>.<span class="n">c</span>.<span class="n">d</span> [<span class="m">4500</span>];
+}
+
+<span class="n">padding</span> {
+        <span class="n">strict_check</span>    <span class="n">on</span>;
+}
+
+<span class="n">timer</span> {
+        <span class="n">natt_keepalive</span>   <span class="m">5</span> <span class="n">sec</span>;
+        <span class="n">interval</span>         <span class="m">3</span> <span class="n">sec</span>;
+        <span class="n">phase1</span>          <span class="m">45</span> <span class="n">sec</span>; <span class="c"># give embedded CPUs time to finish RSA operations
+</span>        <span class="n">phase2</span>          <span class="m">45</span> <span class="n">sec</span>;
+}
+
+<span class="n">remote</span> <span class="n">b</span>.<span class="n">c</span>.<span class="n">d</span>.<span class="n">e</span> [<span class="m">500</span>] {
+        <span class="n">exchange_mode</span>           <span class="n">main</span>;
+        <span class="n">proposal_check</span>          <span class="n">strict</span>;
+        <span class="n">my_identifier</span>           <span class="n">asn1dn</span>;
+        <span class="n">peers_identifier</span>        <span class="n">asn1dn</span>;
+        <span class="n">lifetime</span>                <span class="n">time</span> <span class="m">1</span> <span class="n">hour</span>;
+        <span class="n">certificate_type</span>        <span class="n">x509</span> <span class="s2">"self.crt"</span> <span class="s2">"self.key"</span>;
+        <span class="n">peers_certfile</span>          <span class="n">x509</span> <span class="s2">"peer.crt"</span>;
+        <span class="n">ca_type</span>                 <span class="n">x509</span> <span class="s2">"ca.crt"</span>;
+        <span class="n">verify_cert</span>             <span class="n">on</span>;
+        <span class="n">send_cert</span>               <span class="n">off</span>; <span class="c"># neither send
+</span>        <span class="n">send_cr</span>                 <span class="n">off</span>; <span class="c"># nor request a crt to be send
+</span>
+        <span class="n">proposal</span> {
+                <span class="n">encryption_algorithm</span>    <span class="n">aes</span> <span class="m">256</span>;
+                <span class="n">hash_algorithm</span>          <span class="n">sha256</span>;
+                <span class="n">authentication_method</span>   <span class="n">rsasig</span>;
+                <span class="n">dh_group</span>                <span class="n">modp4096</span>;
+        }
+}
+
+<span class="n">sainfo</span> (<span class="n">address</span> <span class="n">a</span>.<span class="n">b</span>.<span class="n">c</span>.<span class="n">d</span> <span class="n">gre</span> <span class="n">address</span> <span class="n">b</span>.<span class="n">c</span>.<span class="n">d</span>.<span class="n">e</span> <span class="n">gre</span>) {
+        <span class="n">pfs_group</span>                       <span class="n">modp4096</span>;
+        <span class="n">lifetime</span>                        <span class="n">time</span> <span class="m">1</span> <span class="n">hour</span>;
+        <span class="n">encryption_algorithm</span>            <span class="n">aes</span> <span class="m">256</span>;
+        <span class="n">authentication_algorithm</span>        <span class="n">hmac_sha1</span>;
+}
+</code></pre>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -188,7 +258,16 @@
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
+    </tr>
+  </tbody>
+</table>
+
 	    </div>
 	  </div>
 
