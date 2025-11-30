@@ -178,92 +178,104 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="issue-pim-multicast-vs-unicast-routes" href="#issue-pim-multicast-vs-unicast-routes"></a>Issue: PIM: Multicast vs. Unicast Routes</h1>
-
-<h2><a class="anchor" id="symptom" href="#symptom"></a>Symptom</h2>
-
-<p>With pim6sd you might have stumbled over the following message in your logs: <code>For src [...], iif is [...], next hop router is [...]: NOT A PIM ROUTER</code>. And your multicast routing somehow does not work even though according to your pim6stat output it looks like the correct multicast router was detected via PIM. Or it might have worked in the past and suddenly stopped working.</p>
-
-<p>This means that somehow the neighboring router which pim6sd (but might happen to another PIM implementation, too?) has chosen is another router not capable of multicast routing via PIM. But how can that be, why did pim6sd choose that neighbor in the first place then?</p>
-
-<h2><a class="anchor" id="background" href="#background"></a>Background</h2>
-
-<p>One simple cause could be firewall rules filtering some PIM messages. But there can be another issue, which this page will dive into.</p>
-
-<p>PIM stands for <strong>Protocol Independent</strong> Multicast. Which confusingly does not mean that PIM would be a fully independent protocol… It is actually very dependent on the existence of preestablished unicast routes, so typically quite dependent on another unicast routing protocol. It is only independent of how those unicast routes were established exactly, which metric was used etc. Without unicast routes PIM does not work though. PIM then tries to establish its multicast routing trees via/over those unicast routes (and for PIM-SM in any-source multicast, ASM, mode might even use that to tunnel multicast packets to before a multicast routing tree could be established, to reduce delays or to avoid packet loss).</p>
-
-<p><strong>This means that for a PIM-SM daemon any unicast route configured in the kernel towards any PIM-SM router in the network must point to a next hop capable of PIM-SM.</strong> Otherwise the incapable next hop router will potentially be a black hole for multicast routing.</p>
-
-<h2><a class="anchor" id="examples" href="#examples"></a>Examples</h2>
-
-<h3><a class="anchor" id="example-1" href="#example-1"></a>Example 1</h3>
-
-<p><img src="../internal/images/pim-multicast-vs-unicast-issue-example1.png" alt="Example 1: 3 routers, link with missing PIM" /></p>
-
-<p>Nodes R1, R2, R3 are all peering via BGP on dedicated interface to each other. And have established unicast routes to each other through BGP. For PIM-SM all three routers are running a PIM daemon, but somehow PIM was not configured properly on the dedicated interfaces between R1 and R3 (acc. interfaces not added to the PIM daemon, incorrect filter rules, missing kernel multicast flag on these interfaces, …).</p>
-
-<p>PIM-SM between R1 and R3 will be broken, even though in theory multicast between R1 and R3 via R2 could work.</p>
-
-<h3><a class="anchor" id="example-2" href="#example-2"></a>Example 2</h3>
-
-<p><img src="../internal/images/pim-multicast-vs-unicast-issue-example2.png" alt="Example 2: 5 routers, 1 router with no PIM" /></p>
-
-<p>Same as example 1 but here multicast routing between R1 and R4 will be broken, as the selected unicast route between R1 and R4 is via R5, but R5 is not running any daemon capable of PIM-SM at all.</p>
-
-<p>Here it is apparent that not only misconfiguration can lead to this unicast vs. multicast routes issue. But also potentially any router in the network which is only capable of a unicast routing protocol while not yet being capable of PIM.</p>
-
-<h3><a class="anchor" id="example-3" href="#example-3"></a>Example 3</h3>
-
-<p><img src="../internal/images/pim-multicast-vs-unicast-issue-example3.png" alt="Example 3: Multiple multicast routers on subnet, but no PIM on downstream interface" /></p>
-
-<p>In this example R1 and R2 are routers for the same AS. Furthermore they serve several other client devices downstream. Therefore both R1 and R2 announce the same IPv6 /64 subnet for these client devices via BGP. However R1 and R2 have disabled PIM on their downstream interface, they only use MLD downstream while PIM is only used to their upstream routers R3 and R4.</p>
-
-<p>R3 wants to establish a multicast tree to R1 via PIM. The shortest/"best" path for R3 to R1 according to BGP is R3-&gt;R2(-&gt;R1).</p>
-
-<p>But because R2 does not talk PIM on the downstream interface it will not forward PIM messages to R1, therefore creating a black hole for multicast.</p>
-
-<h2><a class="anchor" id="mitigations" href="#mitigations"></a>Mitigations</h2>
-
-<h3><a class="anchor" id="1-bgp-multicast-channels" href="#1-bgp-multicast-channels"></a>1) BGP multicast channels</h3>
-
-<p>BGP allows using the dedicated BGP channels "IPv4 multicast" and "IPv6 multicast". This does <em>not</em> mean that with these channels BGP would distribute multicast routes. But it allows establishing an alternative unicast topology that is supposed to be dedicated for multicast protocols like PIM. And more notably distinct to the BGP topology used for unicast payload packets.</p>
-
-<p>This should especially make it easier to avoid the second example. However it does not help in the situation where for instance bird is used for BGP and pim6sd for PIM and the latter crashed at some point in the future. Then even though bird is using the "ipv{4,6} multicast" channel it will not be aware that PIM ceased to work.</p>
-
-<h3><a class="anchor" id="2-only-unicast-host-routes-for-multicast-routers-ipv4-32-ipv6-128" href="#2-only-unicast-host-routes-for-multicast-routers-ipv4-32-ipv6-128"></a>2) (Only?) unicast host routes for multicast routers (IPv4: /32, IPv6: /128)</h3>
-
-<p>On PIM capable routers announce /32 and /128 unicast host routes (in the dedicated BGP IPv4/IPv6 multicast channels?), the unicast address(es) of this specific multicast router. This would especially avoid the issue in example 3, as a /128 for R1 received on R3 via R4 would be more specific and prefered over a /64 received on R3 from R2. Also only announcing and accepting host routes on the BGP IPv4/v6 multicast channels might be sufficient and safer?</p>
-
-<p>ToDo: Verify that for PIM-SM to work properly that unicast routes only to multicast routers are sufficient. That unicast routes to any non-PIM downstream clients are not needed. For PIM-SM in ASM mode this should work as we only need unicast connectivity to PIM-SM capable Rendezvous-Points? Would this also work for SSM?</p>
-
-<p>Typically there shouldn't be that many multicast routers for a subnet? So announcing only host routers shouldn't increase overhead that much on a BGP IPv4/v6 multicast channel? But might be a bit "unconventional" to announce such small subnets / host routes via BGP?</p>
-
-<h3><a class="anchor" id="3-watchdog" href="#3-watchdog"></a>3) Watchdog?</h3>
-
-<p>Write some watchdog script/daemon which enables/disables/filters BGP exports(/imports?) if it detects that a/no PIM session was established to that neighbor?</p>
-
-<p>Question: Would there be a chicken &amp; egg situation, or at least (a) small timeframe(s) for potential packetloss? We need unicast routes for PIM a priori, but we want to retract unicast routes if PIM is not established to avoid black holing? Maybe a watchdog would actually need to:</p>
-
-<p>1) Always run PIM on all interfaces to (potential) routers
-2) Initially only accept unicast routes from direct neighbors via BGP (on the IPv4/v6 multicast channel), no unicast routes from multi-hop routers yet
-3) If both BGP and PIM are established to a neighbor: Then start accepting unicast routes via BGP via multi-hop
-4) If PIM to a neighbor times out, retract/filter multi-hop unicast routes via BGP from this neighbor</p>
-
-<h3><a class="anchor" id="4-roa" href="#4-roa"></a>4) ROA?</h3>
-
-<p>Use a dedicated ROA filter database for multicast, (manually? automaticaly?) delete entries of misbehaving nodes?</p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
-	          <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	          <ul>
+  <li>
+<a href="../Home.html" rel="nofollow">Home</a>
+    <ul>
+      <li><a href="Getting-Started.html" rel="nofollow">Getting Started</a></li>
+      <li><a href="Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+      <li><a href="Address-Space.html" rel="nofollow">Address Space</a></li>
+      <li><a href="BGP-communities.html" rel="nofollow">BGP communities</a></li>
+      <li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
+    </ul>
+  </li>
+  <li>How-To
+    <ul>
+      <li><a href="wireguard.html" rel="nofollow">Wireguard</a></li>
+      <li><a href="openvpn.html" rel="nofollow">Openvpn</a></li>
+      <li><a href="IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+      <li><a href="tinc.html" rel="nofollow">Tinc</a></li>
+      <li><a href="GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+      <li><a href="GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+      <li><a href="IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+      <li><a href="multicast.html" rel="nofollow">SSM Multicast</a></li>
+      <li><a href="mpls.html" rel="nofollow">MPLS</a></li>
+      <li><a href="Bird2.html" rel="nofollow">Bird2</a></li>
+      <li><a href="frr.html" rel="nofollow">FRRouting</a></li>
+      <li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+      <li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+      <li><a href="EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+      <li><a href="Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+      <li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+      <li><a href="vyos1.4.html" rel="nofollow">VyOS</a></li>
+      <li><a href="nixos.html" rel="nofollow">NixOS</a></li>
+    </ul>
+  </li>
+  <li>Services
+    <ul>
+      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="../services/RPKI.html" rel="nofollow">RPKI</a></li>
+      <li><a href="../services/IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="../services/Registry.html" rel="nofollow">Registry</a></li>
+    </ul>
+  </li>
+  <li>Internal
+    <ul>
+      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+    </ul>
+  </li>
+  <li>Historical
+    <ul>
+      <li><a href="../historical/Bird.html" rel="nofollow">Bird 1</a></li>
+      <li><a href="../historical/Quagga.html" rel="nofollow">Quagga</a></li>
+    </ul>
+  </li>
+  <li>External Tools
+    <ul>
+      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+      <li><a href="https://hedgedoc.dn42.eu/" rel="nofollow">HedgeDoc</a></li>
+      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+      <li><a href="https://git.dn42.dev/dn42/registry" rel="nofollow">Registry</a></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+
 	        </div>
 	      </div>
 	    </div>
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
+    </tr>
+  </tbody>
+</table>
+
 	    </div>
 	  </div>
 
