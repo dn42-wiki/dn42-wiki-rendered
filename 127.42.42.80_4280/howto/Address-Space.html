@@ -171,100 +171,13 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>DN42 uses network addresses in the <a href="https://tools.ietf.org/html/rfc1918">rfc1918</a> and <a href="https://tools.ietf.org/html/rfc4193">ULA</a> ranges. These are described in detail within the sections below.</p>
-
-<p>The <a href="https://git.dn42.dev/dn42/registry">DN42 registry</a> is the authoritative source of information on address space assignment. Within the registry, the DN42 address space is divided into blocks based on <em>policies</em> that define how the addresses may be used. Policies are defined in <code>inetnum</code> and <code>inet6num</code> objects and can be:</p>
-
-<ul>
-  <li>
-<strong>open</strong> - users may request prefixes in this range, subject to any constraints that are described in the <code>remark</code> attributes</li>
-  <li>
-<strong>closed</strong> - these ranges cannot be assigned</li>
-  <li>
-<strong>reserved</strong> - these ranges are reserved for future use</li>
-  <li>
-<strong>ask</strong> - these ranges are for specific uses, please ask on the mailing list before requesting assignments</li>
-</ul>
-
-<p>A simple way to see all the active policies in the registry is to search the registry content for policy attributes:</p>
-
-<pre class="highlight"><code><span class="nb">grep</span> <span class="nt">-r</span> ^policy data/inet<span class="o">{</span>,6<span class="o">}</span>num/</code></pre>
-
-<p>The <a href="https://git.dn42.dev/dn42/registry/src/master/data/filter.txt">filter.txt</a> and <a href="https://git.dn42.dev/dn42/registry/src/master/data/filter6.txt">filter6.txt</a> files within the registry detail the network wide constraints on what address ranges are in use together with the global limits on what can be announced.</p>
-
-<p><code>inetnum</code> and <code>inet6num</code> objects within the registry are used to describe the allocation of address space to users. <code>route</code> and <code>route6</code> objects in the registry are used to validate routing announcements through <a href="Bird2.html#route-origin-authorization">ROA</a>.</p>
-
-<p>In addition to the native DN42 address ranges, the registry also contains allocations for the address space used by affiliate networks. These are updated by a regular <a href="https://git.dn42.dev/dn42/registry-sync">sync script</a>.</p>
-
-<p>Globally routable prefixes are not supported in DN42; they are denied via the registry filter{6,}.txt files and many networks will filter both announcements and traffic for prefixes that are outside of the allowable ranges.</p>
-
-<h1><a class="anchor" id="ipv6-address-space" href="#ipv6-address-space"></a>IPv6 Address Space</h1>
-
-<p>DN42 uses the fd00::/8 ULA range for IPv6 addresses. Apart from a block of addresses reserved for anycast (fd42:d42:d42::/48), the whole fd00::/8 block has an open policy and users are free to request any prefix in this range, that is not already allocated.</p>
-
-<p><strong>The DN42 registry is not authoritative for the fd00::/8 range</strong></p>
-
-<p>DN42 is interconnected with other networks, like icvpn, which also use the same ULA range and many users will also use this range for their own networks. A registration in the dn42 registry cannot prevent IPv6 conflicts, so a fully random prefix (see <a href="https://tools.ietf.org/html/rfc4193">RFC4193</a>) is strongly recommended. If an address conflict is found, then needing to renumber your network is no fun.</p>
-
-<h1><a class="anchor" id="ipv4-address-space" href="#ipv4-address-space"></a>IPv4 Address Space</h1>
-
-<p>DN42 uses the 172.20.0.0/14 range for IPv4 addresses. As with the public internet, IPv4 space is more limited and users are encouraged to conserve space where possible. A typical assignment in DN42 is a /27 and any requests for assignments larger than /24 must provide justification.</p>
-
-<p>Unlike the IPv6 address space, the DN42 IPv4 space is not fully open for assignment to users; some ranges are intended for specific uses and other ranges are reserved. See the policy section, below. Users should always check the policy in the registry before requesting a prefix to be assigned.</p>
-
-<p>There are other IPv4 ranges in use within DN42 related to the affiliate networks, see the <a href="https://git.dn42.dev/dn42/registry/src/master/data/filter.txt">filter.txt</a> file in the registry.</p>
-
-<h2><a class="anchor" id="ipv4-policies" href="#ipv4-policies"></a>IPv4 Policies</h2>
-
-<p>The diagram below shows the allocation policies for the DN42 address space.</p>
-
-<p><img src="images/PolicyMap.png" alt="Policy Map Image" /></p>
-
-<p>Specific policy restrictions:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Prefix</th>
-      <th>Usage</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>172.20.0.0/24<br />172.21.0.0/24<br />172.22.0.0/24<br />172.23.0.0/24</td>
-      <td>Reserved for anycast addresses</td>
-    </tr>
-    <tr>
-      <td>172.20.240.0/20<br />172.22.240.0/20</td>
-      <td>Reserved for transfer networks</td>
-    </tr>
-    <tr>
-      <td>172.20.64.0/18</td>
-      <td>Reserved for allocations larger than /23, up to /21</td>
-    </tr>
-    <tr>
-      <td>172.22.0.0/18</td>
-      <td>Reserved for allocations of /24 or larger, up to /21</td>
-    </tr>
-    <tr>
-      <td>172.23.16.0/21</td>
-      <td>Closed to new allocations</td>
-    </tr>
-    <tr>
-      <td>172.21.0.0/18<br />172.21.128.0/17<br />172.22.192.0/18</td>
-      <td>Reserved for future use</td>
-    </tr>
-  </tbody>
-</table>
-
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">

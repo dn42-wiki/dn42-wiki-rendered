@@ -178,73 +178,7 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>After frequent issues with the <a href="Old-Hierarchical-DNS.html">Old Hierarchical DNS</a> system in early 2018, work has started to build a new and more reliable DNS system. The main goals are:</p>
-<ul>
-  <li>Reliability and Consistency to avoid debugging very obscure issues that are also hard to reproduce.</li>
-  <li>Low maintenance burden on operators.</li>
-  <li>Proper DNSSEC support for everything.</li>
-</ul>
-
-<h1><a class="anchor" id="end-users" href="#end-users"></a>End Users</h1>
-<p>It is <strong>strongly recommended</strong> to run your own resolver for security and privacy reasons. Setting it up and maintaining it should be easy, see <a href="dns/Configuration.html">services/dns/Configuration</a>.</p>
-
-<p>If running your own resolver is not possible or desirable, you can choose one or more instances from <a href="https://git.dn42.dev/dn42/registry/src/master/data/dns/recursive-servers.dn42">dns/recursive-servers.dn42 in the registry</a>. Please make sure you fully understand the consequences and fully trust these operators.</p>
-
-<p>You can also use the globally anycasted a.recursive-servers.dn42 but you won't have any control over which instance you get. This is a <strong>very bad idea</strong> from a security standpoint.</p>
-
-<h1><a class="anchor" id="instances" href="#instances"></a>Instances</h1>
-<p>The new DNS system has two different components:</p>
-<ul>
-  <li>*.recursive-servers.dn42 and local resolvers responsible for handling queries from clients, validating DNSSEC and directing the queries at clearnet/dn42/ICVPN.</li>
-  <li>*.delegation-servers.dn42 and *.master.delegation-servers.dn42 are a normal master-slave setup for providing the few official infrastructural zones.</li>
-</ul>
-
-<h2><a class="anchor" id="recursive-servers-dn42" href="#recursive-servers-dn42"></a>*.recursive-servers.dn42</h2>
-<p>These are simple resolvers capable of resolving dn42 domains. Every operator gets a single letter name pointing to addresses assigned from their own address space and is strongly encouraged to use anycasting across multiple nodes to improve reliability. There is also the global anycast a.recursive-servers.dn42 which includes some/all other instances. Whether an *.recursive-servers.dn42 can resolve clearnet queries or not is decided by its operator but all a.recursive-servers.dn42 instances MUST resolve clearnet queries correctly. It is explicitly not supported to use clearnet nservers for dn42 zones and dn42 nservers for clearnet zones.</p>
-
-<h2><a class="anchor" id="delegation-servers-dn42" href="#delegation-servers-dn42"></a>*.delegation-servers.dn42</h2>
-<p>These are simple authoritative servers for the dn42 zone, rDNS and a few DNS infrastructure zones. Every operator gets a single letter name pointing to addresses assigned from their own address space and is strongly encouraged to use anycasting across multiple nodes to improve reliability. There is no anycast instance because that would make debugging much harder and *.recursive-servers.dn42 instances should do loadbalancing/failover across all instances listed in the registry.</p>
-
-<h2><a class="anchor" id="master-delegation-servers-dn42" href="#master-delegation-servers-dn42"></a>*.master.delegation-servers.dn42</h2>
-<p>These instances do not serve any clients. They poll the registry regularly and rebuild and resign (DNSSEC) the zones as needed. If any zone changes, all *.delegation-servers.dn42 instances are notified (<a href="https://tools.ietf.org/html/rfc1996">RFC1996</a>) which then load the new zone data over AXFR (<a href="https://tools.ietf.org/html/rfc5936">RFC5936</a>). The pool of masters is intentionally kept very small because of its much higher coordination needs and also the lacking support of a multi-master mode in many authoritative server implementations. The masters are only reachable over dedicated IPv6 assignments which are set up in a way that any master operator can hijack the address of a problematic master without having to wait for its operator to fix something.</p>
-
-<h1><a class="anchor" id="running-your-own-instances" href="#running-your-own-instances"></a>Running your own instances</h1>
-<ul>
-  <li>If you want to run your own instances, make sure you are subscribed to the <a href="../contact.html">mailinglist</a>. It is also strongly recommended to join #dn42-dns@hackint. All changes are announced to the mailinglist but IRC makes debugging sessions much easier.</li>
-  <li>Choose the implementation(s) you want to use. It should support at least AXFR+NOTIFY (<em>.delegation-servers.dn42) or DNSSEC (</em>.recursive-servers.dn42).</li>
-  <li>Check if <a href="../TODO.html">TODO</a> already has configuration snippets for your implementation.
-    <ul>
-      <li>If yes, download it from there and include it in the main configuration.</li>
-      <li>If not, then join us in #dn42-dns@hackint so we can add it together.</li>
-    </ul>
-  </li>
-  <li>Verify that everything works:
-    <ul>
-      <li>For *.delegation-servers.dn42: Do an AXFR against all zones and compare with the result of an existing instance. The result should be identical.</li>
-      <li>For *.recursive-servers.dn42: Query clearnet, dn42 and ICVPN domains including rDNS. Make sure that both signed and unsigned domains work properly.</li>
-    </ul>
-  </li>
-  <li>(Optional) Choose your single letter name and ask in #dn42-dns@hackint to get it added to the registry. Once added to the list, you must implement changes announced to the mailinglist within a week (faster is obviously better) or you might get removed again. We try to keep maintenance work as low as possible but we can't do it without the cooperation of all operators!</li>
-</ul>
-
-<h1><a class="anchor" id="monitoring" href="#monitoring"></a><a href="https://grafana.burble.com/d/E4iCaHoWk/dn42-dns-status?orgId=1&amp;refresh=1m">Monitoring</a></h1>
-<p>burble is providing monitoring for the new DNS system. It does simple checks on all instances every minute and also logs all changes into #dn42-dns@hackint.</p>
-
-<p>Also, gatuno provides another simple <a href="http://gatuno.dn42/dns/">dns checker for all the top level domains</a> in the registry. If you want to check whatever a domain is resolving or not, this tool may be useful. The tool gets in sync with the registry every 12 hours. You can schedule checks for any domain.</p>
-
-<h1><a class="anchor" id="dnssec" href="#dnssec"></a>DNSSEC</h1>
-<p>There are currently two KSKs managed by BURBLE-MNT and JRB0001-MNT. They are used once per quarter to sign the DNSKEY RRset. Each master operator has one ZSK which is used to sign the zones (except for the DNSKEY RRset). This setup leads to bigger responses but allows each KSK holder to solve emergencies independently. The signatures of the DNSKEY RRset are valid until the end of the first month of the next quarter to give enough time for coordinating the next signing. All other signatures are valid for 3 days and replaced at least once per day.</p>
-
-<p>The set of valid KSKs can be found in the registry.</p>
-
-<h1><a class="anchor" id="see-also" href="#see-also"></a>See also</h1>
-
-<ul>
-  <li><a href="DNS.html">DNS Quick Start</a></li>
-  <li><a href="Old-Hierarchical-DNS.html">Old Hierarchical DNS</a></li>
-  <li><a href="Original-DNS-(deprecated).html">Original DNS (deprecated)</a></li>
-</ul>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -332,7 +266,16 @@
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
+    </tr>
+  </tbody>
+</table>
+
 	    </div>
 	  </div>
 
