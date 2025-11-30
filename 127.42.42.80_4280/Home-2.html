@@ -176,7 +176,95 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h2><a class="anchor" id="about-dn42" href="#about-dn42"></a>About dn42</h2>
+
+<p>dn42 is a big dynamic <a href="https://en.wikipedia.org/wiki/Virtual_private_network">VPN</a>, which employs Internet technologies (<a href="https://en.wikipedia.org/wiki/Bgp">BGP</a>, whois database, <a href="https://en.wikipedia.org/wiki/Domain_Name_System">DNS</a>, etc).  Participants connect to each other using network tunnels (<a href="howto/GRE-on-FreeBSD.html">GRE</a>, <a href="howto/openvpn.html">OpenVPN</a>, <a href="howto/wireguard.html">WireGuard</a>, <a href="howto/tinc.html">Tinc</a>, <a href="howto/IPsec-with-PublicKeys.html">IPsec</a>) and exchange routes thanks to the Border Gateway Protocol.  Network addresses are assigned in the <code>172.20.0.0/14</code> range and private AS numbers are used (see <a href="services/Whois.html">registry</a>) as well as IPv6 addresses from the ULA-Range (<code>fd00::/8</code>) - see <a href="FAQ.html#frequently-asked-questions_what-about-ipv6-in-dn42">FAQ</a>.</p>
+
+<p>A number of services are provided on the network: see <a href="internal/Internal-Services.html">internal</a> (only available from within dn42).  Also, dn42 is interconnected with other networks, such as <a href="http://wiki.hamburg.ccc.de/ChaosVPN">ChaosVPN</a> or some <a href="https://en.wikipedia.org/wiki/Freifunk">Freifunk</a> networks.</p>
+
+<p>Still have questions? We have  <a href="FAQ.html">FAQs</a> listed.</p>
+
+<h2><a class="anchor" id="why-dn42" href="#why-dn42"></a>Why dn42?</h2>
+
+<p>dn42 can be used to learn networking and to connect private networks, such as hackerspaces or community networks. But above all, experimenting with routing in dn42 is fun!</p>
+
+<h3><a class="anchor" id="experiment-with-routing-technology" href="#experiment-with-routing-technology"></a>Experiment with routing technology</h3>
+
+<p>Participating in dn42 is primarily useful for learning routing technologies such as BGP, using a reasonably large network (&gt; 1500 AS, &gt; 1700 prefixes).</p>
+
+<p>Since dn42 is very similar to the Internet, it can be used as a hands-on testing ground for new ideas, or simply to learn real networking stuff that you probably can't do on the Internet (BGP multihoming, transit).  The biggest advantage when compared to the Internet: if you break something in the network, you won't have any big network operator yelling angrily at you.</p>
+
+<h3><a class="anchor" id="connect-hackerspaces" href="#connect-hackerspaces"></a>Connect hackerspaces</h3>
+
+<p>dn42 is also a great way to connect hacker spaces in a secure way, so that they can provide services to each other.</p>
+
+<p>Have you ever wanted to SSH on your Raspberry Pi hosted at your local hacker space and had trouble doing so because of NAT? If your hacker space was using dn42, it could have been much easier.</p>
+
+<p>Nowadays, most end-user networks use <a href="https://en.wikipedia.org/wiki/Network_address_translation">NAT</a> to squeeze all those nifty computing devices behind a single public IPv4 address.  This makes it difficult to provide services directly from a machine behind the NAT.  Besides, you might want to provide some services to other hackerspaces, but not to anybody on the Internet.</p>
+
+<p>dn42 solves this problem.  By addressing your network in dn42, your devices can communicate with all other participants in a transparent way, without resorting to this ugly thing called NAT.  Of course, this doesn't mean that you have to fully open your network to dn42: similarly to IPv6, you can still use a firewall (but you could, for instance, allow incoming TCP 22 and TCP 80 from dn42 by default).</p>
+
+<p>If your hackerspace is actually using dn42 to provide some services, please let us know! (on this wiki or on the mailing list). It's very rewarding when the network is actually used for something :)</p>
+
+<h2><a class="anchor" id="join-or-contact-us" href="#join-or-contact-us"></a>Join or Contact us</h2>
+
+<p>dn42 is operated by a group of volunteers. There is no central authority which controls or represents the network. Take a look at the <a href="contact.html">contact</a> page to see how to collaborate or contact us.</p>
+
+<p>The <a href="howto/Getting-Started.html">Getting started</a> page helps you to get your first node inside the network.</p>
+
+<h2><a class="anchor" id="external-resources-about-dn42" href="#external-resources-about-dn42"></a>External resources about dn42</h2>
+
+<ul>
+  <li><a href="https://en.wikipedia.org/wiki/Decentralized_network_42">Wikipedia about dn42</a></li>
+  <li><a href="https://fahrplan.events.ccc.de/congress/2009/Fahrplan/events/3504.en.html">Lecture on 26c3</a></li>
+  <li><a href="https://entropia.de/GPN8:dn42">Lecture on GPN8</a></li>
+  <li><a href="http://nowhere.ws/guides/dn42/">nobody about dn42</a></li>
+  <li><a href="https://web.archive.org/web/20090831211324/http://mrmcd0x8.metarheinmain.de/fahrplan/events/3321.de.html">Lecture on mrmcd0x8</a></li>
+  <li><a href="https://wiki.hackerspaces.org/Category:DN42">dn42-category in hackerspaces.org wiki</a></li>
+  <li><a href="https://www.c3d2.de/news/pentaradio24-20150428.html">pentaradio24 – german podcast</a></li>
+  <li><a href="http://sandbox.freertr.org/">dn42 in your browser</a></li>
+  <li><a href="http://portable.freertr.org/">dn42 in your terminal</a></li>
+</ul>
+
+<h2><a class="anchor" id="participant-groups" href="#participant-groups"></a>Participant Groups</h2>
+
+<ul>
+  <li><a href="http://spaceboyz.net/">SpaceBoyz</a></li>
+  <li><a href="https://aachen.ccc.de/">CCC Aachen (German)</a></li>
+  <li><a href="http://ccchb.de/">CCC Bremen (German)</a></li>
+  <li><a href="http://darmstadt.ccc.de/">CCC Darmstadt (German)</a></li>
+  <li><a href="http://c3d2.de/">CCC Dresden (German)</a></li>
+  <li><a href="https://www.chaosdorf.de/">CCC Düsseldorf (German)</a></li>
+  <li><a href="https://www.muc.ccc.de/">CCC Munich (German)</a></li>
+  <li><a href="https://chaoschemnitz.de/">Chaostreff Chemnitz (German)</a></li>
+  <li><a href="https://dev.0l.de/">/dev/nulll</a></li>
+  <li><a href="http://freifunk.net/">freifunk (German)</a></li>
+  <li><a href="https://www.noname-ev.de/">NoName e.V. Heidelberg (German)</a></li>
+  <li><a href="http://www.raumzeitlabor.de/">raumzeitlabor/hackerspace rhein-neckar (German)</a></li>
+  <li><a href="http://hackerspace.be/">Hackerspace Brussels (HSB)</a></li>
+  <li><a href="https://hsmr.cc/">[hsmr] / Hackspace Marburg (German)</a></li>
+  <li><a href="http://www.0x20.be/">Whitespace (0x20)</a></li>
+  <li><a href="http://www.revspace.nl/">Revelation Space (Dutch)</a></li>
+  <li><a href="https://www.os3.nl/">SNE group</a></li>
+  <li><a href="http://www.smrsh.net/">smrsh</a></li>
+  <li><a href="http://wiki.breizh-entropy.org/wiki/DN42">Breizh-Entropy (French)</a></li>
+  <li><a href="https://www.ffdn.org/">Fédération FDN (French)</a></li>
+  <li><a href="https://leloop.org/">Le LOOP (French)</a></li>
+  <li><a href="https://hackerspace-bielefeld.de/">Hackerspace Bielefeld (German)</a></li>
+  <li><a href="https://dn42.fixmix.tech/">fixmix Technologies Ltd</a></li>
+  <li><a href="https://strexp.net/">Strategic Explorations Ltd</a></li>
+  <li>
+<a href="perchnet.html">perchnet</a> (VPS donated by <a href="https://evolution-host.com/">Evolution Host</a>)</li>
+</ul>
+
+<h2><a class="anchor" id="about-this-wiki" href="#about-this-wiki"></a>About this wiki</h2>
+
+<p>This wiki is the main reference about dn42.  It is available in read-only mode from the Internet <a href="https://wiki.dn42.us/">here</a> or <a href="https://dn42.dev/">here</a> or <a href="https://dn42.pp.ua/">here</a> or <a href="https://dn42.eu/">here</a> or <a href="https://dn42.wiki/">here</a> or <a href="https://dn42.cc/">here</a> or <a href="https://dn42.de/">here (v6 only)</a> and for editing from within dn42, at <a href="https://wiki.dn42/">https://wiki.dn42</a> - <a href="services/Certificate-Authority.html">https</a> required for editing.</p>
+
+<h3><a class="anchor" id="dn42-logo" href="#dn42-logo"></a>DN42 Logo</h3>
+
+<p>An svg of the DN42 Logo is available <a href="dn42.svg">here</a>.</p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
