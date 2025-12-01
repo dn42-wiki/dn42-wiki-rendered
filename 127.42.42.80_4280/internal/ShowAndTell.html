@@ -178,7 +178,182 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="dn42-show-and-tell" href="#dn42-show-and-tell"></a>dn42 Show and Tell</h1>
+
+<p>Let us know the most creative, best, strangest, complex, wierd or just plain fun setups that you've created with dn42.</p>
+
+<p>Document your mad setups in the categories below, with links to a full write up, photos and screenshots welcome.</p>
+
+<h2><a class="anchor" id="things-peered-into-dn42" href="#things-peered-into-dn42"></a>Things peered into dn42</h2>
+<ul>
+  <li>Fun devices peered into dn42,</li>
+  <li>Or fun ways to connect them</li>
+  <li>The thing must be running BGP and connected into dn42 as a full dynamic peer</li>
+</ul>
+
+<p><em>Examples</em>:</p>
+<ul>
+  <li>Fun with virtualisation
+    <ul>
+      <li>peer into dn42 from your browser</li>
+      <li>Emulate some old bgp capable hardware</li>
+    </ul>
+  </li>
+  <li>Fun with hardware
+    <ul>
+      <li>obsolete routers you still have in your garage/loft/basement</li>
+      <li>shiny new hardware that you need to 'test' for work</li>
+    </ul>
+  </li>
+  <li>Fun with networks
+    <ul>
+      <li>fast networks (100G+), slow networks (UART), strange networks (IP over dns/usb/etc)</li>
+      <li>Wired: Token Ring/X.25/ATM/ISDN etc (encapsulation allowed, but bonus points for real physical networks)</li>
+      <li>Wireless: dn42 via microwave/laser/satellite</li>
+    </ul>
+  </li>
+</ul>
+
+<p><em>… your stuff goes here</em></p>
+
+<h2><a class="anchor" id="things-attached-to-dn42" href="#things-attached-to-dn42"></a>Things attached to dn42</h2>
+<ul>
+  <li>The thing must be pingable from dn42</li>
+  <li>Bonus points if you can access the wiki from it</li>
+  <li>Double bonus, the device was able to add or edit its own entry on this page</li>
+  <li>Static routing, protocol encapsulation and virtualisation allowed</li>
+</ul>
+
+<p><em>Examples</em>:</p>
+<ul>
+  <li>Fun with virtualisation
+    <ul>
+      <li>connect using an obscure or obsolete operating system</li>
+    </ul>
+  </li>
+  <li>Fun with hardware
+    <ul>
+      <li>Microprocessors (ESP32, Arduino, Pico etc) or FPGAs</li>
+      <li>Connect your phone, watch, tv, clock, washing machine etc</li>
+    </ul>
+  </li>
+</ul>
+
+<p><em>… your stuff goes here</em></p>
+
+<hr />
+
+<ul>
+  <li>Retro dn42 access service by Burble</li>
+  <li>
+    <p>burble.dn42 provides a <a href="https://dn42.burble.com/retro/">dn42 dialup service</a> using real modems over VOIP, together with a <a href="https://dn42.burble.com/retro/fake/">modem emulator</a> to ease attaching retro computers or virtual machines into dn42</p>
+  </li>
+  <li>
+    <p>04dco: At a maximum theoretical speed of a whopping 28.8 Kbps, web browsing and IRC chatting were done. My site still loads faster than everyone else's :)</p>
+
+    <p><img src="images/ircdun.png" alt="Screenshot of Windows XP while chatting on a familiar client" /></p>
+  </li>
+  <li>
+    <p>grawity: Lacking a physical modem, configured VirtualBox to attach the Windows 98 serial port to a TCP modem emulator at dialup.burble.dn42. Listening to a shoutcast stream of local FM radio station.</p>
+
+    <p><img src="images/win98dun.png" alt="Screenshot of Win98 showing &quot;Connection Established&quot;" /></p>
+  </li>
+  <li>
+    <p>jlu5: a Windows Server running BGP and receiving dn42 routes! (<a href="https://jlu5.com/blog/bgp-dn42-windows-server">Full writeup here</a>)</p>
+
+    <p><img src="images/gobgp-windows.png" alt="GoBGP and route table output on Windows" /></p>
+  </li>
+  <li>
+    <p>mdr: An 8-bit Sinclair ZX Spectrum with Spectranet card fitted connecting to my TNFS server over DN42. Emulator in a web browser also available at <a href="https://speccy.mdr.dn42/">https://speccy.mdr.dn42</a> - sort of like an old-school BBS system with games, message wall, user accounts etc.</p>
+
+    <p><img src="https://share.markround.com/speccy1.jpg" alt="ZX Spectrum connecting to DN24 service" /></p>
+  </li>
+</ul>
+
+<h2><a class="anchor" id="things-that-use-dn42" href="#things-that-use-dn42"></a>Things that use dn42</h2>
+<ul>
+  <li>Fun stuff that you've done with dn42</li>
+</ul>
+
+<p><em>Examples</em>:</p>
+<ul>
+  <li>Fun with hardware
+    <ul>
+      <li>home automation or IoT over dn42</li>
+    </ul>
+  </li>
+  <li>Fun with networking
+    <ul>
+      <li>Unique or obscure network and routing protocols</li>
+    </ul>
+  </li>
+</ul>
+
+<p><em>… your stuff goes here</em></p>
+
+<hr />
+
+<ul>
+  <li>Hardware Random Number Generator by Kioubit</li>
+  <li>A raspberry pi was connected to a random number source and random bytes offered via dn42. The raspberry pi is running a custom server to take requests via a simple HTTPS API and interface with the device.</li>
+</ul>
+
+<h2><a class="anchor" id="achievements" href="#achievements"></a>Achievements</h2>
+<p>Add what you did in/for dn42, yet:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left;">Who</th>
+      <th style="text-align:left;">#peerings</th>
+      <th style="text-align:left;">Bandwidth</th>
+      <th style="text-align:left;">DNS</th>
+      <th style="text-align:left;">Fileserver</th>
+      <th style="text-align:left;">Network service</th>
+      <th style="text-align:left;">Website</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left;">allo</td>
+      <td style="text-align:left;">7</td>
+      <td style="text-align:left;">1 GBit/s</td>
+      <td style="text-align:left;">auth. only</td>
+      <td style="text-align:left;">no</td>
+      <td style="text-align:left;">no</td>
+      <td style="text-align:left;">yes</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">stv0g</td>
+      <td style="text-align:left;">8</td>
+      <td style="text-align:left;">1 GBit/s</td>
+      <td style="text-align:left;">no</td>
+      <td style="text-align:left;">no</td>
+      <td style="text-align:left;">no</td>
+      <td style="text-align:left;"><a href="https://dev.0l.dn42/">yes</a></td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">fsteinel</td>
+      <td style="text-align:left;">2</td>
+      <td style="text-align:left;">2 MBit/s</td>
+      <td style="text-align:left;">auth. only</td>
+      <td style="text-align:left;">no</td>
+      <td style="text-align:left;">no</td>
+      <td style="text-align:left;"><a href="http://www.flonet.dn42/">yes</a></td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">haksrpd</td>
+      <td style="text-align:left;">30+</td>
+      <td style="text-align:left;">30 gbps maximum approx.</td>
+      <td style="text-align:left;">auth. only</td>
+      <td style="text-align:left;">no</td>
+      <td style="text-align:left;">MPLS L3VPN, EVPN, DN42 Service Hosting, etc.</td>
+      <td style="text-align:left;"><a href="http://blog.sherpherd.dn42/">yes</a></td>
+    </tr>
+  </tbody>
+</table>
+
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -266,16 +441,7 @@
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <table>
-  <tbody>
-    <tr>
-      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
-</td>
-      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
-    </tr>
-  </tbody>
-</table>
-
+	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	    </div>
 	  </div>
 
