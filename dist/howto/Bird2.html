@@ -657,7 +657,7 @@ if </span>birdc configure <span class="p">;</span> <span class="k">then
   <span class="n">expire</span> <span class="n">keep</span> <span class="m">172800</span>;
 }</code></pre>
 <h3><a class="anchor" id="use-bfd-in-bird2" href="#use-bfd-in-bird2"></a>Use BFD in bird2</h3>
-<p>BFD is an additional protocol with extremely low overhead to detect failures in the switching plane between peers,
+<p>BFD is an additional protocol to detect failures in the switching plane between peers,
 it is used widely by cleanet peerings and some networks in DN42 already have enabled it globally.
 To do a basic configuration you need to add 1 line to your bird.conf and enable it per peer or globally by defining it in the
 template. 
@@ -672,6 +672,9 @@ Note bfd graceful; only activates when both sides have bfd configured and does n
 <pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> &lt;<span class="n">NEIGHBOR_NAME</span>&gt; <span class="n">from</span> <span class="n">dnpeers</span> {
     <span class="n">enable</span> <span class="n">extended</span> <span class="n">messages</span> <span class="n">on</span>;
     <span class="n">bfd</span> <span class="n">graceful</span>;
+    <span class="n">bfd</span> {
+        <span class="n">interval</span> <span class="m">10</span><span class="n">s</span>;
+    };
     <span class="n">neighbor</span> &lt;<span class="n">NEIGHBOR_IPv6</span>&gt;%&lt;<span class="n">NEIGHBOR_INTERFACE</span>&gt; <span class="n">as</span> &lt;<span class="n">NEIGHBOR_ASN</span>&gt;;
         <span class="c"># Or:
 </span>        <span class="c"># neighbor &lt;NEIGHBOR_IPv6&gt; as &lt;NEIGHBOR_ASN&gt;;
