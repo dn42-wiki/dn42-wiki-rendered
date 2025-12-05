@@ -171,209 +171,111 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
+
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="global-route-collector" href="#global-route-collector"></a>Global Route Collector</h1>
-
-<p>The Global Route Collector (GRC) provides a real time view of routing and peering across DN42 and can be used to generate maps, stats or just query how routes are being propagated across the network.</p>
-
-<p>Technically the GRC is a <a href="https://bird.network.cz/">bird</a> instance that anyone can peer with, it imports all routes whilst exporting none and provides a number of interfaces for querying the route data.</p>
-
-<p>Data from the GRC is used to generate some of the DN42 Maps (see the <a href="../internal/Internal-Services.html">Internal Services</a> page).</p>
-
-<h2><a class="anchor" id="peering-with-the-collector" href="#peering-with-the-collector"></a>Peering with the collector</h2>
-
-<p>The collector uses the dynamic peering capability in Bird2 to allow anyone to peer with it without any new server side configuration being required. The collector relies on users peering with it across the network so the more peers the better and the more comprehensive the collector data will be.</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align:left;"> </th>
-      <th style="text-align:left;">Details</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left;">ASN</td>
-      <td style="text-align:left;">AS4242422602</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">Hostname</td>
-      <td style="text-align:left;">collector.dn42</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">IPv4 Address</td>
-      <td style="text-align:left;">172.20.0.179</td>
-    </tr>
-    <tr>
-      <td style="text-align:left;">IPv6 Address</td>
-      <td style="text-align:left;">fd42:d42:d42:179::1</td>
-    </tr>
-  </tbody>
-</table>
-
-<h3><a class="anchor" id="bgp-configuration" href="#bgp-configuration"></a>BGP Configuration</h3>
-
-<ul>
-  <li>Unlike normal DN42 peerings, you must enable multihop to peer with the collector</li>
-  <li>The collector supports Multiprotocol BGP, so you don't need to configure separate IPv4 and IPv6 sessions</li>
-  <li>Please enable the Add Paths BGP extension to export all available routes</li>
-</ul>
-
-<p>Example bird2 config:</p>
-
-<pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> <span class="n">ROUTE_COLLECTOR</span>
-{
-  <span class="n">local</span> <span class="n">as</span> ***<span class="n">YOUR_ASN</span>***;
-  <span class="n">neighbor</span> <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">179</span>::<span class="m">1</span> <span class="n">as</span> <span class="m">4242422602</span>;
-
-  <span class="c"># enable multihop as the collector is not locally connected
-</span>  <span class="n">multihop</span>;
-
-  <span class="n">ipv4</span> {
-    <span class="c"># export all available paths to the collector    
-</span>    <span class="n">add</span> <span class="n">paths</span> <span class="n">tx</span>;
-
-    <span class="c"># import/export filters
-</span>    <span class="n">import</span> <span class="n">none</span>;
-    <span class="n">export</span> <span class="n">filter</span> {
-      <span class="c"># export all valid routes
-</span>      <span class="n">if</span> ( <span class="n">is_valid_network</span>() &amp;&amp; <span class="n">source</span> ~ [ <span class="n">RTS_STATIC</span>, <span class="n">RTS_BGP</span> ] )
-      <span class="n">then</span> {
-        <span class="n">accept</span>;
-      }
-      <span class="n">reject</span>;
-    };
-  };
-
-  <span class="n">ipv6</span> {
-    <span class="c"># export all available paths to the collector    
-</span>    <span class="n">add</span> <span class="n">paths</span> <span class="n">tx</span>;
-
-    <span class="c"># import/export filters
-</span>    <span class="n">import</span> <span class="n">none</span>;
-    <span class="n">export</span> <span class="n">filter</span> {
-      <span class="c"># export all valid routes
-</span>      <span class="n">if</span> ( <span class="n">is_valid_network_v6</span>() &amp;&amp; <span class="n">source</span> ~ [ <span class="n">RTS_STATIC</span>, <span class="n">RTS_BGP</span> ] )
-      <span class="n">then</span> {
-        <span class="n">accept</span>;
-      }
-      <span class="n">reject</span>;
-    };
-  };
-}</code></pre>
-
-<p>Example OpenBGPD config snippet (assumes config similar to
-the <a href="../howto/OpenBGPD.html">OpenBGPD setup guide</a>; note the GRC
-neighbor should be defined separately (outside the
-<code>dn42peers</code> group)):</p>
-
-<pre class="highlight"><code><span class="n">neighbor</span> <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">179</span>::<span class="m">1</span> {
-	<span class="n">local</span>-<span class="n">address</span> &lt;<span class="n">YOUR</span>-<span class="n">ROUTER</span>-<span class="n">DN42</span>-<span class="n">IPv6</span>&gt;
-	<span class="n">descr</span> <span class="n">dn42grc</span>
-	<span class="n">remote</span>-<span class="n">as</span> <span class="m">4242422602</span>
-	<span class="n">multihop</span> <span class="m">255</span>
-	<span class="n">announce</span> <span class="n">IPv4</span> <span class="n">unicast</span>
-	<span class="n">announce</span> <span class="n">IPv6</span> <span class="n">unicast</span>
-	<span class="n">announce</span> <span class="n">add</span>-<span class="n">path</span> <span class="n">send</span> <span class="n">all</span>
-}
-
-<span class="c"># [...]
-</span>
-<span class="n">allow</span> <span class="n">to</span> {<span class="n">group</span> <span class="n">dn42peers</span> <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">179</span>::<span class="m">1</span>} <span class="n">prefix</span>-<span class="n">set</span> <span class="n">dn42etc</span></code></pre>
-
-<p>Example VyOS 1.4 "Sagitta" config
-</p><pre class="highlight"><code># The route collector should never export routes, so let's make a route-map to reject them if it does.
-set policy route-map Deny-All rule 1 action deny
-set protocols bgp neighbor fd42:d42:d42:179::1 address-family ipv4-unicast route-map import 'Deny-All'
-set protocols bgp neighbor fd42:d42:d42:179::1 address-family ipv6-unicast route-map import 'Deny-All'
-set protocols bgp neighbor fd42:d42:d42:179::1 description 'https://lg.collector.dn42'
-set protocols bgp neighbor fd42:d42:d42:179::1 ebgp-multihop '10'
-set protocols bgp neighbor fd42:d42:d42:179::1 remote-as '4242422602'
-</code></pre>
-
-<h2><a class="anchor" id="querying-the-collector" href="#querying-the-collector"></a>Querying the collector</h2>
-
-<h3><a class="anchor" id="looking-glass" href="#looking-glass"></a>Looking Glass</h3>
-
-<p>The collector runs a looking glass based on <a href="https://github.com/xddxdd/bird-lg-go">bird-lg-go</a>.</p>
-
-<ul>
-  <li><a href="https://lg.collector.dn42/">https://lg.collector.dn42/</a></li>
-</ul>
-
-<h3><a class="anchor" id="mrt-dumps" href="#mrt-dumps"></a>MRT Dumps</h3>
-
-<p><a href="https://tools.ietf.org/html/rfc6396">MRT Dumps</a> are produced by the collector every 10 minutes. Bird produces MRT dumps corresponding to tables, so two separate dumps are created, one for IPv4 (master4) and one for IPv6 (master6). The 10 minutes dumps are available for one week before being reduced down to one a day.</p>
-
-<ul>
-  <li><a href="https://mrt.collector.dn42/">https://mrt.collector.dn42</a></li>
-</ul>
-
-<p>The latest dumps can always be found at the following URLs:</p>
-
-<ul>
-  <li><a href="https://mrt.collector.dn42/master4_latest.mrt.bz2">https://mrt.collector.dn42/master4_latest.mrt.bz2</a></li>
-  <li><a href="https://mrt.collector.dn42/master6_latest.mrt.bz2">https://mrt.collector.dn42/master6_latest.mrt.bz2</a></li>
-</ul>
-
-<h3><a class="anchor" id="prometheus-metrics" href="#prometheus-metrics"></a>Prometheus Metrics</h3>
-
-<p>The collector runs <a href="https://github.com/czerwonk/bird_exporter">bird_exporter</a> and prometheus style metrics are available at the following URL:</p>
-
-<ul>
-  <li><a href="http://collector.dn42:9324/metrics">http://collector.dn42:9324/metrics</a></li>
-</ul>
-
-<h3><a class="anchor" id="ssh-interface" href="#ssh-interface"></a>SSH Interface</h3>
-
-<p><strong>Update</strong>: The SSH interface is currently not available, but will be enabled in the future.</p>
-
-<p>The collector bird instance can be queried directly using a birdc shell.</p>
-
-<ul>
-  <li>ssh shell@collector.dn42</li>
-</ul>
-
-<pre class="highlight"><code><span class="nv">$ </span>ssh shell@collector.dn42
-<span class="nt">------------------------------------</span>
-<span class="k">*</span>    DN42 Global Route Collector   <span class="k">*</span>
-<span class="nt">------------------------------------</span>
-<span class="k">*</span> http://collector.dn42/
-
-This service provides a bird2 shell
-<span class="k">for </span>querying the route collector
-
-Be <span class="nb">nice</span>, access is logged and
-abuse will not be tolerated
-<span class="nt">------------------------------------</span>
-BIRD burble-2.0.8-210322-1-ge6133456 ready.
-Access restricted
-bird&gt; show route count
-bird&gt;       297441 of 297441 routes <span class="k">for </span>502 networks <span class="k">in </span>table master4
-286007 of 286007 routes <span class="k">for </span>427 networks <span class="k">in </span>table master6
-1437 of 1437 routes <span class="k">for </span>1437 networks <span class="k">in </span>table dn42_roa4
-1231 of 1231 routes <span class="k">for </span>1231 networks <span class="k">in </span>table dn42_roa6
-Total: 586116 of 586116 routes <span class="k">for </span>3597 networks <span class="k">in </span>4 tables
-bird&gt; 
-</code></pre>
-
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
-	          <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	          <ul>
+  <li>
+<a href="../Home.html" rel="nofollow">Home</a>
+    <ul>
+      <li><a href="../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
+      <li><a href="../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+      <li><a href="../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
+      <li><a href="../howto/BGP-communities.html" rel="nofollow">BGP communities</a></li>
+      <li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
+    </ul>
+  </li>
+  <li>How-To
+    <ul>
+      <li><a href="../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
+      <li><a href="../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
+      <li><a href="../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+      <li><a href="../howto/tinc.html" rel="nofollow">Tinc</a></li>
+      <li><a href="../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+      <li><a href="../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+      <li><a href="../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+      <li><a href="../howto/multicast.html" rel="nofollow">SSM Multicast</a></li>
+      <li><a href="../howto/mpls.html" rel="nofollow">MPLS</a></li>
+      <li><a href="../howto/Bird2.html" rel="nofollow">Bird2</a></li>
+      <li><a href="../howto/frr.html" rel="nofollow">FRRouting</a></li>
+      <li><a href="../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+      <li><a href="../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+      <li><a href="../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+      <li><a href="../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+      <li><a href="../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+      <li><a href="../howto/vyos1.4.html" rel="nofollow">VyOS</a></li>
+      <li><a href="../howto/nixos.html" rel="nofollow">NixOS</a></li>
+    </ul>
+  </li>
+  <li>Services
+    <ul>
+      <li><a href="IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="RPKI.html" rel="nofollow">RPKI</a></li>
+      <li><a href="IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="Registry.html" rel="nofollow">Registry</a></li>
+    </ul>
+  </li>
+  <li>Internal
+    <ul>
+      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+    </ul>
+  </li>
+  <li>Historical
+    <ul>
+      <li><a href="../historical/Bird.html" rel="nofollow">Bird 1</a></li>
+      <li><a href="../historical/Quagga.html" rel="nofollow">Quagga</a></li>
+    </ul>
+  </li>
+  <li>External Tools
+    <ul>
+      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+      <li><a href="https://hedgedoc.dn42.eu/" rel="nofollow">HedgeDoc</a></li>
+      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+      <li><a href="https://git.dn42.dev/dn42/registry" rel="nofollow">Registry</a></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+
 	        </div>
 	      </div>
 	    </div>
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
+    </tr>
+  </tbody>
+</table>
+
 	    </div>
 	  </div>
 
