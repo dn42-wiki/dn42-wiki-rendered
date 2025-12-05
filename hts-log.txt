@@ -1,4 +1,4 @@
-HTTrack3.49-4+libhtsjava.so.2 launched on Thu, 04 Dec 2025 18:36:44 at http://127.42.42.80:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes?* -*/*.md/*
+HTTrack3.49-4+libhtsjava.so.2 launched on Fri, 05 Dec 2025 08:00:43 at http://127.42.42.80:4280 -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes?* -*/*.md/*
 (httrack http://127.42.42.80:4280 -iC2 -%F  -O /srv/dn42-wiki/dn42-wiki-rendered -*/gollum/history/* -*/gollum/commit/* -*/gollum/latest_changes?* -*/*.md/* )
 
 Information, Warnings and Errors reported for this mirror:
@@ -6,79 +6,79 @@ note:	the hts-log.txt file, and hts-cache folder, may contain sensitive informat
 	such as username/password authentication for websites mirrored in this project
 	do not share these files/folders if you want these information to remain private
 
-18:36:46	Warning: 	Found for 127.42.42.80:4280/
-18:36:46	Warning: 	File has moved from 127.42.42.80:4280/ to http://127.42.42.80:4280/Home
-18:37:22	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-16px.gif (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-18:37:22	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-18:37:22	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-18:37:22	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32.gif (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-18:37:22	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success@2x.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-18:37:22	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error@2x.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-18:37:22	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32-EAF2F5.gif (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
-18:37:46	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/BGP-on-Extreme-Summit1i (from 127.42.42.80:4280/howto/Getting-Started)
-18:37:49	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/vyos (from 127.42.42.80:4280/howto/vyos1.4.x)
-18:37:55	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.png: Is a directory
-18:37:55	Warning: 	file not stored in cache due to bogus state (broken size, expected 21496 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.png
-18:37:56	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.png: Is a directory
-18:37:56	Warning: 	file not stored in cache due to bogus state (broken size, expected 28362 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.png
-18:37:57	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.png: Is a directory
-18:37:57	Warning: 	file not stored in cache due to bogus state (broken size, expected 38261 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.png
-18:37:58	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia: Is a directory
-18:37:58	Warning: 	file not stored in cache due to bogus state (broken size, expected 1652 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia
-18:37:59	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia: Is a directory
-18:37:59	Warning: 	file not stored in cache due to bogus state (broken size, expected 1954 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia
-18:38:00	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia: Is a directory
-18:38:00	Warning: 	file not stored in cache due to bogus state (broken size, expected 2337 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia
-18:38:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/anon@git.dn42:dn42/ca-client (from 127.42.42.80:4280/services/Automatic-CA)
-18:38:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/TODO (from 127.42.42.80:4280/services/New-DNS)
-18:38:02	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 21496 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.png (from 127.42.42.80:4280/howto/pim-multicast-vs-unicast-issue.md)
-18:38:02	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 28362 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.png (from 127.42.42.80:4280/howto/pim-multicast-vs-unicast-issue.md)
-18:38:02	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.png: Is a directory
-18:38:02	Warning: 	file not stored in cache due to bogus state (broken size, expected 21496 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.png
-18:38:03	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 38261 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.png (from 127.42.42.80:4280/howto/pim-multicast-vs-unicast-issue.md)
-18:38:03	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 1652 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
-18:38:03	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.png: Is a directory
-18:38:03	Warning: 	file not stored in cache due to bogus state (broken size, expected 28362 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.png
-18:38:04	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 1954 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
-18:38:04	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 2337 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
-18:38:04	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.png: Is a directory
-18:38:04	Warning: 	file not stored in cache due to bogus state (broken size, expected 38261 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.png
-18:38:04	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia: Is a directory
-18:38:04	Warning: 	file not stored in cache due to bogus state (broken size, expected 1652 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia
-18:38:04	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia: Is a directory
-18:38:04	Warning: 	file not stored in cache due to bogus state (broken size, expected 1954 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia
-18:38:04	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia: Is a directory
-18:38:04	Warning: 	file not stored in cache due to bogus state (broken size, expected 2337 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia
-18:38:05	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 21496 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.png (from 127.42.42.80:4280/howto/pim-multicast-vs-unicast-issue.md)
-18:38:05	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 28362 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.png (from 127.42.42.80:4280/howto/pim-multicast-vs-unicast-issue.md)
-18:38:05	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 38261 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.png (from 127.42.42.80:4280/howto/pim-multicast-vs-unicast-issue.md)
-18:38:05	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 1652 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
-18:38:05	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.png: Is a directory
-18:38:05	Warning: 	file not stored in cache due to bogus state (broken size, expected 21496 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.png
-18:38:05	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.png: Is a directory
-18:38:05	Warning: 	file not stored in cache due to bogus state (broken size, expected 28362 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.png
-18:38:05	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.png: Is a directory
-18:38:05	Warning: 	file not stored in cache due to bogus state (broken size, expected 38261 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.png
-18:38:05	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia: Is a directory
-18:38:05	Warning: 	file not stored in cache due to bogus state (broken size, expected 1652 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia
-18:38:06	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 1954 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
-18:38:06	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 2337 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
-18:38:06	Error: 	"Incorrect length (0 Bytes, 21496 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.png (from 127.42.42.80:4280/howto/pim-multicast-vs-unicast-issue.md)
-18:38:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.png: Is a directory
-18:38:06	Error: 	"Incorrect length (0 Bytes, 28362 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.png (from 127.42.42.80:4280/howto/pim-multicast-vs-unicast-issue.md)
-18:38:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.png: Is a directory
-18:38:06	Error: 	"Incorrect length (0 Bytes, 38261 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.png (from 127.42.42.80:4280/howto/pim-multicast-vs-unicast-issue.md)
-18:38:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.png: Is a directory
-18:38:06	Error: 	"Incorrect length (0 Bytes, 1652 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
-18:38:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia: Is a directory
-18:38:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia: Is a directory
-18:38:06	Warning: 	file not stored in cache due to bogus state (broken size, expected 1954 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia
-18:38:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia: Is a directory
-18:38:06	Warning: 	file not stored in cache due to bogus state (broken size, expected 2337 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia
-18:38:07	Error: 	"Incorrect length (0 Bytes, 1954 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
-18:38:07	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia: Is a directory
-18:38:07	Error: 	"Incorrect length (0 Bytes, 2337 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
-18:38:07	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia: Is a directory
+08:00:45	Warning: 	Found for 127.42.42.80:4280/
+08:00:45	Warning: 	File has moved from 127.42.42.80:4280/ to http://127.42.42.80:4280/Home
+08:01:23	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-16px.gif (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+08:01:23	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+08:01:23	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+08:01:23	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32.gif (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+08:01:23	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/success@2x.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+08:01:23	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/modules/ajax/error@2x.png (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+08:01:23	Error: 	"Not Found" (404) at link 127.42.42.80:4280/images/spinners/octocat-spinner-32-EAF2F5.gif (from 127.42.42.80:4280/gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css)
+08:01:51	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/BGP-on-Extreme-Summit1i (from 127.42.42.80:4280/howto/Getting-Started)
+08:01:51	Error: 	"Not Found" (404) at link 127.42.42.80:4280/howto/vyos (from 127.42.42.80:4280/howto/vyos1.4.x)
+08:01:55	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia: Is a directory
+08:01:55	Warning: 	file not stored in cache due to bogus state (broken size, expected 1652 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia
+08:01:56	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.png: Is a directory
+08:01:56	Warning: 	file not stored in cache due to bogus state (broken size, expected 21496 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.png
+08:01:57	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia: Is a directory
+08:01:57	Warning: 	file not stored in cache due to bogus state (broken size, expected 1954 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia
+08:01:58	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.png: Is a directory
+08:01:58	Warning: 	file not stored in cache due to bogus state (broken size, expected 28362 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.png
+08:01:59	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia: Is a directory
+08:01:59	Warning: 	file not stored in cache due to bogus state (broken size, expected 2337 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia
+08:02:00	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.png: Is a directory
+08:02:00	Warning: 	file not stored in cache due to bogus state (broken size, expected 38261 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.png
+08:02:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/services/anon@git.dn42:dn42/ca-client (from 127.42.42.80:4280/services/Automatic-CA)
+08:02:02	Error: 	"Not Found" (404) at link 127.42.42.80:4280/TODO (from 127.42.42.80:4280/services/New-DNS)
+08:02:03	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 1652 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:03	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 21496 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.png (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:03	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 1954 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:03	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 28362 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.png (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:03	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia: Is a directory
+08:02:03	Warning: 	file not stored in cache due to bogus state (broken size, expected 1652 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia
+08:02:03	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.png: Is a directory
+08:02:03	Warning: 	file not stored in cache due to bogus state (broken size, expected 21496 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.png
+08:02:03	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia: Is a directory
+08:02:03	Warning: 	file not stored in cache due to bogus state (broken size, expected 1954 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia
+08:02:03	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.png: Is a directory
+08:02:03	Warning: 	file not stored in cache due to bogus state (broken size, expected 28362 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.png
+08:02:04	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 2337 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:04	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 38261 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.png (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:04	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 1652 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:04	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 21496 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.png (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:04	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia: Is a directory
+08:02:04	Warning: 	file not stored in cache due to bogus state (broken size, expected 2337 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia
+08:02:04	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.png: Is a directory
+08:02:04	Warning: 	file not stored in cache due to bogus state (broken size, expected 38261 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.png
+08:02:04	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia: Is a directory
+08:02:04	Warning: 	file not stored in cache due to bogus state (broken size, expected 1652 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia
+08:02:04	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.png: Is a directory
+08:02:04	Warning: 	file not stored in cache due to bogus state (broken size, expected 21496 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.png
+08:02:05	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 1954 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:05	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 28362 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.png (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:05	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 2337 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:05	Warning: 	Retry after error -4 (Incorrect length (0 Bytes, 38261 expected)) at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.png (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:05	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia: Is a directory
+08:02:05	Warning: 	file not stored in cache due to bogus state (broken size, expected 1954 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia
+08:02:05	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.png: Is a directory
+08:02:05	Warning: 	file not stored in cache due to bogus state (broken size, expected 28362 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.png
+08:02:05	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia: Is a directory
+08:02:05	Warning: 	file not stored in cache due to bogus state (broken size, expected 2337 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia
+08:02:05	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.png: Is a directory
+08:02:05	Warning: 	file not stored in cache due to bogus state (broken size, expected 38261 got 0): 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.png
+08:02:06	Error: 	"Incorrect length (0 Bytes, 1652 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.dia: Is a directory
+08:02:06	Error: 	"Incorrect length (0 Bytes, 21496 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example1.png (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example1.png: Is a directory
+08:02:06	Error: 	"Incorrect length (0 Bytes, 1954 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.dia: Is a directory
+08:02:06	Error: 	"Incorrect length (0 Bytes, 28362 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example2.png (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example2.png: Is a directory
+08:02:06	Error: 	"Incorrect length (0 Bytes, 2337 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.dia: Is a directory
+08:02:06	Error: 	"Incorrect length (0 Bytes, 38261 expected)" (-4) after 2 retries at link 127.42.42.80:4280/internal/images/pim-multicast-vs-unicast-issue-example3.png (from 127.42.42.80:4280/gollum/overview/internal/images/)
+08:02:06	Error: 	Unable to save file /srv/dn42-wiki/dn42-wiki-rendered/127.42.42.80_4280/internal/images/pim-multicast-vs-unicast-issue-example3.png: Is a directory
 
-HTTrack Website Copier/3.49-4 mirror complete in 1 minutes 23 seconds : 234 links scanned, 203 files written (9583936 bytes overall), 191 files updated [3708363 bytes received at 44679 bytes/sec], 13.0 requests per connection
+HTTrack Website Copier/3.49-4 mirror complete in 1 minutes 23 seconds : 234 links scanned, 203 files written (9600673 bytes overall), 191 files updated [3725096 bytes received at 44880 bytes/sec], 13.0 requests per connection
 (41 errors, 32 warnings, 0 messages)
