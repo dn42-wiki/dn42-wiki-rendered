@@ -221,6 +221,33 @@
   </tbody>
 </table>
 
+<h4><a class="anchor" id="flapalerted-rpki-rtr-servers" href="#flapalerted-rpki-rtr-servers"></a>FlapAlerted RPKI RTR Servers</h4>
+
+<p>These services will publish a ROA pointing to AS0 when a prefix flapping. This can be used to prevent flap from spreading further in the network.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Server</th>
+      <th>Port</th>
+      <th><strong>IPv4/IPv6</strong></th>
+      <th>FlapAlerted Instance</th>
+      <th>Provider</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>rpki.dn42.launchpadx.top</td>
+      <td>8084</td>
+      <td>both</td>
+      <td>
+<a href="https://flaps.lpnet0.dn42/">https://flaps.lpnet0.dn42/</a>, <a href="https://dn42-flaps.launchpadx.top/">https://dn42-flaps.launchpadx.top/</a>
+</td>
+      <td>AS4242423702</td>
+    </tr>
+  </tbody>
+</table>
+
 <p>To configure the service, connect your BGP software’s RPKI client to one or more of these RTR servers.</p>
 
 <h4><a class="anchor" id="example-configuration-bird-2" href="#example-configuration-bird-2"></a>Example Configuration (Bird 2)</h4>
