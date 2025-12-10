@@ -178,7 +178,386 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="vyos-1-4-x-sagitta" href="#vyos-1-4-x-sagitta"></a>VyOS 1.4.x sagitta</h1>
+<p>VyOS is an open source software router.  It is feature rich and supports multiple deployment options such as physical hardware (Old PC's) or a VPC/VM.  The developers have a nightly rolling release that includes all the latest features such as Wireguard.</p>
+
+<p>It can be downloaded here <a href="https://www.vyos.io/rolling-release/">https://www.vyos.io/rolling-release/</a>.</p>
+
+<h2><a class="anchor" id="firewall-baseline" href="#firewall-baseline"></a>Firewall Baseline</h2>
+<p>We will configure firewall access lists for inbound connections on our peer Wireguard interfaces as well as block all inbound connections to our router with the exception of BGP.  This should be a good baseline firewall ruleset to filter inbound traffic on your network's edge.  Modifications may be needed depending on your specific goals.  If your router has an uplink back to a larger internal network (outside of DN42), an outbound firewall ruleset will need to be applied to that interface.</p>
+
+<p>By default, VyOS is a <strong>stateless</strong> firewall.  To enable <strong>stateful</strong> packet inspection globally enter the following commands.
+</p><pre class="highlight"><code><span class="nb">set </span>firewall state-policy established action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall state-policy related action <span class="s1">'accept'</span></code></pre>
+
+<p>We also need to accept invalids on our network's edge.  However, this should not become common practice elsewhere.
+</p><pre class="highlight"><code><span class="nb">set </span>firewall state-policy invalid action <span class="s1">'accept'</span></code></pre>
+
+<p>The below commands create <strong>in</strong> and <strong>local</strong> baseline templates to be applied to all Wireguard interfaces that are facing peers.  In this example, <strong>172.20.20.0/24</strong> and <strong>fd88:9deb:a69e::/48</strong> are your assigned address spaces.
+</p><pre class="highlight"><code><span class="c">#Create Groups v4</span>
+<span class="nb">set </span>firewall group network-group Allowed-Transit-v4 network <span class="s1">'10.0.0.0/8'</span>
+<span class="nb">set </span>firewall group network-group Allowed-Transit-v4 network <span class="s1">'172.20.0.0/14'</span>
+<span class="nb">set </span>firewall group network-group Allowed-Transit-v4 network <span class="s1">'172.31.0.0/16'</span>
+
+<span class="nb">set </span>firewall group network-group My-Assigned-Space-v4 network <span class="s1">'172.20.20.0/24'</span>
+
+<span class="c">#Create Groups v6</span>
+<span class="nb">set </span>firewall group ipv6-network-group Allowed-Transit-v6 network <span class="s1">'fd00::/8'</span>
+
+<span class="nb">set </span>firewall group ipv6-network-group My-Assigned-Space-v6 network <span class="s1">'fd88:9deb:a69e::/48'</span>
+
+
+<span class="c">#Inbound Connections v4</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 default-action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 enable-default-log
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 68 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 68 description <span class="s1">'Block Traffic to Operator Assigned IP Space'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 68 destination group network-group <span class="s1">'My-Assigned-Space-v4'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 68 log <span class="s1">'enable'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 68 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 70 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 70 description <span class="s1">'Allow Peer Transit'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 70 destination group network-group <span class="s1">'Allowed-Transit-v4'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 70 <span class="nb">source </span>group network-group <span class="s1">'Allowed-Transit-v4'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 70 log <span class="s1">'enable'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 99 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 99 description <span class="s1">'Black Hole'</span>
+<span class="nb">set </span>firewall name Tunnels_In_v4 rule 99 log <span class="s1">'enable'</span>
+
+<span class="c">#Inbound Connections v6</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 default-action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 enable-default-log
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 rule 68 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 rule 68 description <span class="s1">'Block Traffic to Operator Assigned IP Space'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 rule 68 destination group network-group <span class="s1">'My-Assigned-Space-v6'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 rule 68 log <span class="s1">'enable'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 rule 70 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 rule 70 description <span class="s1">'Allow Peer Transit'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 rule 70 destination group network-group <span class="s1">'Allowed-Transit-v6'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 rule 70 log <span class="s1">'enable'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 rule 70 <span class="nb">source </span>group network-group <span class="s1">'Allowed-Transit-v6'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 rule 99 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 rule 99 description <span class="s1">'Black Hole'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_In_v6 rule 99 log <span class="s1">'enable'</span>
+
+<span class="c">#Local Connections v4</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 default-action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 50 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 50 icmp
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 50 protocol <span class="s1">'icmp'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 61 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 61 description <span class="s1">'Allow BGP'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 61 destination port <span class="s1">'179'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 61 protocol <span class="s1">'tcp'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 98 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 98 description <span class="s1">'Black Hole'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 98 log <span class="s1">'enable'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 98 state invalid <span class="s1">'enable'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 99 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 99 description <span class="s1">'Black Hole'</span>
+<span class="nb">set </span>firewall name Tunnels_Local_v4 rule 99 log <span class="s1">'enable'</span>
+
+<span class="c">#Local Connections v6</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 default-action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 50 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 50 icmpv6
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 50 protocol <span class="s1">'ipv6-icmp'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 61 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 61 description <span class="s1">'Allow BGP'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 61 destination port <span class="s1">'179'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 61 protocol <span class="s1">'tcp'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 98 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 98 description <span class="s1">'Black Hole'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 98 log <span class="s1">'enable'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 98 state invalid <span class="s1">'enable'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 99 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 99 description <span class="s1">'Black Hole'</span>
+<span class="nb">set </span>firewall ipv6-name Tunnels_Local_v6 rule 99 log <span class="s1">'enable'</span></code></pre>
+
+<h2><a class="anchor" id="wireguard" href="#wireguard"></a>Wireguard</h2>
+<h3><a class="anchor" id="setup-keys" href="#setup-keys"></a>Setup Keys</h3>
+<p>You can choose to generate a unique keypair and use it for every wireguard peering, or you can choose to generate a different one for each new peering.
+</p><pre class="highlight"><code>generate pki wireguard key-pair
+
+#Output example:
+Private key: SOoPQdMdmXE3ssp0/vwwoIMhQqvcQls+DhDjmaLw03U=
+Public key: ArkXeK1c0pCWCouePcRRBCQpXfi4ZIvRFFwTxO60dxs=</code></pre>
+
+<p>If you choose to generate unique keypairs for peerings, you can generate and install the keypair in a single command. Note that you have to be in <code>configure</code> mode, at the top level, as shown below:
+</p><pre class="highlight"><code>vyos@vyos$ configure
+
+[edit]
+vyos@vyos# run generate pki wireguard key-pair install interface wg4242424242
+1 value(s) installed. Use "compare" to see the pending changes, and "commit" to apply.
+Corresponding public-key to use on peer system is: 'UcqcZsJvq1MlYgo3gObjaJ8FH+N7wkfV+EH3YDAMyRE='
+[edit]
+vyos@vyos-home# show interfaces wireguard wg4242424242 
++private-key kHCqfe/GZ8phoNnWfkL3+joXi/qK3ZfdfAnlNuX/9FU=</code></pre>
+
+<p>To retrieve keys later, use the op-mode command <code>show interfaces wireguard wg4242424242 public-key</code>.</p>
+
+<p>Example:
+</p><pre class="highlight"><code>vyos@vyos<span class="nv">$ </span>show interfaces wireguard wg4242424242 public-key 
+UcqcZsJvq1MlYgo3gObjaJ8FH+N7wkfV+EH3YDAMyRE<span class="o">=</span></code></pre>
+
+<h3><a class="anchor" id="configure-first-peer-s-tunnel" href="#configure-first-peer-s-tunnel"></a>Configure First Peer's tunnel</h3>
+<p>This example assumes that your ASN is 4242421234 and your peer's ASN is 4242424242
+</p><pre class="highlight"><code><span class="nb">set </span>interfaces wireguard wg4242424242 description <span class="s1">'AS4242424242 - My First Peer'</span>
+
+<span class="c"># Common practice on DN42 is for peers to use 2+the last four digits of your peer's ASN as the port.</span>
+<span class="c"># You will have to let your peer know what you choose for your port, as well as your clearnet IP address.</span>
+<span class="nb">set </span>interfaces wireguard wg4242424242 port <span class="s1">'24242'</span>
+<span class="nb">set </span>interfaces wireguard wg4242424242 private-key <span class="s1">'SOoPQdMdmXE3ssp0/vwwoIMhQqvcQls+DhDjmaLw03U='</span>
+
+<span class="c"># An arbitrary link-local IPv6 address (that you'll have to tell to your peer)</span>
+<span class="nb">set </span>interfaces wireguard wg4242424242 address <span class="s1">'fe80::1234/64'</span>
+
+<span class="c"># One of your DN42 IPv4 addresses (not really needed if you'll enable extended next-hop)</span>
+<span class="nb">set </span>interfaces wireguard wg4242424242 address <span class="s1">'172.20.20.1/32'</span>
+
+<span class="c"># Set your peer's clearnet endpoint information. You need to use an IPv4 or IPv6 address</span>
+<span class="c"># (as opposed to a DNS name).</span>
+<span class="c"># If you have a static IP address but your peer does not,</span>
+<span class="c"># you can leave out this part of the configuration.</span>
+<span class="nb">set </span>interfaces wireguard wg4242424242 peer location1 address <span class="s1">'192.0.2.1'</span>
+<span class="nb">set </span>interfaces wireguard wg4242424242 peer location1 port <span class="s1">'21234'</span>
+
+<span class="c"># You can allow everything here and relay on your firewall</span>
+<span class="nb">set </span>interfaces wireguard wg4242424242 peer location1 allowed-ips <span class="s1">'0.0.0.0/0'</span>
+<span class="nb">set </span>interfaces wireguard wg4242424242 peer location1 allowed-ips <span class="s1">'::/0'</span>
+<span class="nb">set </span>interfaces wireguard wg4242424242 peer location1 public-key <span class="s1">'&lt;wireguard public key of your peer&gt;'</span>
+
+<span class="c"># (persistent-keepalive option could be optional, but in my case I noticed that helps starting BGP session)</span>
+<span class="nb">set </span>interfaces wireguard wg4242424242 peer location1 persistent-keepalive <span class="s1">'60'</span>
+
+<span class="c"># Configure firewall</span>
+<span class="nb">set </span>firewall interface wg4242424242 interface-group ipv6-name <span class="s1">'Tunnels_In_v6'</span>
+<span class="nb">set </span>firewall interface wg4242424242 interface-group name <span class="s1">'Tunnels_In_v4'</span>
+<span class="nb">set </span>firewall interface wg4242424242 <span class="nb">local </span>ipv6-name <span class="s1">'Tunnels_Local_v6'</span>
+<span class="nb">set </span>firewall interface wg4242424242 <span class="nb">local </span>name <span class="s1">'Tunnels_Local_v4'</span></code></pre>
+
+<h2><a class="anchor" id="bgp" href="#bgp"></a>BGP</h2>
+<p>Now that we have a tunnel to our peer and theoretically can ping them, we can setup BGP.</p>
+<h3><a class="anchor" id="initial-router-setup" href="#initial-router-setup"></a>Initial Router Setup</h3>
+<pre class="highlight"><code><span class="c"># Set your ASN and IP blocks</span>
+<span class="nb">set </span>protocols bgp system-as <span class="s1">'4242421234'</span>
+
+<span class="nb">set </span>protocols bgp address-family ipv4-unicast network 172.20.20.0/24<span class="sb">`</span>  
+<span class="nb">set </span>protocols bgp address-family ipv6-unicast network fd88:9deb:a69e::/48<span class="sb">`</span>
+
+<span class="c"># Note that your address blocks should match your exact prefix as listed in the registry.</span>
+<span class="c"># if you try to advertise a subnet of your assigned block, it could get filtered by some peers.</span>
+
+<span class="c"># To keep it simple, just make your router ID match your lower IP within the DN42 registered space.</span>
+<span class="nb">set </span>protocols bgp parameters router-id <span class="s1">'172.20.20.1'</span></code></pre>
+
+<h3><a class="anchor" id="neighbor-up-with-peers" href="#neighbor-up-with-peers"></a>Neighbor Up With Peers</h3>
+<h4><a class="anchor" id="option-1-mp-bgp-with-multi-protocol-with-extended-next-hop" href="#option-1-mp-bgp-with-multi-protocol-with-extended-next-hop"></a>Option 1: MP-BGP (with Multi Protocol) - with Extended Next-Hop</h4>
+<p>MP-BGP peerings over IPv6 are recommended on DN42.
+</p><pre class="highlight"><code><span class="c"># For these examples, your peer's link-local address is fe80::4242</span>
+
+<span class="nb">set </span>protocols bgp neighbor fe80::4242 update-source <span class="s1">'wg4242424242'</span>
+<span class="nb">set </span>protocols bgp neighbor fe80::4242 description <span class="s1">'FriendlyNet'</span>
+
+<span class="nb">set </span>protocols bgp neighbor fe80::4242 capability extended-nexthop
+
+<span class="nb">set </span>protocols bgp neighbor fe80::4242 address-family ipv4-unicast 
+<span class="nb">set </span>protocols bgp neighbor fe80::4242 address-family ipv6-unicast 
+</code></pre>
+<h4><a class="anchor" id="option-2-bgp-no-multi-protocol-no-extended-next-hop" href="#option-2-bgp-no-multi-protocol-no-extended-next-hop"></a>Option 2: BGP (no Multi Protocol) - no Extended Next-Hop</h4>
+<pre class="highlight"><code><span class="c"># First, we set the ipv6 part.</span>
+<span class="nb">set </span>protocols bgp neighbor fe80::4242 remote-as <span class="s1">'4242424242'</span>
+<span class="nb">set </span>protocols bgp neighbor fe80::4242 address-family ipv6-unicast 
+<span class="nb">set </span>protocols bgp neighbor fe80::4242 description <span class="s1">'FriendlyNet'</span>
+
+<span class="c"># For the ipv4 part we need to add first a static ipv4 route to our peer tunneled ipv4 address</span>
+<span class="nb">set </span>protocols static route 172.20.x.y interface wg1234
+
+<span class="c"># 172.20.x.y is your peer tunneled IPv4</span>
+<span class="nb">set </span>protocols bgp neighbor 172.20.x.y remote-as <span class="s1">'&lt;your peer ASN&gt;'</span>
+<span class="nb">set </span>protocols bgp neighbor 172.20.x.y address-family ipv4-unicast 
+<span class="nb">set </span>protocols bgp neighbor 172.20.x.y description <span class="s1">'FriendlyNet'</span>
+
+<span class="c"># This setting may need to be adjusted depending on circumstances</span>
+<span class="nb">set </span>protocols bgp neighbor 172.20.x.y ebgp-multihop 20</code></pre>
+
+<p>You can now check your BGP summary:</p>
+
+<pre class="highlight"><code>show ip bgp summary
+
+IPv4 Unicast Summary <span class="o">(</span>VRF default<span class="o">)</span>:
+BGP router identifier 172.20.20.1, <span class="nb">local </span>AS number 4242421234 vrf-id 0
+BGP table version 2782
+RIB entries 1378, using 258 KiB of memory
+Peers 1, using 1 MiB of memory
+Peer <span class="nb">groups </span>1, using 64 bytes of memory
+
+Neighbor               V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+fe80::4242             4 4242424242      1031         6        0    0    0 00:04:20          710        1 FriendlyNet
+
+IPv6 Unicast Summary <span class="o">(</span>VRF default<span class="o">)</span>:
+BGP router identifier 172.20.20.1, <span class="nb">local </span>AS number 4242421234 vrf-id 0
+BGP table version 2782
+RIB entries 1378, using 258 KiB of memory
+Peers 1, using 1 MiB of memory
+Peer <span class="nb">groups </span>1, using 64 bytes of memory
+
+Neighbor               V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+fe80::4242             4 4242424242      1031         6        0    0    0 00:04:20          710        1 FriendlyNet</code></pre>
+
+<p>Setting up peer-groups might help standardize multiple peerings:</p>
+
+<pre class="highlight"><code><span class="c"># One peer group for all IPv6 MP-BGP link-local extended-nexthop peers</span>
+<span class="nb">set </span>protocols bgp peer-group dn42 address-family ipv4-unicast
+<span class="nb">set </span>protocols bgp peer-group dn42 address-family ipv6-unicast
+<span class="nb">set </span>protocols bgp peer-group dn42 capability extended-nexthop
+
+<span class="nb">set </span>protocols bgp neighbor fe80::4242 peer-group dn42
+
+<span class="c"># If you have any non-multiprotocol peerings you'll need to set up peer-groups</span>
+<span class="c"># for the individual address families. This is left up to the reader.</span>
+
+<span class="c"># Delete the settings that are now redundant</span>
+delete protocols bgp neighbor fe80::4242 address-family
+delete protocols bgp neighbor fe80::4242 capability</code></pre>
+
+<h2><a class="anchor" id="rpki-roa-checking" href="#rpki-roa-checking"></a>RPKI/ROA Checking</h2>
+<p>Burble has made this super easy. More info can be found <a href="ROA-slash-RPKI.html">here</a> on this wiki. 
+You can achieve this by running docker on a seperate server in the network but as of Vyos 1.4 2023-02-28 its possible to do it on the vyos machine itself. This setup is using Cloudflare's GoRTR and automatically reaching out and downloading a custom JSON file generated by Burble just for the DN42 network.</p>
+
+<h3><a class="anchor" id="setup-rpki-caching-server-on-the-vyos-machine" href="#setup-rpki-caching-server-on-the-vyos-machine"></a>Setup RPKI Caching Server on the Vyos machine</h3>
+
+<p>Run this command in operation mode to pull the container image to the vyos machine.
+</p><pre class="highlight"><code>add container image cloudflare/gortr</code></pre>
+
+<p>Run the following commands in configuration mode:</p>
+
+<p>To create the network for the prki container so it is only reachable on the vyos machine.
+</p><pre class="highlight"><code><span class="nb">set </span>container network rpki
+<span class="nb">set </span>container network rpki prefix 172.16.2.0/24</code></pre>
+
+<p>To create the container itself
+</p><pre class="highlight"><code><span class="nb">set </span>container name gortr image cloudflare/gortr
+<span class="nb">set </span>container name gortr <span class="nb">command</span> <span class="s2">"-cache https://dn42.burble.com/roa/dn42_roa_46.json -verify=false -checktime=false -bind :8082"</span>
+<span class="nb">set </span>container name gortr network rpki address 172.16.2.10
+<span class="nb">set </span>container name gortr restart on-failure</code></pre>
+
+<h3><a class="anchor" id="setup-rpki-caching-server-on-a-seperate-server" href="#setup-rpki-caching-server-on-a-seperate-server"></a>Setup RPKI Caching Server on a seperate server</h3>
+<p>But its also possible to setup the container on a seperate machine.
+Run the following docker command to setup the clouflare gortr container on a seperate server with docker installed.</p>
+
+<pre class="highlight"><code>docker run <span class="nt">-ti</span> <span class="nt">-p</span> 8082:8082 cloudflare/gortr <span class="nt">-cache</span> https://dn42.burble.com/roa/dn42_roa_46.json <span class="nt">-verify</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-checktime</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-bind</span> :8082</code></pre>
+This will start a docker container that listens on the host server's IP at port 8082.
+
+<h3><a class="anchor" id="point-vyos-router-at-rpki-caching-server" href="#point-vyos-router-at-rpki-caching-server"></a>Point VyOS Router at RPKI Caching Server</h3>
+
+<pre class="highlight"><code><span class="nb">set </span>protocols rpki cache &lt;ip address of your GoRTR instance&gt; port <span class="s1">'8082'</span>
+<span class="nb">set </span>protocols rpki cache &lt;ip address of your GoRTR instance&gt; preference <span class="s1">'1'</span>   </code></pre>
+
+<p>You can check the connection with <code>show rpki cache-connection</code> the output will look like this:
+</p><pre class="highlight"><code>show rpki cache-connection
+Connected to group 1
+rpki tcp cache &lt;ip address of your GoRTR instance&gt;  8082 pref 1 <span class="o">(</span>connected<span class="o">)</span></code></pre>
+
+<p>You can also see the received prefix-table with <code>show rpki prefix-table</code>.</p>
+
+<h3><a class="anchor" id="create-route-map" href="#create-route-map"></a>Create Route Map</h3>
+<pre class="highlight"><code><span class="nb">set </span>policy route-map DN42-ROA rule 10 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy route-map DN42-ROA rule 10 match rpki <span class="s1">'valid'</span>
+<span class="nb">set </span>policy route-map DN42-ROA rule 20 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy route-map DN42-ROA rule 20 match rpki <span class="s1">'notfound'</span>
+<span class="nb">set </span>policy route-map DN42-ROA rule 30 action <span class="s1">'deny'</span>
+<span class="nb">set </span>policy route-map DN42-ROA rule 30 match rpki <span class="s1">'invalid'</span></code></pre>
+This example allows all routes in unless they are marked invalid or in other words possibly been a victim of BGP hijacking.
+You can also consider to "deny" the "notfound" prefixes, for better control.
+
+<p>You can also consider to combine within the same route-map the RPKI and one or more a prefix lists containing your internal network prefixes, as described later (The example "No RPKI/ROA and Internal Network Falls Into DN42 Range").</p>
+
+<h3><a class="anchor" id="assign-route-map-to-neighbor" href="#assign-route-map-to-neighbor"></a>Assign Route Map to Neighbor</h3>
+<pre class="highlight"><code><span class="nb">set </span>protocols bgp neighbor fe80::1234 address-family ipv4-unicast route-map <span class="nb">export</span> <span class="s1">'DN42-ROA'</span>
+<span class="nb">set </span>protocols bgp neighbor fe80::1234 address-family ipv4-unicast route-map import <span class="s1">'DN42-ROA'</span>
+<span class="nb">set </span>protocols bgp neighbor fe80::1234 address-family ipv6-unicast route-map <span class="nb">export</span> <span class="s1">'DN42-ROA'</span>
+<span class="nb">set </span>protocols bgp neighbor fe80::1234 address-family ipv6-unicast route-map import <span class="s1">'DN42-ROA'</span> </code></pre>
+<em>Remember to do that for all your new peerings!</em>
+
+<h2><a class="anchor" id="example-route-map" href="#example-route-map"></a>Example Route Map</h2>
+<h3><a class="anchor" id="no-rpki-roa-and-internal-network-falls-into-dn42-range" href="#no-rpki-roa-and-internal-network-falls-into-dn42-range"></a>No RPKI/ROA and Internal Network Falls Into DN42 Range</h3>
+<pre class="highlight"><code><span class="c">##Build prefix list to match personal internal network</span>
+<span class="nb">set </span>policy prefix-list BlockIPConflicts description <span class="s1">'Prevent Conflicting Routes'</span>
+<span class="nb">set </span>policy prefix-list BlockIPConflicts rule 10 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy prefix-list BlockIPConflicts rule 10 description <span class="s1">'Internal IP Space'</span>
+<span class="nb">set </span>policy prefix-list BlockIPConflicts rule 10 le <span class="s1">'32'</span>
+<span class="nb">set </span>policy prefix-list BlockIPConflicts rule 10 prefix <span class="s1">'10.10.0.0/16'</span>
+
+
+<span class="c">##Build prefix list to match personal internal network</span>
+<span class="nb">set </span>policy prefix-list6 BlockIPConflicts-v6 description <span class="s1">'Prevent Conflicting Routes'</span>
+<span class="nb">set </span>policy prefix-list6 BlockIPConflicts-v6 rule 10 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy prefix-list6 BlockIPConflicts-v6 rule 10 description <span class="s1">'Internal IP Space'</span>
+<span class="nb">set </span>policy prefix-list6 BlockIPConflicts-v6 rule 10 le <span class="s1">'128'</span>
+<span class="nb">set </span>policy prefix-list6 BlockIPConflicts-v6 rule 10 prefix <span class="s1">'fd42:4242:1111::/48'</span>
+
+
+
+<span class="c">##Build prefix list to match DN42's IPv4 network</span>
+<span class="nb">set </span>policy prefix-list DN42-Network rule 10 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy prefix-list DN42-Network rule 10 le <span class="s1">'32'</span>
+<span class="nb">set </span>policy prefix-list DN42-Network rule 10 prefix <span class="s1">'172.20.0.0/14'</span>
+<span class="nb">set </span>policy prefix-list DN42-Network rule 20 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy prefix-list DN42-Network rule 20 le <span class="s1">'32'</span>
+<span class="nb">set </span>policy prefix-list DN42-Network rule 20 prefix <span class="s1">'10.0.0.0/8'</span>
+
+
+<span class="c">##Build prefix list to match DN42's IPv6 network</span>
+<span class="nb">set </span>policy prefix-list6 DN42-Network-v6 rule 10 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy prefix-list6 DN42-Network-v6 rule 10 le <span class="s1">'128'</span>
+<span class="nb">set </span>policy prefix-list6 DN42-Network-v6 rule 10 prefix <span class="s1">'fd00::/8'</span>
+
+
+<span class="c">##Block prefixes within internal network range, then allow everything else within DN42, then block everything else.</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 10 action <span class="s1">'deny'</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 10 description <span class="s1">'Prevent IP Conflicts'</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 10 match ip address prefix-list <span class="s1">'BlockIPConflicts'</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 11 action <span class="s1">'deny'</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 11 description <span class="s1">'Prevent IP Conflicts'</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 11 match ipv6 address prefix-list <span class="s1">'BlockIPConflicts-v6'</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 20 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 20 description <span class="s1">'Allow DN42-Network'</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 20 match ip address prefix-list <span class="s1">'DN42-Network'</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 21 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 21 description <span class="s1">'Allow DN42-Network'</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 21 match ipv6 address prefix-list <span class="s1">'DN42-Network-v6'</span>
+<span class="nb">set </span>policy route-map Default-Peering rule 99 action <span class="s1">'deny'</span>
+
+
+<span class="c">##Apply the route-map on import/export</span>
+
+<span class="nb">set </span>protocols bgp peer-group dn42 address-family ipv4-unicast route-map <span class="nb">export</span> <span class="s1">'Default-Peering'</span>
+<span class="nb">set </span>protocols bgp peer-group dn42 address-family ipv4-unicast route-map import <span class="s1">'Default-Peering'</span>
+<span class="nb">set </span>protocols bgp peer-group dn42 address-family ipv6-unicast route-map <span class="nb">export</span> <span class="s1">'Default-Peering'</span>
+<span class="nb">set </span>protocols bgp peer-group dn42 address-family ipv6-unicast route-map import <span class="s1">'Default-Peering'</span> </code></pre>
+
+<h1><a class="anchor" id="add-your-vyos-router-to-the-global-route-collector" href="#add-your-vyos-router-to-the-global-route-collector"></a>Add your VyOS router to the <a href="../services/Route-Collector.html">Global Route Collector</a>!</h1>
+<pre class="highlight"><code><span class="c"># The route collector should never export routes, so let's make a route-map to reject them if it does.</span>
+<span class="nb">set </span>policy route-map Deny-All rule 1 action deny
+<span class="nb">set </span>protocols bgp neighbor fd42:4242:2601:ac12::1 address-family ipv4-unicast route-map import <span class="s1">'Deny-All'</span>
+<span class="nb">set </span>protocols bgp neighbor fd42:4242:2601:ac12::1 address-family ipv6-unicast route-map import <span class="s1">'Deny-All'</span>
+<span class="nb">set </span>protocols bgp neighbor fd42:4242:2601:ac12::1 description <span class="s1">'https://lg.collector.dn42'</span>
+<span class="nb">set </span>protocols bgp neighbor fd42:4242:2601:ac12::1 ebgp-multihop <span class="s1">'10'</span>
+<span class="nb">set </span>protocols bgp neighbor fd42:4242:2601:ac12::1 remote-as <span class="s1">'4242422602'</span></code></pre>
+
+<h2><a class="anchor" id="credits" href="#credits"></a>Credits</h2>
+<p>This How-To has to be considered a work-in-progress by <strong>Matwolf</strong> with parts co-authored by <strong>bri</strong></p>
+
+<p>It's based on the original VyOS How-To made by <strong>Owens Research</strong>: <a href="vyos.html">How-To/VyOS</a>.</p>
+
+<p>The commands in this page have been adapted to be compatible with the new version of VyOS 1.4.x (sagitta) and to include configurations for IPv6 (MP-BGP over link-local and extended next-hop).</p>
+
+<p>If you have any questions or suggestions please reach out.</p>
+
+<h2><a class="anchor" id="see-also" href="#see-also"></a>See also</h2>
+<p><a href="https://docs.vyos.io/en/latest/configuration/interfaces/wireguard.html">WireGuard</a> and <a href="https://docs.vyos.io/en/latest/configuration/protocols/bgp.html">BGP</a> in the official VyOS documentation.</p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -266,16 +645,7 @@
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <table>
-  <tbody>
-    <tr>
-      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
-</td>
-      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
-    </tr>
-  </tbody>
-</table>
-
+	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	    </div>
 	  </div>
 
