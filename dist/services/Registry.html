@@ -171,111 +171,60 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="registry-cleanup-process" href="#registry-cleanup-process"></a>Registry cleanup process</h1>
+<p>This process is used to remove inactive objects based on MRT data and the git commit history.
+The process is to be executed on a regular basis (yearly).</p>
+
+<p>A maintainer is classified as "inactive" if the following conditions have been fulfilled:</p>
+<ol>
+  <li>All of the ASNs the maintainer has been directly or indirectly associated with (in any way and by following all references, whether through mnt-by, admin-c, tech-c, etc. or through an ORG) have not been observed originating any prefix in the global routing table at any point within the last three years. (Determined by analyzing the daily MRT RIB dumps provided by the DN42 Global Route collector.)</li>
+  <li>The maintainer has not edited any of the ASNs they are associated with in the registry within the last three years. (Determined by analyzing the git commit history.)</li>
+</ol>
+
+<p>Maintainers that are not affiliated with an ASN (whether directly or indirectly or through other maintainers) are also considered inactive regardless of whether they fulfill the above conditions.</p>
+
+<h2><a class="anchor" id="process" href="#process"></a>Process</h2>
+
+<p>Using <strong>registry_wizard (written for v0.4.12)</strong>:</p>
+
+<ol>
+  <li>Download the MRT files from the Global Route Collector (GRC):
+<code>wget -r -np -nH --cut-dirs=1 -A "*.mrt.bz2" --reject "*:*" http://collector.dn42/</code>
+</li>
+  <li>Generate a list of active ASNs based on MRT data:
+<code>./registry_wizard /path/to/registry mrt_activity parse /path/to/mrt/files --cutoff-time &lt;value&gt; --list &gt; active_list.txt</code>
+</li>
+  <li>Based on the list of active ASNs and through referencing the registry git commit log, generate a list of inactive ASNs:
+<code>./registry_wizard /path/to/registry mrt_activity active_asn_to_inactive --list_file /path/to/active_list.txt --cutoff-time &lt;value&gt; &gt; inactive_list.txt</code>
+</li>
+  <li>Generate the removal commands to remove inactive objects based on the previous list:
+<code>./registry_wizard /path/to/registry remove aut-num --list_file /path/to/inactive_list.txt --enable_subgraph_check</code>
+</li>
+</ol>
+
+<p>ASNs can be excluded from removal by removing them from the list produced in step 3.</p>
+
+<p>Manual review of a few resources (primarily those affiliated with "DN42-MNT") will be required as they cannot be removed in an automated way (for example, resources associated with an inactive maintainer that used to host the DN42 anycast DNS will be affiliated with DN42-MNT and will require manual removal).
+To identify the exact conflicts leading to the manual review requirement the following command can be used:
+<code>./registry_wizard /path/to/registry graph path mntner YAMAKAYA-MNT mntner DN42-MNT</code> (To list conflicts between YAMAKAYA-MNT and DN42-MNT)</p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
-	          <ul>
-  <li>
-<a href="../Home.html" rel="nofollow">Home</a>
-    <ul>
-      <li><a href="../howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
-      <li><a href="../howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
-      <li><a href="../howto/Address-Space.html" rel="nofollow">Address Space</a></li>
-      <li><a href="../howto/BGP-communities.html" rel="nofollow">BGP communities</a></li>
-      <li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
-    </ul>
-  </li>
-  <li>How-To
-    <ul>
-      <li><a href="../howto/wireguard.html" rel="nofollow">Wireguard</a></li>
-      <li><a href="../howto/openvpn.html" rel="nofollow">Openvpn</a></li>
-      <li><a href="../howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
-      <li><a href="../howto/tinc.html" rel="nofollow">Tinc</a></li>
-      <li><a href="../howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
-      <li><a href="../howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
-      <li><a href="../howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
-      <li><a href="../howto/multicast.html" rel="nofollow">SSM Multicast</a></li>
-      <li><a href="../howto/mpls.html" rel="nofollow">MPLS</a></li>
-      <li><a href="../howto/Bird2.html" rel="nofollow">Bird2</a></li>
-      <li><a href="../howto/frr.html" rel="nofollow">FRRouting</a></li>
-      <li><a href="../howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
-      <li><a href="../howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
-      <li><a href="../howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
-      <li><a href="../howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
-      <li><a href="../howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
-      <li><a href="../howto/vyos1.4.html" rel="nofollow">VyOS</a></li>
-      <li><a href="../howto/nixos.html" rel="nofollow">NixOS</a></li>
-    </ul>
-  </li>
-  <li>Services
-    <ul>
-      <li><a href="IRC.html" rel="nofollow">IRC</a></li>
-      <li><a href="Whois.html" rel="nofollow">Whois registry</a></li>
-      <li><a href="DNS.html" rel="nofollow">DNS</a></li>
-      <li><a href="RPKI.html" rel="nofollow">RPKI</a></li>
-      <li><a href="IX-Collection.html" rel="nofollow">IX Collection</a></li>
-      <li><a href="Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
-      <li><a href="Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
-      <li><a href="Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
-      <li><a href="Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
-      <li><a href="Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
-      <li><a href="Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
-      <li><a href="Route-Collector.html" rel="nofollow">Route Collector</a></li>
-      <li><a href="Registry.html" rel="nofollow">Registry</a></li>
-    </ul>
-  </li>
-  <li>Internal
-    <ul>
-      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
-      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
-      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
-      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
-      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
-    </ul>
-  </li>
-  <li>Historical
-    <ul>
-      <li><a href="../historical/Bird.html" rel="nofollow">Bird 1</a></li>
-      <li><a href="../historical/Quagga.html" rel="nofollow">Quagga</a></li>
-    </ul>
-  </li>
-  <li>External Tools
-    <ul>
-      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
-      <li><a href="https://hedgedoc.dn42.eu/" rel="nofollow">HedgeDoc</a></li>
-      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
-      <li><a href="https://git.dn42.dev/dn42/registry" rel="nofollow">Registry</a></li>
-    </ul>
-  </li>
-</ul>
-
-<hr />
-
-
+	          <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	        </div>
 	      </div>
 	    </div>
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <table>
-  <tbody>
-    <tr>
-      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
-</td>
-      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
-    </tr>
-  </tbody>
-</table>
-
+	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	    </div>
 	  </div>
 
