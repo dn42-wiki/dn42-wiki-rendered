@@ -178,7 +178,226 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h2><a class="anchor" id="introduction" href="#introduction"></a>Introduction</h2>
+
+<p><a href="https://github.com/iedon/dn42-wiki-go">dn42-wiki-go</a> is a lightweight, Git-backed wiki engine designed for DN42. It is based on <a href="https://git.dn42.dev/wiki/wiki-ng">wiki-ng</a>, aims to replace the old Gollum-based DN42 distributed wiki.</p>
+
+<p>It can serve pages live through its built-in Go HTTP server or generate a fully static HTML export for external hosting. All content is stored in a Git repository, making it easy to replicate across nodes or run in disconnected environments.</p>
+
+<h2><a class="anchor" id="operating-modes" href="#operating-modes"></a>Operating Modes</h2>
+
+<p>You can run <code>dn42-wiki-go</code> in three different ways:</p>
+
+<ol>
+  <li>
+    <p><strong>Run static build once then exit (<code>--build</code> or <code>live=false</code>)</strong><br />
+The App renders all Markdown files into HTML under outputDir and exits.<br />
+Best for setups where your own cron job handles Git sync and file publishing.</p>
+  </li>
+  <li>
+    <p><strong>Live mode without reverse proxy (<code>live=true</code>)</strong><br />
+The built-in HTTP server directly serves pages, assets, and APIs.<br />
+Suitable for simple deployments.</p>
+  </li>
+  <li>
+    <p><strong>Live mode behind a reverse proxy</strong><br />
+The reverse proxy (nginx, Caddy, HAProxy, etc.) serves the generated files, and only API endpoints are forwarded to the App.<br />
+See <code>config.example.json</code> for example configs and <code>nginx-vhost.conf</code> for a reverse-proxy reference.</p>
+
+    <p><strong>Recommended for production and anycast nodes</strong>.</p>
+  </li>
+</ol>
+
+<h2><a class="anchor" id="features" href="#features"></a>Features</h2>
+
+<ul>
+  <li>Live mode with automatic Markdown rendering and scheduled Git pull/push.</li>
+  <li>Static mode for fully pre-built HTML exports.</li>
+  <li>Optional in-browser editor with commit metadata (author, message prefix, remote IP).</li>
+  <li>Webhook endpoints for remote pull/push triggers and optional polling integration(see <code>dn42notifyd</code>).</li>
+  <li>Themeable templates and bundled UI assets.</li>
+  <li>Designed for distributed, multi-node and anycast environments.</li>
+</ul>
+
+<h2><a class="anchor" id="quick-start" href="#quick-start"></a>Quick Start</h2>
+
+<p>Pre-built binaries are available in the <a href="https://github.com/iedon/dn42-wiki-go/releases">GitHub releases</a>.</p>
+
+<p>Please do not forget to clone the repository to copy <code>config.example.json</code>(to <code>config.json</code>) and the <code>template</code> folder. They should be put together in the same production directory.</p>
+
+<h3><a class="anchor" id="manual-build" href="#manual-build"></a>Manual Build</h3>
+
+<ol>
+  <li>Install Go 1.24+ and ensure the git executable is available in PATH.</li>
+  <li>Copy the example config:
+cp config.example.json config.json
+Then edit the settings you need.</li>
+  <li>Build for your platform (example: Linux amd64):
+<pre class="highlight"><code><span class="nb">export </span><span class="nv">GOOS</span><span class="o">=</span>linux
+<span class="nb">export </span><span class="nv">GOARCH</span><span class="o">=</span>amd64
+./build.sh</code></pre></li>
+</ol>
+
+<p>Determine which user is used to run <code>dn42-wiki-go</code>, then create <code>~/.gitconfig</code> for this user, which will be used by <code>git</code>.</p>
+
+<p>For example:</p>
+
+<pre class="highlight"><code><span class="nn">[user]</span>
+        <span class="py">email</span> <span class="p">=</span> <span class="s">noreply@dn42.jp    </span>
+        <span class="py">name</span> <span class="p">=</span> <span class="s">IEDON.DN42 Wiki Mirror(116)</span></code></pre>
+
+<p>To create the isolated, low-privileged user <code>dn42-wiki-go</code>, you may run:
+</p><pre class="highlight"><code><span class="c"># This user cannot log in or get a shell.</span>
+<span class="c"># This user has /opt/dn42-wiki-go as working directory.</span>
+<span class="c"># No default home folder created automatically.</span>
+<span class="nb">sudo </span>useradd <span class="nt">-r</span> <span class="nt">-s</span> /usr/sbin/nologin <span class="nt">-d</span> /opt/dn42-wiki-go <span class="nt">-M</span> dn42-wiki-go</code></pre>
+
+<p>Both systemd socket enabler and UNIX domain socket are supported, check example configuration files: <code>dn42-wiki-go.socket</code> and <code>dn42-wiki-go.service</code>.</p>
+
+<p>If you would like to use with Docker: <code>Dockerfile</code> and <code>docker-compose.yml</code> are also provided, bind proper directories and map <code>config.json</code> for the App to use, then you are all set.</p>
+
+<h2><a class="anchor" id="webhook-endpoints" href="#webhook-endpoints"></a>Webhook Endpoints</h2>
+
+<p>When <code>webhook.enabled</code> = true, the server exposes:</p>
+
+<ul>
+  <li>
+    <p>GET | POST /api/webhook/pull<br />
+Runs git pull and rebuilds the cached HTML.</p>
+  </li>
+  <li>
+    <p>GET | POST /api/webhook/push<br />
+Pushes local commits to the remote.</p>
+  </li>
+</ul>
+
+<p>If <code>webhook.secret</code> is set, requests must include an Authorization header that matches the secret.</p>
+
+<h3><a class="anchor" id="polling-integration" href="#polling-integration"></a>Polling Integration</h3>
+
+<p>When <code>webhook.polling.enabled</code> = true, the server registers with a remote notify service and triggers <code>/api/webhook/pull</code> whenever a refresh completes.</p>
+
+<p>This is compatible with <code>dn42notifyd</code> and similar tools.</p>
+
+<h2><a class="anchor" id="configuration-reference" href="#configuration-reference"></a>Configuration Reference</h2>
+
+<p>All settings are provided through a JSON file. Below is a concise reference of all options.</p>
+
+<h3><a class="anchor" id="runtime" href="#runtime"></a>Runtime</h3>
+
+<ul>
+  <li>
+    <p><code>live</code> <em>(bool, default <code>false</code>)</em>:<br />
+true -&gt; run HTTP server and render on demand.<br />
+false -&gt; render once to outputDir and exit.</p>
+  </li>
+  <li>
+    <p><code>editable</code> <em>(bool, default <code>false</code>)</em>:<br />
+Enables in-browser editing and write operations.</p>
+  </li>
+  <li>
+    <p><code>listen</code> <em>(string, default <code>":8080"</code>)</em>:<br />
+TCP address (host:port) or UNIX socket (unix:/path).</p>
+
+    <p>Advanced: See example systemd files <code>dn42-wiki-go.socket</code> and <code>dn42-wiki-go.service</code> in the repository.</p>
+  </li>
+  <li>
+    <p><code>baseUrl</code> <em>(string, optional)</em>:<br />
+URL prefix when hosting under a subdirectory.</p>
+  </li>
+  <li>
+    <p><code>siteName</code> <em>(string, default <code>"DN42 Wiki Go"</code>)</em>:<br />
+Display name of the wiki.</p>
+  </li>
+</ul>
+
+<h3><a class="anchor" id="git" href="#git"></a>Git</h3>
+<ul>
+  <li>
+<code>git.binPath</code> <em>(string, default <code>git</code>)</em>: Path to the Git executable.</li>
+  <li>
+<code>git.remote</code> <em>(string, default empty)</em>: Remote URL. Leave empty for standalone/local repositories.</li>
+  <li>
+<code>git.localDirectory</code> <em>(string, default <code>./repo</code>)</em>: Directory where the wiki repository is cloned or initialised.</li>
+  <li>
+<code>git.pullIntervalSec</code> <em>(int, default <code>300</code>)</em>: Seconds between background <code>git pull</code> operations in live mode. Disabled if no remote is set.</li>
+  <li>
+<code>git.author</code> <em>(string, default <code>"Anonymous &lt;anonymous@localhost&gt;"</code>)</em>: Author string used for commits generated by the application.</li>
+  <li>
+<code>git.commitMessagePrefix</code> <em>(string, default empty)</em>: Optional prefix prepended verbatim to commit messages supplied by users.</li>
+  <li>
+<code>git.commitMessageAppendRemoteAddr</code> <em>(string, default empty)</em>: Optional suffix appended when a request carries a remote address. If the value contains <code>%s</code> it is treated as a <code>fmt</code> format string; otherwise it is concatenated.</li>
+</ul>
+
+<h3><a class="anchor" id="webhook" href="#webhook"></a>Webhook</h3>
+<ul>
+  <li>
+<code>webhook.enabled</code> <em>(bool, default <code>false</code>)</em>: Expose webhook endpoints on the main HTTP server.</li>
+  <li>
+<code>webhook.secret</code> <em>(string, default empty)</em>: Shared secret expected in the <code>Authorization</code> header. Ignored when empty.</li>
+  <li>
+<code>webhook.polling.enabled</code> <em>(bool, default <code>false</code>)</em>: Keep a registration active with the remote notification service and trigger periodic pulls.</li>
+  <li>
+<code>webhook.polling.endpoint</code> <em>(string, default empty)</em>: URL of the notification service (eg. Usage with <a href="https://git.dn42.dev/dn42/dn42notifyd">dn42notifyd</a>: <code>https://git.dn42/dn42notify/poll</code>).</li>
+  <li>
+<code>webhook.polling.callbackUrl</code> <em>(string, default empty)</em>: Public URL for <code>/api/webhook/pull</code>. Required when <code>webhook.polling.enabled</code> is <code>true</code>.</li>
+  <li>
+<code>webhook.polling.pollingIntervalSec</code> <em>(int, default <code>3600</code>)</em>: Seconds between refresh attempts. Must be positive when polling is enabled.</li>
+  <li>
+<code>webhook.polling.skipRemoteCert</code> <em>(bool, default <code>false</code>)</em>: Insecure: Skip TLS verification.</li>
+</ul>
+
+<h3><a class="anchor" id="paths-and-templating" href="#paths-and-templating"></a>Paths and templating</h3>
+<ul>
+  <li>
+<code>outputDir</code> <em>(string, default <code>./dist</code>)</em>: Destination directory for static builds or asset exports.</li>
+  <li>
+<code>templateDir</code> <em>(string, default <code>./template</code>)</em>: Location of layout templates and static assets bundled into the server/UI.</li>
+  <li>
+<code>homeDoc</code> <em>(string, default <code>Home.md</code>)</em>: Repository document to treat as the home page. Normalised to a <code>.md</code> path relative to the repo root.</li>
+  <li>
+<code>privatePagesPrefix</code> <em>(array of strings, default empty)</em>: Request to routes started with these prefixes will be blocked.</li>
+</ul>
+
+<h3><a class="anchor" id="layout-and-footer" href="#layout-and-footer"></a>Layout and footer</h3>
+<ul>
+  <li>
+<code>ignoreHeader</code> <em>(bool, default <code>false</code>)</em>: Skip loading <code>_Header.md</code> when <code>true</code>. Leave <code>false</code> to include the fragment when present.</li>
+  <li>
+<code>ignoreFooter</code> <em>(bool, default <code>false</code>)</em>: Skip <code>_Footer.md</code> when <code>true</code>; otherwise render it if available.</li>
+  <li>
+<code>serverFooter</code> <em>(string, default empty)</em>: Markdown snippet rendered into the global footer at runtime.</li>
+</ul>
+
+<h3><a class="anchor" id="tls" href="#tls"></a>TLS</h3>
+<ul>
+  <li>
+<code>enableTLS</code> <em>(bool, default <code>false</code>)</em>: Serve HTTPS using the provided certificate and key.</li>
+  <li>
+<code>tlsCert</code> <em>(string)</em>: Path to the TLS certificate. Required only when <code>enableTLS</code> is true.</li>
+  <li>
+<code>tlsKey</code> <em>(string)</em>: Path to the TLS private key. Required when <code>enableTLS</code> is true.</li>
+</ul>
+
+<h3><a class="anchor" id="logging-and-client-ip-handling" href="#logging-and-client-ip-handling"></a>Logging and client IP handling</h3>
+<ul>
+  <li>
+<code>logLevel</code> <em>(string, default <code>info</code>)</em>: Minimum log level (<code>debug</code>, <code>info</code>, <code>warn</code>, or <code>error</code>).</li>
+  <li>
+<code>trustedProxies</code> <em>(array of strings, default empty)</em>: CIDR blocks or literal IPs that are trusted to populate <code>X-Forwarded-For</code>.</li>
+  <li>
+<code>trustedRemoteAddrLevel</code> <em>(int, default <code>1</code>)</em>: Number of additional trusted hops to peel off when deriving the end-user IP from the forwarded chain. Values less than <code>1</code> are coerced to <code>1</code> during load.</li>
+</ul>
+
+<h2><a class="anchor" id="notes" href="#notes"></a>Notes</h2>
+
+<ul>
+  <li>live = true requires write access to the Git repo for local commits.</li>
+  <li>With no remote configured, <code>dn42-wiki-go</code> initializes a local-only repository.</li>
+  <li>Template changes require restarting the server or rebuilding static output.</li>
+</ul>
+
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
