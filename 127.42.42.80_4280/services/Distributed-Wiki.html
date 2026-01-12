@@ -171,14 +171,15 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="this-page-is-outdated-and-need-update" href="#this-page-is-outdated-and-need-update"></a>this page is outdated and need update</h1>
+	        <p><a href="Distributed-Wiki-New.html">dn42-wiki-go</a> is a lightweight, Git-backed wiki engine designed for DN42. It is based on <a href="https://git.dn42.dev/wiki/wiki-ng">wiki-ng</a>, aims to replace the old Gollum-based DN42 distributed wiki.</p>
+
+<h1><a class="anchor" id="this-page-is-outdated-and-need-update" href="#this-page-is-outdated-and-need-update"></a>this page is outdated and need update</h1>
 
 <p>The idea is to deploy mirrors across dn42 using <a href="https://en.wikipedia.org/wiki/Anycast">anycast</a> addressing (BGP), thus providing redundancy, load-balancing and improved access times to the wiki. Sites are powered by <a href="https://github.com/gollum/gollum">gollum</a> which has no native SSL support, so Nginx acts as a reverse proxy and handles the encryption.
 The local webserver is monitored with a simple <a href="Distributed-Wiki.html#exabgp_watchdog-script">shell script</a> working <a href="Distributed-Wiki.html#exabgp">in conjunction</a> with <a href="https://github.com/Exa-Networks/exabgp">ExaBGP</a>, announcing/withdrawing the assigned route if the service is up/down.</p>
@@ -565,7 +566,6 @@ stop<span class="o">(){</span>
 <span class="k">esac</span>
 
 <span class="nb">exit </span>0</code></pre>
-
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
