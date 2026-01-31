@@ -22,7 +22,7 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'howto/IPsecWithPublicKeys/VyOSExample.md';
+	  var pageFullPath = 'howto/IPsecWithPublicKeys/strongSwan4Example.md';
     var pageFormat   = 'markdown';
 
   </script>
@@ -44,7 +44,7 @@
     mermaid.initialize(mermaid_conf);
   </script>
   
-  <title>VyOSExample</title>
+  <title>strongSwan4Example</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -68,12 +68,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>VyOSExample</div>
+            <div>strongSwan4Example</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="https://hist.dn42.wiki/gollum/history/howto/IPsecWithPublicKeys/VyOSExample.md"
+              href="http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/strongSwan4Example.md"
               role="menuitem"
             >
               <span>History</span>
@@ -118,7 +118,7 @@
     class="TableObject-item TableObject-item--primary px-2"
     
   >
-    <form class="search-form" action="https://hist.dn42.wiki/gollum/search" method="get" id="search-form">
+    <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
     	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
@@ -146,7 +146,7 @@
     <div class="BtnGroup d-flex">
         <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          onclick="window.location.href='https://hist.dn42.wiki/gollum/history/howto/IPsecWithPublicKeys/VyOSExample.md/';"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/strongSwan4Example.md/';"
           id="minibutton-history"
         >
           History
@@ -161,7 +161,7 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    VyOSExample
+    strongSwan4Example
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
 <li class="breadcrumb-item"><a href="../../gollum/overview/howto/index.html">howto</a></li>
@@ -179,28 +179,35 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="ipsec-with-public-key-authentication-on-vyos-edgeos" href="#ipsec-with-public-key-authentication-on-vyos-edgeos"></a>IPsec with public key authentication on VyOS/EdgeOS</h1>
+	        <h1><a class="anchor" id="ipsec-with-public-key-authentication-on-strongswan-5-0-0" href="#ipsec-with-public-key-authentication-on-strongswan-5-0-0"></a>IPsec with public key authentication on strongSwan &lt; 5.0.0</h1>
 <h2><a class="anchor" id="setup" href="#setup"></a>Setup</h2>
 <h3><a class="anchor" id="generate-an-rsa-keypair" href="#generate-an-rsa-keypair"></a>Generate an RSA keypair</h3>
 
-<pre class="highlight"><code>ubnt@ubnt:~<span class="nv">$ </span>generate vpn rsa-key bits 4096 random /dev/urandom
-Generating rsa-key to /config/ipsec.d/rsa-keys/localhost.key
-
-Your new <span class="nb">local </span>RSA key has been generated
-The public portion of the key is:
-
-0sAQPNdF370ZEbN+kZUJQ10qnBlZujrg39ujfk20ILTjELksOIdJw/4jiU1MfpqFDKuB/XxERwJQp2POsFyV/n76jAgxIYBfFYfuaBcIH1rdNQtDhCnkmWzlueRXGEsz0Af79n8TKyQ9otzNhJ2cPE1CWCJbKqbIUN3piviLgGlItWNeya+Tl3Oj3ZfEVwr1QOvUAw32+m4L8T9jf1vqSlOTHpRpxxPWBrLEzstk0FOcZISji2JBpDOCU8Kpyyf74JM+LxsOIHwmS15b6iFZR3U9KZLqbbd0dSy/cM8P4XjrwM5UMyRDjrLqvuA/K/33BgtnxdQR3e9DJoYH3Qr8eRgSkR+jHyq06LvgHkHbMvrEjUnc3n8bg+YfR4oyJpIWsKjfIXmN1Q51KzxAPIAww+YSYUYtamSsQsspVAtMIQqR4e0r1In1qyoSn8VCPlksNMWpqYHbSjDo5HJYoSwxf2epzMtCvhenn0OuiH0xlgzziA+wBi6txksTMvJYcPJYnBVR2NIBjkWftOfmkY+rKMozViGjyd6kB7C8lqd8W7Ha5Ds2WxIY22DM3HcYH/zTp9z2xbuMOsbIgib/Y12Kh0wHyCz0lzFvs+d6CZwinyIXNKB/Vo4iiwT5luL5mGqf3pZx4zB+30GYSs/6MaELRF9BxD7tfqYCkOLXUtxyZ4Pdl2sw<span class="o">==</span></code></pre>
+<pre class="highlight"><code>root@debian:~# <span class="nb">mkdir</span> /etc/ipsec.d/public
+root@debian:~# ipsec pki <span class="nt">--gen</span> <span class="nt">--type</span> rsa <span class="nt">--outform</span> pem <span class="nt">--size</span> 4096 <span class="o">&gt;</span> /etc/ipsec.d/private/mykey.pem
+root@debian:~# ipsec pki <span class="nt">--pub</span> <span class="nt">--in</span> /etc/ipsec.d/private/mykey.pem <span class="nt">--outform</span> pem <span class="o">&gt;</span> /etc/ipsec.d/public/mykey.pub
+root@debian:~# <span class="nb">echo</span> <span class="s2">": RSA mykey.pem"</span> <span class="o">&gt;&gt;</span> /etc/ipsec.secrets</code></pre>
 
 <h3><a class="anchor" id="exchange-public-keys-with-your-peer" href="#exchange-public-keys-with-your-peer"></a>Exchange public keys with your peer</h3>
 <ol>
-  <li>Display the public key. Send the key data portion to your peer.</li>
+  <li>Display the public key. Send the key data to your peer.</li>
 </ol>
 
-<pre class="highlight"><code>ubnt@ubnt:~<span class="nv">$ </span>show vpn ike rsa-keys
-
-Local public key <span class="o">(</span>/config/ipsec.d/rsa-keys/localhost.key<span class="o">)</span>:
-
-0sAQPNdF370ZEbN+kZUJQ10qnBlZujrg39ujfk20ILTjELksOIdJw/4jiU1MfpqFDKuB/XxERwJQp2POsFyV/n76jAgxIYBfFYfuaBcIH1rdNQtDhCnkmWzlueRXGEsz0Af79n8TKyQ9otzNhJ2cPE1CWCJbKqbIUN3piviLgGlItWNeya+Tl3Oj3ZfEVwr1QOvUAw32+m4L8T9jf1vqSlOTHpRpxxPWBrLEzstk0FOcZISji2JBpDOCU8Kpyyf74JM+LxsOIHwmS15b6iFZR3U9KZLqbbd0dSy/cM8P4XjrwM5UMyRDjrLqvuA/K/33BgtnxdQR3e9DJoYH3Qr8eRgSkR+jHyq06LvgHkHbMvrEjUnc3n8bg+YfR4oyJpIWsKjfIXmN1Q51KzxAPIAww+YSYUYtamSsQsspVAtMIQqR4e0r1In1qyoSn8VCPlksNMWpqYHbSjDo5HJYoSwxf2epzMtCvhenn0OuiH0xlgzziA+wBi6txksTMvJYcPJYnBVR2NIBjkWftOfmkY+rKMozViGjyd6kB7C8lqd8W7Ha5Ds2WxIY22DM3HcYH/zTp9z2xbuMOsbIgib/Y12Kh0wHyCz0lzFvs+d6CZwinyIXNKB/Vo4iiwT5luL5mGqf3pZx4zB+30GYSs/6MaELRF9BxD7tfqYCkOLXUtxyZ4Pdl2sw<span class="o">==</span></code></pre>
+<pre class="highlight"><code>root@debian:~# more /etc/ipsec.d/public/mykey.pub
+<span class="nt">-----BEGIN</span> PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2/FWIJuVUtfsLovavNp+
+nPSsT2mQoNK3ZUUwuEKfBjT7mhijdXRHh1SAtIaU2aen5+d5q6e27vMCCYOQLagn
+9CkKatBq54zGNvDSzQEpz0mIsaBx9xjvhsgqAmKCTpLtKuMz6cZbH8y8o9/ZZ8Kv
++Jht67T8BDKXczgOg5IIaX84UpCrlSgmnSvKYKu3PXnt91bZ66HaDZJjPf9aiMNc
+fvuUqVfFWnsV2zI6HFvG/uwkqLalsnPaAwVeIWl2Ovy2Jzdj0GRLSYx87eneSBo+
+7tjlURQTudAj1+53SFOkBcCPSnzPYpIC3hBfZ8Zw8r/25moW3xf8TlLLJqgAh50Y
+tVyvyVSv1MKYBdjZcFsEXUceC5LI9JZryB/Serq0R+4//ZiR3LEtetVKNvco9bcI
+JHXr88HM2XeYRfRPAB6wembIEMKYdwIhwYAPPAtL+lDHtZBiBAIAp0y0FhaozSzl
+MSry8tbJR2fD/i8/yXr5isVfjJZdw8WK0LAd8a8zvmNIFKgiKWjoDgIycM5HrRD+
+rY0Br9xONkNdgB7Lz/wPEyUsiIiZpawM/S4taX7ExK4Wi3pdxkOHLn2ZyaWKsdhX
+PpCkdMfSOJ0SqCUcVze+xD8GlInUQsPgbDGvxT73jT6Ie+wSA94Cgs3mq7FS6cNo
+ZAASv7cT9DG+xfQmjrJC9SUCAwEAAQ<span class="o">==</span>
+<span class="nt">-----END</span> PUBLIC KEY-----</code></pre>
 
 <ol>
   <li>Convert your peer's public key to the Base64 RFC 3110 format using the <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl" title="Public key conversion script">pubkey-converter</a> script, if necessary.</li>
@@ -245,43 +252,25 @@ Local public key <span class="o">(</span>/config/ipsec.d/rsa-keys/localhost.key<
   </tbody>
 </table>
 
-<ol>
-  <li>Add your peer's public key</li>
-</ol>
-
-<pre class="highlight"><code>vyos@vyos:~<span class="nv">$ </span>configure
-<span class="o">[</span>edit]
-vyos@vyos# <span class="nb">set </span>vpn rsa-keys rsa-key-name my-peer rsa-key 0sAwEAAb4ETtKRLxcFNty56regsR61pq7hQl3NnjwABL16wZXGynKxZlj11VbdqcNwaTaqHZLV4Xfy867nImSs0DD9Cko5LzWwyM1Ih4SB+rIjfmBt7nRUrilnYvfWAONG1CLTI2tXnM/miNqiY+PxlCiMPr1KrTJWBWOknqqhhL2dOBfp3Ryx1yRxDACFG4wgpwmndJOnmefnV6qZXWiOdoIsBsBqQKiDY0g2uI+S3KxK27JL3KZWcA2ehhvtxmq4vwcMXplYeedei3EEmWxtddAZCApXor9bkVoVp2io+a0D1ALevYMD5SIygu55Q888n5puYNry/cUjX20/F/YK+J9u2UExWewN4AIt/jMNm7nJNWpuFHfLX1V/igHrdGzoEM0E/i+nGz9CWTVTLoFUmkTjpt31FPmomSVEI7MbNXG7cpa+X55PWd1apheR52XJZPZfCnMf1DjilYbLMRG05RK8zI3QlX3UXHira0dq4OBZ+Aow+dGp+jLmwjgdBDnkQdVu0iP6bp+5/oz6mWvDQ65EVECAIXKR5zIsiKn9ZU18H+lp4xWMjiSw3Y+87Y5KeQPmX73Ygolow6VvtCBvX8CS4Plszn3i0Qp8184eLEWIY314Z8Z+HwBAjUv3MkqI93leokAjMbt23ttaJbWlWgG47BAJOEcWlMFkDNcZtOngUrzF</code></pre>
+<p><em>Note: strongSwan &lt; 5.0.0 will read PEM-formatted <strong>private</strong> keys, but requires public keys to be added to the configuration in Base64 RFC 3110 format. Convert your host's public key from PEM to Base64 RFC 3110 for inclusion in ipsec.conf as described below.</em></p>
 
 <ol>
-  <li>Configure an ISAKMP policy</li>
+  <li>Configure a connection policy in ipsec.conf for your peer. The <code>leftrsasigkey</code> attribute is your host's public key in Base64 RFC 3110 format enclosed in double quotes, and <code>rightrsasigkey</code> is your peer's key.</li>
 </ol>
 
-<pre class="highlight"><code><span class="o">[</span>edit]
-vyos@vyos# edit vpn ipsec ike-group FOO
-<span class="o">[</span>edit vpn ipsec ike-group FOO]
-vyos@vyos# <span class="nb">set </span>lifetime 28800
-<span class="o">[</span>edit vpn ipsec ike-group FOO]
-vyos@vyos# <span class="nb">set </span>proposal 1 encryption aes128
-<span class="o">[</span>edit vpn ipsec ike-group FOO]
-vyos@vyos# <span class="nb">set </span>proposal 1 <span class="nb">hash </span>sha1
-<span class="o">[</span>edit vpn ipsec ike-group FOO]
-vyos@vyos# <span class="nb">set </span>proposal 1 dh-group 5
-<span class="o">[</span>edit vpn ipsec ike-group FOO]
-vyos@vyos# commit</code></pre>
-
-<ol>
-  <li>Set your peer definition to use the public key</li>
-</ol>
-
-<pre class="highlight"><code><span class="o">[</span>edit vpn ipsec ike-group FOO]
-vyos@vyos# up
-<span class="o">[</span>edit vpn ipsec]
-vyos@vyos# edit site-to-site peer 192.0.2.2
-<span class="o">[</span>edit vpn ipsec site-to-site peer 192.0.2.2]
-vyos@vyos# <span class="nb">set </span>authentication mode rsa
-<span class="o">[</span>edit vpn ipsec site-to-site peer 192.0.2.2]
-vyos@vyos# <span class="nb">set </span>authentication rsa-key-name my-peer</code></pre>
+<pre class="highlight"><code>root@debian:~# <span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> &gt;&gt; /etc/ipsec.conf
+conn MYPEER
+    # peer IPs
+    left=192.0.2.1
+    right=192.0.2.2
+    # phase 1 parameters
+    ike=aes128-sha1-modp1536!
+    ikelifetime=28800s
+    # authentication
+    authby=pubkey
+    leftrsasigkey="0sAwEAAdvxViCblVLX7C6L2rzafpz0rE9pkKDSt2VFMLhCnwY0+5oYo3V0R4dUgLSGlNmnp+fneauntu7zAgmDkC2oJ/QpCmrQaueMxjbw0s0BKc9JiLGgcfcY74bIKgJigk6S7SrjM+nGWx/MvKPf2WfCr/iYbeu0/AQyl3M4DoOSCGl/OFKQq5UoJp0rymCrtz157fdW2euh2g2SYz3/WojDXH77lKlXxVp7FdsyOhxbxv7sJKi2pbJz2gMFXiFpdjr8tic3Y9BkS0mMfO3p3kgaPu7Y5VEUE7nQI9fud0hTpAXAj0p8z2KSAt4QX2fGcPK/9uZqFt8X/E5SyyaoAIedGLVcr8lUr9TCmAXY2XBbBF1HHguSyPSWa8gf0nq6tEfuP/2YkdyxLXrVSjb3KPW3CCR16/PBzNl3mEX0TwAesHpmyBDCmHcCIcGADzwLS/pQx7WQYgQCAKdMtBYWqM0s5TEq8vLWyUdnw/4vP8l6+YrFX4yWXcPFitCwHfGvM75jSBSoIilo6A4CMnDOR60Q/q2NAa/cTjZDXYAey8/8DxMlLIiImaWsDP0uLWl+xMSuFot6XcZDhy59mcmlirHYVz6QpHTH0jidEqglHFc3vsQ/BpSJ1ELD4Gwxr8U+940+iHvsEgPeAoLN5quxUunDaGQAEr+3E/QxvsX0Jo6yQvUl"
+    rightrsasigkey="0sAwEAAbkNYV9/gBIi4rOKeY75mCHxIGqvePPBlNp5LkdYGSuPwqYa3HJs7YAA1P05IhOSDjqO8yj6Wq3JfHWcCX1/o/aCBH7yB6lmxfKyJJiQwJ+WUADQ7FSklb7vJ6jWYQLJQZBVMNSJeiia3WRMFeCCy42Zj4zf0yKcz0rbn3ii31K+zqHRZyV3b1hltTsEVUfGD2T/td0tp22qqISWWLpU8xHBGlhYV0Ss5tXcV6rdh9Evd5r+Qk9Cc1VAL9+ZQd/TTKnEcK4ORbMNM+OPJ5Xp0qSA5z/ACD5ubITX/ZGSQpLDhPRnzzM+SmQzqEd61j772qWP2bPkgc/Haz8B62WoRio8Vdk8Ze12JBRFr63vq6YlkonSLJ84sxAUNXmuiJ8HemNvbs5kC4brNTj34ZwiJAFcnCvrLQmTmz5emm6JpP2r2k/hcJ40YEmc5KLZWwNiB4BIxduguGt2VBgcA2fu61NgOwymx0TfOH+tgXDMomaWr1z75OAFEA+fpUSLWxQw3mWLaCHR2/YJjHDR1rBi/GFcRdgPCAL6+0NU0H8JtljwFr42otq25esPGWIkAT1MJBbVAE11O18hnC5owhiRoB2aAKjx3XV9c+x6LBSHfkknO7oAp1DbcEmB6vg3MwVXU2uuWj7++fM8Xis1KiQSspj+B5Lx5RJlxz9qAEOBuj05"
+EOF</span></code></pre>
 
 <ol>
   <li>All done! Configure the phase 2 parameters as you otherwise would.</li>
@@ -289,68 +278,44 @@ vyos@vyos# <span class="nb">set </span>authentication rsa-key-name my-peer</code
 
 <h2><a class="anchor" id="full-gre-ipsec-example" href="#full-gre-ipsec-example"></a>Full GRE/IPsec example</h2>
 
-<pre class="highlight"><code><span class="n">interfaces</span> {
-    <span class="n">ethernet</span> <span class="n">eth0</span> {
-        <span class="n">address</span> <span class="m">192</span>.<span class="m">0</span>.<span class="m">2</span>.<span class="m">1</span>/<span class="m">30</span>
-        <span class="n">description</span> <span class="n">WAN</span>
-        <span class="n">duplex</span> <span class="n">auto</span>
-        <span class="n">speed</span> <span class="n">auto</span>
-    }
-    <span class="n">tunnel</span> <span class="n">tun0</span> {
-        <span class="n">address</span> <span class="m">10</span>.<span class="m">1</span>.<span class="m">2</span>.<span class="m">0</span>/<span class="m">31</span>
-        <span class="n">encapsulation</span> <span class="n">gre</span>
-        <span class="n">local</span>-<span class="n">ip</span> <span class="m">192</span>.<span class="m">0</span>.<span class="m">2</span>.<span class="m">1</span>
-        <span class="n">mtu</span> <span class="m">1400</span>
-        <span class="n">multicast</span> <span class="n">disable</span>
-        <span class="n">remote</span>-<span class="n">ip</span> <span class="m">192</span>.<span class="m">0</span>.<span class="m">2</span>.<span class="m">2</span>
-        <span class="n">ttl</span> <span class="m">255</span>
-    }
-}
-<span class="n">vpn</span> {
-    <span class="n">ipsec</span> {
-        <span class="n">esp</span>-<span class="n">group</span> <span class="n">BAR</span> {
-            <span class="n">compression</span> <span class="n">disable</span>
-            <span class="n">lifetime</span> <span class="m">3600</span>
-            <span class="n">mode</span> <span class="n">transport</span>
-            <span class="n">pfs</span> <span class="n">dh</span>-<span class="n">group5</span>
-            <span class="n">proposal</span> <span class="m">1</span> {
-                <span class="n">encryption</span> <span class="n">aes128</span>
-                <span class="n">hash</span> <span class="n">sha1</span>
-            }
-        }
-        <span class="n">ike</span>-<span class="n">group</span> <span class="n">FOO</span> {
-            <span class="n">lifetime</span> <span class="m">28800</span>
-            <span class="n">proposal</span> <span class="m">1</span> {
-                <span class="n">dh</span>-<span class="n">group</span> <span class="m">5</span>
-                <span class="n">encryption</span> <span class="n">aes128</span>
-                <span class="n">hash</span> <span class="n">sha1</span>
-            }
-        }
-        <span class="n">ipsec</span>-<span class="n">interfaces</span> {
-            <span class="n">interface</span> <span class="n">eth0</span>
-        }
-        <span class="n">site</span>-<span class="n">to</span>-<span class="n">site</span> {
-            <span class="n">peer</span> <span class="m">192</span>.<span class="m">0</span>.<span class="m">2</span>.<span class="m">2</span> {
-                <span class="n">authentication</span> {
-                    <span class="n">mode</span> <span class="n">rsa</span>
-                    <span class="n">rsa</span>-<span class="n">key</span>-<span class="n">name</span> <span class="n">my</span>-<span class="n">peer</span>
-                }
-                <span class="n">connection</span>-<span class="n">type</span> <span class="n">initiate</span>
-                <span class="n">default</span>-<span class="n">esp</span>-<span class="n">group</span> <span class="n">BAR</span>
-                <span class="n">ike</span>-<span class="n">group</span> <span class="n">FOO</span>
-                <span class="n">local</span>-<span class="n">ip</span> <span class="m">192</span>.<span class="m">0</span>.<span class="m">2</span>.<span class="m">1</span>
-                <span class="n">tunnel</span> <span class="m">0</span> {
-                    <span class="n">protocol</span> <span class="n">gre</span>
-                }
-            }
-        }
-    }
-    <span class="n">rsa</span>-<span class="n">keys</span> {
-        <span class="n">rsa</span>-<span class="n">key</span>-<span class="n">name</span> <span class="n">my</span>-<span class="n">peer</span> {
-            <span class="n">rsa</span>-<span class="n">key</span> <span class="m">0</span><span class="n">sAwEAAbsbRoUcgdm4A4Nm</span>+<span class="n">PLxWcW</span>+<span class="n">zFis7pkaJ0MkGVzM7VC8nmngkM</span>+<span class="n">W2zqZyQ4NUTBKKfGOUc4Ogi6gyhlzUnHdag9tDERIX</span>+<span class="n">BwlDO6G4arod9z9KqmJuX4AOYVjH5QlAPz7NDMAezVekGoVLPGdOAMPD6NN54ihLRH6V3if8AGoJRpiajhcgQipjeQnhH4QhsYK4XSjayGT1onQwA8nhy5kt4ofyqSale4Fl4166S9tCn4RKwtlJDjR6VIrg6op6Ip8</span>+<span class="n">ke2vjEHPJHj6qVsxfRgOk2d8pY8oPVt8ayc5F1z</span>+<span class="n">lqJ7R0fADfN</span>+<span class="n">AQSaBqOMmg5dHDFYWwgYkU5egdVKS7Oko6uNuUWsZ0VEnRoPZ4syJEUbiF5wGfaVBaaVLZYUlRLQCffB4JKzp</span>+<span class="n">JesVToCX6JYRfb4JYQWFCDeQfrqRZHM4r13h8MOWPn9cqXcP47RKJjzNp6595biUotmCbMHyy</span>/<span class="n">uveMWxK6vDzPQRkywqMMJE2qOyACmbMnSce9KlYhvma82Vd</span>+<span class="n">z</span>/<span class="m">9</span>/<span class="n">U9NEy0s5MaYNDn</span>+<span class="n">q</span>+<span class="n">KYT5My3NSv52F6sLVGrKxTk79tzUejZcoukJv</span>+<span class="n">gf51Epam4kVHzPIal</span>/<span class="n">khsfjZn6YCU2j5</span>+<span class="n">qcdRmzF</span>+<span class="n">SG5c2WicvEU2Gc4ratfYNEPxU5oArzHIhIz6x2nAF</span>+<span class="n">szcx</span>/<span class="n">x8GEyXPNHnxEboJB7ox</span>
-        }
-    }
-}</code></pre>
+<pre class="highlight"><code>root@debian:~# ip addr show dev gre1
+11: gre1@NONE: &lt;POINTOPOINT,NOARP,UP,LOWER_UP&gt; mtu 1400 qdisc noqueue state UNKNOWN
+    <span class="nb">link</span>/gre 192.0.2.1 peer 192.0.2.2
+    inet 10.1.2.0/31 scope global gre1
+        valid_lft forever preferred_lft forever
+    inet6 fe80::200:5efe:6825:1c22/64 scope <span class="nb">link
+         </span>valid_lft forever preferred_lft forever
+root@debian:~# more /etc/ipsec.conf
+<span class="c"># ipsec.conf - strongSwan IPsec configuration file</span>
+
+config setup
+
+conn %default
+    <span class="nv">keyexchange</span><span class="o">=</span>ikev1
+    <span class="nv">dpdaction</span><span class="o">=</span>restart
+
+conn MYPEER
+    <span class="c"># peer IPs</span>
+    <span class="nv">left</span><span class="o">=</span>192.0.2.1
+    <span class="nv">right</span><span class="o">=</span>192.0.2.2
+    <span class="c"># phase 1 parameters</span>
+    <span class="nv">ike</span><span class="o">=</span>aes128-sha1-modp1536!
+    <span class="nv">ikelifetime</span><span class="o">=</span>28800s
+    <span class="c"># authentication</span>
+    <span class="nv">authby</span><span class="o">=</span>pubkey
+    <span class="nv">leftrsasigkey</span><span class="o">=</span><span class="s2">"0sAwEAAdvxViCblVLX7C6L2rzafpz0rE9pkKDSt2VFMLhCnwY0+5oYo3V0R4dUgLSGlNmnp+fneauntu7zAgmDkC2oJ/QpCmrQaueMxjbw0s0BKc9JiLGgcfcY74bIKgJigk6S7SrjM+nGWx/MvKPf2WfCr/iYbeu0/AQyl3M4DoOSCGl/OFKQq5UoJp0rymCrtz157fdW2euh2g2SYz3/WojDXH77lKlXxVp7FdsyOhxbxv7sJKi2pbJz2gMFXiFpdjr8tic3Y9BkS0mMfO3p3kgaPu7Y5VEUE7nQI9fud0hTpAXAj0p8z2KSAt4QX2fGcPK/9uZqFt8X/E5SyyaoAIedGLVcr8lUr9TCmAXY2XBbBF1HHguSyPSWa8gf0nq6tEfuP/2YkdyxLXrVSjb3KPW3CCR16/PBzNl3mEX0TwAesHpmyBDCmHcCIcGADzwLS/pQx7WQYgQCAKdMtBYWqM0s5TEq8vLWyUdnw/4vP8l6+YrFX4yWXcPFitCwHfGvM75jSBSoIilo6A4CMnDOR60Q/q2NAa/cTjZDXYAey8/8DxMlLIiImaWsDP0uLWl+xMSuFot6XcZDhy59mcmlirHYVz6QpHTH0jidEqglHFc3vsQ/BpSJ1ELD4Gwxr8U+940+iHvsEgPeAoLN5quxUunDaGQAEr+3E/QxvsX0Jo6yQvUl"</span>
+    <span class="nv">rightrsasigkey</span><span class="o">=</span><span class="s2">"0sAwEAAbkNYV9/gBIi4rOKeY75mCHxIGqvePPBlNp5LkdYGSuPwqYa3HJs7YAA1P05IhOSDjqO8yj6Wq3JfHWcCX1/o/aCBH7yB6lmxfKyJJiQwJ+WUADQ7FSklb7vJ6jWYQLJQZBVMNSJeiia3WRMFeCCy42Zj4zf0yKcz0rbn3ii31K+zqHRZyV3b1hltTsEVUfGD2T/td0tp22qqISWWLpU8xHBGlhYV0Ss5tXcV6rdh9Evd5r+Qk9Cc1VAL9+ZQd/TTKnEcK4ORbMNM+OPJ5Xp0qSA5z/ACD5ubITX/ZGSQpLDhPRnzzM+SmQzqEd61j772qWP2bPkgc/Haz8B62WoRio8Vdk8Ze12JBRFr63vq6YlkonSLJ84sxAUNXmuiJ8HemNvbs5kC4brNTj34ZwiJAFcnCvrLQmTmz5emm6JpP2r2k/hcJ40YEmc5KLZWwNiB4BIxduguGt2VBgcA2fu61NgOwymx0TfOH+tgXDMomaWr1z75OAFEA+fpUSLWxQw3mWLaCHR2/YJjHDR1rBi/GFcRdgPCAL6+0NU0H8JtljwFr42otq25esPGWIkAT1MJBbVAE11O18hnC5owhiRoB2aAKjx3XV9c+x6LBSHfkknO7oAp1DbcEmB6vg3MwVXU2uuWj7++fM8Xis1KiQSspj+B5Lx5RJlxz9qAEOBuj05"</span>
+    <span class="c"># phase 2 parameters</span>
+    <span class="nv">esp</span><span class="o">=</span>aes128-sha1!
+    <span class="nv">pfs</span><span class="o">=</span><span class="nb">yes
+    </span><span class="nv">pfsgroup</span><span class="o">=</span>modp1536
+    <span class="nv">lifetime</span><span class="o">=</span>3600s
+    <span class="nb">type</span><span class="o">=</span>transport
+    <span class="nv">leftprotoport</span><span class="o">=</span>gre
+    <span class="nv">rightprotoport</span><span class="o">=</span>gre
+    <span class="c"># startup</span>
+    <span class="nv">auto</span><span class="o">=</span>route
+    <span class="nv">keyingtries</span><span class="o">=</span>%forever</code></pre>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -458,13 +423,13 @@ vyos@vyos# <span class="nb">set </span>authentication rsa-key-name my-peer</code
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/IPsecWithPublicKeys/VyOSExample.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/IPsecWithPublicKeys/strongSwan4Example.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="https://hist.dn42.wiki/gollum/rename/howto/IPsecWithPublicKeys/VyOSExample.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/IPsecWithPublicKeys/strongSwan4Example.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
