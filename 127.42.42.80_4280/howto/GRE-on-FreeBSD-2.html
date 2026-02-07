@@ -171,39 +171,13 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="gre-on-freebsd" href="#gre-on-freebsd"></a>GRE on FreeBSD</h1>
-
-<p>This page describes how to configure GRE tunnels on FreeBSD.</p>
-
-<h2><a class="anchor" id="requirements" href="#requirements"></a>Requirements</h2>
-
-<ul>
-  <li>Root access to a FreeBSD system.</li>
-  <li>Loaded if_gre.ko or device gre</li>
-  <li>A static IPv4 address on both ends if you would like to preserve your sanity.</li>
-</ul>
-
-<h2><a class="anchor" id="create-a-temporary-gre-tunnel" href="#create-a-temporary-gre-tunnel"></a>Create a temporary gre tunnel</h2>
-
-<pre class="highlight"><code>ifconfig gre<span class="nv">$INDEX</span> create
-ifconfig gre<span class="nv">$INDEX</span> tunnel <span class="nv">$TUNNEL_SRC</span> <span class="nv">$TUNNEL_DST</span>
-ifconfig gre<span class="nv">$INDEX</span> inet <span class="nv">$LOCAL</span> <span class="nv">$REMOTE</span> netmask 0xffffffff
-ifconfig gre<span class="nv">$INDEX</span> descr <span class="nv">$DESCR</span></code></pre>
-
-<h2><a class="anchor" id="create-a-persistent-gre-tunnel" href="#create-a-persistent-gre-tunnel"></a>Create a persistent gre tunnel</h2>
-
-<p>Add this to your <code>rc.conf</code>.</p>
-
-<pre class="highlight"><code><span class="n">cloned_interfaces</span>=<span class="s2">"$cloned_interfaces gre0"</span>
-<span class="n">ifconfig_gre0</span>=<span class="s2">"10.0.0.1 10.0.0.2 netmask 0xffffffff tunnel 1.2.3.4 5.6.7.8 descr foo"</span></code></pre>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">

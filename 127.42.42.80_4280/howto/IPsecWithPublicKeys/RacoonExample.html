@@ -172,14 +172,51 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../../index.html" rel="nofollow"><img src="../../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p>Quote from #dn42: <code>hexa: nobody runs racoon on their free will :)</code>.</p>
+
+<p>See also <a href="strongSwan5Example.html">strongSwan</a></p>
+
+<p>The keys are generated with plainrsa-gen.</p>
+
+<pre class="highlight"><code>Usage: plainrsa-gen [options]
+
+  -b bits       Generate &lt;bits&gt; long RSA key (default=1024)
+  -e pubexp     Public exponent to use (default=0x3)
+  -f filename   Filename to store the key to (default=stdout)
+  -i filename   Input source for format conversion
+  -h            Help</code></pre>
+I'd probably go with 4096 bits.
+
+<p>in your racoon.conf:
+</p><pre class="highlight"><code><span class="n">path</span> <span class="n">certificate</span> <span class="s2">"/etc/racoon/keys"</span>;
+
+<span class="n">listen</span> {
+  <span class="n">isakmp</span> <span class="m">192</span>.<span class="m">168</span>.<span class="m">255</span>.<span class="m">1</span>[<span class="m">500</span>];
+}
+
+<span class="n">remote</span> <span class="m">192</span>.<span class="m">168</span>.<span class="m">255</span>.<span class="m">2</span> {
+  <span class="n">exchange_mode</span> <span class="n">main</span>;
+  <span class="n">certificate_type</span> <span class="n">plain_rsa</span> <span class="s2">"local.priv.key"</span>;
+  <span class="n">peers_certfile</span> <span class="n">plain_rsa</span> <span class="s2">"remote.pub.key"</span>;
+  <span class="n">proposal</span> {
+    <span class="n">authentication_method</span> <span class="n">rsasig</span>;
+    <span class="n">lifetime</span> <span class="n">time</span> <span class="m">8</span> <span class="n">hour</span>;
+    <span class="n">encryption_algorithm</span> <span class="n">aes256</span>;
+    <span class="n">hash_algorithm</span> <span class="n">sha256</span>;
+    <span class="n">dh_group</span> <span class="n">modp1024</span>;
+  }
+}</code></pre>
+
+<h2><a class="anchor" id="see-also" href="#see-also"></a>See also</h2>
+
+<p><a href="GRE-plus-IPsec-Debian.html">Debian specific configuration</a></p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
