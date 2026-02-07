@@ -178,7 +178,49 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="dn42-clearnet-domains" href="#dn42-clearnet-domains"></a>DN42 Clearnet Domains</h1>
+
+<p>To provide services over the public internet some community members have contributed clearnet domain names to be used for DN42.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left;">Domain</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left;">dn42.dev</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">dn42.cc</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">dn42.jp</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>DNS records for these domains are managed by a gitea repository:</p>
+
+<ul>
+  <li><a href="https://git.dn42.dev/dns/clearnet">https://git.dn42.dev/dns/clearnet</a></li>
+</ul>
+
+<p>The repository uses the registry drone CI service and <a href="https://stackexchange.github.io/dnscontrol/">DNSControl</a> to automatically build and push changes. This provides a degree of independence for the domains and allows them to be updated by any of the registry maintainers.</p>
+
+<h2><a class="anchor" id="requesting-changes" href="#requesting-changes"></a>Requesting Changes</h2>
+
+<p>If you have a public DN42 service or a DN42 related domain that you'd like to add, simply submit a PR to the <a href="https://git.dn42.dev/dns/clearnet">repository</a>.</p>
+
+<p>Domains and services should meet the following criteria:</p>
+
+<ul>
+  <li>Services and DNS should be resilient and highly available, where possible</li>
+  <li>The owner must ensure their contact details are current and respond promptly to any failures</li>
+  <li>If a domain or service is unavailable for a length of time, it may be removed</li>
+</ul>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -267,7 +309,16 @@
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
+    </tr>
+  </tbody>
+</table>
+
 	    </div>
 	  </div>
 
