@@ -178,7 +178,68 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p>Modern versions of Windows do not support OSPF and manually adding static routes every time after a reboot is annoying. Below is a batch script you can edit and run to help make adding routes easier. This script assumes that your BGP router and Windows computer are on the same LAN.</p>
+
+<pre class="highlight"><code>@echo off
+REM fill <span class="k">in </span>YOUR network information
+REM right click and RUN AS ADMIN
+
+REM our entire private network address space
+<span class="nb">set </span><span class="nv">networkv4</span><span class="o">=</span>172.20.0.0
+<span class="nb">set </span><span class="nv">networkv4mask</span><span class="o">=</span>255.252.0.0
+<span class="nb">set </span><span class="nv">networkv6</span><span class="o">=</span>fd00::/8
+
+REM our IPv4 subnet info
+<span class="nb">set </span><span class="nv">subnetv4</span><span class="o">=</span>172.20.184.240
+<span class="nb">set </span><span class="nv">subnetv4mask</span><span class="o">=</span>255.255.255.248
+<span class="nb">set </span><span class="nv">gateway4</span><span class="o">=</span>172.20.184.241
+
+REM our IPv6 subnet info
+<span class="nb">set </span><span class="nv">subnetv6</span><span class="o">=</span>fd43:6d1:3ee2::/48
+<span class="nb">set </span><span class="nv">gateway6</span><span class="o">=</span>fd43:6d1:3ee2:1000::1
+
+REM our address <span class="k">for </span>this machine
+<span class="nb">set </span><span class="nv">yournetaddr</span><span class="o">=</span>172.20.184.242
+<span class="nb">set </span><span class="nv">yournetaddr6</span><span class="o">=</span>fd43:6d1:3ee2:1000::2/128
+
+REM add IPs
+REM <span class="k">if </span>different change wlan0 to YOUR interface name
+REM first line here is <span class="k">for </span>my LAN. Ignore it.
+netsh interface ipv4 add address <span class="s2">"wlan0"</span> 192.168.2.254 255.255.255.0
+netsh interface ipv4 add address <span class="s2">"wlan0"</span> %yournetaddr% %subnetv4mask%
+netsh interface ipv6 add address <span class="s2">"wlan0"</span> %yournetaddr6%
+
+REM add IPv4 routes
+route <span class="nt">-4</span> add %subnetv4% mask %subnetv4mask% %gateway4%
+route <span class="nt">-4</span> add %networkv4% mask %networkv4mask% %gateway4%
+
+REM add IPv6 routes
+route <span class="nt">-6</span> add %gateway6% ::
+route <span class="nt">-6</span> add %subnetv6% %gateway6%
+REM this last route wasn<span class="s1">'t working without manually filling in the info.
+REM I don'</span>t know why.. Broken line commented out.
+REM route <span class="nt">-6</span> add %networkv6% %gateway6%
+route <span class="nt">-6</span> add fd00::/8 fd43:6d1:3ee2:1000::1
+
+<span class="nb">echo </span>Press enter to check your IPv4 routing table
+<span class="nb">echo </span>Do not forget to add static routes to this computer on your BGP router!
+<span class="nb">echo </span>Example: <span class="s2">"root@router:~# ip route add 172.20.184.242 dev wlan0"</span>
+<span class="nb">echo </span>Example: <span class="s2">"root@router:~# ip route add fd43:6d1:3ee2:1000::2/128 dev wlan0"</span>
+pause
+cls
+route <span class="nt">-4</span> print
+<span class="nb">echo </span>Press enter to check your IPv6 routing table
+pause
+cls
+route <span class="nt">-6</span> print
+<span class="nb">echo </span>Press enter to try to ping gateway
+pause
+cls
+ping %gateway4%
+pause
+ping %gateway6%
+pause</code></pre>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -214,6 +275,7 @@
       <li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
       <li><a href="vyos1.4.html" rel="nofollow">VyOS</a></li>
       <li><a href="nixos.html" rel="nofollow">NixOS</a></li>
+      <li><a href="GeoFeed.html" rel="nofollow">GeoFeed</a></li>
     </ul>
   </li>
   <li>Services

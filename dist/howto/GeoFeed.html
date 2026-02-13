@@ -178,7 +178,97 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p>A <em>GeoFeed</em> is a standardized mechanism for publishing geographic location information about IP address prefixes. It helps network operators associate IP address blocks with real-world locations, enabling better visualization, monitoring, and geolocation accuracy.</p>
+
+<p>A GeoFeed is especially useful in distributed networks like DN42, where many nodes exist in different physical locations. It can assist in mapping latency, debugging routing, and documenting physical network topology.</p>
+
+<h2><a class="anchor" id="standards-protocol-references" href="#standards-protocol-references"></a>Standards &amp; Protocol References</h2>
+
+<p><strong><a href="https://www.rfc-editor.org/rfc/rfc8805">RFC 8805</a> - <em>Format for Self-Published IP Geolocation Feeds</em></strong></p>
+<ul>
+  <li>Defines the <strong>format</strong> for GeoFeed files (CSV);</li>
+  <li>Geographic mappings associate prefixes with location attributes.</li>
+  <li>A GeoFeed file consists of comma-separated values in UTF-8 format.</li>
+</ul>
+
+<p><strong><a href="https://www.rfc-editor.org/rfc/rfc9632">RFC 9632</a> - <em>Finding and Using GeoFeed Data</em></strong></p>
+<ul>
+  <li>Specifies how to reference GeoFeed files from routing databases such as RPSL objects (<code>inetnum</code>, <code>inet6num</code>);</li>
+  <li>Defines how to augment existing routing registry objects with attributes pointing to GeoFeed URLs (e.g., using a <code>geofeed:</code> attribute);</li>
+  <li>Replaces earlier RFC 9092, improving schema and specification details.</li>
+</ul>
+
+<p><strong><a href="https://www.rfc-editor.org/rfc/rfc9877">RFC 9877</a> - <em>RDAP GeoFeed Extension</em></strong></p>
+<ul>
+  <li>Defines an extension to RDAP (Registration Data Access Protocol) that allows RDAP servers to disclose GeoFeed URLs for IP address resources;</li>
+  <li>Useful for automated discovery of GeoFeed data through registry queries.</li>
+</ul>
+
+<h3><a class="anchor" id="operational-example-ripe-82" href="#operational-example-ripe-82"></a>Operational Example (RIPE 82)</h3>
+<p>A concrete operational example of GeoFeed publication and integration within the RIPE Database was presented at RIPE 82 (see presentation below):<br />
+https://ripe82.ripe.net/presentations/84-RIPE82_geofeed.pdf</p>
+
+<h2><a class="anchor" id="geofeed-file-formats" href="#geofeed-file-formats"></a>GeoFeed file formats</h2>
+
+<p><strong>CSV Example</strong>:
+</p><pre class="highlight"><span class="err"># prefix,country_code,region_code,city,postal
+172.20.0.0/24,FR,FR-ARA,LYON,69123
+fd42:1234::/48,FR,,,,
+...</span></pre>
+
+<p><strong>JSON Example</strong>:<br />
+</p><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"prefix"</span><span class="p">:</span><span class="w"> </span><span class="s2">"172.20.0.0/24"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"country_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FR"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"region_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FR-ARA"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LYON"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"postal"</span><span class="p">:</span><span class="w"> </span><span class="mi">69123</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"prefix"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fd42:1234::/48"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"country_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"region_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"postal"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+</span><span class="p">]</span></code></pre>
+
+<blockquote>
+  <p>GeoFeed files can also be TXT or other simple text formats, but CSV/JSON is recommended for ease of parsing in scripts and automation tools.</p>
+</blockquote>
+
+<h2><a class="anchor" id="how-to-publish-a-geofeed-on-dn42" href="#how-to-publish-a-geofeed-on-dn42"></a>How to publish a GeoFeed on DN42 ?</h2>
+
+<ol>
+  <li>
+<strong>Host your GeoFeed file</strong><br />
+ The file must be accessible via HTTP or HTTPS (IPv4 and/or IPv6), either on DN42 or on clearnet.</li>
+  <li>
+<strong>Reference in the Registry</strong><br />
+ Add a <code>remarks: GeoFeed &lt;url&gt;</code> attribute in your <code>inet(6)num</code> object to point to your hosted GeoFeed.<br />
+ Example DN42 WHOIS snippet:
+    <pre><code class="language-rpsl"> inetnum: 0.0.0.0/0
+ remarks: GeoFeed http://example.dn42/geofeed.csv
+</code></pre>
+  </li>
+</ol>
+
+<h2><a class="anchor" id="best-practices" href="#best-practices"></a>Best Practices</h2>
+<ul>
+  <li>
+<strong>Version control</strong>: Store your GeoFeed in Git to track changes and manage updates.</li>
+  <li>
+<strong>Accuracy</strong>: Keep node locations precise enough for mapping, but avoid exposing sensitive private addresses or exact locations.</li>
+  <li>
+<strong>Accessibility</strong>: Ensure your GeoFeed URL is always reachable; update registry references if the file moves.</li>
+  <li>
+<strong>Integration</strong>: Combine GeoFeed with monitoring dashboards, RIPE Atlas probes (clearnet), or Looking Glass tools to visualize node availability over time.</li>
+  <li>
+<strong>Naming Conventions</strong>: Maintain consistent node names and clear comments for easier automation and identification.</li>
+</ul>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -214,6 +304,7 @@
       <li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
       <li><a href="vyos1.4.html" rel="nofollow">VyOS</a></li>
       <li><a href="nixos.html" rel="nofollow">NixOS</a></li>
+      <li><a href="GeoFeed.html" rel="nofollow">GeoFeed</a></li>
     </ul>
   </li>
   <li>Services
