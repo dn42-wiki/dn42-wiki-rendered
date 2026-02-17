@@ -171,59 +171,14 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
+
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="original-dns-deprecated" href="#original-dns-deprecated"></a>Original DNS (deprecated)</h1>
-<p>This information is now <strong>deprecated</strong>. Please check <a href="New-DNS-2.html">New DNS</a> for the current architecture.</p>
-
-<hr />
-
-<p><em>(tl;dr)</em> We have a TLD for dn42, which is <code>.dn42</code>. The anycast resolver for <code>.dn42</code> runs on <code>172.20.0.53</code> and <code>fd42:d42:d42:54::1</code>.</p>
-
-<p><strong>DNS is built from the <a href="Whois.html">whois database</a>. Please edit your DNS records there.</strong></p>
-
-<h2><a class="anchor" id="using-the-dns-service" href="#using-the-dns-service"></a>Using the DNS service</h2>
-
-<p>Below are several ways to use the <code>dn42</code> DNS service, from easiest to more challenging. The recommended method is the second one.</p>
-
-<h3><a class="anchor" id="using-the-anycast-resolver-directly" href="#using-the-anycast-resolver-directly"></a>Using the anycast resolver directly</h3>
-
-<p>Please be aware that this method sends <strong>all</strong> your DNS queries (e.g. <code>google.com</code>) to a random DNS server inside dn42. The server could fake the result and point you towards the russian mafia. They probably won't, but think about what you are doing. At the end of the day, your ISP could be evil as well, so it always boils down to a question of trust.</p>
-
-<p>To do this, just use <code>172.20.0.53</code> or <code>fd42:d42:d42:54::1</code> as your resolver, for instance in <code>/etc/resolv.conf</code>.</p>
-
-<h3><a class="anchor" id="forwarding-dn42-queries-to-the-anycast-resolver" href="#forwarding-dn42-queries-to-the-anycast-resolver"></a>Forwarding <code>.dn42</code> queries to the anycast resolver</h3>
-
-<p>If you run your own resolver (<code>unbound</code>, <code>dnsmasq</code>, <code>bind</code>), you can configure it to forward dn42 queries to the anycast DNS resolver. See <a href="dns/Configuration.html">DNS forwarder configuration</a>.</p>
-
-<h3><a class="anchor" id="recursive-resolver" href="#recursive-resolver"></a>Recursive resolver</h3>
-
-<p>You may also want to configure your resolver to recursively resolve dn42 domains. For this, you need to find authoritative DNS servers for the <code>dn42</code> zone (and for the reverse zones). See <a href="dns/Recursive-DNS-resolver-2.html">services/dns/Recursive DNS resolver</a>.</p>
-
-<h3><a class="anchor" id="building-the-dn42-zones-from-the-registry" href="#building-the-dn42-zones-from-the-registry"></a>Building the dn42 zones from the registry</h3>
-
-<p>Finally, you may want to host your own authoritative DNS server for the <code>dn42</code> zone and the reverse zones. The zone files are built from the monotone repository: scripts are provided in the repository itself.</p>
-
-<h2><a class="anchor" id="register-a-dn42-domain-name" href="#register-a-dn42-domain-name"></a>Register a <code>.dn42</code> domain name</h2>
-
-<p>The root zone for <code>dn42.</code> is built from the <a href="Whois.html">whois registry</a>. If you want to register a domain name, you need to add it to the registry (of course, you also need one or two authoritative nameservers).</p>
-
-<h2><a class="anchor" id="dns-services-for-other-networks" href="#dns-services-for-other-networks"></a>DNS services for other networks</h2>
-
-<p>Other networks are interconnected with dn42 (ChaosVPN, Freifunk, etc). Some of them also provide DNS service, you can configure your resolver to use it. See <a href="dns/External-DNS.html">External DNS</a>.</p>
-
-<h2><a class="anchor" id="providing-dns-services" href="#providing-dns-services"></a>Providing DNS services</h2>
-
-<p>See <a href="dns/Providing-Anycast-DNS-2.html">Providing Anycast DNS</a>.</p>
-
-<h2><a class="anchor" id="old-hierarchical-dns" href="#old-hierarchical-dns"></a><a href="Old-Hierarchical-DNS-2.html">Old Hierarchical DNS</a></h2>
-
-<p>This is a new effort to build a DNS system that mirrors how DNS was designed to work in clearnet.</p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
