@@ -341,6 +341,15 @@ C0IKqQ==
 </span><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"extra/dn42.crt"</span> <span class="o">&gt;&gt;</span> /etc/ca-certificates.conf
 <span class="nv">$ </span>update-ca-certificates</code></pre>
 
+<h3><a class="anchor" id="almalinux-rockylinux-probably-anything-rhel" href="#almalinux-rockylinux-probably-anything-rhel"></a>AlmaLinux/RockyLinux/Probably anything RHEL</h3>
+
+<pre class="highlight"><code><span class="nv">$ </span>/etc/pki/ca-trust/source/anchors/dn42.crt <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+</span><span class="no">EOF
+</span><span class="nv">$ </span>update-ca-trust</code></pre>
+
 <h2><a class="anchor" id="pki-store" href="#pki-store"></a>PKI Store</h2>
 
 <p>All issued keys and crl information are posted at: <a href="https://ca.dn42/">https://ca.dn42/</a></p>
