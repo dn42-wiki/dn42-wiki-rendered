@@ -179,65 +179,7 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="how-to-setup-mikrotik-with-point-to-point-32-address-on-interfaces" href="#how-to-setup-mikrotik-with-point-to-point-32-address-on-interfaces"></a>How to setup Mikrotik with point-to-point /32 address on interfaces</h1>
-
-<h2><a class="anchor" id="routeros-issues" href="#routeros-issues"></a>RouterOS issues</h2>
-
-<ul>
-  <li>RouterOS doesn't have direct Point-to-Point addresses.</li>
-  <li>BGP doesn't resolve the next-hop for their routes using a rescursive route that uses a interface as next-hop</li>
-</ul>
-
-<p>The long explanation about how mikrotik resolves recursive routes is documentated at <a href="https://wiki.mikrotik.com/wiki/Manual:IP/Route#Nexthop_lookup">Mikrotik's page</a>.</p>
-
-<p>How can we workaround these issues? Simple. We setup a /32 on the Point-to-Point interface, we setup a direct route to the other peer (using the interface as next-hop for this route) and use bgp filters to change the next-hop interface.</p>
-
-<h2><a class="anchor" id="legend" href="#legend"></a>Legend</h2>
-
-<ul>
-  <li>172.24.0.1 -&gt; Your /32 inside tunnel address</li>
-  <li>172.26.2.2 -&gt; Peer's /32 inside tunnel address.</li>
-  <li>gre-dn42-peer -&gt; This is the name of the interface</li>
-  <li>1.1.1.1 - peer external IP</li>
-  <li>2.2.2.2 - your external IP</li>
-  <li>bgp-dn42-peer-in -&gt; This is the name of the chain filter. You need to use a different chain per point to point link</li>
-</ul>
-
-<h2><a class="anchor" id="setup" href="#setup"></a>Setup</h2>
-
-<p>You create the GRE interface in the same way the <a href="../mikrotik.html">Mikrotik Guide</a> does.</p>
-
-<pre class="highlight"><code>/interface gre
-add allow-fast-path=no comment="DN42 somepeer" local-address=2.2.2.2 name=gre-dn42-peer \
-remote-address=1.1.1.1</code></pre>
-
-<p>Next you add the /32 address on the interface. You can install this address on a loop interface (on RouterOS this means an empty bridge) if you plan to use the same address over several GRE tunnels or other OpenVPN interfaces.</p>
-
-<pre class="highlight"><code>/ip address add address=172.24.0.1/32 interface=gre-dn42-peer</code></pre>
-
-<p>Next, we add the direct route as next-hop using the interface</p>
-
-<pre class="highlight"><code>/ip route add distance=1 dst-address=172.26.2.2/32 gateway=gre-dn42-peer pref-src=172.24.0.1</code></pre>
-
-<p>At this point, the ping with the peer should work. Also, the bgp session can be established, but the routes will not work. We need a input filter to fix the next-hop routes.</p>
-
-<pre class="highlight"><code>/routing filter add chain=bgp-dn42-peer-in protocol=bgp set-in-nexthop-direct=gre-dn42-peer</code></pre>
-
-<p>if you have other global input chain filters, you should add a jump in the same chain, like this:
-</p><pre class="highlight"><code>/routing filter add action=jump chain=bgp-dn42-peer-in protocol=bgp jump-target=bgp-global-dn42-input</code></pre>
-
-<p>If you haven't created the BGP session, create it now from the <a href="../mikrotik.html#how-to-connect-to-dn42-using-mikrotik-routeros_bgp">Mikrotik guide</a>. Change the peer input filter to use the chain we've just created:</p>
-
-<pre class="highlight"><code>/routing bgp peer set bgp-dn42-somename in-filter=bgp-dn42-peer-in</code></pre>
-
-<p>With this fix, all the routes will have set next-hop the GRE interface and there will be no need to use RouterOS' recursive route resolve.</p>
-
-<p>Check the routes with:
-</p><pre class="highlight"><code>/ip routes print detail where received-from=bgp-dn42-somename</code></pre>
-
-<p>There should an attribute like:
-</p><pre class="highlight"><code>gateway=gre-dn42-peer gateway-status=gre-dn42-peer reachable</code></pre>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
