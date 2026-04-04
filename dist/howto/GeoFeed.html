@@ -213,7 +213,7 @@ https://ripe82.ripe.net/presentations/84-RIPE82_geofeed.pdf</p>
 <p><strong>CSV Example</strong>:
 </p><pre class="highlight"><span class="err"># prefix,country_code,region_code,city,postal
 172.20.0.0/24,FR,FR-ARA,LYON,69123
-fd42:1234::/48,FR,,,,
+fd42:1234::/48,FR,,,
 ...</span></pre>
 
 <p><strong>JSON Example</strong>:<br />
@@ -250,7 +250,7 @@ fd42:1234::/48,FR,,,,
  Add a <code>remarks: Geofeed &lt;url&gt;</code> attribute in your <code>inet(6)num</code> object to point to your hosted GeoFeed.<br />
  Example DN42 WHOIS snippet:
     <pre><code class="language-rpsl"> inetnum: 0.0.0.0/0
- remarks: GeoFeed http://example.dn42/geofeed.csv
+ remarks: Geofeed http://example.dn42/geofeed.csv
 </code></pre>
   </li>
 </ol>
