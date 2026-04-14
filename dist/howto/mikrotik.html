@@ -171,7 +171,8 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
+
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
@@ -251,11 +252,11 @@ add address=fdc8:c633:5319:3300::41/127 advertise=no interface=gre-dn42-peer</co
 
 <h3><a class="anchor" id="filters" href="#filters"></a>Filters</h3>
 
-<p>Both BGP and routing filters were redone from the ground up on RoS 7.x
-The official migration guide can be found <a href="https://help.mikrotik.com/docs/display/ROS/Routing">here</a></p>
+<p>Both BGP and routing filters were redone from the ground up for RouterOS v7. If you're updating an existing v6 installation, the official migration guide can be found <a href="https://help.mikrotik.com/docs/display/ROS/Routing">here</a></p>
 
-<p>It's a good idea to setup filters for BGP instances, both IN (accept advertisements) and OUT (send advertisements)
-In this example, we will be filtering:</p>
+<p>It's a good idea to setup filters for BGP instances, both IN (advertisements you accept) and OUT (advertisements you send).</p>
+
+<p>In this example, we will be filtering:</p>
 
 <ul>
   <li>IN: 192.168.0.0/16 and 169.254.0.0/16, because we don't want other people's routes interfering with out network</li>
@@ -264,21 +265,9 @@ In this example, we will be filtering:</p>
 
 <p>This filter will not only catch /8 or /16 networks, but smaller networks inside this subnets as well.</p>
 
-<h4><a class="anchor" id="ros-6-x" href="#ros-6-x"></a>RoS 6.x</h4>
-
-<pre class="highlight"><code>/routing filter
-add action=discard address-family=ip chain=dn42-in prefix=192.168.0.0/16 prefix-length=16-32 protocol=bgp
-add action=discard address-family=ip chain=dn42-in prefix=169.254.0.0/16 prefix-length=16-32 protocol=bgp
-add action=discard address-family=ip chain=dn42-out prefix=192.168.0.0/16 prefix-length=16-32 protocol=bgp
-add action=discard address-family=ip chain=dn42-out prefix=169.254.0.0/16 prefix-length=16-32 protocol=bgp</code></pre>
-
-<p>If you want only DN42 connectivity, you can filter IN 10.0.0.0/8 (ChaosVPN / freifunk networks):
-</p><pre class="highlight"><code>/routing filter
-add action=discard address-family=ip chain=dn42-in prefix=10.0.0.0/8 prefix-length=8-32 protocol=bgp</code></pre>
-
 <h4><a class="anchor" id="ros-7-x" href="#ros-7-x"></a>RoS 7.x</h4>
 
-<p>RoS 7 now defaults to default-reject, meaning if you reach the end of the chain without matching any rules, the route will be rejected.</p>
+<p>RoS 7 filters have a default-reject behaviour, meaning if you reach the end of the chain without matching any rules, the route will be rejected.</p>
 
 <p>As such, you need to either explicitly accept all the prefixes that you want to keep, or place a final accept at the end of the chain, after rejecting undesired prefixes.</p>
 
@@ -296,68 +285,68 @@ add chain=dn42-out rule="accept"</code></pre>
 <pre class="highlight"><code>/routing filter
 add chain=dn42-in rule="if (dst in 10.0.0.0 &amp;&amp; dst-len &gt; 8) { reject }"</code></pre>
 
+<h4><a class="anchor" id="ros-6-x" href="#ros-6-x"></a>RoS 6.x</h4>
+
+<p>RouterOS v6 does not have a default-reject behaviour. It will apply the rules in the chain, then accept anything that didn't match a rule.</p>
+
+<pre class="highlight"><code>/routing filter
+add action=discard address-family=ip chain=dn42-in prefix=192.168.0.0/16 prefix-length=16-32 protocol=bgp
+add action=discard address-family=ip chain=dn42-in prefix=169.254.0.0/16 prefix-length=16-32 protocol=bgp
+add action=discard address-family=ip chain=dn42-out prefix=192.168.0.0/16 prefix-length=16-32 protocol=bgp
+add action=discard address-family=ip chain=dn42-out prefix=169.254.0.0/16 prefix-length=16-32 protocol=bgp</code></pre>
+
+<p>If you want only DN42 connectivity, you can filter IN 10.0.0.0/8 (ChaosVPN / freifunk networks):
+</p><pre class="highlight"><code>/routing filter
+add action=discard address-family=ip chain=dn42-in prefix=10.0.0.0/8 prefix-length=8-32 protocol=bgp</code></pre>
+
 <h3><a class="anchor" id="bgp-1" href="#bgp-1"></a>BGP</h3>
 <p>Now, for actual BGP configuration.</p>
 
-<h4><a class="anchor" id="ros-v6" href="#ros-v6"></a>RoS v6</h4>
-<pre class="highlight"><code>/routing bgp instance
-set default disabled=yes
-add as=YOUR_AS client-to-client-reflection=no name=bgp-dn42-somename out-filter=dn42-in router-id=1.1.1.1</code></pre>
-Let's add some peers. Right now we have just one, but we still need two connections - to IPv4 and IPv6
-
-<p>IPv4:
-</p><pre class="highlight"><code>/routing bgp peer
-add comment="DN42: somepeer IPv4" in-filter=dn42-in instance=bgp-dn42-somename multihop=yes \
-name=dn42-somepeer-ipv4 out-filter=dn42-out remote-address=192.168.200.129 remote-as=PEER_AS \
-route-reflect=yes ttl=default</code></pre>
-IPv6 (if needed):
-
-<pre class="highlight"><code>/routing bgp peer
-add address-families=ipv6 comment="DN42: somepeer IPv6" in-filter=dn42-in \
-instance=bgp-dn42-somename multihop=yes name=dn42-somepeer-ipv6 out-filter=dn42-out \
-remote-address=fd42:c644:5222:3222::40 remote-as=PEER_AS route-reflect=yes ttl=default</code></pre>
-
-<p>Also, as a note, Mikrotik RoS 6.x doesn't deal well with BGP running over link-local addresses (the address starting with fe80). You need to use a fd42:: address in your BGP session, otherwise, BGP will not install any received route.</p>
-
-<h4><a class="anchor" id="bgp-advertisements" href="#bgp-advertisements"></a>BGP Advertisements</h4>
-<p>You want to advertise your allocated network (most likely), it's very simple:</p>
-
-<pre class="highlight"><code>/routing bgp network
-add network=YOUR_ALLOCATED_SUBNET synchronize=no</code></pre>
-You can repeat that with as much IPv4 and IPv6 networks which you own.
-
 <h4><a class="anchor" id="ros-7-x-1" href="#ros-7-x-1"></a>RoS 7.x</h4>
 
-<p>First difference from v6.x: There is no "network" menu. We advertise our networks now by adding them to the firewall address-list and referencing in the BGP configuration. Also, we can only advertise networks that are part of our static routes. Of course, we can still propagate routes received from others peers.</p>
+<p>We'll start by defining the subnets that we host and want to advertise. RouterOS v7 uses the firewall's Address Lists to define a list of networks, then our BGP config refers to those lists when making advertisements.</p>
 
-<p>Adding a network list:
+<p>Create an address list containing your DN42 subnet allocation, one for IPv4 and one for IPv6:
 </p><pre class="highlight"><code>IPv4
 /ip firewall address-list
-add address=YOUR_ALLOCATED_SUBNET list=DN42_allocated_v4
+add address=YOUR_ALLOCATED_SUBNET/MASK list=DN42_allocated_v4
 
 IPv6
 /ipv6 firewall address-list
-add address=YOUR_ALLOCATED_SUBNET list=DN42_allocated_v6</code></pre>
+add address=YOUR_ALLOCATED_SUBNET/MASK list=DN42_allocated_v6</code></pre>
 
-<p>Adding a static route to your full allocated network:
-</p><pre class="highlight"><code>/ipv6 route
-add blackhole disabled=no distance=1 dst-address=YOUR_ALLOCATED_SUBNET</code></pre>
+<p>RouterOS will only advertise networks that it has a route to, this helps prevent you from accidentally advertising subnets that aren't usable (eg. due to a typo). If your subnet is already attached to an interface then this isn't a problem, but it's common practice to add a dummy route to the routing table anyway, to ensure that your subnet will always be advertised.</p>
 
-<p>Let's create a template for DN42. It isn't strictly necessary, but it makes our life easier when adding more peers in future.
+<p>Add a blackhole route to your DN42 subnet allocation:
+</p><pre class="highlight"><code>IPv4
+/ip route
+add blackhole distance=1 dst-address=YOUR_ALLOCATED_SUBNET/MASK
+
+IPv6
+/ipv6 route
+add blackhole distance=1 dst-address=YOUR_ALLOCATED_SUBNET/MASK</code></pre>
+
+<p>This behaviour is explained here: https://forum.mikrotik.com/t/rosv7-bgp-blackhole/177053/4</p>
+
+<p>In recent releases (around v7.21) this can be done from the BGP connection settings instead. If you enable the <code>output.network-blackhole</code> setting, RouterOS will create suitable blackhole routes for the subnets in your Address List, so you don't have to add them yourself.</p>
+
+<p>Let's create a connection template for DN42. It isn't strictly necessary, but it makes our life easier when adding more peers in future.
 </p><pre class="highlight"><code>/routing bgp template
 add afi=ipv4 as=YOUR_AS_NUMBER name=DN42_template_v4 output.network=DN42_allocated_v4 router-id=1.1.1.1
 add afi=ipv6 as=YOUR_AS_NUMBER name=DN42_template_v6 output.network=DN42_allocated_v6 router-id=1.1.1.1</code></pre>
 
-<p>Now is time to add one peer:</p>
+<p>Create an instance, you can think of this as the BGP daemon that's running.
+</p><pre class="highlight"><code>/routing bgp instance
+add as=&lt;YOUR_AS&gt; name=bgp-dn42-somename router-id=1.1.1.1</code></pre>
 
-<p>Another difference from RoS v6.x is that v7.x can use link-local adresses (validated with RoS 7.14.3, 7.18.1, 7.18.2 and 7.19rc2). The trick is to add "%INTERFACE" after the address, where "INTERFACE" is the name of the interface the link-local is allocated to - or the interface used to get to that remote link-local. So, if You want to listen on fe80::1 on the "myPeer" interface, the address would be "fe80::1%myPeer".</p>
+<p>Now it's time to add a peer. In RouterOS v7 you can use link-local addresses instead of regular routable addresses, which helps simplify config and reduces the number of IP addresses used for routing (validated with RoS 7.14.3, 7.18.1, 7.18.2 and 7.19rc2). The trick is to add <code>%INTERFACE</code> after the address, where "INTERFACE" is the name of the interface the link-local address is assigned to, or the interface used to reach your peer's link-local address. So, if You want to listen on fe80::1 on the "myPeer" interface, the address would be "fe80::1%myPeer".</p>
 
 <p>RoS 7.17 and newer can set the link local address.</p>
 
 <pre class="highlight"><code>IPv4 peer
 /routing bgp connection
 add address-families=ipv4 disabled=no input.filter=dn42-in \
-local.address=ADDRESS_YOUR_PEER_USE_TO_CONNECT_ON_YOU .role=ebgp \
+local.address=ADDRESS_YOUR_PEER_USE_TO_CONNECT_TO_YOU .role=ebgp \
 multihop=yes name=PEER_NAME output.filter-chain=dn42-out \
 .network=DN42_allocated_v4 remote.address=YOUR_PEER_REMOTE_ADDRESS \
 .as=PEER_AS_NUMBER routing-table=main templates=DN42_template_v4
@@ -365,10 +354,42 @@ multihop=yes name=PEER_NAME output.filter-chain=dn42-out \
 IPv6 peer
 /routing bgp connection
 add address-families=ipv6 disabled=no input.filter=dn42-in \
-local.address=ADDRESS_YOUR_PEER_USE_TO_CONNECT_ON_YOU .role=ebgp \
+local.address=ADDRESS_YOUR_PEER_USE_TO_CONNECT_TO_YOU .role=ebgp \
 multihop=yes name=PEER_NAME output.filter-chain=dn42-out \
 .network=DN42_allocated_v6 remote.address=YOUR_PEER_REMOTE_ADDRESS \
 .as=PEER_AS_NUMBER routing-table=main templates=DN42_template_v6</code></pre>
+
+<h4><a class="anchor" id="ros-6-x-1" href="#ros-6-x-1"></a>RoS 6.x</h4>
+
+<p>The older RouterOS 6.x is fairly similar, but the biggest difference is that instead of using Address Lists for your advertised subnets, you specify them directly in the BGP settings, in the Network menu. We'll deal with that later.</p>
+
+<p>Create an instance, you can think of this as the BGP daemon that's running.
+</p><pre class="highlight"><code>/routing bgp instance
+set default disabled=yes
+add as=YOUR_AS client-to-client-reflection=no name=bgp-dn42-somename out-filter=dn42-in router-id=1.1.1.1</code></pre>
+
+<p>Let's add some peers. Right now we have just one, but we still need two connections - for IPv4 and IPv6</p>
+
+<p>IPv4:
+</p><pre class="highlight"><code>/routing bgp peer
+add comment="DN42: somepeer IPv4" in-filter=dn42-in instance=bgp-dn42-somename multihop=yes \
+name=dn42-somepeer-ipv4 out-filter=dn42-out remote-address=192.168.200.129 remote-as=PEER_AS \
+route-reflect=yes ttl=default</code></pre>
+
+<p>IPv6 (if desired):
+</p><pre class="highlight"><code>/routing bgp peer
+add address-families=ipv6 comment="DN42: somepeer IPv6" in-filter=dn42-in \
+instance=bgp-dn42-somename multihop=yes name=dn42-somepeer-ipv6 out-filter=dn42-out \
+remote-address=fd42:c644:5222:3222::40 remote-as=PEER_AS route-reflect=yes ttl=default</code></pre>
+
+<p>NB: Mikrotik RoS 6.x doesn't deal well with BGP running over link-local addresses (addresses that start with with fe80). You need to use an fd42:: address in your BGP session, otherwise BGP will not install any received routes.</p>
+
+<p>Finally we can advertise our routes. You're presumably advertising your allocated DN42 subnet, it's very simple:</p>
+
+<pre class="highlight"><code>/routing bgp network
+add network=YOUR_ALLOCATED_SUBNET synchronize=no</code></pre>
+
+<p>You can repeat this for all the IPv4 and IPv6 networks that you host.</p>
 
 <h2><a class="anchor" id="split-dns" href="#split-dns"></a>Split DNS</h2>
 
@@ -411,14 +432,102 @@ add chain=dn42-out rule="append bgp-communities dn42"</code></pre>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
-	          <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	          <ul>
+  <li>
+<a href="../Home.html" rel="nofollow">Home</a>
+    <ul>
+      <li><a href="Getting-Started.html" rel="nofollow">Getting Started</a></li>
+      <li><a href="Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+      <li><a href="Address-Space.html" rel="nofollow">Address Space</a></li>
+      <li><a href="BGP-communities.html" rel="nofollow">BGP communities</a></li>
+      <li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
+      <li><a href="../Links.html" rel="nofollow">Links</a></li>
+    </ul>
+  </li>
+  <li>How-To
+    <ul>
+      <li><a href="wireguard.html" rel="nofollow">Wireguard</a></li>
+      <li><a href="openvpn.html" rel="nofollow">Openvpn</a></li>
+      <li><a href="IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+      <li><a href="tinc.html" rel="nofollow">Tinc</a></li>
+      <li><a href="GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+      <li><a href="GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+      <li><a href="IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+      <li><a href="multicast.html" rel="nofollow">SSM Multicast</a></li>
+      <li><a href="mpls.html" rel="nofollow">MPLS</a></li>
+      <li><a href="Bird2.html" rel="nofollow">Bird2</a></li>
+      <li><a href="frr.html" rel="nofollow">FRRouting</a></li>
+      <li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+      <li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+      <li><a href="EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+      <li><a href="Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+      <li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+      <li><a href="vyos1.4.html" rel="nofollow">VyOS</a></li>
+      <li><a href="nixos.html" rel="nofollow">NixOS</a></li>
+      <li><a href="GeoFeed.html" rel="nofollow">GeoFeed</a></li>
+    </ul>
+  </li>
+  <li>Services
+    <ul>
+      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="../services/DNS.html" rel="nofollow">DNS</a></li>
+      <li><a href="../services/RPKI.html" rel="nofollow">RPKI</a></li>
+      <li><a href="../services/IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="../services/Repository-Mirrors.html" rel="nofollow">Repository Mirrors</a></li>
+      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="../services/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+      <li><a href="../services/Registry.html" rel="nofollow">Registry</a></li>
+    </ul>
+  </li>
+  <li>Internal
+    <ul>
+      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="../internal/Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+      <li><a href="../internal/Historical-Services.html" rel="nofollow">Historical services</a></li>
+    </ul>
+  </li>
+  <li>Historical
+    <ul>
+      <li><a href="../historical/Bird.html" rel="nofollow">Bird 1</a></li>
+      <li><a href="../historical/Quagga.html" rel="nofollow">Quagga</a></li>
+    </ul>
+  </li>
+  <li>External Tools
+    <ul>
+      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+      <li><a href="https://hedgedoc.dn42.eu/" rel="nofollow">HedgeDoc</a></li>
+      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+      <li><a href="https://git.dn42.dev/dn42/registry" rel="nofollow">Registry</a></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+
 	        </div>
 	      </div>
 	    </div>
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
+    </tr>
+  </tbody>
+</table>
+
 	    </div>
 	  </div>
 
