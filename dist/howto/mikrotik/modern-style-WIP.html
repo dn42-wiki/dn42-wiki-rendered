@@ -181,6 +181,146 @@
 	        
 	        <p>This page is a scratchpad for a fully modernised (2026) config running on the latest version of RouterOS (7.22.1). It will use wireguard, BGP with Multihop and Extended Nexthop, and link-local addressing for address space efficiency.</p>
 
+<h1><a class="anchor" id="wireguard-tunnel-setup" href="#wireguard-tunnel-setup"></a>Wireguard tunnel setup</h1>
+
+<p>Wireguard seems to be the most popular option for peering now, so we'll use that. The first step is to setup a Wireguard interface. You can use a single interface for all connections if you want, but I prefer to make one for each peer, as it can make problems easier to debug.</p>
+
+<p>For the sake of this example we'll pretend we're peering with Kioubit, one of the most-connected and easiest to connect-with systems on DN42.</p>
+
+<h2><a class="anchor" id="create-the-interface" href="#create-the-interface"></a>Create the interface</h2>
+
+<p>We have to do this first so we can gather the connection details, which will be used to setup the peering.</p>
+
+<p>The standard port for Wireguard listeners is 51820, but you can use anything you like. An MTU of 1420 is recommended to avoid fragmentation and firewall issues.</p>
+
+<pre class="highlight"><code>/interface wireguard
+add name=DN42-KIOUBIT listen-port=51820 mtu=1420</code></pre>
+
+<p>Without any extra parameters, it'll automatically generate a new private and public key for you. Grab the public key, you'll need that to setup your peering connection.
+</p><pre class="highlight"><code>/interface/wireguard/print where name="DN42-KIOUBIT"
+
+[furinkan@helian] &gt; /interface/wireguard/print where name="DN42-KIOUBIT"       
+ 0  R name="DN42-KIOUBIT" mtu=1420 listen-port=51820 public-key="mGRGoKPl6fRffzUovFp/8AoOtHjCrWeEMN9/9NsVp2Q="</code></pre>
+
+<h2><a class="anchor" id="exchange-connection-parameters" href="#exchange-connection-parameters"></a>Exchange connection parameters</h2>
+
+<p>If connecting to a system with a self-serve automatic peering interface, now is the time to use it.</p>
+
+<p>You will need:</p>
+<ul>
+  <li>Your AS number</li>
+  <li>Your public IP address that they can connect to</li>
+  <li>Your listening port for Wireguard, eg. 51820 as above</li>
+  <li>Your public key for your Wireguard interface</li>
+  <li>An IPv4 address for your local end of the tunnel, this is often an address in your DN42 address allocation, but can also be any private-range address like 192.168.x.x; however this may be optional if you use…</li>
+  <li>An IPv6 address for your local end of the tunnel. Unlike IPv4, it's possible to use a pure link-local address, like <code>fe80::1234</code>
+</li>
+  <li>To know if your BGP daemon supports the Multihop and Extended Next Hop capabilities</li>
+</ul>
+
+<p>You will receive:</p>
+<ul>
+  <li>Their AS number</li>
+  <li>Their public IP address and port to use for the wireguard connection</li>
+  <li>Their Wireguard public key</li>
+  <li>The IPv4 and/or IPv6 address for the remote end of the tunnel</li>
+</ul>
+
+<h2><a class="anchor" id="add-the-wireguard-peer" href="#add-the-wireguard-peer"></a>Add the Wireguard peer</h2>
+
+<pre class="highlight"><code>/interface wireguard peers
+add name=DN42-KIOUBIT interface=&lt;THE_INTERFACE_YOU_CREATED_EARLIER&gt; endpoint-address=&lt;THEIR_PUBLIC_ADDRESS&gt; endpoint-port=&lt;THEIR_WIREGUARD_PORT&gt; public-key="&lt;THEIR_WIREGUARD_PUBLIC_KEY&gt;" allowed-address=fd00::/8,fe80::/10,172.20.0.0/14</code></pre>
+
+<p>At this point the tunnel should come up on its own, assuming the other end is already configured. However, it's not useful yet without an IP address attached to it.</p>
+
+<h2><a class="anchor" id="add-an-ip-address-to-your-end-of-the-tunnel" href="#add-an-ip-address-to-your-end-of-the-tunnel"></a>Add an IP address to your end of the tunnel</h2>
+
+<p>Once the tunnel is established you will need an address at each end of the link for routing to work. In this Kioubit example we only need an IPv6 address, because we can route IPv4 traffic between IPv6 BGP peers.</p>
+
+<p>Kioubit is using fe80::ade0 on the remote end of the tunnel. We also chose a link-local address for our end of the tunnel, it's <code>fe80::</code> plus the last four digits of our AS number. You'll notice that the remote address does not need to be adjacent at all - this is the beauty of IPv6 link-local addressing.
+</p><pre class="highlight"><code>/ipv6 address
+add address=fe80::2762/128 interface=DN42-KIOUBIT advertise=no</code></pre>
+
+<p>If you're using an IPv4 address, you can attach it to the loopback interface. This allows the address to be reused for multiple peering connections, without being "owned" by any of the wireguard interfaces.
+</p><pre class="highlight"><code>/ip/address
+add address=172.31.254.254 interface=lo</code></pre>
+
+<h2><a class="anchor" id="test-connectivity" href="#test-connectivity"></a>Test connectivity</h2>
+
+<p>You should be able to ping the remote end of the tunnel now. If so, packets can make it there and back, correctly routed. Notice that we're appending the interface name to the IP address. This is necessary for IPv6 link-local addresses because the system doesn't know which interface to send the pings out of.
+</p><pre class="highlight"><code>[furinkan@helian] &gt; ping fe80::ade0%DN42-KIOUBIT
+  SEQ HOST                                     SIZE TTL TIME       STATUS
+    0 fe80::ade0                                 56  64 133ms383us echo reply
+    1 fe80::ade0                                 56  64 136ms229us echo reply
+    sent=2 received=2 packet-loss=0% min-rtt=133ms383us avg-rtt=134ms806us max-rtt=136ms229us</code></pre>
+
+<p>If you're using IPv4 inside the tunnel, it'll look something like this:
+</p><pre class="highlight"><code>[furinkan@helian] &gt; ping 172.20.53.105%DN42-KIOUBIT
+  SEQ HOST                                     SIZE TTL TIME       STATUS
+    0 172.20.53.105                              56  64 133ms544us
+    1 172.20.53.105                              56  64 131ms672us
+    2 172.20.53.105                              56  64 133ms521us
+    sent=3 received=3 packet-loss=0% min-rtt=131ms672us avg-rtt=132ms912us max-rtt=133ms544us</code></pre>
+
+<p>Notice that we specified the egress interface again, you don't normally do this with IPv4 addresses. The router doesn't know how to get to the destination because it doesn't belong to a known subnet - it doesn't have a route!</p>
+
+<p>We'll add a static route to fix this:
+</p><pre class="highlight"><code>/ip route
+add dst-address=172.20.53.105/32 gateway=DN42-KIOUBIT
+
+[furinkan@helian] &gt; ping 172.20.53.105
+  SEQ HOST                                     SIZE TTL TIME       STATUS
+    0 172.20.53.105                              56  64 131ms152us
+    1 172.20.53.105                              56  64 131ms128us
+    sent=2 received=2 packet-loss=0% min-rtt=131ms128us avg-rtt=131ms140us max-rtt=131ms152us</code></pre>
+
+<p>That's better. Now we're ready for some BGP peering.</p>
+
+<h1><a class="anchor" id="setup-bgp" href="#setup-bgp"></a>Setup BGP</h1>
+
+<p>We'll create an instance for DN42, some basic route filters for security, a template to hold common DN42 peering settings, then finally the actual peering connection.</p>
+
+<h2><a class="anchor" id="instance" href="#instance"></a>Instance</h2>
+
+<p>An important part of the routing protocols is your router's ID, a 32-bit value usually written like an IPv4 address. It's common convention to use your router's IP address as the router ID, so we'll do that here too. I've picked the highest IP address in our IPv4 allocation as the router's IP, which we'll also use as the router's ID.</p>
+
+<p>This gives a text label to our router ID:
+</p><pre class="highlight"><code>/routing id
+add id=172.22.124.62 name=my-DN42-router select-dynamic-id=""</code></pre>
+
+<p>Create the BGP instance, which will identify itself with your AS number:
+</p><pre class="highlight"><code>/routing bgp instance
+add as=424242&lt;YOUR_ASN&gt; name=DN42 router-id=my-DN42-router</code></pre>
+
+<h2><a class="anchor" id="route-filters" href="#route-filters"></a>Route filters</h2>
+
+<p>Filters are necessary to prevent other people from hijacking our routing table. A malicious peer could send routes that override your default route to public internet services like Google, government services, your online banking, etc.</p>
+
+<p>These rules are reasonably tight, you can tighten or relax them as desired. <a href="../../internal/Interconnections.html">Interconnected networks'</a> IPv4 ranges are included as well, if you don't want then you can ignore that rule.
+</p><pre class="highlight"><code>/routing filter rule
+add chain=dn42-in comment="reject prefixes clashing with home network" disabled=no rule="if (dst in 192.168.0.0/16 &amp;&amp; dst-len &gt;= 16) { reject }"
+add chain=dn42-in comment="reject v4 auto-addressing prefixes" rule="if (dst in 169.254.0.0/16 &amp;&amp; dst-len &gt;= 16) { reject }"
+add chain=dn42-in comment="accept DN42 v4 prefixes" disabled=no rule="if (dst in 172.20.0.0/14) { accept }"
+add chain=dn42-in comment="accept DN42 interconnected network v4 prefixes" disabled=no rule="if (dst in 10.0.0.0/8) { accept }"
+add chain=dn42-in comment="accept DN42 and interconnected v6 prefixes" disabled=no rule="if (dst in fd00::/8) { accept }"</code></pre>
+
+<pre class="highlight"><code>/routing filter rule
+add chain=dn42-out comment="don't advertise our home network" rule="if (dst in 192.168.0.0/16 &amp;&amp; dst-len &gt;= 16) { reject }"
+add chain=dn42-out comment="don't advertise v4 auto-addressing prefixes" rule="if (dst in 169.254.0.0/16 &amp;&amp; dst-len &gt;= 16) { reject }"
+add chain=dn42-out comment="tag my prefixes with community" disabled=no rule="if ( dst in 172.20.0.0/14 &amp;&amp; bgp-communities-empty ) { append bgp-communities DN42-communities; }"
+add chain=dn42-out comment="advertise DN42 v4 prefixes" disabled=no rule="if (dst in 172.20.0.0/14) { accept }"
+add chain=dn42-out comment="advertise DN42 interconnected network v4 prefixes" disabled=no rule="if (dst in 10.0.0.0/8) { accept }"
+add chain=dn42-out comment="tag my IPv6 prefixes with community" disabled=no rule="if ( dst in fd00::/8 &amp;&amp; bgp-communities-empty ) { append bgp-communities DN42-communities; }"
+add chain=dn42-out comment="advertise DN42 and interconnected v6 prefixes" disabled=no rule="if (dst in fd00::/8) { accept }"</code></pre>
+
+<h2><a class="anchor" id="connection-template" href="#connection-template"></a>Connection template</h2>
+
+<p>WIP</p>
+
+<p>Create a template with the common BGP settings used for DN42:
+</p><pre class="highlight"><code>/routing bgp template
+set DN42-thighhighs afi=ip,ipv6 as=424242&lt;YOUR_ASN&gt; input.filter=dn42-in multihop=yes name=DN42-thighhighs output.filter-chain=dn42-out .redistribute=connected,bgp routing-table=main</code></pre>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
