@@ -178,70 +178,7 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p>We provide some anycast services over IPv6.</p>
-
-<h2><a class="anchor" id="anycast-address-space" href="#anycast-address-space"></a>Anycast address space</h2>
-
-<p><strong>fd42:d42:d42::/48</strong> is reserved for anycast services.</p>
-
-<p>Each anycast service runs on a dedicated /64 in this range.  This way, nobody needs to update filters.</p>
-
-<p>Remember, if you announce an anycast /64, then you need to provide <strong>all</strong> services within this /64. It's probably simpler to only provide one service for each /64.</p>
-
-<h2><a class="anchor" id="anycast-services" href="#anycast-services"></a>Anycast services</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th><strong>Name</strong></th>
-      <th><strong>Service address</strong></th>
-      <th><strong>Protocol/port</strong></th>
-      <th><strong>Comment</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Recursive DNS resolver</td>
-      <td><code>fd42:d42:d42:54::1/64</code></td>
-      <td>UDP/53</td>
-      <td>
-<code>.</code> and <code>dn42.</code> <a href="dns/Providing-Anycast-DNS-2.html#Persons-providing-anycast-DNS-for-IPv6">Providers</a>
-</td>
-    </tr>
-    <tr>
-      <td>Whois Database</td>
-      <td><code>fd42:d42:d42:43::1/64</code></td>
-      <td>TCP/43</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>TOR SOCKS5 Proxy</td>
-      <td><code>fd42:d42:d42:9050::1/64</code></td>
-      <td>TCP/9050</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>internal Wiki</td>
-      <td><code>fd42:d42:d42:80::1/64</code></td>
-      <td>TCP/80, TCP/443</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>myip.dn42</td>
-      <td><code>fd42:d42:d42:81::1/64</code></td>
-      <td>TCP/80</td>
-      <td> </td>
-    </tr>
-  </tbody>
-</table>
-
-<h3><a class="anchor" id="future-services" href="#future-services"></a>Future services</h3>
-
-<ul>
-  <li>streaming</li>
-  <li>other kind of DNS (authoritative-only, recursive for <code>dn42</code> only)</li>
-</ul>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
