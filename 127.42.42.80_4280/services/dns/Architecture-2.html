@@ -196,7 +196,7 @@
 <p>You can also use the globally anycasted a.recursive-servers.dn42 but you won't have any control over which instance you get. This is a <strong>very bad idea</strong> from a security standpoint.</p>
 
 <h1><a class="anchor" id="instances" href="#instances"></a>Instances</h1>
-<p>The new DNS system has two different components:</p>
+<p>The system has two different components:</p>
 <ul>
   <li>*.recursive-servers.dn42 and local resolvers responsible for handling queries from clients, validating DNSSEC and directing the queries at clearnet/dn42/ICVPN.</li>
   <li>*.delegation-servers.dn42 and *.master.delegation-servers.dn42 are a normal master-slave setup for providing the few official infrastructural zones.</li>
@@ -230,10 +230,9 @@
   <li>(Optional) Choose your single letter name and ask in #dn42-dns@hackint to get it added to the registry. Once added to the list, you must implement changes announced to the mailinglist within a week (faster is obviously better) or you might get removed again. We try to keep maintenance work as low as possible but we can't do it without the cooperation of all operators!</li>
 </ul>
 
-<h1><a class="anchor" id="monitoring" href="#monitoring"></a><a href="https://grafana.burble.com/d/E4iCaHoWk/dn42-dns-status?orgId=1&amp;refresh=1m">Monitoring</a></h1>
-<p>burble is providing monitoring for the new DNS system. It does simple checks on all instances every minute and also logs all changes into #dn42-dns@hackint.</p>
-
-<p>Also, gatuno provides another simple <a href="http://gatuno.dn42/dns/">dns checker for all the top level domains</a> in the registry. If you want to check whatever a domain is resolving or not, this tool may be useful. The tool gets in sync with the registry every 12 hours. You can schedule checks for any domain.</p>
+<h1><a class="anchor" id="monitoring" href="#monitoring"></a>Monitoring</h1>
+<p>burble is providing monitoring for the system. It does simple checks on all instances every minute and also logs all changes into #dn42-dns@hackint.
+<a href="https://grafana.burble.com/d/E4iCaHoWk/dn42-dns-status?orgId=1&amp;refresh=1m">Monitoring page</a></p>
 
 <h1><a class="anchor" id="dnssec" href="#dnssec"></a>DNSSEC</h1>
 <p>There are currently two KSKs managed by BURBLE-MNT and JRB0001-MNT. They are used once per quarter to sign the DNSKEY RRset. Each master operator has one ZSK which is used to sign the zones (except for the DNSKEY RRset). This setup leads to bigger responses but allows each KSK holder to solve emergencies independently. The signatures of the DNSKEY RRset are valid until the end of the first month of the next quarter to give enough time for coordinating the next signing. All other signatures are valid for 3 days and replaced at least once per day.</p>
