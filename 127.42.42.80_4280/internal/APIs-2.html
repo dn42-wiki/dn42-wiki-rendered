@@ -171,14 +171,152 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="application-programming-interfaces-apis" href="#application-programming-interfaces-apis"></a>Application Programming Interfaces (APIs)</h1>
+<p>This page can be useful if you are trying to automate something or if you are trying to retrieve data programmatically.</p>
+
+<h2><a class="anchor" id="what-is-my-ip" href="#what-is-my-ip"></a>What is my IP</h2>
+<ul>
+  <li>whatsmyip:
+    <ul>
+      <li>ipv4+ipv6: <a href="http://myip.dn42/">myip.dn42</a>
+</li>
+      <li>ipv4 only: <a href="http://v4.myip.dn42/">v4.myip.dn42</a> or <a href="http://172.20.0.81/">172.20.0.81</a>
+</li>
+      <li>ipv6 only: <a href="http://v6.myip.dn42/">v6.myip.dn42</a> or <a href="http://[fd42:d42:d42:81::1]/">fd42:d42:d42:81::1</a>
+</li>
+      <li>Api endpoints:
+        <ul>
+          <li>/raw: return your IP address as plain text</li>
+          <li>/api: JSON with your IP plus the details of the server you reached (location, ASN, etc.)</li>
+        </ul>
+      </li>
+      <li>with geolocation provided by <a href="https://github.com/Xe-iu/dn42-geoip">DN42-Geoip</a> and autonomous system info provided by <a href="https://github.com/rdp-studio/dn42-geoasn">DN42-GeoASN</a>: <a href="https://myip.launchpadx.dn42/">myip.launchpadx.dn42</a>
+        <ul>
+          <li>Geolocation API
+            <ul>
+              <li>API endpoints:
+                <ul>
+                  <li>IPv4: v4.myip.launchpadx.dn42</li>
+                  <li>IPv6: v6.myip.launchpadx.dn42</li>
+                  <li>Dual-stack: api.myip.launchpadx.dn42</li>
+                </ul>
+              </li>
+              <li><a href="https://github.com/Xe-iu/dn42-geoip/blob/main/api/README.md">API documentation</a></li>
+            </ul>
+          </li>
+          <li>ASN API
+            <ul>
+              <li>API endpoints:
+                <ul>
+                  <li>IPv4: asn4.myip.launchpadx.dn42</li>
+                  <li>IPv6: asn6.myip.launchpadx.dn42</li>
+                  <li>Dual-stack: asn.myip.launchpadx.dn42</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+<a href="http://whatismyip.dn42/">whatismyip.dn42</a>
+        <ul>
+          <li>API endpoint:
+            <ul>
+              <li>IPv4: <a href="http://ipv4.whatismyip.dn42:8080/ipinfo">http://ipv4.whatismyip.dn42:8080/ipinfo</a>
+</li>
+              <li>IPv6: <a href="http://ipv6.whatismyip.dn42:8080/ipinfo">http://ipv6.whatismyip.dn42:8080/ipinfo</a>
+</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2><a class="anchor" id="other-network-related" href="#other-network-related"></a>Other network-related</h2>
+
+<ul>
+  <li>Cloudflare-like cdn-cgi/trace: <a href="https://map.jerry.dn42/cdn-cgi/trace">map.jerry.dn42/cdn-cgi/trace</a>
+</li>
+</ul>
+
+<h3><a class="anchor" id="map-dn42-api-services" href="#map-dn42-api-services"></a>Map.dn42 API Services</h3>
+
+<p>Data refreshes whenever the collector provides a new MRT file, generally every 10-15 minutes.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>API</th>
+      <th>URL</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>/map</code></td>
+      <td>
+<a href="https://map.dn42/map">https://map.dn42/map</a> <br /> <a href="https://api.iedon.com/dn42/map">https://api.iedon.com/dn42/map</a>
+</td>
+      <td>Raw binary map data, <a href="https://iedon.net/post/4">See binary format</a>
+</td>
+    </tr>
+    <tr>
+      <td><code>/map?type=json</code></td>
+      <td>
+<a href="https://map.dn42/map?type=json">https://map.dn42/map?type=json</a> <br /> <a href="https://api.iedon.com/dn42/map?type=json">https://api.iedon.com/dn42/map?type=json</a>
+</td>
+      <td>Raw map data, in JSON</td>
+    </tr>
+    <tr>
+      <td><code>/asn/{asn}</code></td>
+      <td>
+<a href="https://map.dn42/asn/4242422189">https://map.dn42/asn/4242422189</a> <br /> <a href="https://api.iedon.com/dn42/asn/4242422189">https://api.iedon.com/dn42/asn/4242422189</a>
+</td>
+      <td>Real-time node information from the map, including WHOIS data, in JSON</td>
+    </tr>
+    <tr>
+      <td><code>/ranking</code></td>
+      <td>
+<a href="https://map.dn42/ranking">https://map.dn42/ranking</a> <br /> <a href="https://api.iedon.com/dn42/ranking">https://api.iedon.com/dn42/ranking</a>
+</td>
+      <td>DN42 Global Ranking, based on the map.dn42 index</td>
+    </tr>
+    <tr>
+      <td><code>/myip/[raw｜api]</code></td>
+      <td>
+<a href="https://map.dn42/myip/">https://map.dn42/myip/</a> <br /> <a href="https://map.dn42/myip/api">https://map.dn42/myip/api</a> <br /> <a href="https://map.dn42/myip/raw">https://map.dn42/myip/raw</a>
+</td>
+      <td>What's My IP instance by map.dn42, including <code>netname</code> and <code>country</code> information if available</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2><a class="anchor" id="asn-authentication-solution" href="#asn-authentication-solution"></a>ASN Authentication Solution</h2>
+<p>Authenticate your users by having them verify their ASN ownership with KIOUBIT-MNT using their registry-provided methods in an automated way. An example of this is the automatic peering system for the Kioubit Network.
+<a href="https://dn42.g-load.eu/about/authentication-services/">Documentation</a></p>
+
+<h2><a class="anchor" id="registry-rest-api" href="#registry-rest-api"></a>Registry REST API</h2>
+
+<p><a href="https://git.burble.com/burble.dn42/dn42regsrv">dn42regsrv</a> is a REST API for the DN42 registry that provides a bridge between interactive applications and the registry.</p>
+
+<p>As well as the main REST API to the DN42 registry, the server can also generate ROA tables and provides a small web application for exploring registry data.</p>
+
+<p>A public instance of the API and associated explorer web app is available at the following URLs:</p>
+
+<p><a href="https://explorer.burble.com/">https://explorer.burble.com/</a> (public internet link)<br />
+<a href="https://explorer.burble.dn42/">https://explorer.burble.dn42/</a> (DN42 link)</p>
+
+<p><a href="https://explorer.dn42.pebkac.gr/">https://explorer.dn42.pebkac.gr/</a> (public internet link)<br />
+<a href="https://explorer.pebkac.dn42/">https://explorer.pebkac.dn42/</a> (DN42 link)</p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
