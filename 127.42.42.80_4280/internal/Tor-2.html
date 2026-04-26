@@ -178,9 +178,11 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p><a href="https://torproject.org/">Tor</a> is free software and an open network that helps you defend against traffic analysis, a form of network surveillance that threatens personal freedom and privacy, confidential business activities and relationships, and state security.</p>
+	        <h1><a class="anchor" id="tor-network" href="#tor-network"></a>Tor network</h1>
 
-<h1><a class="anchor" id="tor-bridges" href="#tor-bridges"></a>Tor Bridges</h1>
+<p><a href="https://torproject.org/">Tor</a> is free software and an open network that helps you defend against traffic analysis, a form of network surveillance that threatens personal freedom and privacy, confidential business activities and relationships, and state security.</p>
+
+<h2><a class="anchor" id="bridges" href="#bridges"></a>Bridges</h2>
 
 <p>Tor bridges allow for the Tor client to connect to a specific IP address and validate the fingerprint to permit safe connections into the Tor network for networks that do not directly access the public Internet, for example hosts that only have dn42 connections. The following bridges are currently available for use:</p>
 
@@ -196,22 +198,6 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>photon.flat.dn42:8443</td>
-      <td>500kB/s</td>
-      <td>irl@flat.dn42</td>
-      <td>obfs4</td>
-      <td>83B02FB88253A7FD313B7912B12B05AF2A42D3B9</td>
-      <td>Limited to 100GB transfer per week</td>
-    </tr>
-    <tr>
-      <td>gouda.flat.dn42:8443</td>
-      <td>500kB/s</td>
-      <td>irl@flat.dn42</td>
-      <td>obfs4</td>
-      <td>DF8CA08A9BED62B319D1E52610510959374444A2</td>
-      <td> </td>
-    </tr>
     <tr>
       <td>tor.napshome.dn42:8443</td>
       <td>3000KB/s+</td>
@@ -231,7 +217,7 @@
   </tbody>
 </table>
 
-<h1><a class="anchor" id="anycast-tor" href="#anycast-tor"></a>Anycast Tor</h1>
+<h2><a class="anchor" id="anycast" href="#anycast"></a>Anycast</h2>
 
 <p>There is an anycast address, 172.22.0.94 and fd42:d42:d42:9001::1 aka tor.dn42, that provides the following services:</p>
 
@@ -262,7 +248,7 @@
 
 <p>There is also unfortunately no means by which to tell Tor to use a specific IP address as the entry point for a plain relay and while in theory you could connect to the ORPort and have a safe connection to Tor, there is no configuration option available for this.</p>
 
-<h1><a class="anchor" id="tor-socks-proxies" href="#tor-socks-proxies"></a>Tor SOCKS Proxies</h1>
+<h2><a class="anchor" id="socks-proxies" href="#socks-proxies"></a>SOCKS Proxies</h2>
 
 <p><em>Note that the same warnings above also apply to the following proxies.</em></p>
 
@@ -283,24 +269,7 @@
   </tbody>
 </table>
 
-<table>
-  <thead>
-    <tr>
-      <th>Offline</th>
-      <th> </th>
-      <th> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>socks5://172.20.11.33:9050</td>
-      <td>100 Mbit/s</td>
-      <td>twink0r</td>
-    </tr>
-  </tbody>
-</table>
-
-<h1><a class="anchor" id="dns-proxy-tor-hidden-services" href="#dns-proxy-tor-hidden-services"></a>DNS Proxy - Tor Hidden Services</h1>
+<h2><a class="anchor" id="dns-proxy-tor-hidden-services" href="#dns-proxy-tor-hidden-services"></a>DNS Proxy - Tor Hidden Services</h2>
 
 <p><em>Note that the same warnings above also apply to the following proxies.</em></p>
 

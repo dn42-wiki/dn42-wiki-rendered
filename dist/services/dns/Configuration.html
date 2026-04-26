@@ -172,7 +172,8 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p><a href="../../index.html" rel="nofollow"><img src="../../dn42.png" alt="dn42" /></a></p>
+
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
@@ -215,7 +216,7 @@ multiple services from *.recursive-servers.dn42 for redundancy.</p>
 
 <h2><a class="anchor" id="note-on-icvpn-zones" href="#note-on-icvpn-zones"></a>Note on ICVPN Zones</h2>
 
-<p>DN42 is <a href="../../internal/Interconnections.html">interconnected</a> with the Inter City VPN or in short "ICVPN". The registry of the ICVPN includes all the DNS information such as the Top level domains (TLDs) used inside ICVPN and the reverse DNS for the IP ranges of the ICVPN. Additionally, it includes the TLDs of some other networks that are interconnected with dn42 and share some of the IP space of ICVPN. The ICVPN <a href="https://github.com/freifunk/icvpn-scripts#dns-mkdns">repository</a> includes a handy script to automatically generate all the required zones.</p>
+<p>DN42 is <a href="../../Interconnections.html">interconnected</a> with the Inter City VPN or in short "ICVPN". The registry of the ICVPN includes all the DNS information such as the Top level domains (TLDs) used inside ICVPN and the reverse DNS for the IP ranges of the ICVPN. Additionally, it includes the TLDs of some other networks that are interconnected with dn42 and share some of the IP space of ICVPN. The ICVPN <a href="https://github.com/freifunk/icvpn-scripts#dns-mkdns">repository</a> includes a handy script to automatically generate all the required zones.</p>
 
 <h2><a class="anchor" id="bind" href="#bind"></a>BIND</h2>
 
@@ -572,7 +573,7 @@ multiple services from *.delegation-servers.dn42 for redundancy.</p>
 
 <h2><a class="anchor" id="dnssec" href="#dnssec"></a>Dnssec</h2>
 <p>All delegation servers have DNSSEC support and all records are signed.
-For more information about DNSSEC visit <a href="../New-DNS.html#dnssec">New-DNS#dnssec</a>.</p>
+For more information about DNSSEC visit the <a href="Architecture-2.html#dnssec">dns architecture#dnssec</a> page.</p>
 
 <p>Below is a list of links to the DS record for TLD and reverse zone.
 To configure the key file, extract the value of ds-rdata and format it as follows.

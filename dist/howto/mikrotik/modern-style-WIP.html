@@ -296,7 +296,7 @@ add as=424242&lt;YOUR_ASN&gt; name=DN42 router-id=my-DN42-router</code></pre>
 
 <p>Filters are necessary to prevent other people from hijacking our routing table. A malicious peer could send routes that override your default route to public internet services like Google, government services, your online banking, etc.</p>
 
-<p>These rules are reasonably tight, you can tighten or relax them as desired. <a href="../../internal/Interconnections.html">Interconnected networks'</a> IPv4 ranges are included as well, if you don't want then you can ignore that rule.
+<p>These rules are reasonably tight, you can tighten or relax them as desired. <a href="../../Interconnections.html">Interconnected networks'</a> IPv4 ranges are included as well, if you don't want then you can ignore that rule.
 </p><pre class="highlight"><code>/routing filter rule
 add chain=dn42-in comment="reject prefixes clashing with home network" disabled=no rule="if (dst in 192.168.0.0/16 &amp;&amp; dst-len &gt;= 16) { reject }"
 add chain=dn42-in comment="reject v4 auto-addressing prefixes" rule="if (dst in 169.254.0.0/16 &amp;&amp; dst-len &gt;= 16) { reject }"
