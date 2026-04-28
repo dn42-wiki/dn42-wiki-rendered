@@ -293,6 +293,17 @@
   </li>
 </ul>
 
+<h1><a class="anchor" id="container-repository-proxy" href="#container-repository-proxy"></a>Container Repository Proxy</h1>
+
+<p>Allows access to IPv6 capable container repositories (e.g. quay.io, AWS ECR, Dockerhub, …). Just add <code>oci.ano-org.dn42/</code> in front of the the image name, e.g. <code>podman pull quay.io/akvorado/akvorado</code> becomes <code>podman pull oci.ano-org.dn42/quay.io/akvorado/akvorado</code></p>
+
+<p>Notes:</p>
+<ul>
+  <li>Docker automatically uses <code>docker.io</code>, so if you're doing e.g. <code>docker pull homeassistant/home-assistant</code>, you need to include docker.io: <code>docker pull oci.ano-org.dn42/docker.io/homeassistant/home-assistant</code>
+</li>
+  <li>GHCR is not IPv6 capable and can't be used! Annoy either the project maintainer to upload it somewhere else; or mail to noc@ano-org.sml.name or write glueckself@hackint in IRC to fix their NAT.</li>
+  <li>AWS ECR's <code>public.ecr.aws</code> (not IPv6 capable) must be replaced with <code>ecr-public.aws.com</code> (IPv6 capable)</li>
+</ul>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">

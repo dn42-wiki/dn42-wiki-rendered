@@ -22,7 +22,7 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'howto/mikrotik/ptp32.md';
+	  var pageFullPath = 'howto/IPsecWithPublicKeys/strongSwan4Example.md';
     var pageFormat   = 'markdown';
 
   </script>
@@ -44,7 +44,7 @@
     mermaid.initialize(mermaid_conf);
   </script>
   
-  <title>ptp32</title>
+  <title>strongSwan4Example</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -68,12 +68,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>ptp32</div>
+            <div>strongSwan4Example</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="http://127.42.42.80:4280/gollum/history/howto/mikrotik/ptp32.md"
+              href="http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/strongSwan4Example.md"
               role="menuitem"
             >
               <span>History</span>
@@ -146,7 +146,7 @@
     <div class="BtnGroup d-flex">
         <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/mikrotik/ptp32.md/';"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/strongSwan4Example.md/';"
           id="minibutton-history"
         >
           History
@@ -161,11 +161,11 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    ptp32
+    strongSwan4Example
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
 <li class="breadcrumb-item"><a href="../../gollum/overview/howto/index.html">howto</a></li>
-<li class="breadcrumb-item"><a href="../../gollum/overview/howto/mikrotik/index.html">mikrotik</a></li>
+<li class="breadcrumb-item"><a href="../../gollum/overview/howto/IPsecWithPublicKeys/index.html">IPsecWithPublicKeys</a></li>
 </ol></nav></div>
 
 	<div class="has-header has-footer has-sidebar has-rightbar">
@@ -179,64 +179,143 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="how-to-setup-mikrotik-with-point-to-point-32-address-on-interfaces" href="#how-to-setup-mikrotik-with-point-to-point-32-address-on-interfaces"></a>How to setup Mikrotik with point-to-point /32 address on interfaces</h1>
-
-<h2><a class="anchor" id="routeros-issues" href="#routeros-issues"></a>RouterOS issues</h2>
-
-<ul>
-  <li>RouterOS doesn't have direct Point-to-Point addresses.</li>
-  <li>BGP doesn't resolve the next-hop for their routes using a rescursive route that uses a interface as next-hop</li>
-</ul>
-
-<p>The long explanation about how mikrotik resolves recursive routes is documentated at <a href="https://wiki.mikrotik.com/wiki/Manual:IP/Route#Nexthop_lookup">Mikrotik's page</a>.</p>
-
-<p>How can we workaround these issues? Simple. We setup a /32 on the Point-to-Point interface, we setup a direct route to the other peer (using the interface as next-hop for this route) and use bgp filters to change the next-hop interface.</p>
-
-<h2><a class="anchor" id="legend" href="#legend"></a>Legend</h2>
-
-<ul>
-  <li>172.24.0.1 -&gt; Your /32 inside tunnel address</li>
-  <li>172.26.2.2 -&gt; Peer's /32 inside tunnel address.</li>
-  <li>gre-dn42-peer -&gt; This is the name of the interface</li>
-  <li>1.1.1.1 - peer external IP</li>
-  <li>2.2.2.2 - your external IP</li>
-  <li>bgp-dn42-peer-in -&gt; This is the name of the chain filter. You need to use a different chain per point to point link</li>
-</ul>
-
+	        <h1><a class="anchor" id="ipsec-with-public-key-authentication-on-strongswan-5-0-0" href="#ipsec-with-public-key-authentication-on-strongswan-5-0-0"></a>IPsec with public key authentication on strongSwan &lt; 5.0.0</h1>
 <h2><a class="anchor" id="setup" href="#setup"></a>Setup</h2>
+<h3><a class="anchor" id="generate-an-rsa-keypair" href="#generate-an-rsa-keypair"></a>Generate an RSA keypair</h3>
 
-<p>You create the GRE interface in the same way the <a href="../mikrotik.html">Mikrotik Guide</a> does.</p>
+<pre class="highlight"><code>root@debian:~# <span class="nb">mkdir</span> /etc/ipsec.d/public
+root@debian:~# ipsec pki <span class="nt">--gen</span> <span class="nt">--type</span> rsa <span class="nt">--outform</span> pem <span class="nt">--size</span> 4096 <span class="o">&gt;</span> /etc/ipsec.d/private/mykey.pem
+root@debian:~# ipsec pki <span class="nt">--pub</span> <span class="nt">--in</span> /etc/ipsec.d/private/mykey.pem <span class="nt">--outform</span> pem <span class="o">&gt;</span> /etc/ipsec.d/public/mykey.pub
+root@debian:~# <span class="nb">echo</span> <span class="s2">": RSA mykey.pem"</span> <span class="o">&gt;&gt;</span> /etc/ipsec.secrets</code></pre>
 
-<pre class="highlight"><code>/interface gre
-add allow-fast-path=no comment="DN42 somepeer" local-address=2.2.2.2 name=gre-dn42-peer \
-remote-address=1.1.1.1</code></pre>
+<h3><a class="anchor" id="exchange-public-keys-with-your-peer" href="#exchange-public-keys-with-your-peer"></a>Exchange public keys with your peer</h3>
+<ol>
+  <li>Display the public key. Send the key data to your peer.</li>
+</ol>
 
-<p>Next you add the /32 address on the interface. You can install this address on a loop interface (on RouterOS this means an empty bridge) if you plan to use the same address over several GRE tunnels or other OpenVPN interfaces.</p>
+<pre class="highlight"><code>root@debian:~# more /etc/ipsec.d/public/mykey.pub
+<span class="nt">-----BEGIN</span> PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2/FWIJuVUtfsLovavNp+
+nPSsT2mQoNK3ZUUwuEKfBjT7mhijdXRHh1SAtIaU2aen5+d5q6e27vMCCYOQLagn
+9CkKatBq54zGNvDSzQEpz0mIsaBx9xjvhsgqAmKCTpLtKuMz6cZbH8y8o9/ZZ8Kv
++Jht67T8BDKXczgOg5IIaX84UpCrlSgmnSvKYKu3PXnt91bZ66HaDZJjPf9aiMNc
+fvuUqVfFWnsV2zI6HFvG/uwkqLalsnPaAwVeIWl2Ovy2Jzdj0GRLSYx87eneSBo+
+7tjlURQTudAj1+53SFOkBcCPSnzPYpIC3hBfZ8Zw8r/25moW3xf8TlLLJqgAh50Y
+tVyvyVSv1MKYBdjZcFsEXUceC5LI9JZryB/Serq0R+4//ZiR3LEtetVKNvco9bcI
+JHXr88HM2XeYRfRPAB6wembIEMKYdwIhwYAPPAtL+lDHtZBiBAIAp0y0FhaozSzl
+MSry8tbJR2fD/i8/yXr5isVfjJZdw8WK0LAd8a8zvmNIFKgiKWjoDgIycM5HrRD+
+rY0Br9xONkNdgB7Lz/wPEyUsiIiZpawM/S4taX7ExK4Wi3pdxkOHLn2ZyaWKsdhX
+PpCkdMfSOJ0SqCUcVze+xD8GlInUQsPgbDGvxT73jT6Ie+wSA94Cgs3mq7FS6cNo
+ZAASv7cT9DG+xfQmjrJC9SUCAwEAAQ<span class="o">==</span>
+<span class="nt">-----END</span> PUBLIC KEY-----</code></pre>
 
-<pre class="highlight"><code>/ip address add address=172.24.0.1/32 interface=gre-dn42-peer</code></pre>
+<ol>
+  <li>Convert your peer's public key to the Base64 RFC 3110 format using the <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl" title="Public key conversion script">pubkey-converter</a> script, if necessary.</li>
+</ol>
 
-<p>Next, we add the direct route as next-hop using the interface</p>
+<h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
+<h3><a class="anchor" id="configure-the-phase-1-ike-parameters" href="#configure-the-phase-1-ike-parameters"></a>Configure the phase 1 IKE parameters</h3>
+<p>In this example, we'll use the following settings:</p>
 
-<pre class="highlight"><code>/ip route add distance=1 dst-address=172.26.2.2/32 gateway=gre-dn42-peer pref-src=172.24.0.1</code></pre>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left;">Key</th>
+      <th style="text-align:left;">Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left;">Encryption</td>
+      <td style="text-align:left;">AES-128</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">Hash</td>
+      <td style="text-align:left;">HMAC-SHA1</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">DH Group</td>
+      <td style="text-align:left;">5 (modp1536)</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">Lifetime</td>
+      <td style="text-align:left;">28800 seconds</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">Peer address</td>
+      <td style="text-align:left;">192.0.2.2</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">Local address</td>
+      <td style="text-align:left;">192.0.2.1</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>At this point, the ping with the peer should work. Also, the bgp session can be established, but the routes will not work. We need a input filter to fix the next-hop routes.</p>
+<p><em>Note: strongSwan &lt; 5.0.0 will read PEM-formatted <strong>private</strong> keys, but requires public keys to be added to the configuration in Base64 RFC 3110 format. Convert your host's public key from PEM to Base64 RFC 3110 for inclusion in ipsec.conf as described below.</em></p>
 
-<pre class="highlight"><code>/routing filter add chain=bgp-dn42-peer-in protocol=bgp set-in-nexthop-direct=gre-dn42-peer</code></pre>
+<ol>
+  <li>Configure a connection policy in ipsec.conf for your peer. The <code>leftrsasigkey</code> attribute is your host's public key in Base64 RFC 3110 format enclosed in double quotes, and <code>rightrsasigkey</code> is your peer's key.</li>
+</ol>
 
-<p>if you have other global input chain filters, you should add a jump in the same chain, like this:
-</p><pre class="highlight"><code>/routing filter add action=jump chain=bgp-dn42-peer-in protocol=bgp jump-target=bgp-global-dn42-input</code></pre>
+<pre class="highlight"><code>root@debian:~# <span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> &gt;&gt; /etc/ipsec.conf
+conn MYPEER
+    # peer IPs
+    left=192.0.2.1
+    right=192.0.2.2
+    # phase 1 parameters
+    ike=aes128-sha1-modp1536!
+    ikelifetime=28800s
+    # authentication
+    authby=pubkey
+    leftrsasigkey="0sAwEAAdvxViCblVLX7C6L2rzafpz0rE9pkKDSt2VFMLhCnwY0+5oYo3V0R4dUgLSGlNmnp+fneauntu7zAgmDkC2oJ/QpCmrQaueMxjbw0s0BKc9JiLGgcfcY74bIKgJigk6S7SrjM+nGWx/MvKPf2WfCr/iYbeu0/AQyl3M4DoOSCGl/OFKQq5UoJp0rymCrtz157fdW2euh2g2SYz3/WojDXH77lKlXxVp7FdsyOhxbxv7sJKi2pbJz2gMFXiFpdjr8tic3Y9BkS0mMfO3p3kgaPu7Y5VEUE7nQI9fud0hTpAXAj0p8z2KSAt4QX2fGcPK/9uZqFt8X/E5SyyaoAIedGLVcr8lUr9TCmAXY2XBbBF1HHguSyPSWa8gf0nq6tEfuP/2YkdyxLXrVSjb3KPW3CCR16/PBzNl3mEX0TwAesHpmyBDCmHcCIcGADzwLS/pQx7WQYgQCAKdMtBYWqM0s5TEq8vLWyUdnw/4vP8l6+YrFX4yWXcPFitCwHfGvM75jSBSoIilo6A4CMnDOR60Q/q2NAa/cTjZDXYAey8/8DxMlLIiImaWsDP0uLWl+xMSuFot6XcZDhy59mcmlirHYVz6QpHTH0jidEqglHFc3vsQ/BpSJ1ELD4Gwxr8U+940+iHvsEgPeAoLN5quxUunDaGQAEr+3E/QxvsX0Jo6yQvUl"
+    rightrsasigkey="0sAwEAAbkNYV9/gBIi4rOKeY75mCHxIGqvePPBlNp5LkdYGSuPwqYa3HJs7YAA1P05IhOSDjqO8yj6Wq3JfHWcCX1/o/aCBH7yB6lmxfKyJJiQwJ+WUADQ7FSklb7vJ6jWYQLJQZBVMNSJeiia3WRMFeCCy42Zj4zf0yKcz0rbn3ii31K+zqHRZyV3b1hltTsEVUfGD2T/td0tp22qqISWWLpU8xHBGlhYV0Ss5tXcV6rdh9Evd5r+Qk9Cc1VAL9+ZQd/TTKnEcK4ORbMNM+OPJ5Xp0qSA5z/ACD5ubITX/ZGSQpLDhPRnzzM+SmQzqEd61j772qWP2bPkgc/Haz8B62WoRio8Vdk8Ze12JBRFr63vq6YlkonSLJ84sxAUNXmuiJ8HemNvbs5kC4brNTj34ZwiJAFcnCvrLQmTmz5emm6JpP2r2k/hcJ40YEmc5KLZWwNiB4BIxduguGt2VBgcA2fu61NgOwymx0TfOH+tgXDMomaWr1z75OAFEA+fpUSLWxQw3mWLaCHR2/YJjHDR1rBi/GFcRdgPCAL6+0NU0H8JtljwFr42otq25esPGWIkAT1MJBbVAE11O18hnC5owhiRoB2aAKjx3XV9c+x6LBSHfkknO7oAp1DbcEmB6vg3MwVXU2uuWj7++fM8Xis1KiQSspj+B5Lx5RJlxz9qAEOBuj05"
+EOF</span></code></pre>
 
-<p>If you haven't created the BGP session, create it now from the <a href="../mikrotik.html#how-to-connect-to-dn42-using-mikrotik-routeros_bgp">Mikrotik guide</a>. Change the peer input filter to use the chain we've just created:</p>
+<ol>
+  <li>All done! Configure the phase 2 parameters as you otherwise would.</li>
+</ol>
 
-<pre class="highlight"><code>/routing bgp peer set bgp-dn42-somename in-filter=bgp-dn42-peer-in</code></pre>
+<h2><a class="anchor" id="full-gre-ipsec-example" href="#full-gre-ipsec-example"></a>Full GRE/IPsec example</h2>
 
-<p>With this fix, all the routes will have set next-hop the GRE interface and there will be no need to use RouterOS' recursive route resolve.</p>
+<pre class="highlight"><code>root@debian:~# ip addr show dev gre1
+11: gre1@NONE: &lt;POINTOPOINT,NOARP,UP,LOWER_UP&gt; mtu 1400 qdisc noqueue state UNKNOWN
+    <span class="nb">link</span>/gre 192.0.2.1 peer 192.0.2.2
+    inet 10.1.2.0/31 scope global gre1
+        valid_lft forever preferred_lft forever
+    inet6 fe80::200:5efe:6825:1c22/64 scope <span class="nb">link
+         </span>valid_lft forever preferred_lft forever
+root@debian:~# more /etc/ipsec.conf
+<span class="c"># ipsec.conf - strongSwan IPsec configuration file</span>
 
-<p>Check the routes with:
-</p><pre class="highlight"><code>/ip routes print detail where received-from=bgp-dn42-somename</code></pre>
+config setup
 
-<p>There should an attribute like:
-</p><pre class="highlight"><code>gateway=gre-dn42-peer gateway-status=gre-dn42-peer reachable</code></pre>
+conn %default
+    <span class="nv">keyexchange</span><span class="o">=</span>ikev1
+    <span class="nv">dpdaction</span><span class="o">=</span>restart
+
+conn MYPEER
+    <span class="c"># peer IPs</span>
+    <span class="nv">left</span><span class="o">=</span>192.0.2.1
+    <span class="nv">right</span><span class="o">=</span>192.0.2.2
+    <span class="c"># phase 1 parameters</span>
+    <span class="nv">ike</span><span class="o">=</span>aes128-sha1-modp1536!
+    <span class="nv">ikelifetime</span><span class="o">=</span>28800s
+    <span class="c"># authentication</span>
+    <span class="nv">authby</span><span class="o">=</span>pubkey
+    <span class="nv">leftrsasigkey</span><span class="o">=</span><span class="s2">"0sAwEAAdvxViCblVLX7C6L2rzafpz0rE9pkKDSt2VFMLhCnwY0+5oYo3V0R4dUgLSGlNmnp+fneauntu7zAgmDkC2oJ/QpCmrQaueMxjbw0s0BKc9JiLGgcfcY74bIKgJigk6S7SrjM+nGWx/MvKPf2WfCr/iYbeu0/AQyl3M4DoOSCGl/OFKQq5UoJp0rymCrtz157fdW2euh2g2SYz3/WojDXH77lKlXxVp7FdsyOhxbxv7sJKi2pbJz2gMFXiFpdjr8tic3Y9BkS0mMfO3p3kgaPu7Y5VEUE7nQI9fud0hTpAXAj0p8z2KSAt4QX2fGcPK/9uZqFt8X/E5SyyaoAIedGLVcr8lUr9TCmAXY2XBbBF1HHguSyPSWa8gf0nq6tEfuP/2YkdyxLXrVSjb3KPW3CCR16/PBzNl3mEX0TwAesHpmyBDCmHcCIcGADzwLS/pQx7WQYgQCAKdMtBYWqM0s5TEq8vLWyUdnw/4vP8l6+YrFX4yWXcPFitCwHfGvM75jSBSoIilo6A4CMnDOR60Q/q2NAa/cTjZDXYAey8/8DxMlLIiImaWsDP0uLWl+xMSuFot6XcZDhy59mcmlirHYVz6QpHTH0jidEqglHFc3vsQ/BpSJ1ELD4Gwxr8U+940+iHvsEgPeAoLN5quxUunDaGQAEr+3E/QxvsX0Jo6yQvUl"</span>
+    <span class="nv">rightrsasigkey</span><span class="o">=</span><span class="s2">"0sAwEAAbkNYV9/gBIi4rOKeY75mCHxIGqvePPBlNp5LkdYGSuPwqYa3HJs7YAA1P05IhOSDjqO8yj6Wq3JfHWcCX1/o/aCBH7yB6lmxfKyJJiQwJ+WUADQ7FSklb7vJ6jWYQLJQZBVMNSJeiia3WRMFeCCy42Zj4zf0yKcz0rbn3ii31K+zqHRZyV3b1hltTsEVUfGD2T/td0tp22qqISWWLpU8xHBGlhYV0Ss5tXcV6rdh9Evd5r+Qk9Cc1VAL9+ZQd/TTKnEcK4ORbMNM+OPJ5Xp0qSA5z/ACD5ubITX/ZGSQpLDhPRnzzM+SmQzqEd61j772qWP2bPkgc/Haz8B62WoRio8Vdk8Ze12JBRFr63vq6YlkonSLJ84sxAUNXmuiJ8HemNvbs5kC4brNTj34ZwiJAFcnCvrLQmTmz5emm6JpP2r2k/hcJ40YEmc5KLZWwNiB4BIxduguGt2VBgcA2fu61NgOwymx0TfOH+tgXDMomaWr1z75OAFEA+fpUSLWxQw3mWLaCHR2/YJjHDR1rBi/GFcRdgPCAL6+0NU0H8JtljwFr42otq25esPGWIkAT1MJBbVAE11O18hnC5owhiRoB2aAKjx3XV9c+x6LBSHfkknO7oAp1DbcEmB6vg3MwVXU2uuWj7++fM8Xis1KiQSspj+B5Lx5RJlxz9qAEOBuj05"</span>
+    <span class="c"># phase 2 parameters</span>
+    <span class="nv">esp</span><span class="o">=</span>aes128-sha1!
+    <span class="nv">pfs</span><span class="o">=</span><span class="nb">yes
+    </span><span class="nv">pfsgroup</span><span class="o">=</span>modp1536
+    <span class="nv">lifetime</span><span class="o">=</span>3600s
+    <span class="nb">type</span><span class="o">=</span>transport
+    <span class="nv">leftprotoport</span><span class="o">=</span>gre
+    <span class="nv">rightprotoport</span><span class="o">=</span>gre
+    <span class="c"># startup</span>
+    <span class="nv">auto</span><span class="o">=</span>route
+    <span class="nv">keyingtries</span><span class="o">=</span>%forever</code></pre>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -337,13 +416,13 @@ remote-address=1.1.1.1</code></pre>
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/mikrotik/ptp32.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/IPsecWithPublicKeys/strongSwan4Example.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/mikrotik/ptp32.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/IPsecWithPublicKeys/strongSwan4Example.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
