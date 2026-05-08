@@ -208,36 +208,13 @@
 <p>A concrete operational example of GeoFeed publication and integration within the RIPE Database was presented at RIPE 82 (see presentation below):<br />
 https://ripe82.ripe.net/presentations/84-RIPE82_geofeed.pdf</p>
 
-<h2><a class="anchor" id="geofeed-file-formats" href="#geofeed-file-formats"></a>GeoFeed file formats</h2>
+<h2><a class="anchor" id="geofeed-file-format" href="#geofeed-file-format"></a>GeoFeed file format</h2>
 
 <p><strong>CSV Example</strong>:
 </p><pre class="highlight"><span class="err"># prefix,country_code,region_code,city,postal
 172.20.0.0/24,FR,FR-ARA,LYON,69123
 fd42:1234::/48,FR,,,
 ...</span></pre>
-
-<p><strong>JSON Example</strong>:<br />
-</p><pre class="highlight"><code><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"prefix"</span><span class="p">:</span><span class="w"> </span><span class="s2">"172.20.0.0/24"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"country_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FR"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"region_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FR-ARA"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LYON"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"postal"</span><span class="p">:</span><span class="w"> </span><span class="mi">69123</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"prefix"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fd42:1234::/48"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"country_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"region_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"postal"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="err">...</span><span class="w">
-</span><span class="p">]</span></code></pre>
-
-<blockquote>
-  <p>GeoFeed files can also be TXT or other simple text formats, but CSV/JSON is recommended for ease of parsing in scripts and automation tools.</p>
-</blockquote>
 
 <h2><a class="anchor" id="how-to-publish-a-geofeed-on-dn42" href="#how-to-publish-a-geofeed-on-dn42"></a>How to publish a GeoFeed on DN42 ?</h2>
 
@@ -247,10 +224,10 @@ fd42:1234::/48,FR,,,
  The file must be accessible via HTTP or HTTPS (IPv4 and/or IPv6), either on DN42 or on clearnet.</li>
   <li>
 <strong>Reference in the Registry</strong><br />
- Add a <code>remarks: Geofeed &lt;url&gt;</code> attribute in your <code>inet(6)num</code> object to point to your hosted GeoFeed.<br />
+ Add a <code>geofeed: &lt;url&gt;</code> attribute in your <code>inet(6)num</code> object to point to your hosted GeoFeed.
  Example DN42 WHOIS snippet:
     <pre><code class="language-rpsl"> inetnum: 0.0.0.0/0
- remarks: Geofeed http://example.dn42/geofeed.csv
+ geofeed: http://example.dn42/geofeed.csv
 </code></pre>
   </li>
 </ol>
