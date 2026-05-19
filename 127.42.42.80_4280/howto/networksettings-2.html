@@ -218,7 +218,7 @@ See the <a href="https://www.freedesktop.org/software/systemd/man/latest/sysctl.
 
 <p>Debian Trixie ships with a <code>/usr/lib/sysctl.d/50-default.conf</code> file which sets rp_filter to 2.</p>
 
-<p>The net result is you must ensure that the filenames you create in /etc/sysctl.d for overrides are lexically after '50-default.conf' or your settings will not have any effect.</p>
+<p>The net result is you must ensure that the filenames you create in /etc/sysctl.d for overrides are lexically after '50-default.conf' or your settings will not have any effect. Additionally for Debian Trixie and newer, you should consider also setting <code>net.ipv4.conf.*.rp_filter=0</code> to override the per-interface defaults.</p>
 
 <h2><a class="anchor" id="note-on-firewalls-conntrack-and-asymmetric-routing" href="#note-on-firewalls-conntrack-and-asymmetric-routing"></a>Note on firewalls, conntrack and asymmetric routing</h2>
 
