@@ -479,6 +479,12 @@ To reflect changes in the ROA table without a manual reload, <strong>ADD</strong
 <pre class="highlight"><code>*/<span class="m">15</span> * * * * <span class="n">bird</span> <span class="n">curl</span> -<span class="n">sfSLR</span> {-<span class="n">o</span>,-<span class="n">z</span>}/<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_4</span>.<span class="n">conf</span> &amp;&amp; <span class="n">birdc</span> <span class="n">configure</span> &gt; /<span class="n">dev</span>/<span class="n">null</span>
 */<span class="m">15</span> * * * * <span class="n">bird</span> <span class="n">curl</span> -<span class="n">sfSLR</span> {-<span class="n">o</span>,-<span class="n">z</span>}/<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_6</span>.<span class="n">conf</span> &amp;&amp; <span class="n">birdc</span> <span class="n">configure</span> &gt; /<span class="n">dev</span>/<span class="n">null</span></code></pre>
 
+<p>Note that on some systems (like Ubuntu) cron runs with <code>/bin/sh</code> as the shell, which does not support the brace expansion syntax above. To fix this you can add <code>SHELL=/bin/bash</code> above your cron entries.<br />
+You can also expand the commands manually as shown below (the caveat on user vs global crontab still applies).</p>
+
+<pre class="highlight"><code>*/<span class="m">15</span> * * * * <span class="n">curl</span> -<span class="n">sfSLR</span> -<span class="n">o</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> -<span class="n">z</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_4</span>.<span class="n">conf</span> &amp;&amp; <span class="n">birdc</span> <span class="n">configure</span> &gt; /<span class="n">dev</span>/<span class="n">null</span>
+*/<span class="m">15</span> * * * * <span class="n">curl</span> -<span class="n">sfSLR</span> -<span class="n">o</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> -<span class="n">z</span> /<span class="n">etc</span>/<span class="n">bird</span>/<span class="n">roa_dn42_v6</span>.<span class="n">conf</span> <span class="n">https</span>://<span class="n">dn42</span>.<span class="n">burble</span>.<span class="n">com</span>/<span class="n">roa</span>/<span class="n">dn42_roa_bird2_6</span>.<span class="n">conf</span> &amp;&amp; <span class="n">birdc</span> <span class="n">configure</span> &gt; /<span class="n">dev</span>/<span class="n">null</span></code></pre>
+
 <p>Or use a systemd timer: (check the commands before copy-pasting)</p>
 
 <pre class="highlight"><code><span class="c"># /etc/systemd/system/dn42-roa.service
@@ -692,16 +698,7 @@ Periodical execution is an effective way to resolve routing table inconsistencie
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <table>
-  <tbody>
-    <tr>
-      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
-</td>
-      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
-    </tr>
-  </tbody>
-</table>
-
+	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	    </div>
 	  </div>
 
