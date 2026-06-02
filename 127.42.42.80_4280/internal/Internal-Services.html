@@ -229,11 +229,11 @@ View a list of <a href="Ideas.html">service ideas</a> and <a href="Historical-Se
 <del>Network Information Service: <a href="https://bgp42.strexp.net/">bgp42.strexp.net</a> (via IANA). Main functions include <em>network information</em>, <em>network map (from map.dn42, requires WebGL)</em>, <em>network ranking (based on centrality)</em>, <em>ROA alerting</em> and <em>path finder</em>.</del> (deprecated but still partially functional)
     <ul>
       <li>The service has now been split into several sub-sites, further functional migrations are currently underway:</li>
-      <li>Registry Viewer (IP Blocks): <a href="https://registry42.strexp.net/">registry42.strexp.net (IANA)</a> (requires WebGL)</li>
-      <li>Map Viewer: <a href="https://map42.strexp.net/">map42.strexp.net (IANA)</a> (requires WebGL)</li>
-      <li>ISP Viewer: <a href="https://isp42.strexp.net/">isp42.strexp.net (IANA)</a>
+      <li>Registry Viewer (IP Blocks): <a href="https://registry42.strexp.net/">registry42.strexp.net (via IANA)</a> (requires WebGL)</li>
+      <li>Map Viewer: <a href="https://map42.strexp.net/">map42.strexp.net (via IANA)</a> (requires WebGL, requires GPU)</li>
+      <li>ISP Viewer: <a href="https://isp42.strexp.net/">isp42.strexp.net (via IANA)</a>
 </li>
-      <li>Registry Timeline: <a href="https://timeline42.strexp.net/">timeline42.strexp.net (IANA)</a>
+      <li>Registry Timeline: <a href="https://timeline42.strexp.net/">timeline42.strexp.net (via IANA)</a>
 </li>
     </ul>
   </li>
@@ -281,7 +281,7 @@ View a list of <a href="Ideas.html">service ideas</a> and <a href="Historical-Se
 <ul>
   <li>DNS System monitoring: <a href="https://grafana.burble.com/d/E4iCaHoWk/dn42-dns-status?orgId=1&amp;refresh=1m">grafana.burble.com/d/E4iCaHoWk/dn42-dns-status</a>
 </li>
-  <li>DNS monitor <a href="https://dns-monitor.gensokyo.dn42/">dns-monitor.gensokyo.dn42</a> (Web: IPv6 Only, Data: IPv4/IPv6)</li>
+  <li>DNS monitor for all DN42 domains <a href="https://dns-monitor.gensokyo.dn42/">dns-monitor.gensokyo.dn42</a> (Web: IPv6 Only, Data: IPv4/IPv6)</li>
 </ul>
 
 <h3><a class="anchor" id="speedtest" href="#speedtest"></a>Speedtest</h3>
@@ -981,6 +981,11 @@ provided by AS4242422712 at <a href="https://vpn-service.dn42.nuku.de/">https://
       <td style="text-align:left;">Genshin Impact Private Server OSREL4.6</td>
       <td style="text-align:left;">Contact ruifeng@ruinet.work or Telegram @justruiqwq for resources.</td>
     </tr>
+    <tr>
+      <td style="text-align:left;">mc.gensokyo.dn42</td>
+      <td style="text-align:left;">Minecraft</td>
+      <td style="text-align:left;">IPv6 Only</td>
+    </tr>
   </tbody>
 </table>
 
@@ -1021,6 +1026,7 @@ provided by AS4242422712 at <a href="https://vpn-service.dn42.nuku.de/">https://
       <li>management: <a href="https://e164.dn42/">https://e164.dn42</a> (login via Kioubit Auth)</li>
     </ul>
   </li>
+  <li>There is a <a href="https://git.dn42.dev/dn42/registry/pulls/6522">PR ongoing</a> to support e164 schema on dn42 registry.</li>
 </ul>
 
 <h2><a class="anchor" id="challenges" href="#challenges"></a>Challenges</h2>
