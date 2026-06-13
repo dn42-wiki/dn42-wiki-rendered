@@ -276,10 +276,10 @@ add address=fdc8:c633:5319:3300::41/127 advertise=no interface=gre-dn42-peer</co
 <p>In this example, we will use the second method.
 </p><pre class="highlight"><code>/routing filter rule
 add chain=dn42-in rule="if (dst in 192.168.0.0/16 &amp;&amp; dst-len &gt; 16) { reject }"
-add chain=dn42-in rule="if (dst in 169.254.0.0/1 &amp;&amp; dst-len &gt; 16) { reject }"
+add chain=dn42-in rule="if (dst in 169.254.0.0/16 &amp;&amp; dst-len &gt; 16) { reject }"
 add chain=dn42-in rule="accept"
 add chain=dn42-out rule="if (dst in 192.168.0.0/16 &amp;&amp; dst-len &gt; 16) { reject }"
-add chain=dn42-out rule="if (dst in 169.254.0.0/1 &amp;&amp; dst-len &gt; 16) { reject }"
+add chain=dn42-out rule="if (dst in 169.254.0.0/16 &amp;&amp; dst-len &gt; 16) { reject }"
 add chain=dn42-out rule="accept"</code></pre>
 
 <p>If you want only DN42 connectivity, you can also filter IN 10.0.0.0/8 (ChaosVPN / freifunk networks):</p>
