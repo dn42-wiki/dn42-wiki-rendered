@@ -171,14 +171,73 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="point-to-point-layer-3-gre-tunnel-interface" href="#point-to-point-layer-3-gre-tunnel-interface"></a>Point-to-Point Layer 3 GRE tunnel interface</h1>
+<p>This guide describes how to establish an unencrypted and unauthenticated IPv6-over-IPv6 tunnel on <a href="https://openbsd.org/">OpenBSD</a>, see <a href="http://man.openbsd.org/gre.4#Point-to-Point_Layer_3_GRE_tunnel_interfaces_(gre)_example">gre(4) EXAMPLES</a> for similar setups.</p>
+
+<h1><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h1>
+<p>Let <em>A</em> be the local OpenBSD host and <em>D</em> the remote peer, assume public DNS names and IPv6 reachability.</p>
+
+<p>Let <code>fd42::</code> and <code>fd42::1</code> be the IPs of <em>A</em> and <em>D</em> respectively where both are allocated as <code>/127</code> subnet from one of the peer's DN42 prefix.</p>
+
+<h2><a class="anchor" id="pseudo-interface" href="#pseudo-interface"></a>pseudo interface</h2>
+<p>Populate <a href="https://man.openbsd.org/hostname.if.5"><code>/etc/hostname.gre0</code></a> with:
+</p><pre class="highlight"><code><span class="n">tunnel</span> <span class="n">A</span>.<span class="n">example</span>.<span class="n">com</span> <span class="n">D</span>.<span class="n">example</span>.<span class="n">net</span>
+<span class="n">inet6</span> <span class="n">fd42</span>::/<span class="m">127</span></code></pre>
+This will resolve FQDNs at parse time, set <em>A</em>'s and <em>D</em>'s IPs as source and destination tunnel address and set <em>A</em>'s assigned IP as point-to-point address on the interface.
+
+<p>Replace hostnames in the <code>tunnel</code> line with literal IPs if DNS is not available (at system boot).</p>
+
+<p>Reboot or run <a href="https://man.openbsd.org/netstart.8"><code>sh /etc/netstart gre0</code></a> to bring up the tunnel.</p>
+
+<h2><a class="anchor" id="miscellaneous" href="#miscellaneous"></a>miscellaneous</h2>
+<p>Populate <code>/etc/sysctl.conf</code> with:
+</p><pre class="highlight"><code><span class="n">net</span>.<span class="n">inet</span>.<span class="n">gre</span>.<span class="n">allow</span>=<span class="m">1</span></code></pre>
+Reboot or run <code>sysctl net.inet.gre.allow=1</code> to allow GRE packet processing.
+
+<p>-
+At this point, <code>gre0</code> will be administratively <em>UP</em>:
+</p><pre class="highlight"><code>$ ifconfig gre0
+gre0: flags=8051&lt;UP,POINTOPOINT,RUNNING,MULTICAST&gt; mtu 1476
+        index 22 priority 0 llprio 6
+        encap: vnetid none txprio payload rxprio packet
+        groups: gre
+        tunnel: inet6 2001:db8::a --&gt; 2001:db9::d ttl 64 nodf ecn
+        inet6 fe80::221:28ff:fef9:c1d8%gre0 --&gt;  prefixlen 64 scopeid 0x16
+        inet6 fd42:: --&gt;  prefixlen 127</code></pre>
+
+<p>All traffic destined to <code>fd42::1/127</code> will be encapsulated and routed to <em>D</em>:
+</p><pre class="highlight"><code>$ route show
+[...]
+Internet6:
+Destination                        Gateway                        Flags   Refs      Use   Mtu  Prio Iface
+fd42::/127                         fd42::                         UCn        1        0     -     4 gre0
+fd42::                             fd42::                         UHl        0        0     -     1 gre0
+fd42::1                            link#0                         UHc        0     3180     -     3 gre0
+fe80::%gre0/64                     fe80::221:28ff:fef9:c1d8%gre0  Un         0        0     -     4 gre0
+fe80::221:28ff:fef9:c1d8%gre0      fe80::221:28ff:fef9:c1d8%gre0  UHl        0        0     -     1 gre0
+ff01::%gre0/32                     fe80::221:28ff:fef9:c1d8%gre0  Um         0        1     -     4 gre0
+ff02::%gre0/32                     fe80::221:28ff:fef9:c1d8%gre0  Um         0        1     -     4 gre0
+[...]</code></pre>
+<pre class="highlight"><code>$ route -n get fd42::1
+   route to: fd42::1
+destination: fd42::1
+       mask: ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+  interface: gre0
+ if address: fd42::
+   priority: 3 ()
+      flags: &lt;UP,HOST,DONE,CLONED&gt;
+     use       mtu    expire
+    3181         0         0 </code></pre>
+
+<h1><a class="anchor" id="security" href="#security"></a>Security</h1>
+<p>GRE may be protected with IPsec to encrypt and authenticate traffic, <a href="http://www.openiked.org/">OpenIKED</a> can be used to establish an IKEv2 session between <em>A</em> and <em>D</em>.</p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
