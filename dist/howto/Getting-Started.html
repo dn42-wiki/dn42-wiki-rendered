@@ -521,6 +521,26 @@ Domain names and nserver attributes must be lowercase.</p>
 <span class="n">nserver</span>:            <span class="n">ns2</span>.<span class="n">foo</span>.<span class="n">dn42</span>
 <span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 
+<h3><a class="anchor" id="telephony-prefix" href="#telephony-prefix"></a>Telephony Prefix</h3>
+
+<p>(Optional) To register a telephony prefix, create a <code>telephony</code> object in the data/telephony directory. telephony attribute must be in full E.164 format (include the '+' symbol). nserver attribute must be lowercase.</p>
+
+<p>example: data/telephony/+04240000</p>
+
+<pre class="highlight"><code>telephony:          +04240000
+admin-c:            FOO-DN42
+tech-c:             FOO-DN42
+mnt-by:             FOO-MNT
+nserver:            ns1.foo.dn42
+nserver:            ns2.foo.dn42
+source:             DN42</code></pre>
+
+<p>Telephony numbers will be queried with ENUM-like domain in <code>tel.dn42</code>, like <code>*.0.0.0.0.4.2.4.0.tel.dn42.</code></p>
+
+<p>To prevent spoofing via DNS hijacking, it's recommended to add DNSSEC delegations using <code>ds-rdata</code> attributes to your telephony mapping domain:</p>
+
+<pre class="highlight"><code>ds-rdata:           61857 13 2 bd35e3efe3325d2029fb652e01604a48b677cc2f44226eeabee54b456c67680c</code></pre>
+
 <h1><a class="anchor" id="get-some-peers" href="#get-some-peers"></a>Get some peers</h1>
 
 <p>In dn42, there is no real distinction between peering and transit: in most cases, everybody serves as an upstream provider to all their peers.  Note that if you have very slow connectivity to the Internet, you may want to avoid providing transit between your peers, which can be done by filtering or prepending your ASN. For the sake of sane routing, try to peer with people on the same continent to avoid inefficient routing, &lt;50ms is a good rule of thumb. You can also look into Bird communities if you are using Bird to mark the latency for the <a href="BGP-communities.html">link</a>.</p>
