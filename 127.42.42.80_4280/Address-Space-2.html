@@ -262,6 +262,49 @@
   </tbody>
 </table>
 
+<h1><a class="anchor" id="telephony-numbering-space" href="#telephony-numbering-space"></a>Telephony Numbering Space</h1>
+
+<p>dn42 uses <code>+042</code> for telephony country code.</p>
+
+<p>The standard format is <code>+042-[N]-[XXXX]-ext</code>.</p>
+
+<blockquote>
+  <p>To maintain compatibility with SIP/PBX software and E.164 standards, the maximum total number length MUST NOT exceed 15 digits. Consequently, the extension part (ext) can only be between 0 and 7 digits long.</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>Prefix</th>
+      <th>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>+042-{0,1}</td>
+      <td>Reserved (for system or future administrative use)</td>
+    </tr>
+    <tr>
+      <td>+042-2</td>
+      <td>Open for customized prefix</td>
+    </tr>
+    <tr>
+      <td>+042-4</td>
+      <td>Open for AS424242XXXX MNT</td>
+    </tr>
+    <tr>
+      <td>+042-{3,5-9}</td>
+      <td>Reserved</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2><a class="anchor" id="telephony-policies" href="#telephony-policies"></a>Telephony Policies</h2>
+
+<ul>
+  <li>An MNT SHOULD apply for only one telephony prefix unless there is sufficient justification provided.</li>
+  <li>E.164 numbers assigned by the ITU (traditional PSTN numbers) SHOULD NOT be entered into the registry at this time.</li>
+</ul>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
