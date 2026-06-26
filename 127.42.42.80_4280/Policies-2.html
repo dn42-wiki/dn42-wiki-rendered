@@ -169,7 +169,8 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p><a href="index.html" rel="nofollow"><img src="dn42.png" alt="dn42" /></a></p>
+
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
@@ -177,13 +178,124 @@
 	        
 	        <h1><a class="anchor" id="policies" href="#policies"></a>Policies</h1>
 
+<h2><a class="anchor" id="resource-allocations" href="#resource-allocations"></a>Resource Allocations</h2>
+
+<p>dn42 global resources are limited so, by necessity, all requests for resources above the typical allocations must be treated as exceptions. If users genuinely need additional resources they can be provided, but the registry maintainers can only do this by challenging every request to ensure it is justified. It's not fair to throw away resources now and then require much stricter limits in the future because we ran out of space.</p>
+
+<p>Users applying for additional resources should consider their requests against the following criteria:</p>
+
+<ul>
+  <li>Does your allocation provide <strong>additional value</strong> to the rest of the dn42 community?</li>
+</ul>
+
+<p>Allocations for personal use are harder to justify, why should you get global, community resources if that doesn't provide any value back to the community?</p>
+
+<ul>
+  <li>Why is your use case <strong>exceptional</strong>?</li>
+</ul>
+
+<p>Requests for additional resources cannot be the norm, so they must be exceptional.<br />
+What makes your use special over everybody else in the network?<br />
+Why should you get additional resources when other people will not be able to have them?</p>
+
+<ul>
+  <li>Is your request based on <strong>demonstrable need</strong>?</li>
+</ul>
+
+<p>Additional resources should only be requested where there is clear evidence that existing resources are being fully utilised and are insufficient for the current requirement. Resources will not be granted based on anticipated future demand or the possibility that they may be needed later.</p>
+
+<p>If you are developing a new service that requires additional resources, you should first deploy and operate the service so that the requirement can be demonstrated and justified.</p>
+
+<h3><a class="anchor" id="new-users" href="#new-users"></a>New Users</h3>
+
+<p>Typical and maximum allocations for new users</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left;"> </th>
+      <th style="text-align:left;">ASN</th>
+      <th style="text-align:left;">IPv6 Allocation</th>
+      <th style="text-align:left;">IPv4 Allocation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left;">Typical</td>
+      <td style="text-align:left;">1</td>
+      <td style="text-align:left;">/48</td>
+      <td style="text-align:left;">/27</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">Maximum</td>
+      <td style="text-align:left;">1</td>
+      <td style="text-align:left;">/48</td>
+      <td style="text-align:left;">/26</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The typical allocation provides enough resources for most new users; it is suitable for doing all the fun things in dn42 and growing your network.</p>
+
+<p>For IPv4, new users should be aware that allocations smaller than a /27 can become restrictive. Even if your network is currently small, a /27 usually provides a better starting point and gives you room to expand later without requiring a second resource request or fragmenting the IP space.</p>
+
+<p>For IPv6, there is generally no advantage to request anything other than a /48. Even if your network doesn't support IPv6 yet, some parts of dn42 are IPv6-only, and IPv6 is the preferred protocol for many services. Allocations smaller than a /48 can be very restrictive, while a /48 provides enough address space for even very large networks.</p>
+
+<p>When registering for the first time, new users will not be allocated more than the maximum amounts shown above.</p>
+
+<p>These limits are based on the principle of demonstrable need. Additional resources are provided when there is clear evidence that existing resources are being fully used and are no longer sufficient.</p>
+
+<p>For this reason, please do not register and immediately request more resources. Requests for additional allocations will normally only be considered after you can demonstrate that your current allocations are actively in use and no longer meet your requirements.</p>
+
+<h3><a class="anchor" id="asn-allocations" href="#asn-allocations"></a>ASN Allocations</h3>
+
+<p>ASNs are administrative, not geographical boundaries; additional ASNs are not required for additional nodes or to provide geographic services.</p>
+
+<p>Additional ASNs 'for testing' are also unlikely to be provided.</p>
+
+<p>Alternative approaches include:</p>
+
+<ul>
+  <li>
+    <p>Setting up local lab environment using private ASNs in the 42xxxxxxxx range, outside the dn42 424242xxxx range. There's no problem peering locally with your dn42 router as an external peer to testing policies and what it looks like, or even having your own local mini dn42 with multiple peers and transits.</p>
+  </li>
+  <li>
+    <p>You can already view how the rest of the network sees your ASN via looking glasses; it's also instructive to see how other user's policies impact your announcements. Learning what to look for or diagnose problems using a looking glass is a valuable skill in its own right.</p>
+  </li>
+  <li>
+    <p>Talk to your peers! dn42 is a community and most users will be happy to help.</p>
+  </li>
+</ul>
+
+<h3><a class="anchor" id="ipv4-allocations" href="#ipv4-allocations"></a>IPv4 Allocations</h3>
+
+<p>A typical IPv4 allocation is /27. This provides you with 32 x /32 IPv4 addresses which is often more than enough for most networks. You should typically only require 1 IPv4 address for each peering node or service on dn42.</p>
+
+<p>The smallest routable IPv4 prefix size in dn42 is /29.</p>
+
+<p>Total IPv4 allocations greater than /26 will be challenged and you will be expected to provide robust justification.</p>
+
+<p>Allocations &gt;= /25 are rare and &gt;= /24 require mailing list consensus; these will require extraordinary justification and are almost never granted apart from the most exceptional (and usually temporary) circumstances.</p>
+
+<p>If you have a requirement for a large number of IP addresses you should consider using IPv6 first.</p>
+
+<p>You should also consider using NAT for anything not directly providing dn42 services (for example, where you want to access dn42 from a homelab or laptop, but are not providing services to the rest of the dn42 community).</p>
+
+<h3><a class="anchor" id="ipv6-allocations" href="#ipv6-allocations"></a>IPv6 Allocations</h3>
+
+<p>The smallest routable IPv6 prefix size in dn42 is /64.</p>
+
+<p>There are very few reasons for not allocating the standard /48 address block; it provides a huge address space sufficient to run a global network whilst smaller block sizes can often be limiting.</p>
+
+<p>A typical IPv6 address plan will use /56 subnets per site, with the typical /48 providing for 256 x /56 sites and 256 x /64 networks per site.</p>
+
 <h2><a class="anchor" id="bridging-from-the-internet" href="#bridging-from-the-internet"></a>Bridging from the Internet</h2>
 
-<p>dn42 is a separate network from Internet and users are actively discouraged from creating publicly accessible services that allow direct access to the dn42 IP space from the Internet; this includes public NAT and VPN services.</p>
+<p>dn42 is a separate network from the public Internet. While dual-homed services can be beneficial (for example, looking glasses), users should not provide services that grant direct access to the dn42 address space from the Internet. This includes, public NAT gateways, VPN services, proxies, or other mechanisms that allow non-dn42 users to reach dn42 resources.</p>
 
 <p>dn42 is primarily for learning about network technologies. Providing zero effort access to the network runs counter to that core purpose and prevents users gaining experience of learning how to create and configure their own network.</p>
 
-<p>Preventing direct access also helps keep AI scrapers and other abuses that are common on the Internet, away from the network.</p>
+<p>Preventing direct access from the public Internet also helps protect the network from abuse, including AI scrapers, large-scale crawlers, and other unwanted traffic that is commonplace on the Internet. This reduces unnecessary load on network participants and contributes to a safer and more stable environment.</p>
 
 <h2><a class="anchor" id="network-port-scans" href="#network-port-scans"></a>Network / Port scans</h2>
 
@@ -261,14 +373,94 @@ To identify the exact conflicts leading to the manual review requirement the fol
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
-	          <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	          <ul>
+  <li>
+<a href="Home.html" rel="nofollow">Home</a>
+    <ul>
+      <li><a href="howto/Getting-Started.html" rel="nofollow">Getting Started</a></li>
+      <li><a href="howto/Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+      <li><a href="Address-Space.html" rel="nofollow">Address Space</a></li>
+      <li><a href="howto/BGP-communities.html" rel="nofollow">BGP communities</a></li>
+      <li><a href="Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="Policies.html" rel="nofollow">Policies</a></li>
+      <li><a href="FAQ.html" rel="nofollow">FAQ</a></li>
+      <li><a href="Links.html" rel="nofollow">Links</a></li>
+    </ul>
+  </li>
+  <li>How-To
+    <ul>
+      <li><a href="howto/wireguard.html" rel="nofollow">Wireguard</a></li>
+      <li><a href="howto/openvpn.html" rel="nofollow">Openvpn</a></li>
+      <li><a href="howto/networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+      <li><a href="howto/IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+      <li><a href="howto/tinc.html" rel="nofollow">Tinc</a></li>
+      <li><a href="howto/GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+      <li><a href="howto/GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+      <li><a href="howto/IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+      <li><a href="howto/multicast.html" rel="nofollow">SSM Multicast</a></li>
+      <li><a href="howto/mpls.html" rel="nofollow">MPLS</a></li>
+      <li><a href="howto/Bird2.html" rel="nofollow">Bird2</a></li>
+      <li><a href="howto/frr.html" rel="nofollow">FRRouting</a></li>
+      <li><a href="howto/OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+      <li><a href="howto/mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+      <li><a href="howto/EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+      <li><a href="howto/Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+      <li><a href="howto/vyos1.4.html" rel="nofollow">VyOS</a></li>
+      <li><a href="howto/nixos.html" rel="nofollow">NixOS</a></li>
+      <li><a href="howto/GeoFeed.html" rel="nofollow">GeoFeed</a></li>
+    </ul>
+  </li>
+  <li>Services
+    <ul>
+      <li><a href="services/IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="services/Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="services/dns/Overview.html" rel="nofollow">DNS</a></li>
+      <li><a href="services/RPKI.html" rel="nofollow">ROA + RPKI</a></li>
+      <li><a href="services/exchanges/IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="services/Pingables.html" rel="nofollow">Pingables</a></li>
+      <li><a href="services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="services/ca/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+    </ul>
+  </li>
+  <li>Internal
+    <ul>
+      <li><a href="internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+    </ul>
+  </li>
+  <li>External Tools
+    <ul>
+      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+      <li><a href="https://git.dn42.dev/dn42/registry" rel="nofollow">Registry</a></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+
 	        </div>
 	      </div>
 	    </div>
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
+    </tr>
+  </tbody>
+</table>
+
 	    </div>
 	  </div>
 

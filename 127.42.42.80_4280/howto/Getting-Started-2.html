@@ -340,6 +340,8 @@
 
 <p>This applies to AS numbers, network prefixes, routes, DNS records…</p>
 
+<p>Please also read the <a href="../Policies.html">Policies</a> for guidance on acceptable resource requests.</p>
+
 <h3><a class="anchor" id="register-an-as-number" href="#register-an-as-number"></a>Register an AS number</h3>
 
 <p>To register an AS number, create an <code>as-name</code> object in <code>data/aut-num/</code>.
@@ -369,7 +371,11 @@
 
 <h4><a class="anchor" id="ipv6" href="#ipv6"></a>IPv6</h4>
 
-<p>To register an IPv6 prefix, you create an <code>inet6num</code> object. dn42 uses the fd00::/8 (<a href="https://tools.ietf.org/html/rfc4193">ULA</a>) range. A single /48 allocation is typical and will likely provide more than enough room for all devices you will ever connect. The smallest announceable prefix length is /64.</p>
+<p>Even if you do not currently support IPv6, networks in dn42 are encouraged to be IPv6 first and many services are available only using IPv6.</p>
+
+<p>To register an IPv6 prefix, you create an <code>inet6num</code> object. dn42 uses the fd00::/8 (<a href="https://tools.ietf.org/html/rfc4193">ULA</a>) range.</p>
+
+<p>A single /48 allocation is typical, it will provide more than enough room for a global network and there are no compelling reasons for choosing a different size. The smallest announceable prefix length is /64 but registering IP blocks smaller than /48 can often be limiting and restrict what you can do.</p>
 
 <p>dn42 is interconnected with other networks, like icvpn, which also use the same ULA range so a registration in the dn42 registry can't prevent IPv6 conflicts. A fully random prefix (see <a href="https://tools.ietf.org/html/rfc4193">RFC4193</a>) is recommended; finding a conflict and needing to renumber your network is no fun.</p>
 
@@ -415,44 +421,41 @@ The <code>country</code> attribute is optional but, when included, should be an 
   <thead>
     <tr>
       <th style="text-align:right;">Size</th>
+      <th style="text-align:left;">IP addresses</th>
       <th style="text-align:left;">Comment</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td style="text-align:right;">/29</td>
-      <td style="text-align:left;">starter pack</td>
+      <td style="text-align:left;">8</td>
+      <td style="text-align:left;">tiny allocation</td>
     </tr>
     <tr>
       <td style="text-align:right;">/28</td>
-      <td style="text-align:left;">usually enough</td>
+      <td style="text-align:left;">16</td>
+      <td style="text-align:left;">may be suitable for small networks</td>
     </tr>
     <tr>
       <td style="text-align:right;"><strong>/27</strong></td>
+      <td style="text-align:left;">32</td>
       <td style="text-align:left;"><strong>default allocation</strong></td>
     </tr>
     <tr>
       <td style="text-align:right;">/26</td>
-      <td style="text-align:left;">usually enough</td>
-    </tr>
-    <tr>
-      <td style="text-align:right;">/25</td>
-      <td style="text-align:left;">still a lot of IPs!</td>
-    </tr>
-    <tr>
-      <td style="text-align:right;">/24</td>
-      <td style="text-align:left;">are you an organization?</td>
+      <td style="text-align:left;">64</td>
+      <td style="text-align:left;">more than enough for the largest networks</td>
     </tr>
   </tbody>
 </table>
 
-<p>The current guideline is to allocate a /27 or smaller by default, keeping space for up to a /26 if possible. Don't allocate more than a /25 worth of addresses and please <strong>think before you allocate</strong>.</p>
+<p>Please <strong>think before you allocate</strong>; the current guideline is to allocate a /27 by default.</p>
 
-<p>dn42 typically uses point-to-point addressing in VPN tunnels making transit network unnecessary, a single IP address per host should be sufficient. If you are going to have 2-3 servers, a /28 is plenty; same will go for most home-networks. You cannot, however, allocate prefixes smaller than /29. dn42 is not the public internet, but our IPv4-space is valuable too!</p>
+<p>New users will not be allocated an IP block larger than /26.</p>
 
-<p>If you need a /24 or larger, please ask in the IRC chan or on the mailing list and expect to provide justification. You should also ensure the range you've requested is in a suitable block.</p>
+<p>dn42 typically uses point-to-point addressing in VPN tunnels making transit networks unnecessary, a single IP address per host or public service will be sufficient and you should consider IPv6 first or NAT for devices that do not directly offer dn42 services. dn42 is not the public internet, but our IPv4-space is valuable too!</p>
 
-<p><strong>Note:</strong> Reverse DNS works with <em>any</em> prefix length, as long as your <a href="../services/dns/Overview.html">recursive nameserver</a> supports <a href="https://www.ietf.org/rfc/rfc2317.txt">RFC 2317</a>. Don't go for a /24 <em>just to have RDNS</em>.</p>
+<p><strong>Note:</strong> Reverse DNS works with <em>any</em> prefix length, as long as your <a href="../services/dns/Overview.html">recursive nameserver</a> supports <a href="https://www.ietf.org/rfc/rfc2317.txt">RFC 2317</a>.</p>
 
 <p>example: data/inetnum/172.20.150.0_27
 </p><pre class="highlight"><code><span class="n">inetnum</span>:            <span class="m">172</span>.<span class="m">20</span>.<span class="m">150</span>.<span class="m">0</span> - <span class="m">172</span>.<span class="m">20</span>.<span class="m">150</span>.<span class="m">31</span>
