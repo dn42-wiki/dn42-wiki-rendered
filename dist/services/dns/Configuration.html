@@ -298,7 +298,7 @@ by adding the following to /etc/bind/named.conf.local</p>
         <span class="n">list</span> <span class="n">server</span> <span class="s1">'/d.f.ip6.arpa/fd42:d42:d42:54::1'</span>
 </code></pre>
 
-<p>to <code>/etc/config/dhcp</code> and run <code>/etc/init.d/dnsmasq restart</code>. After that you are able to resolve <code>.dn42</code> 
+<p>to <code>/etc/config/dhcp</code> and run <code>/etc/init.d/dnsmasq restart</code>. After that you are able to resolve <code>.dn42</code>
 with the anycast DNS-Server, while your normal requests go to your standard DNS-resolver.</p>
 
 <p>Attention: If you go with the default config you'll have to disable "boguspriv" in the first dnsmasq config section.</p>
@@ -340,11 +340,11 @@ in <code>dnsmasq.conf</code>.
           <span class="pi">-</span> <span class="s1">'</span><span class="s">fd42:4242:2189::1'</span>                   <span class="c1"># i.delegation-servers.dn42</span>
           <span class="pi">-</span> <span class="s1">'</span><span class="s">fd42:5d71:219:0:216:3eff:fe1e:22d6'</span>  <span class="c1"># j.delegation-servers.dn42</span>
           <span class="pi">-</span> <span class="s1">'</span><span class="s">fdcf:8538:9ad5:1111::2'</span>              <span class="c1"># k.delegation-servers.dn42</span>
-          <span class="pi">-</span> <span class="s1">'</span><span class="s">fd86:bad:11b7:53::1'</span>                 <span class="c1"># l.delegation-servers.dn42</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">fd86:bad:11b7:53::1'</span>                 <span class="c1"># h.delegation-servers.dn42</span>
           <span class="pi">-</span> <span class="s1">'</span><span class="s">fd42:d42:d42:53::1'</span>                  <span class="c1"># a0.recursive-servers.dn42</span>
           <span class="pi">-</span> <span class="s1">'</span><span class="s">fd42:d42:d42:54::1'</span>                  <span class="c1"># a3.recursive-servers.dn42</span>
           <span class="pi">-</span> <span class="s1">'</span><span class="s">fd00:913e:130::1000'</span>                 <span class="c1"># d.recursive-servers.dn42</span>
-          <span class="pi">-</span> <span class="s1">'</span><span class="s">fd86:bad:11b7:53::2'</span>                 <span class="c1"># l.recursive-servers.dn42</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">fd86:bad:11b7:53::2'</span>                 <span class="c1"># h.recursive-servers.dn42</span>
           <span class="pi">-</span> <span class="s1">'</span><span class="s">fdcf:8538:9ad5:1111::1'</span>              <span class="c1"># k.recursive-servers.dn42</span>
           <span class="pi">-</span> <span class="s1">'</span><span class="s">fdbc:f9dc:67ad:2547::53'</span>             <span class="c1"># t.recursive-servers.dn42</span>
           <span class="pi">-</span> <span class="s1">'</span><span class="s">fd42:4242:2189::53'</span>                  <span class="c1"># i.recursive-servers.dn42</span>
@@ -364,7 +364,7 @@ in <code>dnsmasq.conf</code>.
 
 <h2><a class="anchor" id="unbound" href="#unbound"></a>Unbound</h2>
 
-<p>Make sure to disable <code>auto-trust-anchor-file</code> and manually configure <code>trust-anchor-file</code> to 
+<p>Make sure to disable <code>auto-trust-anchor-file</code> and manually configure <code>trust-anchor-file</code> to
 point to a file with DNSKEY records for dn42.</p>
 
 <pre class="highlight"><code><span class="n">server</span>:
@@ -375,32 +375,32 @@ point to a file with DNSKEY records for dn42.</p>
       <span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"10.in-addr.arpa."</span> <span class="n">nodefault</span>
       <span class="n">local</span>-<span class="n">zone</span>: <span class="s2">"d.f.ip6.arpa."</span> <span class="n">nodefault</span>
 
-<span class="n">forward</span>-<span class="n">zone</span>: 
+<span class="n">forward</span>-<span class="n">zone</span>:
       <span class="n">name</span>: <span class="s2">"dn42"</span>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 
-<span class="n">forward</span>-<span class="n">zone</span>: 
+<span class="n">forward</span>-<span class="n">zone</span>:
       <span class="n">name</span>: <span class="s2">"20.172.in-addr.arpa"</span>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 
-<span class="n">forward</span>-<span class="n">zone</span>: 
+<span class="n">forward</span>-<span class="n">zone</span>:
       <span class="n">name</span>: <span class="s2">"21.172.in-addr.arpa"</span>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 
-<span class="n">forward</span>-<span class="n">zone</span>: 
+<span class="n">forward</span>-<span class="n">zone</span>:
       <span class="n">name</span>: <span class="s2">"22.172.in-addr.arpa"</span>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 
-<span class="n">forward</span>-<span class="n">zone</span>: 
+<span class="n">forward</span>-<span class="n">zone</span>:
       <span class="n">name</span>: <span class="s2">"23.172.in-addr.arpa"</span>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
 
-<span class="n">forward</span>-<span class="n">zone</span>: 
+<span class="n">forward</span>-<span class="n">zone</span>:
       <span class="n">name</span>: <span class="s2">"10.in-addr.arpa"</span>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="n">fd42</span>:<span class="n">d42</span>:<span class="n">d42</span>:<span class="m">54</span>::<span class="m">1</span>
       <span class="n">forward</span>-<span class="n">addr</span>: <span class="m">172</span>.<span class="m">20</span>.<span class="m">0</span>.<span class="m">53</span>
@@ -561,7 +561,7 @@ nameserver /crxn/dn42</code></pre>
       <td>fdcf:8538:9ad5:1111::2</td>
     </tr>
     <tr>
-      <td>l.delegation-servers.dn42</td>
+      <td>h.delegation-servers.dn42</td>
       <td>172.22.108.54</td>
       <td>fd86:bad:11b7:53::1</td>
     </tr>
