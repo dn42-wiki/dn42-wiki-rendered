@@ -171,7 +171,8 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
+
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
@@ -179,7 +180,7 @@
 	        
 	        <h1><a class="anchor" id="how-to-connect-to-dn42-using-mikrotik-routeros" href="#how-to-connect-to-dn42-using-mikrotik-routeros"></a>How to connect to dn42 using Mikrotik RouterOS</h1>
 
-<p>NB: this is a somewhat outdated page, it uses a VPN stack that's a bit less elegant and not as well supported nowadays. I'm sure it'll still work, but if you're interested in using a modern supported method and current RouterOS version (as of mid-2026), there's <a href="mikrotik/modern-style-2.html">a subpage you can check out</a>. It's a work in progress, but it works perfectly well!</p>
+<p>NB: this is a somewhat outdated page, it uses a VPN stack that's a bit less elegant and not as well supported nowadays. I'm sure it'll still work, but if you're interested in using a modern supported method and current RouterOS version (as of mid-2026), there's <a href="mikrotik/modern-style.html">a subpage you can check out</a>. It's a work in progress, but it works perfectly well!</p>
 
 <h2><a class="anchor" id="legend" href="#legend"></a>Legend</h2>
 
@@ -204,7 +205,7 @@
   <li>You can't use /31 subnet for Point-to-Point (PtP) links</li>
 </ul>
 
-<p>Mikrotik/RouterOS doesn't handle /32 addresses very well on Point-to-Point links (like GRE). There is a <a href="mikrotik/ptp32-2.html">separate howto</a> to explain how to setup /32 addresses on a GRE tunnel (or even an OpenVPN tunnel). What is the easy way? Just use any /30 subnet on the GRE Link, either from your assigned DN42 pool of addresses, or use a private address like 192.168.x.x. Please don't choose from 172.16.0.0/12 or 10.0.0.0/8 because they may overlap with DN42 or ChaosVPN.</p>
+<p>Mikrotik/RouterOS doesn't handle /32 addresses very well on Point-to-Point links (like GRE). There is a <a href="mikrotik/ptp32.html">separate howto</a> to explain how to setup /32 addresses on a GRE tunnel (or even an OpenVPN tunnel). What is the easy way? Just use any /30 subnet on the GRE Link, either from your assigned DN42 pool of addresses, or use a private address like 192.168.x.x. Please don't choose from 172.16.0.0/12 or 10.0.0.0/8 because they may overlap with DN42 or ChaosVPN.</p>
 
 <p>RouterOS v7.2 has some nasty bugs when using PTP configuration or IPv6 link local addresses as NEXTHOP. It won't work (confirmed for v7.2 by their support staff).</p>
 
@@ -232,7 +233,7 @@ remote-address=1.1.1.1</code></pre>
 <h3><a class="anchor" id="ips-inside-the-gre-tunnel" href="#ips-inside-the-gre-tunnel"></a>IPs inside the GRE tunnel</h3>
 <p>Your peer most likely provided you with IP adresses for the GRE tunnel.
 As mentioned before, you can't use /31 for PtP links, so for the "easy way" we will be using a /30.
-If you want to avoid wasting a whole /30 for your peering, please check the <a href="mikrotik/ptp32-2.html">point-to-point configuration for RouterOS</a></p>
+If you want to avoid wasting a whole /30 for your peering, please check the <a href="mikrotik/ptp32.html">point-to-point configuration for RouterOS</a></p>
 
 <p>Add the IP your peer provided you:</p>
 
@@ -468,6 +469,7 @@ add chain=dn42-out rule="append bgp-communities dn42"</code></pre>
       <li><a href="vyos1.4.html" rel="nofollow">VyOS</a></li>
       <li><a href="nixos.html" rel="nofollow">NixOS</a></li>
       <li><a href="GeoFeed.html" rel="nofollow">GeoFeed</a></li>
+      <li><a href="telephony42-Asterisk.html" rel="nofollow">Telephony42 (Asterisk)</a></li>
     </ul>
   </li>
   <li>Services
