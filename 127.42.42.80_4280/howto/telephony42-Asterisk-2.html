@@ -251,7 +251,7 @@ apt <span class="nb">install </span>asterisk</code></pre>
 
 <pre class="highlight"><code><span class="nn">[global]</span>
 <span class="py">type</span><span class="p">=</span><span class="s">global</span>
-<span class="c"># verified peers first
+<span class="c">; verified peers first
 </span><span class="py">endpoint_identifier_order</span><span class="p">=</span><span class="s">auth_username,username,ip</span>
 
 <span class="c">; ==========================================
@@ -366,8 +366,8 @@ apt <span class="nb">install </span>asterisk</code></pre>
 </span><span class="py">exten</span> <span class="p">=</span><span class="s">&gt; _X!,1,Goto(ext-routing,+042${EXTEN},1)</span>
 
 
-<span class="err">Calls</span> <span class="err">originating</span> <span class="err">from</span> <span class="err">external</span> <span class="err">networks</span> <span class="err">via</span> <span class="err">ENUM.</span>
-<span class="nn">[context-enum]</span>
+<span class="c">; Calls originating from external networks via ENUM.
+</span><span class="nn">[context-enum]</span>
 
 <span class="c">; starts with 00 -&gt; replace with + and route out
 </span><span class="py">exten</span> <span class="p">=</span><span class="s">&gt; _00X!,1,Goto(ext-routing,+${EXTEN:2},1)</span>
