@@ -279,7 +279,7 @@ apt <span class="nb">install </span>asterisk</code></pre>
 <span class="nn">[phone-template]</span><span class="err">(!)</span>
 <span class="py">type</span><span class="p">=</span><span class="s">endpoint</span>
 <span class="py">context</span><span class="p">=</span><span class="s">context-local          ; Incoming calls from this phone go here</span>
-<span class="py">allow</span><span class="p">=</span><span class="s">!all,opus,g722,alaw,ulaw ; Prioritize Opus and G.722 HD audio</span>
+<span class="py">allow</span><span class="p">=</span><span class="s">!all,ulaw,alaw           ; Use standard audio formats</span>
 <span class="py">rtp_symmetric</span><span class="p">=</span><span class="s">yes</span>
 <span class="py">force_rport</span><span class="p">=</span><span class="s">yes</span>
 <span class="py">rewrite_contact</span><span class="p">=</span><span class="s">yes</span>
@@ -315,7 +315,7 @@ apt <span class="nb">install </span>asterisk</code></pre>
 <span class="nn">[peer-enum-inbound]</span>
 <span class="py">type</span><span class="p">=</span><span class="s">endpoint</span>
 <span class="py">context</span><span class="p">=</span><span class="s">context-enum   ; Send unknown incoming calls to ENUM context</span>
-<span class="py">allow</span><span class="p">=</span><span class="s">!all,opus,g722,alaw,ulaw</span>
+<span class="py">allow</span><span class="p">=</span><span class="s">!all,ulaw,alaw           ; Use standard audio formats</span>
 <span class="py">rtp_symmetric</span><span class="p">=</span><span class="s">yes</span>
 <span class="py">force_rport</span><span class="p">=</span><span class="s">yes</span>
 <span class="py">rewrite_contact</span><span class="p">=</span><span class="s">yes</span>
@@ -336,7 +336,7 @@ apt <span class="nb">install </span>asterisk</code></pre>
 </span>
 <span class="nn">[peer-enum-outbound]</span>
 <span class="py">type</span><span class="p">=</span><span class="s">endpoint</span>
-<span class="py">allow</span><span class="p">=</span><span class="s">!all,opus,g722,alaw,ulaw</span>
+<span class="py">allow</span><span class="p">=</span><span class="s">!all,ulaw,alaw           ; Use standard audio formats</span>
 <span class="py">send_pai</span><span class="p">=</span><span class="s">yes</span></code></pre>
 
 <h2><a class="anchor" id="dialplan-extensions-conf" href="#dialplan-extensions-conf"></a>Dialplan (<code>extensions.conf</code>)</h2>
