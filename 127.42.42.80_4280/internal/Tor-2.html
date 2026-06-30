@@ -22,7 +22,7 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'services/Route-Collector.md';
+	  var pageFullPath = 'internal/Tor.md';
     var pageFormat   = 'markdown';
 
   </script>
@@ -44,7 +44,7 @@
     mermaid.initialize(mermaid_conf);
   </script>
   
-  <title>Route-Collector</title>
+  <title>Tor</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -68,12 +68,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>Route-Collector</div>
+            <div>Tor</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="https://hist.dn42.wiki/gollum/history/services/Route-Collector.md"
+              href="http://127.42.42.80:4280/gollum/history/internal/Tor.md"
               role="menuitem"
             >
               <span>History</span>
@@ -118,7 +118,7 @@
     class="TableObject-item TableObject-item--primary px-2"
     
   >
-    <form class="search-form" action="https://hist.dn42.wiki/gollum/search" method="get" id="search-form">
+    <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
     	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
@@ -146,7 +146,7 @@
     <div class="BtnGroup d-flex">
         <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          onclick="window.location.href='https://hist.dn42.wiki/gollum/history/services/Route-Collector.md/';"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/internal/Tor.md/';"
           id="minibutton-history"
         >
           History
@@ -161,10 +161,10 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    Route-Collector
+    Tor
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
-<li class="breadcrumb-item"><a href="../gollum/overview/services/index.html">services</a></li>
+<li class="breadcrumb-item"><a href="../gollum/overview/internal/index.html">internal</a></li>
 </ol></nav></div>
 
 	<div class="has-header has-footer has-sidebar has-rightbar">
@@ -177,7 +177,126 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="tor-network" href="#tor-network"></a>Tor network</h1>
+
+<p><a href="https://torproject.org/">Tor</a> is free software and an open network that helps you defend against traffic analysis, a form of network surveillance that threatens personal freedom and privacy, confidential business activities and relationships, and state security.</p>
+
+<h2><a class="anchor" id="bridges" href="#bridges"></a>Bridges</h2>
+
+<p>Tor bridges allow for the Tor client to connect to a specific IP address and validate the fingerprint to permit safe connections into the Tor network for networks that do not directly access the public Internet, for example hosts that only have dn42 connections. The following bridges are currently available for use:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Bandwidth</th>
+      <th>Contact</th>
+      <th>Protocol</th>
+      <th>Fingerprint</th>
+      <th>Info</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>tor.napshome.dn42:8443</td>
+      <td>3000KB/s+</td>
+      <td>bjackson@napshome.net</td>
+      <td>obfs4</td>
+      <td>71C924A772F69451FE97FE5A9025DEDDEF3DB664</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>tor.napshome.dn42:9001</td>
+      <td>3000KB/s+</td>
+      <td>bjackson@napshome.net</td>
+      <td>plain</td>
+      <td>71C924A772F69451FE97FE5A9025DEDDEF3DB664</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2><a class="anchor" id="anycast" href="#anycast"></a>Anycast</h2>
+
+<p>There is an anycast address, 172.22.0.94 and fd42:d42:d42:9001::1 aka tor.dn42, that provides the following services:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Service</th>
+      <th>Port</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ORPort</td>
+      <td>9001/tcp</td>
+    </tr>
+    <tr>
+      <td>DirPort</td>
+      <td>9030/tcp</td>
+    </tr>
+    <tr>
+      <td>SOCKS</td>
+      <td>9050/tcp</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>It should be noted that the host providing the SOCKS services is able to see <em>all</em> of the traffic going through it, you will not be protected for the portion of the journey between your machine and the Tor service. There is also no guarantee that the SOCKS proxy even provides a Tor service, it may simply just be a SOCKS proxy and you have no means by which to verify it.</p>
+
+<p>There is also unfortunately no means by which to tell Tor to use a specific IP address as the entry point for a plain relay and while in theory you could connect to the ORPort and have a safe connection to Tor, there is no configuration option available for this.</p>
+
+<h2><a class="anchor" id="socks-proxies" href="#socks-proxies"></a>SOCKS Proxies</h2>
+
+<p><em>Note that the same warnings above also apply to the following proxies.</em></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Proxy URL</th>
+      <th>Bandwidth</th>
+      <th>Contact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>socks5://tor.napshome.dn42:9050</td>
+      <td>100+ Mbit/s</td>
+      <td>Napsterbater</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2><a class="anchor" id="dns-proxy-tor-hidden-services" href="#dns-proxy-tor-hidden-services"></a>DNS Proxy - Tor Hidden Services</h2>
+
+<p><em>Note that the same warnings above also apply to the following proxies.</em></p>
+
+<p>See <a href="https://blog.benjojo.co.uk/post/tor-onions-to-v6-with-iptables-proxy">https://blog.benjojo.co.uk/post/tor-onions-to-v6-with-iptables-proxy</a> for more details</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Suffix Change</th>
+      <th>Bandwidth</th>
+      <th>Contact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>.onion -&gt; .onion.dns42 (IPv6 Mapping)</td>
+      <td>1000 Mbit/s</td>
+      <td>TheQ</td>
+    </tr>
+    <tr>
+      <td>.onion -&gt; .oni.dns42 (IPv6 Mapping)</td>
+      <td>1000 Mbit/s</td>
+      <td>TheQ</td>
+    </tr>
+  </tbody>
+</table>
+
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -197,13 +316,13 @@
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="services/Route-Collector.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="internal/Tor.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="https://hist.dn42.wiki/gollum/rename/services/Route-Collector.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/internal/Tor.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
