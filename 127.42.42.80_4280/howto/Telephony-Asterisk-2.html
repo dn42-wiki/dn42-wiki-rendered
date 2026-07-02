@@ -219,7 +219,7 @@ apt <span class="nb">install </span>asterisk</code></pre>
       <span class="pi">-</span> <span class="s">./config:/etc/asterisk</span>
     <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span></code></pre>
 
-<h1><a class="anchor" id="example-configuration" href="#example-configuration"></a>Example configuration</h1>
+<h2><a class="anchor" id="example-configuration" href="#example-configuration"></a>Example configuration</h2>
 
 <p>Asterisk relies on many configuration files. This guide will focus only on two main config files:</p>
 <ul>
@@ -245,7 +245,7 @@ apt <span class="nb">install </span>asterisk</code></pre>
 <code>&lt;SECRET_PASS&gt;</code>: A strong password</li>
 </ul>
 
-<h2><a class="anchor" id="pjsip-pjsip-conf" href="#pjsip-pjsip-conf"></a>PJSIP (<code>pjsip.conf</code>)</h2>
+<h3><a class="anchor" id="pjsip-pjsip-conf" href="#pjsip-pjsip-conf"></a>PJSIP (<code>pjsip.conf</code>)</h3>
 
 <p>This file defines how Asterisk listens to the network, sets up templates for devices, creates your local extension, and prepares an anonymous endpoint to catch incoming ENUM calls.</p>
 
@@ -339,7 +339,7 @@ apt <span class="nb">install </span>asterisk</code></pre>
 <span class="py">allow</span><span class="p">=</span><span class="s">!all,ulaw,alaw           ; Use standard audio formats</span>
 <span class="py">send_pai</span><span class="p">=</span><span class="s">yes</span></code></pre>
 
-<h2><a class="anchor" id="dialplan-extensions-conf" href="#dialplan-extensions-conf"></a>Dialplan (<code>extensions.conf</code>)</h2>
+<h3><a class="anchor" id="dialplan-extensions-conf" href="#dialplan-extensions-conf"></a>Dialplan (<code>extensions.conf</code>)</h3>
 
 <p>The file tells Asterisk how to route numbers. It is divided into serveral contexts.</p>
 
@@ -406,7 +406,7 @@ apt <span class="nb">install </span>asterisk</code></pre>
 
 <pre class="highlight"><code>asterisk <span class="nt">-rx</span> <span class="s1">'core reload'</span></code></pre>
 
-<h1><a class="anchor" id="setting-up-your-extension" href="#setting-up-your-extension"></a>Setting up your extension</h1>
+<h2><a class="anchor" id="setting-up-your-extension" href="#setting-up-your-extension"></a>Setting up your extension</h2>
 
 <p>You can now connect a softphone (like MicroSIP, Zoiper, or Linphone) or a hardware IP Phone/ATA using the following details:</p>
 
@@ -423,6 +423,7 @@ apt <span class="nb">install </span>asterisk</code></pre>
 <p>Once connected, ask a friend to call your <code>&lt;FULL_NUMBER&gt;</code>.</p>
 
 <p><em>Tip: Install and use <code>sngrep -c</code> in your PBX's terminal to visually monitor SIP traffic if calls fail.</em></p>
+
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
