@@ -334,6 +334,18 @@ add address=YOUR_ALLOCATED_SUBNET/MASK list=DN42_allocated_v6</code></pre>
 add afi=ipv6 as=424242&lt;YOUR_ASN&gt; disabled=no input.filter=dn42-in instance=DN42 local.address=fe80::2762%DN42-KIOUBIT .role=ebgp multihop=yes name=iedon output.filter-chain=\
     dn42-out .network=DN42_allocated_v6 .redistribute=connected,static,bgp remote.address=&lt;THEIR_IPV6_PEER_ADDRESS&gt;%DN42-KIOUBIT/128 .as=424242&lt;THEIR_ASN&gt; templates=DN42-thighhighs</code></pre>
 
+<h2><a class="anchor" id="preferred-source-address" href="#preferred-source-address"></a>Preferred Source Address</h2>
+
+<p>By default, the router's own outgoing traffic will use the respective tunnel's address, which is link-local and so won't get routed. You can give your router an address from your allocation by assigning it to an existing interface or by creating an empty bridge. Then you need to modify the <code>accept</code> filter in the <code>dn42-in</code> in order to set it as the preferred address for all routes:</p>
+
+<pre class="highlight"><code>/interface/bridge
+add name=dn42-dummy
+/ipv6/address
+add address=&lt;YOUR_ALLOCATED_SUBNET&gt;::1/64 advertise=no interface=dn42-dummy
+/routing/filter/rule
+add chain=dn42-in comment="set source address and accept" rule=\
+    "if (dst in fd00::/8) { set pref-src &lt;YOUR_ALLOCATED_SUBNET&gt;::1; accept }"</code></pre>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
