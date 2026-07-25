@@ -524,6 +524,20 @@ Domain names and nserver attributes must be lowercase.</p>
 <span class="n">nserver</span>:            <span class="n">ns2</span>.<span class="n">foo</span>.<span class="n">dn42</span>
 <span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 
+<p>Before you push your commit to the registry, you can verify your configuration and the working of your authoritative server:</p>
+
+<pre class="highlight"><code>$ ./validate-my-dns.py FOO-MNT
+NOTE:  foo.dn42 doesn't have any ds-rdata specified
+NOTE:  d.6.a.6.2.9.9.4.5.3.d.f.ip6.arpa doesn't have any ds-rdata specified
+
+Summary:
+
+domain name                       | success | dnssec fail | wrong NS | wrong SOA | NXDOMAIN | REFUSED | SERVFAIL | timeout
+----------------------------------|---------|-------------|----------|-----------|----------|---------| -------- | -------
+ foo.dn42                         |       1 |           0 |        0 |         0 |        0 |       0 |        0 |       0
+ d.6.a.6.2.9.9.4.5.3.d.f.ip6.arpa |       1 |           0 |        0 |         0 |        0 |       0 |        0 |       0
+</code></pre>
+
 <h3><a class="anchor" id="telephony-prefix" href="#telephony-prefix"></a>Telephony Prefix</h3>
 
 <p>(Optional) To register a telephony prefix, create a <code>telephony</code> object in the data/telephony directory. telephony attribute must be in full E.164 format (include the '+' symbol). nserver attribute must be lowercase.</p>
