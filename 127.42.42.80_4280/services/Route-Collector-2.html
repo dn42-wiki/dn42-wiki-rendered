@@ -326,7 +326,7 @@ set protocols bgp neighbor fd42:d42:d42:179::1 remote-as '4242422602'
 
 <h3><a class="anchor" id="mrt-dumps" href="#mrt-dumps"></a>MRT Dumps</h3>
 
-<p><a href="https://tools.ietf.org/html/rfc6396">MRT Dumps</a> are produced by the collector every 10 minutes. Bird produces MRT dumps corresponding to tables, so two separate dumps are created, one for IPv4 (master4) and one for IPv6 (master6). The 10 minutes dumps are available for one week before being reduced down to one a day.</p>
+<p><a href="https://tools.ietf.org/html/rfc6396">MRT Dumps</a> are produced by the collector every 10 minutes. Bird produces MRT dumps corresponding to tables, so four separate dumps are created, one for IPv4 Unicast (master4), one for IPv6 Unicast (master6), one for IPv4 Multicast (multicast4) and one for IPv6 Multicast (multicast6). The 10 minutes dumps are available for one week before being reduced down to one a day.</p>
 
 <ul>
   <li><a href="https://mrt.collector.dn42/">https://mrt.collector.dn42</a></li>
@@ -337,6 +337,8 @@ set protocols bgp neighbor fd42:d42:d42:179::1 remote-as '4242422602'
 <ul>
   <li><a href="https://mrt.collector.dn42/master4_latest.mrt.bz2">https://mrt.collector.dn42/master4_latest.mrt.bz2</a></li>
   <li><a href="https://mrt.collector.dn42/master6_latest.mrt.bz2">https://mrt.collector.dn42/master6_latest.mrt.bz2</a></li>
+  <li><a href="https://mrt.collector.dn42/multicast4_latest.mrt.bz2">https://mrt.collector.dn42/multicast4_latest.mrt.bz2</a></li>
+  <li><a href="https://mrt.collector.dn42/multicast6_latest.mrt.bz2">https://mrt.collector.dn42/multicast6_latest.mrt.bz2</a></li>
 </ul>
 
 <h3><a class="anchor" id="prometheus-metrics" href="#prometheus-metrics"></a>Prometheus Metrics</h3>
@@ -348,8 +350,6 @@ set protocols bgp neighbor fd42:d42:d42:179::1 remote-as '4242422602'
 </ul>
 
 <h3><a class="anchor" id="ssh-interface" href="#ssh-interface"></a>SSH Interface</h3>
-
-<p><strong>Update</strong>: The SSH interface is currently not available, but will be enabled in the future.</p>
 
 <p>The collector bird instance can be queried directly using a birdc shell.</p>
 
@@ -369,15 +369,13 @@ This service provides a bird2 shell
 Be <span class="nb">nice</span>, access is logged and
 abuse will not be tolerated
 <span class="nt">------------------------------------</span>
-BIRD burble-2.0.8-210322-1-ge6133456 ready.
+BIRD 2.19.1 ready.
 Access restricted
 bird&gt; show route count
-bird&gt;       297441 of 297441 routes <span class="k">for </span>502 networks <span class="k">in </span>table master4
-286007 of 286007 routes <span class="k">for </span>427 networks <span class="k">in </span>table master6
-1437 of 1437 routes <span class="k">for </span>1437 networks <span class="k">in </span>table dn42_roa4
-1231 of 1231 routes <span class="k">for </span>1231 networks <span class="k">in </span>table dn42_roa6
-Total: 586116 of 586116 routes <span class="k">for </span>3597 networks <span class="k">in </span>4 tables
-bird&gt; 
+3634623 of 3634623 routes <span class="k">for </span>1358 networks <span class="k">in </span>table master4
+3758721 of 3758721 routes <span class="k">for </span>1300 networks <span class="k">in </span>table master6
+Total: 7393344 of 7393344 routes <span class="k">for </span>2658 networks <span class="k">in </span>2 tables
+bird&gt;
 </code></pre>
 
 
@@ -463,16 +461,7 @@ bird&gt;
 	  </div>
 	  <div id="wiki-footer" class="gollum-markdown-content my-2">
 	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
-	      <table>
-  <tbody>
-    <tr>
-      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="mailto:dn42@mk16.de" rel="nofollow">MARK22K-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>
-</td>
-      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.obl.ong/" rel="nofollow">dn42.obl.ong</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go)</td>
-    </tr>
-  </tbody>
-</table>
-
+	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	    </div>
 	  </div>
 
