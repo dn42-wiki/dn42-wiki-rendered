@@ -171,14 +171,185 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p>To quote the <a href="https://www.wireguard.io/">homepage</a>:</p>
+
+<blockquote>
+  <p>WireGuard is an extremely simple yet fast and modern VPN that utilizes state-of-the-art cryptography. It aims to be faster, simpler, leaner, and more useful than IPSec, while avoiding the massive headache. It intends to be considerably more performant than OpenVPN. WireGuard is designed as a general purpose VPN for running on embedded interfaces and super computers alike, fit for many different circumstances. Initially released for the Linux kernel, it plans to be cross-platform and widely deployable. It is currently under heavy development, but already it might be regarded as the most secure, easiest to use, and simplest VPN solution in the industry.</p>
+</blockquote>
+
+<h1><a class="anchor" id="example-configuration-for-dn42" href="#example-configuration-for-dn42"></a>Example configuration for dn42</h1>
+
+<p>Wireguard is a Layer3 VPN. In theory it allows multiple peers to be served with one interface/port, but it does internal routing based on the peer's public key. This means <strong>you will need one interface per peering</strong> on dn42
+to allow your BGP daemon instead to do routing. This approach is comparable to <a href="openvpn.html">OpenVPN p2p tunnels</a>.</p>
+
+<p>First generate on each peer public and private keys.</p>
+
+<pre class="highlight"><code><span class="nv">$ </span>wg genkey | <span class="nb">tee </span>privatekey | wg pubkey <span class="o">&gt;</span> publickey</code></pre>
+
+<h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
+
+<pre class="highlight"><code><span class="c"># tunnel.conf
+</span>[<span class="n">Interface</span>]
+<span class="n">PrivateKey</span> = &lt;<span class="n">private_key</span>&gt;
+<span class="n">ListenPort</span> = &lt;<span class="n">YOUR_LOCAL_UDP_PORT</span>&gt;
+
+[<span class="n">Peer</span>]
+<span class="n">PublicKey</span> = &lt;<span class="n">public_key_of_your_peer</span>&gt;
+<span class="c"># OPTIONAL, its also possible to define a pre-shared key for additional security
+</span><span class="n">PresharedKey</span> = &lt;<span class="n">pre</span>-<span class="n">shared</span> <span class="n">key</span>&gt;
+<span class="c"># at least one peer needs to provide this one
+</span><span class="n">Endpoint</span> = &lt;<span class="n">end_point_hostname_or_ip</span>:<span class="n">port</span>&gt;
+<span class="c"># in theory this could be restricted to dn42 networks,
+# however it is easier to do this with iptables/bgp filters/routing table 
+# instead just like for openvpn-based peerings
+</span><span class="n">AllowedIPs</span> = <span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">0</span>,::/<span class="m">0</span></code></pre>
+
+<p><strong>Make sure that your AllowedIPs include the full dn42 ranges (<code>172.20.0.0/14</code>, <code>fd00::/8</code>) and not just your peer's next hop IPs!</strong> AllowedIPs functions as a data plane restriction on which target IPs can go over each WireGuard tunnel. If this is misconfigured, you may see errors such as: <code>ping: sendmsg: Destination address required</code>.</p>
+
+<h2><a class="anchor" id="configure-tunnel" href="#configure-tunnel"></a>Configure tunnel:</h2>
+
+<p>Wireguard comes with its own interface type. 
+It supports link-local addresses for IPv6 and single /32 addresses for IPv4, which can be used for peering.</p>
+
+<pre class="highlight"><code><span class="nv">$ </span>ip <span class="nb">link </span>add dev &lt;interface_name&gt; <span class="nb">type </span>wireguard
+<span class="nv">$ </span>wg setconf &lt;interface_name&gt; tunnel.conf
+<span class="c"># both side pick a different link-local ipv6 address</span>
+<span class="nv">$ </span>ip addr add fe80::&lt;some_random_suffix&gt;/64 dev &lt;interface_name&gt;
+<span class="c"># choose the first ip from your subnet and the second one from the peer</span>
+<span class="nv">$ </span>ip addr add 172.xx.xx.xx/32 peer 172.xx.xx.xx/32 dev &lt;interface_name&gt;
+<span class="nv">$ </span>ip <span class="nb">link set</span> &lt;interface_name&gt; up</code></pre>
+
+
+
+<p>Maybe you should check the MTU to your peer with e.g. <code>ping -s 1472 &lt;end_point_hostname_or_ip&gt;</code>. If your output looks like <code>From gateway.local (192.168.0.1) icmp_seq=1 Frag needed and DF set (mtu = 1440)</code> substract <code>80</code> from the MTU and set it via <code>ip link set dev &lt;interface_name&gt; mtu &lt;calculated_mtu&gt;</code></p>
+
+<h2><a class="anchor" id="testing" href="#testing"></a>Testing</h2>
+
+<pre class="highlight"><code>ping fe80::&lt;your_peers_suffix&gt;%&lt;interface_name&gt;</code></pre>
+
+<p>(For older iputils, use <code>ping6</code>.)</p>
+
+<p>Afterwards configure your <a href="Bird2.html">BGP session</a> as usual</p>
+
+<h2><a class="anchor" id="debugging" href="#debugging"></a>Debugging</h2>
+
+<p>The wireguard kernel module on linux has support for enabling dynamic debugging. This can be useful to help track down some problems, e.g. if public keys don't match.</p>
+
+<p>Debug messages are logged via dmesg and can be enabled using:</p>
+
+<pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">'module wireguard +p'</span> <span class="o">&gt;</span> /sys/kernel/debug/dynamic_debug/control</code></pre>
+
+<p>To disable debug:</p>
+
+<pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">'module wireguard -p'</span> <span class="o">&gt;</span> /sys/kernel/debug/dynamic_debug/control</code></pre>
+
+<h2><a class="anchor" id="wg-quick" href="#wg-quick"></a>wg-quick</h2>
+
+<p><a href="https://git.zx2c4.com/wireguard-tools/about/src/man/wg-quick.8">wg-quick</a> is a script that is shipped with Wireguard to help users bring up tunnels in some common use cases.</p>
+
+<blockquote>
+  <p>It is designed for users with simple needs, and users with more advanced needs are highly encouraged to use a more specific tool, a more complete network manager, or otherwise just use wg(8) and ip(8), as usual.</p>
+</blockquote>
+
+<p>The script makes some changes that are not valid when used for DN42 tunnels, and which must be worked around:</p>
+
+<ul>
+  <li>
+    <p>By default, the script will add a routing policy that routes the 'AllowedIP' ranges through the tunnel. In DN42, route selection is managed by BGP so the routing policy <em>must</em> be removed to avoid problems. This is achieved by adding the '<em>Table = off</em>' directive.</p>
+
+    <ul>
+      <li><strong>Warning: a common pattern for DN42 tunnels is to use <code>AllowedIPs = 0.0.0.0/0</code> or <code>AllowedIPs = ::/0</code> then use firewall rules to limit source and destination addresses. If you do not add 'Table = off' this could cause you to route clearnet traffic via your peer and potentially lose connectivity to your node!</strong></li>
+    </ul>
+  </li>
+  <li>
+    <p>It is common in DN42 to use Point-to-Point addressing schemes on tunnel interfaces (that is, using IPv4/32 and IPv6/128 addresses); this is not supported by wg-quick. To configure PTP addresses you must add a '<em>PostUp</em>' statement. On Linux, this will typically be done using <code>ip</code> from <code>iproute2</code>.</p>
+  </li>
+</ul>
+
+<p>An example wg-quick script that incorporates the above two workarounds is below, where <code>&lt;MyIPv[46]&gt;</code> are the DN42 IP addresses of your node and <code>&lt;PeerIPv[46]&gt;</code> are the IP addresses for your peer.</p>
+
+<pre class="highlight"><code>[<span class="n">Interface</span>]
+<span class="n">PrivateKey</span> = &lt;<span class="n">your</span> <span class="n">private</span> <span class="n">key</span>&gt;
+<span class="n">Address</span> = &lt;<span class="n">your</span> <span class="n">link</span>-<span class="n">local</span> <span class="n">address</span>, <span class="n">if</span> <span class="n">any</span>&gt;
+<span class="n">PostUp</span> = /<span class="n">sbin</span>/<span class="n">ip</span> <span class="n">addr</span> <span class="n">add</span> <span class="n">dev</span> %<span class="n">i</span> &lt;<span class="n">MyIPv4</span>&gt;/<span class="m">32</span> <span class="n">peer</span> &lt;<span class="n">PeerIPv4</span>&gt;/<span class="m">32</span>
+<span class="n">PostUp</span> = /<span class="n">sbin</span>/<span class="n">ip</span> <span class="n">addr</span> <span class="n">add</span> <span class="n">dev</span> %<span class="n">i</span> &lt;<span class="n">MyIPv6</span>&gt;/<span class="m">128</span> <span class="n">peer</span> &lt;<span class="n">PeerIPv6</span>&gt;/<span class="m">128</span>
+<span class="n">Table</span> = <span class="n">off</span>
+
+[<span class="n">Peer</span>]
+<span class="n">Endpoint</span> = &lt;<span class="n">your</span> <span class="n">peer</span><span class="err">'</span><span class="n">s</span> <span class="n">wireguard</span> <span class="n">endpoint</span>&gt;
+<span class="n">PublicKey</span> = &lt;<span class="n">your</span> <span class="n">peer</span><span class="err">'</span><span class="n">s</span> <span class="n">public</span> <span class="n">key</span>&gt;
+<span class="n">AllowedIPs</span> = <span class="m">172</span>.<span class="m">16</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">12</span>, <span class="m">10</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">8</span>, <span class="n">fd00</span>::/<span class="m">8</span>, <span class="n">fe80</span>::/<span class="m">10</span></code></pre>
+Use <code>which ip</code> to get the full path to your ip binary.
+
+<h2><a class="anchor" id="systemd-networkd" href="#systemd-networkd"></a>systemd-networkd</h2>
+
+<p>Example configuration for systemd-networkd.</p>
+
+<p>peer.netdev
+</p><pre class="highlight"><code>[<span class="n">NetDev</span>]
+<span class="n">Name</span>=&lt;<span class="n">ifname</span>&gt;
+<span class="n">Kind</span>=<span class="n">wireguard</span>
+
+[<span class="n">WireGuard</span>]
+<span class="n">PrivateKey</span>=&lt;<span class="n">your</span> <span class="n">private</span> <span class="n">key</span>&gt;
+<span class="n">ListenPort</span>=&lt;<span class="n">your</span> <span class="n">listen</span> <span class="n">port</span>&gt;
+
+[<span class="n">WireGuardPeer</span>]
+<span class="n">PublicKey</span>=&lt;<span class="n">peer</span> <span class="n">public</span> <span class="n">key</span>&gt;
+<span class="c"># OPTIONAL, pre-shared key
+</span><span class="n">PresharedKey</span>=&lt;<span class="n">pre</span>-<span class="n">shared</span> <span class="n">key</span>&gt;
+<span class="n">Endpoint</span>=&lt;<span class="n">peer</span> <span class="n">host</span> <span class="n">and</span> <span class="n">port</span>, <span class="n">e</span>.<span class="n">g</span>. <span class="m">1</span>.<span class="m">2</span>.<span class="m">3</span>.<span class="m">4</span>:<span class="m">9876</span>&gt;
+<span class="n">AllowedIPs</span>=<span class="n">fe80</span>::/<span class="m">64</span>
+<span class="n">AllowedIPs</span>=<span class="n">fd00</span>::/<span class="m">8</span>
+<span class="n">AllowedIPs</span>=<span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">0</span></code></pre>
+
+<p>peer.network
+</p><pre class="highlight"><code>[<span class="n">Match</span>]
+<span class="n">Name</span>=&lt;<span class="n">ifname</span>&gt;
+
+[<span class="n">Network</span>]
+<span class="n">DHCP</span>=<span class="n">no</span>
+<span class="n">IPv6AcceptRA</span>=<span class="n">false</span>
+<span class="n">IPForward</span>=<span class="n">yes</span>
+<span class="n">IPv4ReversePathFilter</span>=<span class="n">no</span>  <span class="c"># required if sysctl item `net.ipv4.conf.default.rp_filter` is not 0
+</span>
+
+<span class="c"># for networkd &gt;= 244 KeepConfiguration stops networkd from
+# removing routes on this interface when restarting
+</span><span class="n">KeepConfiguration</span>=<span class="n">yes</span>
+
+<span class="c"># for networkd &lt; 244 the CriticalConnection parameter achieves
+# the same thing
+</span>[<span class="n">DHCP</span>]
+<span class="n">CriticalConnection</span>=<span class="n">true</span>
+
+<span class="c"># if using link local addresses for peering
+</span>[<span class="n">Address</span>]
+<span class="n">Address</span>=<span class="n">fe80</span>::<span class="n">xx</span>:<span class="n">xx</span>:<span class="n">xx</span>:<span class="n">xx</span>/<span class="m">64</span>
+
+<span class="c"># if using IPv6 point to point
+</span>[<span class="n">Address</span>]
+<span class="n">Address</span>=&lt;<span class="n">your</span> <span class="n">ipv6</span> <span class="n">address</span>&gt;/<span class="m">128</span>
+<span class="n">Peer</span>=&lt;<span class="n">your</span> <span class="n">peer</span><span class="err">'</span><span class="n">s</span> <span class="n">IPv6</span> <span class="n">address</span>&gt;/<span class="m">128</span>
+
+<span class="c"># IPv4 point to point
+</span>[<span class="n">Address</span>]
+<span class="n">Address</span>=&lt;<span class="n">your</span> <span class="n">IPv4</span> <span class="n">address</span>&gt;/<span class="m">32</span>
+<span class="n">Peer</span>=&lt;<span class="n">your</span> <span class="n">peer</span><span class="err">'</span><span class="n">s</span> <span class="n">IPv4</span> <span class="n">address</span>&gt;/<span class="m">32</span></code></pre>
+
+<h2><a class="anchor" id="dynamics-ip" href="#dynamics-ip"></a>Dynamics IP</h2>
+
+<p>As wireguard are only resolving the hostname to IP only on start, dynamics DNS will stop working after a while without further configuration. The Following is a <a href="https://github.com/WireGuard/wireguard-tools/blob/master/contrib/reresolve-dns/reresolve-dns.sh">script</a> from wireguard which will "re-resolve" the DNS and update the wireguard.</p>
+
+<p>You can add cron entries to periodically  "re-resolve" the DNS:
+</p><pre class="highlight"><code><span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> /path-to-the-script/reresolve-dns.sh</code></pre>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
