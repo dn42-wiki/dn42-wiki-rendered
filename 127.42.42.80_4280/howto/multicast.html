@@ -193,6 +193,8 @@
 
 <p>You're done! You should receive the multicast routes from peers advertising them.</p>
 
+<h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
+
 <h3><a class="anchor" id="frr-configuration" href="#frr-configuration"></a>frr configuration</h3>
 
 <p>Enable PIM:
@@ -236,7 +238,27 @@ The number of maximum groups is optional and can be set freely. For security rea
 IGMP and MLD messages must follow a specific format. <code>require-router-alert</code> filters out invalid messages.
 Even if an interface is only intended to handle IGMP/MLD, PIM must be enabled on it. If you still do not want to use PIM, a firewall rule is recommended.
 
-<h3><a class="anchor" id="participants" href="#participants"></a>Participants</h3>
+<h3><a class="anchor" id="nftables-configuration" href="#nftables-configuration"></a>nftables configuration</h3>
+
+<p>Allow PIM:
+</p><pre class="highlight"><code>iifname "[INTERFACE NAME]" ip6 saddr [SOURCE ADDRESS] ip6 daddr ff02::d meta protocol ip6 meta l4proto pim counter accept;</code></pre>
+<pre class="highlight"><code>iifname "[INTERFACE NAME]" ip saddr [SOURCE ADDRESS] ip daddr 224.0.0.13 meta protocol ip meta l4proto pim counter accept;</code></pre>
+
+<p>Allow MLDv2:
+</p><pre class="highlight"><code>set icmp6_mld {
+    type icmpv6_type . icmpv6_code;
+    flags interval;
+    elements = {
+        mld-listener-query . 0,
+        mld2-listener-report . 0
+    };
+}</code></pre>
+<pre class="highlight"><code>iifname [CLIENT INTERFACE NAME] icmpv6 type . icmpv6 code @icmp6_mld ip6 hoplimit 1 exthdr hbh exists ip6 saddr fe80::/10 counter accept;</code></pre>
+
+<p>Allow IGMPv3:
+</p><pre class="highlight"><code>iifname [CLIENT INTERFACE NAME] ip protocol igmp igmp type { membership-query, membership-report-v3 } ip ttl 1 counter accept;</code></pre>
+
+<h2><a class="anchor" id="participants" href="#participants"></a>Participants</h2>
 
 <p>Current participants:</p>
 <ul>
@@ -280,9 +302,11 @@ a=source-filter: incl IN IP6 ff3e::8232:232 fd40:cc1e:c0de::fffe</code></pre>
 There are two implementations:</p>
 <ul>
   <li>The <a href="https://github.com/troglobit/mping/">original implementation</a> by troglobit, which supports both sending and receiving.</li>
-  <li>
-    <p>A <a href="https://codeberg.org/mark22k/mping-sender">reimplementation</a>, which supports only sending.</p>
-  </li>
+  <li>A <a href="https://codeberg.org/mark22k/mping-sender">reimplementation</a>, which supports only sending.</li>
+</ul>
+
+<p>Streams:</p>
+<ul>
   <li>
 <code>mcjoin -j -i [INTERFACE] [fd00:8e13:ce5d::9bee],[ff3e::8000:42]:4321</code> mping-sender</li>
 </ul>
