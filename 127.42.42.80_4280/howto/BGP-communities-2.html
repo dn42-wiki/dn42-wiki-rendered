@@ -347,10 +347,10 @@ routing policies like cold_potato.</li>
 }
 <span class="c">#Remove the following function if you do not want to advertize your region in the BGP community.
 </span><span class="n">function</span> <span class="n">update_geo_flags</span>() -&gt; <span class="n">bool</span> {
-    <span class="n">if</span> <span class="n">is_self_net</span>() || <span class="n">is_self_net_v6</span>() <span class="n">then</span> {
-        <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">DN_REGION_GEO</span>));
-	    <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">DN_REGION_COUNTRY</span>));
-    }
+  <span class="n">if</span> (<span class="n">is_self_net</span>() || <span class="n">is_self_net_v6</span>()) &amp;&amp; <span class="n">source</span> = <span class="n">RTS_STATIC</span> <span class="n">then</span> {
+    <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">DN_REGION_GEO</span>));
+    <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">DN_REGION_COUNTRY</span>));
+  }
 }
 <span class="n">function</span> <span class="n">update_flags</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>) -&gt; <span class="n">bool</span>
 <span class="n">int</span> <span class="n">dn42_latency</span>;
