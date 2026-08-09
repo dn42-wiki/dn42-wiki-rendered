@@ -171,7 +171,8 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
+
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
@@ -224,6 +225,21 @@ in /etc/bird/peers/*</p>
 (<span class="m">64511</span>, <span class="m">32</span>) :: <span class="n">encrypted</span> <span class="n">with</span> <span class="n">unsafe</span> <span class="n">vpn</span> <span class="n">solution</span>
 (<span class="m">64511</span>, <span class="m">33</span>) :: <span class="n">encrypted</span> <span class="n">with</span> <span class="n">safe</span> <span class="n">vpn</span> <span class="n">solution</span> (<span class="n">but</span> <span class="n">no</span> <span class="n">PFS</span> - <span class="n">the</span> <span class="n">usual</span> <span class="n">OpenVPN</span> <span class="n">p2p</span> <span class="n">configuration</span> <span class="n">falls</span> <span class="n">in</span> <span class="n">this</span> <span class="n">category</span>)
 (<span class="m">64511</span>, <span class="m">34</span>) :: <span class="n">encrypted</span> <span class="n">with</span> <span class="n">safe</span> <span class="n">vpn</span> <span class="n">solution</span> <span class="n">with</span> <span class="n">PFS</span> (<span class="n">Perfect</span> <span class="n">Forward</span> <span class="n">Secrecy</span>)
+(<span class="m">64511</span>, <span class="m">35</span>) :: <span class="n">encrypted</span> <span class="n">with</span> <span class="n">safe</span> <span class="n">vpn</span> <span class="n">solution</span> <span class="n">with</span> <span class="n">PFS</span> (<span class="n">Perfect</span> <span class="n">Forward</span> <span class="n">Secrecy</span>) <span class="n">and</span> <span class="n">post</span>-<span class="n">quantum</span> <span class="n">resistance</span> <span class="n">but</span> <span class="n">without</span> <span class="n">post</span>-<span class="n">quantum</span> <span class="n">forward</span> <span class="n">secrecy</span> (<span class="n">e</span>.<span class="n">g</span>. <span class="n">WireGuard</span> <span class="n">with</span> <span class="n">PSK</span>)
+(<span class="m">64511</span>, <span class="m">36</span>) :: <span class="n">encrypted</span> <span class="n">with</span> <span class="n">safe</span> <span class="n">vpn</span> <span class="n">solution</span> <span class="n">with</span> <span class="n">PFS</span> (<span class="n">Perfect</span> <span class="n">Forward</span> 
+<span class="n">Secrecy</span>) <span class="n">and</span> <span class="n">post</span>-<span class="n">quantum</span> <span class="n">forward</span> <span class="n">secrecy</span> (<span class="n">e</span>.<span class="n">g</span>. <span class="n">WireGuard</span> <span class="n">with</span> <span class="n">Rosenpass</span>)
+
+(<span class="m">64511</span>, <span class="m">81</span>) :: <span class="n">Physical</span> <span class="n">connection</span> (<span class="n">e</span>.<span class="n">g</span>. <span class="n">Ethernet</span> <span class="n">cable</span>, <span class="n">direct</span> <span class="n">wireless</span> <span class="n">link</span>)
+(<span class="m">64511</span>, <span class="m">82</span>) :: <span class="n">Connection</span> <span class="n">over</span> <span class="n">Internet</span> <span class="n">Exchange</span> <span class="n">Points</span> (<span class="n">Manually</span> <span class="n">or</span> <span class="n">via</span> <span class="n">router</span> <span class="n">server</span>) (<span class="n">e</span>.<span class="n">g</span>. <span class="n">Ethernet</span> <span class="n">cable</span> <span class="n">on</span> <span class="n">a</span> <span class="n">big</span> <span class="n">switch</span>)
+(<span class="m">64511</span>, <span class="m">83</span>) :: <span class="n">Connection</span> <span class="n">over</span> <span class="n">Tunnel</span> (<span class="n">e</span>. <span class="n">g</span>. <span class="n">WireGuard</span>, <span class="n">fastd</span>, <span class="n">GRE</span>)
+(<span class="m">64511</span>, <span class="m">84</span>) :: <span class="n">Connection</span> <span class="n">over</span> <span class="n">meshed</span> <span class="n">Virtual</span> <span class="n">Internet</span> <span class="n">Exchange</span> <span class="n">Points</span> (<span class="n">Manually</span> <span class="n">or</span> <span class="n">via</span> <span class="n">router</span> <span class="n">server</span>) (<span class="n">e</span>.<span class="n">g</span>. <span class="n">Tailscale</span>, <span class="n">Tinc</span>, <span class="n">n2n</span>)
+(<span class="m">64511</span>, <span class="m">85</span>) :: <span class="n">Connection</span> <span class="n">over</span> <span class="n">centralized</span> <span class="n">Virtual</span> <span class="n">Internet</span> <span class="n">Exchange</span> <span class="n">Points</span> (<span class="n">Manually</span> <span class="n">or</span> <span class="n">via</span> <span class="n">router</span> <span class="n">server</span>) (<span class="n">e</span>.<span class="n">g</span>. <span class="n">WireGuard</span> <span class="n">to</span> <span class="n">a</span> <span class="n">single</span> <span class="n">Server</span> <span class="n">with</span> <span class="n">a</span> <span class="n">virtual</span> <span class="n">switch</span>)
+(<span class="m">64511</span>, <span class="m">89</span>) :: <span class="n">Unknown</span> <span class="n">type</span> / <span class="n">Other</span> <span class="n">type</span>
+
+(<span class="m">6511</span>, <span class="m">91</span>) :: <span class="n">almost</span> <span class="m">0</span>% <span class="n">packet</span> <span class="n">lost</span>
+(<span class="m">6511</span>, <span class="m">92</span>) :: <span class="n">up</span> <span class="n">to</span> <span class="m">1</span>% <span class="n">packet</span> <span class="n">lost</span>
+(<span class="m">6511</span>, <span class="m">93</span>) :: <span class="n">up</span> <span class="n">to</span> <span class="m">5</span>% <span class="n">packet</span> <span class="n">lost</span>
+(<span class="m">6511</span>, <span class="m">94</span>) :: <span class="n">over</span> <span class="m">5</span>% <span class="n">packet</span> <span class="n">lost</span> (<span class="n">impossible</span> <span class="n">link</span>?)
 
 <span class="n">Propagation</span>:
 - - <span class="n">for</span> <span class="n">latency</span> <span class="n">pick</span> <span class="n">max</span>(<span class="n">received_route</span>.<span class="n">latency</span>, <span class="n">link_latency</span>)
@@ -245,6 +261,11 @@ USAGE: bgp-community.rb host mbit_speed unencrypted|unsafe|encrypted|pfs
   <span class="c"># 11 ms, 1000 mbit/s, pfs tunnel (updated: 2016-02-11)</span>
   import where dn42_import_filter<span class="o">(</span>3,25,34<span class="o">)</span><span class="p">;</span>
   <span class="nb">export </span>where dn42_export_filter<span class="o">(</span>3,25,34<span class="o">)</span><span class="p">;</span></code></pre>
+
+<p>Peerings with packet loss exceeding 5% have proven to be unstable.
+Such peering connections should be avoided whenever possible.</p>
+
+<p>If an automated method is used to update the latency communities, care must be taken to ensure that the communities are not updated too frequently, in order to avoid flapping (a large number of attribute changes). For example, a script could always calculate the average latency over the last 12 hours and then set the new value accordingly.</p>
 
 <h3><a class="anchor" id="route-origin" href="#route-origin"></a>Route Origin</h3>
 <p>There are two type of route origin: <code>region</code> and <code>country</code></p>
@@ -339,28 +360,56 @@ routing policies like cold_potato.</li>
 
 <span class="n">function</span> <span class="n">update_crypto</span>(<span class="n">int</span> <span class="n">link_crypto</span>) -&gt; <span class="n">int</span> {
   <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">link_crypto</span>));
-       <span class="n">if</span> (<span class="m">64511</span>, <span class="m">31</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">32</span>..<span class="m">34</span>)]); <span class="n">return</span> <span class="m">31</span>; }
-  <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">32</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">33</span>..<span class="m">34</span>)]); <span class="n">return</span> <span class="m">32</span>; }
-  <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">33</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">34</span>..<span class="m">34</span>)]); <span class="n">return</span> <span class="m">33</span>; }
-  <span class="n">else</span> <span class="n">return</span> <span class="m">34</span>;
+       <span class="n">if</span> (<span class="m">64511</span>, <span class="m">31</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">32</span>..<span class="m">36</span>)]); <span class="n">return</span> <span class="m">31</span>; }
+  <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">32</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">33</span>..<span class="m">36</span>)]); <span class="n">return</span> <span class="m">32</span>; }
+  <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">33</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">34</span>..<span class="m">36</span>)]); <span class="n">return</span> <span class="m">33</span>; }
+  <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">34</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">35</span>..<span class="m">36</span>)]); <span class="n">return</span> <span class="m">34</span>; }
+  <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">35</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">36</span>..<span class="m">36</span>)]); <span class="n">return</span> <span class="m">35</span>; }
+  <span class="n">else</span> <span class="n">return</span> <span class="m">36</span>;
 }
-<span class="c">#Remove the following function if you do not want to advertize your region in the BGP community.
+
+<span class="n">function</span> <span class="n">update_topology</span>(<span class="n">int</span> <span class="n">link_topology</span>) -&gt; <span class="n">int</span> {
+  <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">update_topology</span>));
+       <span class="n">if</span> (<span class="m">64511</span>, <span class="m">89</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">81</span>..<span class="m">88</span>)]); <span class="n">return</span> <span class="m">89</span>; }
+  <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">85</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">81</span>..<span class="m">84</span>)]); <span class="n">return</span> <span class="m">85</span>; }
+  <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">84</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">81</span>..<span class="m">83</span>)]); <span class="n">return</span> <span class="m">84</span>; }
+  <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">83</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">81</span>..<span class="m">82</span>)]); <span class="n">return</span> <span class="m">83</span>; }
+  <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">82</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">81</span>..<span class="m">81</span>)]); <span class="n">return</span> <span class="m">82</span>; }
+  <span class="n">else</span> <span class="n">return</span> <span class="m">81</span>;
+}
+
+<span class="n">function</span> <span class="n">update_packetloss</span>(<span class="n">int</span> <span class="n">link_packetloss</span>) -&gt; <span class="n">int</span> {
+  <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">link_packetloss</span>));
+       <span class="n">if</span> (<span class="m">64511</span>, <span class="m">94</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">91</span>..<span class="m">93</span>)]); <span class="n">return</span> <span class="m">94</span>; }
+  <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">93</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">91</span>..<span class="m">92</span>)]); <span class="n">return</span> <span class="m">93</span>; }
+  <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">92</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">91</span>..<span class="m">91</span>)]); <span class="n">return</span> <span class="m">92</span>; }
+  <span class="n">else</span> <span class="n">return</span> <span class="m">91</span>;
+}
+
+<span class="c"># Remove the following function if you do not want to advertize your region in the BGP community.
 </span><span class="n">function</span> <span class="n">update_geo_flags</span>() -&gt; <span class="n">bool</span> {
   <span class="n">if</span> (<span class="n">is_self_net</span>() || <span class="n">is_self_net_v6</span>()) &amp;&amp; <span class="n">source</span> = <span class="n">RTS_STATIC</span> <span class="n">then</span> {
     <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">DN_REGION_GEO</span>));
     <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">DN_REGION_COUNTRY</span>));
   }
 }
-<span class="n">function</span> <span class="n">update_flags</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>) -&gt; <span class="n">bool</span>
+
+<span class="n">function</span> <span class="n">update_flags</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>; <span class="n">int</span> <span class="n">link_topology</span>; <span class="n">int</span> <span class="n">link_packetloss</span>) -&gt; <span class="n">bool</span>
 <span class="n">int</span> <span class="n">dn42_latency</span>;
 <span class="n">int</span> <span class="n">dn42_bandwidth</span>;
 <span class="n">int</span> <span class="n">dn42_crypto</span>;
+<span class="n">int</span> <span class="n">dn42_topology</span>;
+<span class="n">int</span> <span class="n">dn42_packetloss</span>;
 {
   <span class="n">dn42_latency</span> = <span class="n">update_latency</span>(<span class="n">link_latency</span>);
   <span class="n">dn42_bandwidth</span> = <span class="n">update_bandwidth</span>(<span class="n">link_bandwidth</span>) - <span class="m">20</span>;
   <span class="n">dn42_crypto</span> = <span class="n">update_crypto</span>(<span class="n">link_crypto</span>) - <span class="m">30</span>;
+  <span class="n">dn42_topology</span> = <span class="n">update_topology</span>(<span class="n">link_topology</span>) - <span class="m">80</span>;
+  <span class="n">dn42_packetloss</span> = <span class="n">update_packetloss</span>(<span class="n">link_packetloss</span>) - <span class="m">90</span>;
+
   <span class="c"># replace 4 with your calculated bandwidth value
 </span>  <span class="n">if</span> <span class="n">dn42_bandwidth</span> &gt; <span class="m">4</span> <span class="n">then</span> <span class="n">dn42_bandwidth</span> = <span class="m">4</span>;
+
   <span class="n">return</span> <span class="n">true</span>;
 }
 
