@@ -465,18 +465,18 @@ routing policies like cold_potato.</li>
   <span class="n">reject</span>;
 }</code></pre>
 
-<p>And in your /etc/bird/peers/example.conf peer config, where your peering connection are for example: 11 ms latency, 1000 Mbps bandwidth, pfs tunnel, using MP-BGP with ENH:
+<p>And in your /etc/bird/peers/example.conf peer config, where your peering connection are for example: 11 ms latency, 1000 Mbps bandwidth, pfs tunnel, using MP-BGP with ENH, no packet loss:
 </p><pre class="highlight"><code><span class="n">protocol</span> <span class="n">bgp</span> <span class="n">example</span> <span class="n">from</span> <span class="n">dnpeers</span> {
     <span class="n">neighbor</span> <span class="n">neighbor</span> &lt;<span class="n">neighborip</span>&gt;&lt;%<span class="n">interface</span> <span class="n">if</span> <span class="n">Link</span> <span class="n">Local</span> <span class="n">is</span> <span class="n">used</span>&gt; <span class="n">as</span> &lt;<span class="n">AUT_NUM</span>&gt;;
     <span class="n">ipv4</span> {
         <span class="n">extended</span> <span class="n">next</span> <span class="n">hop</span> <span class="n">on</span>;
-		<span class="n">import</span> <span class="n">where</span> <span class="n">dn42_import_filter</span>(<span class="m">3</span>,<span class="m">25</span>,<span class="m">34</span>);
-		<span class="n">export</span> <span class="n">where</span> <span class="n">dn42_export_filter</span>(<span class="m">3</span>,<span class="m">25</span>,<span class="m">34</span>);
+		<span class="n">import</span> <span class="n">where</span> <span class="n">dn42_import_filter</span>(<span class="m">3</span>,<span class="m">25</span>,<span class="m">34</span>,<span class="m">83</span>,<span class="m">91</span>);
+		<span class="n">export</span> <span class="n">where</span> <span class="n">dn42_export_filter</span>(<span class="m">3</span>,<span class="m">25</span>,<span class="m">34</span>,<span class="m">83</span>,<span class="m">91</span>);
     };
 
     <span class="n">ipv6</span> {
-		<span class="n">import</span> <span class="n">where</span> <span class="n">dn42_import_filter</span>(<span class="m">3</span>,<span class="m">25</span>,<span class="m">34</span>);
-		<span class="n">export</span> <span class="n">where</span> <span class="n">dn42_export_filter</span>(<span class="m">3</span>,<span class="m">25</span>,<span class="m">34</span>);
+		<span class="n">import</span> <span class="n">where</span> <span class="n">dn42_import_filter</span>(<span class="m">3</span>,<span class="m">25</span>,<span class="m">34</span>,<span class="m">83</span>,<span class="m">91</span>);
+		<span class="n">export</span> <span class="n">where</span> <span class="n">dn42_export_filter</span>(<span class="m">3</span>,<span class="m">25</span>,<span class="m">34</span>,<span class="m">83</span>,<span class="m">91</span>);
     };</code></pre>
 
 <p>Remember to include /etc/bird/community_filters.conf and to define your GEO regions in your bird.conf 
