@@ -171,13 +171,119 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
+
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p>Running email in dn42 is not very complicated.  Your SMTP daemon probably already listens on the wildcard address, so you mostly need to:</p>
+
+<ul>
+  <li>open your firewall to allow TCP/25 from dn42</li>
+  <li>setup DNS (MX records, or simply relevant A records)</li>
+  <li>configure your mail server if needed</li>
+</ul>
+
+<h2><a class="anchor" id="redirect" href="#redirect"></a>Redirect</h2>
+<p><del>There are forwarding rules for <em>PERSON</em> @ dn42.org to the mail addresses which have been given in the registry. Please note that the trailing <code>-DN42</code> is stripped from the local part.</del></p>
+
+<h3><a class="anchor" id="example" href="#example"></a>Example</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left;">Handle</th>
+      <th style="text-align:left;">Alias</th>
+      <th style="text-align:left;">Redirection</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left;"><code>STV0G-DN42</code></td>
+      <td style="text-align:left;">stv0g@dn42.org</td>
+      <td style="text-align:left;"><code>post@steffenvogel.de</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2><a class="anchor" id="test-email" href="#test-email"></a>Test email</h2>
+
+<p><del>Send an email to <code>test@evenet.dn42</code> to check if your mail setup is correct.</del> This host will reply using the following
+sieve filter:</p>
+
+<pre class="highlight"><code><span class="n">require</span> [<span class="s2">"regex"</span>, <span class="s2">"variables"</span>, <span class="s2">"vacation-seconds"</span>];
+<span class="n">if</span> <span class="n">header</span> :<span class="n">contains</span> <span class="s2">"To"</span> [<span class="s2">"test@evenet.dn42"</span>] {
+  <span class="n">if</span> <span class="n">header</span> :<span class="n">matches</span> <span class="s2">"Subject"</span> <span class="s2">"*"</span> {
+      <span class="n">set</span> <span class="s2">"subject_was"</span> <span class="s2">": ${1}"</span>;
+  }
+  <span class="n">vacation</span> :<span class="n">addresses</span> [<span class="s2">"test@evenet.dn42"</span>] :<span class="n">seconds</span> <span class="m">60</span> :<span class="n">subject</span>  <span class="s2">"Re: ${subject_was}"</span> <span class="s2">"Your dn42 email setup works!"</span>;
+}</code></pre>
+
+<h2><a class="anchor" id="exim-tips" href="#exim-tips"></a>Exim tips</h2>
+
+<h3><a class="anchor" id="sending-emails" href="#sending-emails"></a>Sending emails</h3>
+
+<p>By default on Debian, Exim refuses to send mail to other mailservers when they resolve to RFC1918 addresses.  This will manifest by the following error message when trying to send a mail:</p>
+
+<pre><code>** foo@bar.dn42: all relevant MX records point to non-existent hosts
+</code></pre>
+
+<p>This is controlled by the <code>ignore_target_hosts</code> variable in the configuration file.</p>
+
+<h3><a class="anchor" id="receiving-emails" href="#receiving-emails"></a>Receiving emails</h3>
+
+<p>Don't forget to add your dn42 domains to the list of local domains, so that you accept incoming emails.  On Debian, it is controlled by <code>dc_other_hostnames</code> in <code>update-exim4.conf.conf</code>.  For instance:
+</p><pre class="highlight"><code><span class="n">dc_other_hostnames</span>=<span class="s1">'myself.org;myself.dn42;myserver.myself.dn42'</span></code></pre>
+
+<h2><a class="anchor" id="postfix" href="#postfix"></a>Postfix</h2>
+
+<h3><a class="anchor" id="sending-mails" href="#sending-mails"></a>Sending Mails</h3>
+<p>If your machine sends/receives Mails in "clearnet" with specific bound IP's you need to create an additional transport in master.cf</p>
+
+<pre class="highlight"><code><span class="n">out_dn42</span>  <span class="n">unix</span> -       -       <span class="n">n</span>       -       -       <span class="n">smtp</span>
+    -<span class="n">o</span> <span class="n">smtp_bind_address</span>=<span class="m">172</span>.<span class="m">23</span>.<span class="m">67</span>.<span class="m">1</span>
+    -<span class="n">o</span> <span class="n">smtp_bind_address6</span>=<span class="n">fd70</span>:<span class="m">96</span><span class="n">c9</span>:<span class="n">ef25</span>::<span class="m">1</span>
+    -<span class="n">o</span> <span class="n">smtp_helo_name</span>=<span class="n">ns1</span>.<span class="n">mhm</span>.<span class="n">dn42</span>
+    -<span class="n">o</span> <span class="n">syslog_name</span>=<span class="n">postfix</span>-<span class="n">dn42</span></code></pre>
+
+<p>and add this transport to /etc/postfix/transport for dn42 (and dont forget to postmap)</p>
+
+<pre class="highlight"><code>.dn42           out_dn42:</code></pre>
+
+<p>This should to the trick for sending mails via your DN42-IP</p>
+
+<p>If you use <code>smtpd_recipient_restrictions</code> you can use the following rule to white-list dn42 as sender.
+This can circumvent certain rdns configuration failure or in case you use rbl lists:</p>
+
+<pre class="highlight"><code><span class="n">smtpd_recipient_restrictions</span> = <span class="n">permit_mynetworks</span>,
+                         <span class="n">permit_sasl_authenticated</span>,
+                         <span class="n">check_client_access</span> <span class="n">cidr</span>:/<span class="n">etc</span>/<span class="n">postfix</span>/<span class="n">dn42</span>.<span class="n">cidr</span>,
+                         <span class="n">reject_non_fqdn_sender</span>,
+                         <span class="c"># ...
+</span>                         <span class="n">permit</span></code></pre>
+
+<pre class="highlight"><code><span class="c">#/etc/postfix/dn42.cidr
+</span><span class="m">172</span>.<span class="m">16</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">12</span> <span class="n">OK</span>
+<span class="m">10</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">0</span>/<span class="m">8</span> <span class="n">OK</span>
+<span class="n">fc00</span>::/<span class="m">7</span> <span class="n">OK</span></code></pre>
+
+<pre class="highlight"><code><span class="nv">$ </span>postmap /etc/postfix/dn42.cidr</code></pre>
+
+<h3><a class="anchor" id="receiving-emails-1" href="#receiving-emails-1"></a>Receiving emails</h3>
+
+<p>The Domain mails should be received for has to be added to <code>mydestination =</code> in main.cf</p>
+
+<h2><a class="anchor" id="new-smtp-rfc-smtputf8" href="#new-smtp-rfc-smtputf8"></a>New SMTP RFC SMTPUTF8</h2>
+<h3><a class="anchor" id="eai" href="#eai"></a>EAI</h3>
+<p>Email Address Internationalization (EAI) as defined in <a href="http://tools.ietf.org/html/rfc6531">RFC 6531</a> (SMTPUTF8 extension), <a href="http://tools.ietf.org/html/rfc6532">RFC 6532</a> (Internationalized email headers) and <a href="http://tools.ietf.org/html/rfc6533">RFC 6533</a> (Internationalized delivery status notifications).</p>
+<h3><a class="anchor" id="postfix-1" href="#postfix-1"></a>Postfix</h3>
+<p>Introduced with Postfix version 3.0, this fully supports UTF-8 email addresses and UTF-8 message header values.
+more at the <a href="http://www.postfix.org/SMTPUTF8_README.html">SMTPUTF8_README</a>.</p>
+<h3><a class="anchor" id="exim" href="#exim"></a>Exim</h3>
+<p>Watch Exims EAI Tracker <a href="http://bugs.exim.org/show_bug.cgi?id=1177">Bug 1177</a></p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
