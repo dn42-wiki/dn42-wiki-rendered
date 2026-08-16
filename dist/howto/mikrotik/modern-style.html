@@ -330,7 +330,7 @@ add address=YOUR_ALLOCATED_SUBNET/MASK list=DN42_allocated_v6</code></pre>
 
 <p>For each tunnel, you need to add a BGP connection to the respective peer's BGP server, and bind it to the respective link-local addresses:</p>
 
-<pre class="highlight"><code>/interface wireguard peers
+<pre class="highlight"><code>/routing bgp connection
 add afi=ipv6 as=424242&lt;YOUR_ASN&gt; disabled=no input.filter=dn42-in instance=DN42 local.address=fe80::2762%DN42-KIOUBIT .role=ebgp multihop=yes name=iedon output.filter-chain=\
     dn42-out .network=DN42_allocated_v6 .redistribute=connected,static,bgp remote.address=&lt;THEIR_IPV6_PEER_ADDRESS&gt;%DN42-KIOUBIT/128 .as=424242&lt;THEIR_ASN&gt; templates=DN42-thighhighs</code></pre>
 
