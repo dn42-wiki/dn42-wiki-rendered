@@ -22,7 +22,7 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'howto/GRE-on-FreeBSD.md';
+	  var pageFullPath = 'howto/GRE-plus-IPsec.md';
     var pageFormat   = 'markdown';
 
   </script>
@@ -44,7 +44,7 @@
     mermaid.initialize(mermaid_conf);
   </script>
   
-  <title>GRE-on-FreeBSD</title>
+  <title>GRE-plus-IPsec</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -68,12 +68,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>GRE-on-FreeBSD</div>
+            <div>GRE-plus-IPsec</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="https://hist.dn42.wiki/gollum/history/howto/GRE-on-FreeBSD.md"
+              href="http://127.42.42.80:4280/gollum/history/howto/GRE-plus-IPsec.md"
               role="menuitem"
             >
               <span>History</span>
@@ -118,7 +118,7 @@
     class="TableObject-item TableObject-item--primary px-2"
     
   >
-    <form class="search-form" action="https://hist.dn42.wiki/gollum/search" method="get" id="search-form">
+    <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
     	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
@@ -146,7 +146,7 @@
     <div class="BtnGroup d-flex">
         <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          onclick="window.location.href='https://hist.dn42.wiki/gollum/history/howto/GRE-on-FreeBSD.md/';"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/GRE-plus-IPsec.md/';"
           id="minibutton-history"
         >
           History
@@ -161,7 +161,7 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    GRE-on-FreeBSD
+    GRE-plus-IPsec
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
 <li class="breadcrumb-item"><a href="../gollum/overview/howto/index.html">howto</a></li>
@@ -178,31 +178,51 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="gre-on-freebsd" href="#gre-on-freebsd"></a>GRE on FreeBSD</h1>
+	        <h1><a class="anchor" id="gre-ipsec" href="#gre-ipsec"></a>GRE+IPsec</h1>
 
-<p>This page describes how to configure GRE tunnels on FreeBSD.</p>
-
-<h2><a class="anchor" id="requirements" href="#requirements"></a>Requirements</h2>
-
+<h2><a class="anchor" id="why-gre" href="#why-gre"></a>Why GRE?</h2>
 <ul>
-  <li>Root access to a FreeBSD system.</li>
-  <li>Loaded if_gre.ko or device gre</li>
-  <li>A static IPv4 address on both ends if you would like to preserve your sanity.</li>
+  <li>
+<a href="https://en.wikipedia.org/wiki/Generic_routing_encapsulation">GRE</a> provides universal encapsulation on top of IP.</li>
+  <li>It has a smaller header than UDP.</li>
+  <li>GRE tunnels are processed in-kernel on *nix systems.</li>
+  <li>It's supported by hardware routers.</li>
 </ul>
 
-<h2><a class="anchor" id="create-a-temporary-gre-tunnel" href="#create-a-temporary-gre-tunnel"></a>Create a temporary gre tunnel</h2>
+<h2><a class="anchor" id="why-ipsec" href="#why-ipsec"></a>Why IPsec?</h2>
+<ul>
+  <li>GRE provides no encryption or authentication of its own.</li>
+  <li>IPsec is implemented in-kernel on FreeBSD and Linux with multithreaded encryption resulting in a lower latency than userspace VPN daemons using tun/tap interfaces.</li>
+</ul>
 
-<pre class="highlight"><code>ifconfig gre<span class="nv">$INDEX</span> create
-ifconfig gre<span class="nv">$INDEX</span> tunnel <span class="nv">$TUNNEL_SRC</span> <span class="nv">$TUNNEL_DST</span>
-ifconfig gre<span class="nv">$INDEX</span> inet <span class="nv">$LOCAL</span> <span class="nv">$REMOTE</span> netmask 0xffffffff
-ifconfig gre<span class="nv">$INDEX</span> descr <span class="nv">$DESCR</span></code></pre>
+<h2><a class="anchor" id="problems-with-gre" href="#problems-with-gre"></a>Problems with GRE</h2>
+<ul>
+  <li>GRE is defined directly on top of IP.</li>
+  <li>Broken NAPT implementations will stop GRE tunnels.</li>
+</ul>
 
-<h2><a class="anchor" id="create-a-persistent-gre-tunnel" href="#create-a-persistent-gre-tunnel"></a>Create a persistent gre tunnel</h2>
+<h2><a class="anchor" id="problems-with-ipsec" href="#problems-with-ipsec"></a>Problems with IPsec</h2>
+<ul>
+  <li>ESP is defined directly on top of IP.</li>
+  <li>NAT support was added as an aftertought to IPsec.</li>
+  <li>IKEv1 is too complex.</li>
+  <li>Racoon has useless error messages.</li>
+</ul>
 
-<p>Add this to your <code>rc.conf</code>.</p>
+<h2><a class="anchor" id="requirements-for-sane-operation" href="#requirements-for-sane-operation"></a>Requirements for sane operation</h2>
+<ul>
+  <li>Identify your peers by X.509 certificates</li>
+  <li>At least one peer should operate his own (Sub-)CA.</li>
+</ul>
 
-<pre class="highlight"><code><span class="n">cloned_interfaces</span>=<span class="s2">"$cloned_interfaces gre0"</span>
-<span class="n">ifconfig_gre0</span>=<span class="s2">"10.0.0.1 10.0.0.2 netmask 0xffffffff tunnel 1.2.3.4 5.6.7.8 descr foo"</span></code></pre>
+<h2><a class="anchor" id="how-to-configure-a-gre-tunnel-on-freebsd" href="#how-to-configure-a-gre-tunnel-on-freebsd"></a>How to configure a GRE tunnel on FreeBSD</h2>
+<p>See <a href="GRE-on-FreeBSD.html">GRE on FreeBSD</a>.</p>
+
+<h2><a class="anchor" id="how-to-configure-ipsec-on-freebsd" href="#how-to-configure-ipsec-on-freebsd"></a>How to configure IPsec on FreeBSD</h2>
+<p>See <a href="IPsec-on-FreeBSD-2.html">IPsec on FreeBSD</a>.</p>
+
+<h2><a class="anchor" id="how-to-configure-gre-ipsec-on-debian" href="#how-to-configure-gre-ipsec-on-debian"></a>How to configure GRE + IPsec on Debian</h2>
+<p>See <a href="IPsecWithPublicKeys/GRE-plus-IPsec-Debian.html">GRE + IPsec on Debian</a>.</p>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -305,13 +325,13 @@ ifconfig gre<span class="nv">$INDEX</span> descr <span class="nv">$DESCR</span><
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/GRE-on-FreeBSD.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/GRE-plus-IPsec.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="https://hist.dn42.wiki/gollum/rename/howto/GRE-on-FreeBSD.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/GRE-plus-IPsec.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
