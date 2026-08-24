@@ -417,8 +417,8 @@ routing policies like cold_potato.</li>
 <span class="n">function</span> <span class="n">dn42_import_filter_internal</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>; <span class="n">int</span> <span class="n">link_topology</span>; <span class="n">int</span> <span class="n">link_packetloss</span>) {
   <span class="n">if</span> <span class="n">is_valid_network</span>() <span class="n">then</span> {
     <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>, <span class="n">link_topology</span>, <span class="n">link_packetloss</span>);
-    <span class="n">accept</span>;   <span class="c"># no +500 bonus — local_pref already set by the originating peer
-</span>  }
+    <span class="n">accept</span>; 
+  }
   <span class="n">if</span> <span class="n">is_valid_network_v6</span>() <span class="n">then</span> {
     <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>, <span class="n">link_topology</span>, <span class="n">link_packetloss</span>);
     <span class="n">accept</span>;
@@ -467,9 +467,10 @@ routing policies like cold_potato.</li>
 }
 <span class="n">function</span> <span class="n">dn42_export_filter</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>; <span class="n">int</span> <span class="n">link_topology</span>; <span class="n">int</span> <span class="n">link_packetloss</span>) {
   <span class="n">if</span> <span class="n">is_valid_network</span>() || <span class="n">is_valid_network_v6</span>() <span class="n">then</span> {
-    <span class="n">if</span> <span class="n">source</span> = <span class="n">RTS_STATIC</span> <span class="n">then</span> <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">DN_REGION_GEO</span>));
-    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>, <span class="n">link_topology</span>, <span class="n">link_packetloss</span>);
-    <span class="n">update_geo_flags</span>();
+    <span class="c"># if source = RTS_STATIC then bgp_community.add((64511, DN_REGION_GEO)); # uncomment if you want to advertise your region
+</span>    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>, <span class="n">link_topology</span>, <span class="n">link_packetloss</span>);
+    <span class="c"># Remove the following if you don't want to advertise geo communities
+</span>    <span class="n">update_geo_flags</span>();
     <span class="n">bgp_med</span> = <span class="m">0</span>;
     <span class="n">bgp_med</span> = <span class="n">bgp_med</span> + ( ( <span class="m">4</span> - ( <span class="n">link_crypto</span> - <span class="m">30</span> ) ) * <span class="m">600</span> );
     <span class="n">bgp_med</span> = <span class="n">bgp_med</span> + ( ( <span class="m">9</span> - ( <span class="n">link_bandwidth</span> - <span class="m">20</span> ) ) * <span class="m">100</span>);
