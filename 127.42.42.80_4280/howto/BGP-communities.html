@@ -369,7 +369,7 @@ routing policies like cold_potato.</li>
 }
 
 <span class="n">function</span> <span class="n">update_topology</span>(<span class="n">int</span> <span class="n">link_topology</span>) -&gt; <span class="n">int</span> {
-  <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">update_topology</span>));
+  <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">link_topology</span>));
        <span class="n">if</span> (<span class="m">64511</span>, <span class="m">89</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">81</span>..<span class="m">88</span>)]); <span class="n">return</span> <span class="m">89</span>; }
   <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">85</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">81</span>..<span class="m">84</span>)]); <span class="n">return</span> <span class="m">85</span>; }
   <span class="n">else</span> <span class="n">if</span> (<span class="m">64511</span>, <span class="m">84</span>) ~ <span class="n">bgp_community</span> <span class="n">then</span> { <span class="n">bgp_community</span>.<span class="n">delete</span>([(<span class="m">64511</span>, <span class="m">81</span>..<span class="m">83</span>)]); <span class="n">return</span> <span class="m">84</span>; }
@@ -413,9 +413,23 @@ routing policies like cold_potato.</li>
   <span class="n">return</span> <span class="n">true</span>;
 }
 
+
+<span class="n">function</span> <span class="n">dn42_import_filter_internal</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>; <span class="n">int</span> <span class="n">link_topology</span>; <span class="n">int</span> <span class="n">link_packetloss</span>) {
+  <span class="n">if</span> <span class="n">is_valid_network</span>() <span class="n">then</span> {
+    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>, <span class="n">link_topology</span>, <span class="n">link_packetloss</span>);
+    <span class="n">accept</span>;   <span class="c"># no +500 bonus — local_pref already set by the originating peer
+</span>  }
+  <span class="n">if</span> <span class="n">is_valid_network_v6</span>() <span class="n">then</span> {
+    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>, <span class="n">link_topology</span>, <span class="n">link_packetloss</span>);
+    <span class="n">accept</span>;
+  }
+  <span class="n">reject</span>;
+}
+
+
 <span class="c">#Uses ROA, which means it should be imported before these functions
 </span>
-<span class="n">function</span> <span class="n">dn42_import_filter</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>) {
+<span class="n">function</span> <span class="n">dn42_import_filter</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>; <span class="n">int</span> <span class="n">link_topology</span>; <span class="n">int</span> <span class="n">link_packetloss</span>) {
   <span class="c"># IPv4 routes with ROA
 </span>  <span class="n">if</span> <span class="n">is_valid_network</span>() &amp;&amp; !<span class="n">is_self_net</span>() <span class="n">then</span> {
     <span class="n">if</span> (<span class="n">roa_check</span>(<span class="n">dn42_roa</span>, <span class="n">net</span>, <span class="n">bgp_path</span>.<span class="n">last</span>) != <span class="n">ROA_VALID</span>) <span class="n">then</span> {
@@ -424,7 +438,7 @@ routing policies like cold_potato.</li>
       <span class="n">reject</span>;
     }
 
-    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>);
+    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>, <span class="n">link_topology</span>, <span class="n">link_packetloss</span>);
 
     <span class="n">if</span> (<span class="n">bgp_path</span>.<span class="n">len</span> = <span class="m">1</span>) <span class="n">then</span>
       <span class="n">bgp_local_pref</span> = <span class="n">bgp_local_pref</span> + <span class="m">500</span>;
@@ -440,7 +454,7 @@ routing policies like cold_potato.</li>
       <span class="n">reject</span>;
     }
 
-    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>);
+    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>, <span class="n">link_topology</span>, <span class="n">link_packetloss</span>);
 
     <span class="n">if</span> (<span class="n">bgp_path</span>.<span class="n">len</span> = <span class="m">1</span>) <span class="n">then</span>
       <span class="n">bgp_local_pref</span> = <span class="n">bgp_local_pref</span> + <span class="m">500</span>;
@@ -451,9 +465,10 @@ routing policies like cold_potato.</li>
   <span class="c"># Re
 </span>  <span class="n">reject</span>;
 }
-<span class="n">function</span> <span class="n">dn42_export_filter</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>) {
+<span class="n">function</span> <span class="n">dn42_export_filter</span>(<span class="n">int</span> <span class="n">link_latency</span>; <span class="n">int</span> <span class="n">link_bandwidth</span>; <span class="n">int</span> <span class="n">link_crypto</span>; <span class="n">int</span> <span class="n">link_topology</span>; <span class="n">int</span> <span class="n">link_packetloss</span>) {
   <span class="n">if</span> <span class="n">is_valid_network</span>() || <span class="n">is_valid_network_v6</span>() <span class="n">then</span> {
-    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>);
+    <span class="n">if</span> <span class="n">source</span> = <span class="n">RTS_STATIC</span> <span class="n">then</span> <span class="n">bgp_community</span>.<span class="n">add</span>((<span class="m">64511</span>, <span class="n">DN_REGION_GEO</span>));
+    <span class="n">update_flags</span>(<span class="n">link_latency</span>, <span class="n">link_bandwidth</span>, <span class="n">link_crypto</span>, <span class="n">link_topology</span>, <span class="n">link_packetloss</span>);
     <span class="n">update_geo_flags</span>();
     <span class="n">bgp_med</span> = <span class="m">0</span>;
     <span class="n">bgp_med</span> = <span class="n">bgp_med</span> + ( ( <span class="m">4</span> - ( <span class="n">link_crypto</span> - <span class="m">30</span> ) ) * <span class="m">600</span> );
