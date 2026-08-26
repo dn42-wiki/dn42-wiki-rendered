@@ -171,14 +171,235 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="nixos" href="#nixos"></a>NixOS</h1>
+
+<p>NixOS is a declarative Linux distribution based on the Nix package Manager. In this post I'll explain how I set up dn42 in this environment. I currently only peer with wireguard and use bird2. NixOS uses configuration files to manage the system state and has a builtin container module.</p>
+
+<h2><a class="anchor" id="container-disclaimer" href="#container-disclaimer"></a>container disclaimer</h2>
+
+<p>I had a spare IPv4 Address so I decided to use a container without a NAT and keep my host "clean" from dn42 Wireguard Interfaces and IP routes. However it's painful to debug since nixos-rebuild restarts the container on every minor change. So every time you change a firewall rule or debug a DNS setting nixos-rebuild restarts the container before the change takes effect and since BGP is BGP, it can be really frustrating.</p>
+
+<p>You may also want to have a look at this <a href="https://github.com/NixOS/nixpkgs/issues/43652">Issue</a> and <a href="https://github.com/NixOS/nixpkgs/pull/80169">Pull Request</a></p>
+
+<p>If you still want to give it a try, here you'll find some inspiration from my setup. You can also use some of these nix expression in a non-container environment.</p>
+
+<h2><a class="anchor" id="building-the-container" href="#building-the-container"></a>Building the container</h2>
+
+<p>Defining the container environment is the base part of the setup. Beginning with network setup, Private Network disables the passthrough of Host Interfaces into the container and adds a bridged Interface to the host default Interface (e.g. eth0). The localAddress is the container side address and the hostAddress is the one the Host gets. Inside the <code>container.&lt;name&gt;.config</code>, you can basicly import the same nix expression as from the Host and don't need to add some special container parts.</p>
+
+<pre class="highlight"><code><span class="nv">containers</span><span class="o">.</span><span class="nv">dn42</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nv">hostAddress</span> <span class="o">=</span> <span class="s2">"192.168.254.1"</span><span class="p">;</span> <span class="c"># Transfer Network</span>
+    <span class="nv">hostAddress6</span> <span class="o">=</span> <span class="s2">"2001:db08::42"</span><span class="p">;</span> <span class="c"># Transfer Network</span>
+    <span class="nv">localAddress</span> <span class="o">=</span> <span class="s2">"116.203.1.5"</span><span class="p">;</span>
+    <span class="nv">localAddress6</span> <span class="o">=</span> <span class="s2">"2a01:4f8:c0c:4f7a::2/128"</span><span class="p">;</span>
+    <span class="nv">privateNetwork</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="nv">autoStart</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nv">config</span> <span class="o">=</span> <span class="p">{</span> <span class="nv">config</span><span class="p">,</span> <span class="nv">pkgs</span><span class="p">,</span> <span class="o">...</span> <span class="p">}:</span> <span class="p">{</span>
+        <span class="nv">imports</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sx">./peers</span> <span class="c"># Folder with a config for every Peer</span>
+            <span class="sx">./dns.nix</span> <span class="c"># Bind with the litschi.dn42 zone delegated</span>
+            <span class="sx">./bird.nix</span> <span class="c"># Bird config for BGP Routing</span>
+            <span class="sx">./networking.nix</span> <span class="c"># Static Network configuration (with firewall)</span>
+            <span class="sx">./nginx.nix</span> <span class="c"># nginx config for litschi.dn42</span>
+        <span class="p">];</span>
+        <span class="nv">environment</span><span class="o">.</span><span class="nv">systemPackages</span> <span class="o">=</span> <span class="kn">with</span> <span class="nv">pkgs</span><span class="p">;</span> <span class="p">[</span> 
+            <span class="c"># Network debug tools</span>
+            <span class="nv">dnsutils</span>
+            <span class="nv">mtr</span>
+            <span class="nv">tcpdump</span>
+            <span class="nv">wireguard-tools</span>
+        <span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre>
+
+<p>In theory the container should now be starting and you can get shell access  with <code>sudo nixos-container root-login &lt;name&gt;</code>.</p>
+
+<p>I mounted some host paths into the container for dns zone files and static homepage since the container is the only one providing .dn42 webservers.</p>
+
+<pre class="highlight"><code><span class="nv">containers</span><span class="o">.</span><span class="nv">dn42</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nv">bindMounts</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"/var/www/dn42"</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nv">hostPath</span> <span class="o">=</span> <span class="s2">"/var/www/dn42"</span><span class="p">;</span>
+            <span class="nv">isReadOnly</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="nv">mountPoint</span> <span class="o">=</span> <span class="s2">"/var/www/dn42"</span><span class="p">;</span>
+        <span class="p">};</span>
+        <span class="s2">"/var/dns/dn42"</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nv">hostPath</span> <span class="o">=</span> <span class="s2">"/var/dns/dn42"</span><span class="p">;</span>
+            <span class="nv">isReadOnly</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="nv">mountPoint</span> <span class="o">=</span> <span class="s2">"/var/dns"</span><span class="p">;</span>
+        <span class="p">};</span>
+    <span class="p">};</span>
+<span class="p">}</span></code></pre>
+
+<h3><a class="anchor" id="network-setup" href="#network-setup"></a>Network Setup</h3>
+
+<p>As mentioned above, I got a spare public IPv4 Address, but by adding it as <code>localAddress</code>, the container Part is configured static enough. But to forward traffic between Interfaces the following <code>/proc/sys/net/</code> parameters should be configured:</p>
+
+<pre class="highlight"><code><span class="nv">boot</span><span class="o">.</span><span class="nv">kernel</span><span class="o">.</span><span class="nv">sysctl</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"net.ipv4.ip_forward"</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="s2">"net.ipv6.conf.all.forwarding"</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span></code></pre>
+This allows our firewall to configure forwarding between peers and other tunnels. What is allowed to be forwarded can be configured in the firewall. Ferm has only few NixOS Options, but is pretty basic. It's configured with the <code>services.ferm.config</code> option, that contains just a string. Within this string there's standard plain ferm config. Example config is attached below.
+If the dn42 address is not bound at any other Interface, you need to add it to the lo Interface to use it as source IP when routing via peers with dedicated transfer net. 
+<pre class="highlight"><code><span class="nv">networking</span><span class="o">.</span><span class="nv">interfaces</span><span class="o">.</span><span class="nv">lo</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nv">ipv4</span><span class="o">.</span><span class="nv">addresses</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nv">address</span> <span class="o">=</span> <span class="s2">"172.23.73.65"</span><span class="p">;</span>
+            <span class="nv">prefixLength</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">];</span>
+    <span class="nv">ipv6</span><span class="o">.</span><span class="nv">addresses</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nv">address</span> <span class="o">=</span> <span class="s2">"fd67:24bd:a1ea::1"</span><span class="p">;</span>
+            <span class="nv">prefixLength</span> <span class="o">=</span> <span class="mi">128</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">];</span>
+<span class="p">};</span></code></pre>
+
+<h4><a class="anchor" id="ferm-example" href="#ferm-example"></a>Ferm example</h4>
+<pre class="highlight"><code><span class="nv">services</span><span class="o">.</span><span class="nv">ferm</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nv">enable</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="nv">config</span> <span class="o">=</span> <span class="s2">''</span><span class="err">
+</span><span class="s2">        domain ip table filter chain INPUT proto icmp ACCEPT;</span><span class="err">
+</span><span class="s2">        domain ip6 table filter chain INPUT proto (ipv6-icmp icmp) ACCEPT;</span><span class="err">
+</span><span class="s2">        domain (ip ip6) table filter {</span><span class="err">
+</span><span class="s2">            chain INPUT {</span><span class="err">
+</span><span class="s2">                policy DROP;</span><span class="err">
+</span><span class="s2">                interface lo ACCEPT;</span><span class="err">
+</span><span class="s2">                interface intern-+ ACCEPT;</span><span class="err">
+</span><span class="s2">                # website</span><span class="err">
+</span><span class="s2">                proto tcp dport (http https) ACCEPT;</span><span class="err">
+</span><span class="s2">                # wireguard</span><span class="err">
+</span><span class="s2">                proto udp dport ( &lt;Wireguard Ports&gt; ) ACCEPT;</span><span class="err">
+</span><span class="s2">                # bgp</span><span class="err">
+</span><span class="s2">                proto tcp dport (179) ACCEPT;</span><span class="err">
+</span><span class="s2">                # dns</span><span class="err">
+</span><span class="s2">                proto (udp tcp) dport domain ACCEPT;</span><span class="err">
+</span><span class="s2">                mod state state (INVALID) DROP;</span><span class="err">
+</span><span class="s2">                mod state state (ESTABLISHED RELATED) ACCEPT;</span><span class="err">
+</span><span class="s2">            }</span><span class="err">
+</span><span class="s2">            chain OUTPUT {</span><span class="err">
+</span><span class="s2">                policy ACCEPT;</span><span class="err">
+</span><span class="s2">            }</span><span class="err">
+</span><span class="s2">            chain FORWARD {</span><span class="err">
+</span><span class="s2">                policy DROP;</span><span class="err">
+</span><span class="s2">                # allow intern routing and dn42 forwarding</span><span class="err">
+</span><span class="s2">                interface dn42-+ outerface dn42-+ ACCEPT;</span><span class="err">
+</span><span class="s2">                interface intern-+ outerface intern-+ ACCEPT;</span><span class="err">
+</span><span class="s2">                interface intern-+ outerface dn42-+ ACCEPT;</span><span class="err">
+</span><span class="s2">                # but dn42 -&gt; intern only with execptions</span><span class="err">
+</span><span class="s2">                interface dn42-+ outerface intern-+ {</span><span class="err">
+</span><span class="s2">                    proto (ipv6-icmp icmp) ACCEPT;</span><span class="err">
+</span><span class="s2">                    proto tcp dport (ssh) ACCEPT; # Allow SSH Access from dn42 to devices behind intern-+ Interfaces</span><span class="err">
+</span><span class="s2">                    mod state state (ESTABLISHED) ACCEPT;</span><span class="err">
+</span><span class="s2">                }</span><span class="err">
+</span><span class="s2">            }</span><span class="err">
+</span><span class="s2">        }</span><span class="err">
+</span><span class="s2">    ''</span><span class="p">;</span>
+<span class="p">};</span></code></pre>
+
+<h3><a class="anchor" id="peering-with-wireguard" href="#peering-with-wireguard"></a>Peering with wireguard</h3>
+
+<p>As explained above, every peer gets a dedicated wireguard Interface and so a dedicated file. In the container config folder there's a peer subfolder and within a folder for dn42- (extern) Peers and intern- configs e.g. my Home Router or mobile devices.</p>
+
+<p>A sample wireguard config may look like this:
+</p><pre class="highlight"><code><span class="p">{</span><span class="nv">config</span><span class="p">,</span> <span class="nv">pkgs</span><span class="p">,</span> <span class="o">...</span><span class="p">}:</span>
+<span class="p">{</span>
+    <span class="nv">networking</span><span class="o">.</span><span class="nv">wireguard</span><span class="o">.</span><span class="nv">interfaces</span><span class="o">.</span><span class="nv">dn42-peer</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nv">privateKey</span> <span class="o">=</span> <span class="s2">""</span><span class="p">;</span>
+        <span class="nv">allowedIPsAsRoutes</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="nv">listenPort</span> <span class="o">=</span> <span class="mi">42420</span><span class="p">;</span>
+
+        <span class="nv">peers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="nv">publicKey</span> <span class="o">=</span> <span class="s2">""</span><span class="p">;</span>
+                <span class="nv">allowedIPs</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">"0.0.0.0/0"</span> <span class="s2">"::/0"</span> <span class="p">];</span>
+                <span class="nv">endpoint</span> <span class="o">=</span> <span class="s2">"42.42.42.42:42421"</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">];</span>
+        <span class="nv">postSetup</span> <span class="o">=</span> <span class="s2">''</span><span class="err">
+</span><span class="s2">            </span><span class="si">${</span><span class="nv">pkgs</span><span class="o">.</span><span class="nv">iproute</span><span class="si">}</span><span class="s2">/bin/ip addr add 169.254.0.1/32 peer 169.254.0.0/32 dev dn42-peer</span><span class="err">
+</span><span class="s2">            </span><span class="si">${</span><span class="nv">pkgs</span><span class="o">.</span><span class="nv">iproute</span><span class="si">}</span><span class="s2">/bin/ip -6 addr add fe80::1220/64 dev dn42-peer</span><span class="err">
+</span><span class="s2">        ''</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span></code></pre>
+
+<p>As seen, the IP configuration is applied via ip-commands in the postSetup. This kinda works but isn't a fancy solution. There's room for improvements e.g. configuring static addresses and routes with networkd.</p>
+
+<h3><a class="anchor" id="bgp-routing-with-bird2" href="#bgp-routing-with-bird2"></a>BGP Routing with bird2</h3>
+
+<p>Like ferm, Bird2 is configured by <code>services.bird2.config</code> containing a string. In there the example bird2 config from <a href="Bird2.html">wiki.dn42</a> can be imported. Roa tables can be generated or downloaded from host providing them.</p>
+
+<h4><a class="anchor" id="roa-updating-script" href="#roa-updating-script"></a>ROA Updating script</h4>
+
+<p>Sample example to update ROA's : 
+</p><pre class="highlight"><code><span class="p">{</span> <span class="nv">pkgs</span><span class="p">,</span> <span class="nv">lib</span><span class="p">,</span> <span class="o">...</span> <span class="p">}:</span>
+<span class="kd">let</span> <span class="nv">script</span> <span class="o">=</span> <span class="nv">pkgs</span><span class="o">.</span><span class="nv">writeShellScriptBin</span> <span class="s2">"update-roa"</span> <span class="s2">''</span><span class="err">
+</span><span class="s2">    mkdir -p /etc/bird/</span><span class="err">
+</span><span class="s2">    </span><span class="si">${</span><span class="nv">pkgs</span><span class="o">.</span><span class="nv">curl</span><span class="si">}</span><span class="s2">/bin/curl -sfSLR {-o,-z}/etc/bird/roa_dn42_v6.conf https://dn42.burble.com/roa/dn42_roa_bird2_6.conf</span><span class="err">
+</span><span class="s2">    </span><span class="si">${</span><span class="nv">pkgs</span><span class="o">.</span><span class="nv">curl</span><span class="si">}</span><span class="s2">/bin/curl -sfSLR {-o,-z}/etc/bird/roa_dn42.conf https://dn42.burble.com/roa/dn42_roa_bird2_4.conf</span><span class="err">
+</span><span class="s2">    </span><span class="si">${</span><span class="nv">pkgs</span><span class="o">.</span><span class="nv">bird2</span><span class="si">}</span><span class="s2">/bin/birdc c </span><span class="err">
+</span><span class="s2">    </span><span class="si">${</span><span class="nv">pkgs</span><span class="o">.</span><span class="nv">bird2</span><span class="si">}</span><span class="s2">/bin/birdc reload in all</span><span class="err">
+</span><span class="s2">    ''</span><span class="p">;</span>
+<span class="kn">in</span>
+<span class="p">{</span>
+    <span class="nv">systemd</span><span class="o">.</span><span class="nv">timers</span><span class="o">.</span><span class="nv">dn42-roa</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nv">description</span> <span class="o">=</span> <span class="s2">"Trigger a ROA table update"</span><span class="p">;</span>
+
+        <span class="nv">timerConfig</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nv">OnBootSec</span> <span class="o">=</span> <span class="s2">"5m"</span><span class="p">;</span>
+            <span class="nv">OnUnitInactiveSec</span> <span class="o">=</span> <span class="s2">"1h"</span><span class="p">;</span>
+            <span class="nv">Unit</span> <span class="o">=</span> <span class="s2">"dn42-roa.service"</span><span class="p">;</span>
+        <span class="p">};</span>
+
+        <span class="nv">wantedBy</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">"timers.target"</span> <span class="p">];</span>
+        <span class="nv">before</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">"bird.service"</span> <span class="p">];</span>
+    <span class="p">};</span>
+
+    <span class="nv">systemd</span><span class="o">.</span><span class="nv">services</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nv">dn42-roa</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nv">after</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">"network.target"</span> <span class="p">];</span>
+            <span class="nv">description</span> <span class="o">=</span> <span class="s2">"DN42 ROA Updated"</span><span class="p">;</span>
+            <span class="nv">serviceConfig</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="nv">Type</span> <span class="o">=</span> <span class="s2">"oneshot"</span><span class="p">;</span>
+                <span class="nv">ExecStart</span> <span class="o">=</span> <span class="s2">"</span><span class="si">${</span><span class="nv">script</span><span class="si">}</span><span class="s2">/bin/update-roa"</span><span class="p">;</span>
+            <span class="p">};</span>
+        <span class="p">};</span>
+    <span class="p">};</span>
+<span class="p">}</span></code></pre>
+
+<h3><a class="anchor" id="bird-looking-glass" href="#bird-looking-glass"></a>Bird Looking Glass</h3>
+
+<p>There is now (thanks to <a href="https://github.com/NixOS/nixpkgs/pull/153481">Tchekda</a>) a direct way to set up a looking glass for bird on Nixos. <a href="https://github.com/NixOS/nixpkgs/blob/3aab5ebd436023ca8343a84804d51cd227dd01dd/nixos/modules/services/networking/bird-lg.nix">Documentation</a> and sample:</p>
+
+<pre class="highlight"><code><span class="nv">bird-lg</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nv">proxy</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nv">enable</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="nv">allowedIPs</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">"172.20.XX.XX"</span> <span class="s2">"172.20.XX.YY"</span> <span class="p">];</span>
+    <span class="p">};</span>
+    <span class="nv">frontend</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nv">enable</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="nv">netSpecificMode</span> <span class="o">=</span> <span class="s2">"dn42"</span><span class="p">;</span>
+        <span class="nv">servers</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">"node1"</span> <span class="s2">"node2"</span> <span class="p">];</span>
+        <span class="nv">domain</span> <span class="o">=</span> <span class="s2">"domain.dn42"</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">};</span></code></pre>
+
+<h3><a class="anchor" id="services" href="#services"></a>Services</h3>
+
+<p>I also run services like a nameserver for .litschi.dn42 zones and a nginx webserver within this container. Since Host paths for <code>/var/www/dn42</code> and <code>/var/dns/dn42</code> are both bound into the container, zone config and e.g. website can be edited directly from Host without rebuilding the whole container.</p>
+
+<h3><a class="anchor" id="sample-configuration" href="#sample-configuration"></a>Sample configuration</h3>
+
+<p>You can find a sample Wireguard + Bird configuration made by Tchekda ready for dn42 in <a href="https://github.com/Tchekda/nixos-configuration/tree/master/llitt/dn42">this</a> repository.</p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
