@@ -171,7 +171,8 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
+
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
@@ -209,6 +210,8 @@
 
 <p>Remember to add authentication to your <code>mntner</code> object, and you <strong>must</strong> <a href="Registry-Authentication.html">sign your commit</a></p>
 
+<p><em>Tip: Remember to keep a backup of your authorisation keys</em></p>
+
 <p>The registry includes a number of scripts to help check your request:</p>
 
 <ul>
@@ -228,7 +231,7 @@
 
 <p>Do browse through the registry and look at the <a href="https://git.dn42.dev/dn42/registry/pulls">pull request queue</a> to see examples, understand how the process works and see the types of questions asked by the registry maintainers.</p>
 
-<p><em>You should not use the gitea web interface to edit files, doing so creates a large number of commits and prevents running of the registry scripts</em></p>
+<p><em>You cannot use the gitea web interface to edit files, doing so creates a large number of commits and prevents running of the registry scripts</em></p>
 
 <hr />
 
@@ -264,12 +267,15 @@
 </li>
 </ul>
 
+<p>Losing your auth keys is a significant source of registry noise and wasted effort. We recommend configuring at least two authentication methods (a primary key and a backup key) in your mntner object. Always keep secure, separate backups of both private keys.</p>
+
 <p>Example: data/mntner/FOO-MNT
 </p><pre class="highlight"><code><span class="n">mntner</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
 <span class="n">admin</span>-<span class="n">c</span>:            <span class="n">FOO</span>-<span class="n">DN42</span>
 <span class="n">tech</span>-<span class="n">c</span>:             <span class="n">FOO</span>-<span class="n">DN42</span>
 <span class="n">mnt</span>-<span class="n">by</span>:             <span class="n">FOO</span>-<span class="n">MNT</span>
 <span class="n">auth</span>:               <span class="n">pgp</span>-<span class="n">fingerprint</span> <span class="m">0123456789</span><span class="n">ABCDEF0123456789ABCDEF01234567</span>
+<span class="n">auth</span>:               <span class="n">ssh</span>-<span class="n">ed25519</span> <span class="n">AAAAC3NzaC1lZDI1NTE5AAAAIGd7P9yG3xK6uBv3m8V1p8Z0K2yJ4uL7wP9qR3sT5uV1</span> <span class="n">user</span>@<span class="n">example</span>.<span class="n">com</span>
 <span class="n">source</span>:             <span class="n">DN42</span></code></pre>
 
 <h3><a class="anchor" id="create-person-objects" href="#create-person-objects"></a>Create person objects</h3>
@@ -287,7 +293,9 @@
 
 <p><strong>Data Privacy</strong></p>
 
-<p>Contact attributes are optional but DN42 is a dynamic network and being able to contact users is really important if there are changes or problems. However, please also be aware that the DN42 registry is a public resource and you must assume that any details provided will be made public and cannot be fully removed. If this is a concern for you, please do not provide bogus contact details; simply provide anonymous details that are specific for use within DN42 or leave them out entirely.</p>
+<p>Contact attributes are optional but dn42 is a dynamic network and being able to contact users is really important if there are changes or problems. Reviewers won't accept new registrations without any contact details and an e-mail address is also the only way to recover your mntner if you lose access to your auth keys.</p>
+
+<p>However, please also be aware that the dn42 registry is a public resource and you must assume that any details provided will become part of the git history, will be made public and cannot be subsequently removed. If this is a concern for you, please do not provide bogus contact details, simply provide anonymous details that are specific for use within dn42.</p>
 
 <p>Example: data/person/FOO-DN42
 </p><pre class="highlight"><code><span class="n">person</span>:             <span class="n">John</span> <span class="n">Doe</span>

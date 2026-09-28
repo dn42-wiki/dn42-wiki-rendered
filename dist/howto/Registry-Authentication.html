@@ -186,6 +186,17 @@
 
 <p>The signature and verification process varies depending on the type of public key within the <code>auth</code> attribute.</p>
 
+<p>You can have multiple <code>auth</code> methods, a valid signature from any key is sufficient for authorisation.</p>
+
+<h2><a class="anchor" id="keep-your-keys-safe" href="#keep-your-keys-safe"></a>Keep your keys safe</h2>
+
+<p>MNTNERs losing their keys is a significant source of registry noise, increasing the number of commits and wasting administrator effort.</p>
+
+<ul>
+  <li><strong>Keep a safe backup of your keys</strong></li>
+  <li>Adding a second key can allow you to recover your MNTNER if you lose the first key.</li>
+</ul>
+
 <h2><a class="anchor" id="preferred-signing-methods" href="#preferred-signing-methods"></a>Preferred signing methods</h2>
 
 <p><em>Tip: Add your GPG or SSH key to your account in gitea, doing so enables gitea to automatically check your signature when you sign the commit</em></p>
@@ -205,7 +216,64 @@
   <li>Manually provide a signature in the PR comments using one of the methods detailed below - only do this if you can't sign using git or with the included script</li>
 </ol>
 
-<p>The sections below provide detailed instructions for each of the auth methods.</p>
+<p>There are detailed instructions below for how to sign using each of the available auth methods.</p>
+
+<hr />
+
+<h2><a class="anchor" id="key-rotation" href="#key-rotation"></a>Key Rotation</h2>
+
+<p>The registry automation supports key rotation. Always keep secure backups of your private keys to prevent the need for account recovery.</p>
+
+<h3><a class="anchor" id="scenario-a-you-still-have-access-to-your-existing-keys" href="#scenario-a-you-still-have-access-to-your-existing-keys"></a>Scenario A: You still have access to your existing keys</h3>
+
+<p>Use this procedure if you still hold at least one private key currently listed in your <code>mntner</code> object.</p>
+
+<ol>
+  <li>Update your <code>mntner</code> object with your new public key(s).</li>
+  <li>Sign the commit using one of your <strong>existing</strong> private keys.</li>
+  <li>Push your branch and open a Pull Request (PR).</li>
+  <li>The CI <em>pipeline</em> will detect the key rotation and ask for a signature from one of the <strong>new</strong> keys.</li>
+  <li>Sign the commit hash with your <strong>new</strong> private key (see signature commands below).</li>
+  <li>Post a comment on the PR containing the signature:</li>
+</ol>
+
+<pre class="highlight"><code>### DN42 Signature
+
+&lt;paste signature here&gt;</code></pre>
+
+<ol>
+  <li>In the Gitea UI, request a re-review from the <em>pipeline</em> user. This triggers the CI check again.</li>
+  <li>The <em>pipeline</em> validates the signature and automatically approves the PR.</li>
+</ol>
+
+<h4><a class="anchor" id="how-to-sign-the-commit-hash" href="#how-to-sign-the-commit-hash"></a>How to sign the commit hash</h4>
+
+<p>Replace <code>{commit_hash}</code> with the full 40-character commit SHA.</p>
+
+<p>Using a GPG key:</p>
+
+<pre class="highlight"><code><span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">"{commit hash}"</span> | gpg <span class="nt">--armor</span> <span class="nt">--detach-sign</span></code></pre>
+
+<p>Using an SSH key:</p>
+
+<pre class="highlight"><code><span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">"{commit hash}"</span> | ssh-keygen <span class="nt">-Y</span> sign <span class="nt">-n</span> dn42 <span class="nt">-f</span> ~/.ssh/your_existing_key</code></pre>
+
+<h3><a class="anchor" id="scenario-b-you-lost-all-existing-keys-mntner-recovery" href="#scenario-b-you-lost-all-existing-keys-mntner-recovery"></a>Scenario B: You lost all existing keys (mntner recovery)</h3>
+
+<p>If you lose access to all existing keys, you can recover your <code>mntner</code> object using the verified email address from your <code>person</code> object.</p>
+
+<p><strong>Note: Key recovery is a fallback mechanism</strong> You should look to review and improve your key backup process after completing this procedure.</p>
+
+<p>1) Ensure the email address listed in your <code>person</code> object is added to your Gitea account and is verified.
+2) Update your <code>mntner</code> object with your new public key(s).
+3) Sign the commit using one of the <strong>new</strong> keys.
+4) Push your branch and open a PR.
+5) Post a comment on the PR with the exact text:</p>
+
+<pre class="highlight"><code>### DN42 Recovery</code></pre>
+
+<p>6) In the Gitea UI, request a re-review from the <em>pipeline</em> user to re-run the check.
+7) The <em>pipeline</em> will authorise the change if your verified Gitea email address matches an email in your <code>person</code> object.</p>
 
 <hr />
 
@@ -224,27 +292,27 @@ Date:   Mon Jan 01 01:01:01 2020 +0000
 
 <h2><a class="anchor" id="authentication-using-a-gpg-pgp-key" href="#authentication-using-a-gpg-pgp-key"></a>Authentication using a GPG/PGP Key</h2>
 
-<p>To verify your key, the registry maintainers need to be able to find your full public key.<br />
-There are three options for doing this. but you only need to do <strong>one</strong> of these:</p>
+<p>To verify your key, the registry maintainers need to be able to find your full public key.</p>
+
+<p>There are two options for doing this. but you only need to do <strong>one</strong> of these:</p>
 
 <ol>
   <li>
-<strong>Add your public key to your account in gitea</strong> - this is the best option as gitea will automatically check your signature</li>
-  <li>Upload your key to a public key server</li>
+<strong>Add your public key to your account in gitea</strong> - this is the best option as you can see in gitea when your commit is signed and the key can be used automatically by the registry tooling check your signature.</li>
   <li>Create a <code>key-cert</code> object in the registry containing your public key</li>
 </ol>
 
-<h3><a class="anchor" id="auth-attribute-format-when-your-public-key-is-in-gitea-or-a-public-keyserver" href="#auth-attribute-format-when-your-public-key-is-in-gitea-or-a-public-keyserver"></a>
-<code>auth</code> attribute format, when your public key is in gitea or a public keyserver</h3>
+<h3><a class="anchor" id="auth-attribute-format-when-your-public-key-is-in-gitea" href="#auth-attribute-format-when-your-public-key-is-in-gitea"></a>
+<code>auth</code> attribute format, when your public key is in gitea</h3>
 
 <ul>
+  <li>
+    <p>Ensure that your public key has been uploaded to your account in gitea.</p>
+  </li>
   <li>
     <p>Use the following <code>auth</code> attribute in your <code>mntner</code> object:
 </p><pre class="highlight"><code><span class="n">auth</span>:               <span class="n">pgp</span>-<span class="n">fingerprint</span> &lt;<span class="n">fingerprint</span>&gt;</code></pre>
 Where <code>&lt;fingerprint&gt;</code> is your <strong>full 40-digit</strong> key fingerprint, without spaces.
-  </li>
-  <li>
-    <p>Ensure that your public key has been uploaded to your account in gitea or a public keyserver, e.g. <a href="https://sks-keyservers.net/">SKS</a>, <a href="https://keys.openpgp.org/">OpenPGP</a>, <a href="https://keybase.io/">keybase</a>.</p>
   </li>
 </ul>
 
@@ -255,12 +323,12 @@ Where <code>&lt;fingerprint&gt;</code> is your <strong>full 40-digit</strong> ke
 
 <ul>
   <li>
+    <p>Create a <code>key-cert</code> object for your public key, using <code>PGPKEY-&lt;fprint&gt;</code> for the filename.</p>
+  </li>
+  <li>
     <p>In this case the <code>auth</code> attribute must refer to the new key-cert object so use the following in your <code>mntner</code> object:
 </p><pre class="highlight"><code><span class="n">auth</span>:               <span class="n">PGPKEY</span>-&lt;<span class="n">short</span> <span class="n">fingerprint</span>&gt;</code></pre>
 Where <code>&lt;short fingerprint&gt;</code> is the last <strong>8</strong> digits from your key fingerprint.
-  </li>
-  <li>
-    <p>Create a <code>key-cert</code> object for your public key, using <code>PGPKEY-&lt;fprint&gt;</code> for the filename.</p>
   </li>
 </ul>
 
@@ -283,14 +351,16 @@ If you had already pushed your change to gitea, you must also do a force push (<
 
 <ul>
   <li>Use <code>git log --show-signature</code> to show recent commits and signatures</li>
-  <li>If you have uploaded your key to gitea, you can also check in the gitea UI that your commit is signed and has been verified successfully</li>
+  <li>You can also check in the gitea UI that your commit is signed and has been verified successfully</li>
 </ul>
 
 <hr />
 
 <h2><a class="anchor" id="authentication-using-an-ssh-key" href="#authentication-using-an-ssh-key"></a>Authentication using an SSH key</h2>
 
-<p>Older versions of git and ssh don't support generic ssh signing so there are multiple ways of providing ssh signatures based on the versions you have and the type of key you are using. The newer signature methods are preferred as they allow automatic verification of your signature.</p>
+<p>Older versions of git and ssh don't support generic ssh signing so there are multiple ways of providing ssh signatures based on the versions you have and the type of key you are using.</p>
+
+<p>Please try and sign using one of the newer methods as they can be automatically verified by the registry tooling, which saves a lot of reviewer time.</p>
 
 <p>In preference order:</p>
 
@@ -438,7 +508,7 @@ Where <code>&lt;pubkey&gt;</code> is the ssh public key copied from your id_rsa.
 
 <h4><a class="anchor" id="verifying-the-signature-4" href="#verifying-the-signature-4"></a>Verifying the signature</h4>
 
-<p>The following script will verify the signature (using the <code>&lt;commit hash&gt;</code>, your rsa <code>&lt;pubkey&gt;</code> and the <code>&lt;signature&gt;</code> generated in the previous step. 
+<p>The following script will verify the signature (using the <code>&lt;commit hash&gt;</code>, your rsa <code>&lt;pubkey&gt;</code> and the <code>&lt;signature&gt;</code> generated in the previous step.
 </p><pre class="highlight"><code>openssl pkeyutl <span class="se">\</span>
    <span class="nt">-verify</span> <span class="se">\</span>
    <span class="nt">-pubin</span> <span class="se">\</span>
@@ -462,10 +532,10 @@ Where <code>&lt;pubkey&gt;</code> is the ssh public key copied from your id_ecds
 
 <p>If you cannot use the generic SSH process described above then ecdsa signatures can also be created using openssl.</p>
 
-<p><strong>DO NOT do this on your original ssh key.</strong><br />
+<p><strong>DO NOT do this on your original ssh key.</strong>
 Make a copy and use the copy as the ssh-keygen command below will overwrite the key file given.</p>
 
-<p>Convert your private ssh key to a file that openssl can read:<br />
+<p>Convert your private ssh key to a file that openssl can read:
 <strong>DO THIS ON A COPY OF YOUR SSH KEY</strong>
 </p><pre class="highlight"><code>ssh-keygen <span class="nt">-p</span> <span class="nt">-m</span> pem <span class="nt">-f</span> &lt;private key file copy&gt;</code></pre>
 
@@ -478,7 +548,7 @@ Make a copy and use the copy as the ssh-keygen command below will overwrite the 
 
 <h4><a class="anchor" id="verifying-the-signature-5" href="#verifying-the-signature-5"></a>Verifying the signature</h4>
 
-<p>The following script will verify the signature (using the <code>&lt;commit hash&gt;</code>, your ecdsa <code>&lt;pubkey&gt;</code> and the <code>&lt;signature&gt;</code> generated in the previous step. 
+<p>The following script will verify the signature (using the <code>&lt;commit hash&gt;</code>, your ecdsa <code>&lt;pubkey&gt;</code> and the <code>&lt;signature&gt;</code> generated in the previous step.
 </p><pre class="highlight"><code>openssl pkeyutl <span class="se">\</span>
    <span class="nt">-verify</span> <span class="se">\</span>
    <span class="nt">-pubin</span> <span class="se">\</span>
@@ -488,7 +558,7 @@ Make a copy and use the copy as the ssh-keygen command below will overwrite the 
                <span class="nt">-m</span> PKCS8 <span class="se">\</span>
                <span class="nt">-f</span> &lt;<span class="o">(</span><span class="nb">echo</span> <span class="s2">"ecdsa-sha2-nistp256 &lt;pubkey&gt;"</span><span class="o">)</span><span class="se">\</span>
             <span class="o">)</span> <span class="se">\</span>
-   <span class="nt">-sigfile</span> &lt;<span class="o">(</span><span class="nb">echo</span> <span class="s2">"&lt;signature&gt;"</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="o">)</span>  </code></pre>
+   <span class="nt">-sigfile</span> &lt;<span class="o">(</span><span class="nb">echo</span> <span class="s2">"&lt;signature&gt;"</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="o">)</span></code></pre>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
