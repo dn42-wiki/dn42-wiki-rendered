@@ -212,26 +212,44 @@
 
 <p><em>Tip: Remember to keep a backup of your authorisation keys</em></p>
 
-<p>The registry includes a number of scripts to help check your request:</p>
+<p>The registry includes scripts to help you with squashing and signing:</p>
 
 <ul>
-  <li>
-<code>fmt-my-stuff &lt;FOO&gt;-MNT</code>: automatically fixes minor formatting errors</li>
-  <li>
-<code>check-my-stuff &lt;FOO&gt;-MNT</code>: validates your objects against the registry schema</li>
-  <li>
-<code>check-pol origin/master &lt;FOO&gt;-MNT</code>: checks for policy violations</li>
   <li>
 <code>squash-my-commits</code>: automatically update and squash your local commits</li>
   <li>
 <code>sign-my-commit</code>: sign your commit using a pgp key or standard SSH signing</li>
 </ul>
 
-<p>The registry maintainers run the checking scripts against each request, so please run these yourself first to check for simple errors.</p>
-
 <p>Do browse through the registry and look at the <a href="https://git.dn42.dev/dn42/registry/pulls">pull request queue</a> to see examples, understand how the process works and see the types of questions asked by the registry maintainers.</p>
 
-<p><em>You cannot use the gitea web interface to edit files, doing so creates a large number of commits and prevents running of the registry scripts</em></p>
+<p><em>You cannot use the gitea web interface to edit files, doing so creates a large number of commits and prevents you from checking your submission</em></p>
+
+<h3><a class="anchor" id="validating-your-changes-before-submitting" href="#validating-your-changes-before-submitting"></a>Validating your changes before submitting</h3>
+
+<p>Before pushing your branch or opening a pull request, always format
+and validate your objects locally to catch schema errors or missing
+references early.</p>
+
+<p>The <code>registry</code> repository provides helper scripts for immediate validation:</p>
+
+<pre class="highlight"><code>./fmt-my-stuff &lt;YOUR-MNT&gt;            <span class="c"># Auto-format indentation</span>
+./check-my-stuff &lt;YOUR-MNT&gt;          <span class="c"># Validate schema and references</span>
+./check-pol origin/master &lt;YOUR-MNT&gt; <span class="c"># Check DN42 policy compliance</span></code></pre>
+
+<p>To run the exact CI/CD test suite executed by the pipeline automation bot on
+https://git.dn42.dev, you can run the <a href="https://git.dn42.dev/dn42/pipeline-docker">pipeline-docker</a>
+container locally using Podman or Docker. Simply clone the repository
+and run the check.sh wrapper against your local registry:</p>
+
+<pre class="highlight"><code>git clone https://git.dn42.dev/dn42/pipeline-docker.git
+./pipeline-docker/check.sh /path/to/registry</code></pre>
+
+<p>The tool runs in safe local mode (read-only), verifying your commit
+signatures, route objects, and policy rules so you can fix any issues
+before submitting your pull request.</p>
+
+<p>All these scripts get run automatically on your PR, so please run these yourself first to check for simple errors.</p>
 
 <hr />
 
