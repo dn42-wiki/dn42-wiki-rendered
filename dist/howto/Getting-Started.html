@@ -238,11 +238,11 @@ references early.</p>
 ./check-pol origin/master &lt;YOUR-MNT&gt; <span class="c"># Check DN42 policy compliance</span></code></pre>
 
 <p>To run the exact CI/CD test suite executed by the pipeline automation bot on
-https://git.dn42.dev, you can run the <a href="https://git.dn42.dev/dn42/pipeline-docker">pipeline-docker</a>
+https://git.dn42.dev, you can run the <a href="https://git.dn42.dev/registry/pipeline-docker">pipeline-docker</a>
 container locally using Podman or Docker. Simply clone the repository
 and run the check.sh wrapper against your local registry:</p>
 
-<pre class="highlight"><code>git clone https://git.dn42.dev/dn42/pipeline-docker.git
+<pre class="highlight"><code>git clone https://git.dn42.dev/registry/pipeline-docker.git
 ./pipeline-docker/check.sh /path/to/registry</code></pre>
 
 <p>The tool runs in safe local mode (read-only), verifying your commit
