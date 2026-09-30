@@ -22,7 +22,7 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'internal/Tor.md';
+	  var pageFullPath = 'internal/RegistryReviewGuidelines.md';
     var pageFormat   = 'markdown';
 
   </script>
@@ -44,7 +44,7 @@
     mermaid.initialize(mermaid_conf);
   </script>
   
-  <title>Tor</title>
+  <title>RegistryReviewGuidelines</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -68,12 +68,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>Tor</div>
+            <div>RegistryReviewGuidelines</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="https://hist.dn42.wiki/gollum/history/internal/Tor.md"
+              href="http://127.42.42.80:4280/gollum/history/internal/RegistryReviewGuidelines.md"
               role="menuitem"
             >
               <span>History</span>
@@ -118,7 +118,7 @@
     class="TableObject-item TableObject-item--primary px-2"
     
   >
-    <form class="search-form" action="https://hist.dn42.wiki/gollum/search" method="get" id="search-form">
+    <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
     	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
     </form>  </div>
 
@@ -146,7 +146,7 @@
     <div class="BtnGroup d-flex">
         <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          onclick="window.location.href='https://hist.dn42.wiki/gollum/history/internal/Tor.md/';"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/internal/RegistryReviewGuidelines.md/';"
           id="minibutton-history"
         >
           History
@@ -161,7 +161,7 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    Tor
+    RegistryReviewGuidelines
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
 <li class="breadcrumb-item"><a href="../gollum/overview/internal/index.html">internal</a></li>
@@ -178,7 +178,170 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="dn42-registry-reviewer-guide" href="#dn42-registry-reviewer-guide"></a>dn42 Registry Reviewer Guide</h1>
+
+<h2><a class="anchor" id="purpose-of-reviewing" href="#purpose-of-reviewing"></a>Purpose of Reviewing</h2>
+
+<p>The primary goal of reviewing is to ensure the quality of changes made to the registry.</p>
+
+<p>Reviewers should verify that the submitted objects are consistent and make logical sense.</p>
+
+<p><strong>Reviewing exists to help users register, not act as a blocker.</strong></p>
+
+<h2><a class="anchor" id="automated-scripts-vs-manual-review" href="#automated-scripts-vs-manual-review"></a>Automated Scripts vs. Manual Review</h2>
+
+<p>Whilst the automation has improved considerably and is now capable of capturing a lot of common issues, <strong>automation is an aid for reviewers, not the authoritative decision-maker</strong>.</p>
+
+<p>Manual review is still required as automation can't catch everything, common exceptions are:</p>
+<ul>
+  <li>Adherence to the allocation policy</li>
+  <li>RFC4193 violations</li>
+  <li>logical inconsistencies</li>
+  <li>pointless comments</li>
+  <li>external ASNs</li>
+</ul>
+
+<p>Care should also be taken when the automation ran some time ago as the results may have been superceded.</p>
+<ul>
+  <li>This is particularly relevant for IPv4 allocations as the number of exact /27's available is relatively small leading to duplication across registrations.</li>
+  <li>Pipeline will respond to review requests and can be re-run on-demand, whilst this is useful for DNSSEC or authentication chagnes, be aware it won't catch duplicate IPv4 ranges.</li>
+</ul>
+
+<p>Automation isn't perfect and can get it wrong, or might simply be unavailable.</p>
+
+<h2><a class="anchor" id="the-manual-review-process" href="#the-manual-review-process"></a>The Manual Review Process</h2>
+
+<p>Pull the PR Locally:</p>
+
+<pre class="highlight"><code>git fetch <span class="nt">--all</span>
+git reset <span class="nt">--hard</span> origin/master
+git pull origin pull/&lt;pr_number&gt;/head</code></pre>
+
+<p>Verify signatures</p>
+<ul>
+  <li>You can get public keys from gitea using https://git.dn42.dev/).gpg
+</li>
+</ul>
+
+<p>Run The Standard Registry Scripts:</p>
+
+<pre class="highlight"><code>./check-my-stuff
+./check-pol</code></pre>
+<em>tip: run <code>git diff</code> after fmt-my-stuff to see what changed</em>
+<pre class="highlight"><code>./fmt-my-stuff
+git diff</code></pre>
+
+<p>Post Results:</p>
+<ul>
+  <li>Paste the output of git log –show-signature along with the outputs of check-my-stuff and check-pol as a comment against the PR.</li>
+</ul>
+
+<p><em>tip: Format these outputs in your comment using blockquote ` ```text` markers so they render correctly and are not interpreted as markdown.</em></p>
+
+<h2><a class="anchor" id="authentication-signatures" href="#authentication-signatures"></a>Authentication &amp; Signatures</h2>
+
+<p>You cannot use Gitea's in-built signature validation, as it only confirms the private key is loaded in the user's Gitea profile, not that the key matches the authorized mntner object.</p>
+
+<p>Commits signed with a subkey of the master PGP key specified in the mntner object are completely valid and considered best practice.</p>
+
+<p>If a user has multiple valid authentication methods, they should add the auth attribute multiple times on separate lines. Users only need to successfully validate against one <code>auth</code> method for approval.</p>
+
+<h2><a class="anchor" id="common-review-scenarios" href="#common-review-scenarios"></a>Common Review Scenarios</h2>
+
+<p><strong>Additional Resources</strong> reviewers should check adherence to the allocation policy: https://dn42.dev/Policies and require the user to provide justification in-line with the policy</p>
+
+<p><strong>De-aggregation</strong> Announcing many small subnets (like /64s or /60s) instead of the full prefix is highly discouraged. Whilst de-aggregation is technically permitted, reviewers should guide users towards better routing practices.</p>
+
+<p>Users should avoid registering multiple small subnets where possible; it's often a tactic to avoid the de-aggregation checks and in most cases just spams the registry with pointless objects.</p>
+
+<p><strong>RFC4193 Violations</strong> IPv6 prefixes in the fd00::/8 range should be uniquely random. Sequential or "magic" numbers (e.g., fd42::/48) violate RFC4193 section 3.2. Users should be encouraged to choose a fully random prefix but if they persist they need to explicitly confirm they understand the risks of prefix clashes before proceeding.</p>
+
+<p><strong>Clearnet ASNs</strong> External ASNs must update the source to be appropriate (e.g. RIPE/ARIN/APNIC). Reviewers should do a "best effort" check to ensure the dn42 user actually owns the clearnet ASN, such as checking WHOIS data or asking the maintainer directly, but this can be tricky depending on the registry.</p>
+
+<p><strong>E-mails</strong> The e-mail attribute cannot contain comma-separated addresses. Multiple emails require multiple e-mail attributes on separate lines. Contact attributes should not contain email addresses and should use the specific <code>e-mail</code> attribute.</p>
+<ul>
+  <li>Whilst the <code>e-mail</code> attribute is optional in the schema, it should be treated as required. It's key that mntners are contactable and email is a primary method of object recovery if mntner keys are lost. Anonymous services exist if the user doesn't want to include their real email address.</li>
+</ul>
+
+<p><strong>Personal Data</strong> e.g. addresses or telephone numbers in submissions; users should be reminded of the privacy policy and must provide explicit confirmation that they understand the policy and still want to include personal data</p>
+
+<p>If you get stuck or are unsure, ask for a secondary review. In exceptional circumstances requests can be escalated to the mailing list for community approval.</p>
+
+<p>Mistakes happen, every single other reviewer has broken something at some point.</p>
+
+<h2><a class="anchor" id="deletions" href="#deletions"></a>Deletions</h2>
+
+<p>When reviewing deletions, give the submitter more leeway. If someone is leaving they may not be interested in strictly adhering to the review policies but we still do want to clear out dead allocations. Submitters may not feel that they can edit objects that are not owned by them (e.g. references from other user's AS-SETs)</p>
+
+<p>Ensure no dangling references are left behind by grepping the entire registry for the deleted aut-num, mntner, or person objects. Check domains or route objects that might point to removed inetnums.</p>
+
+<p>Reviewers can step in if required and add their own commits to the user's PR to clean up any missed references on behalf of a departing user. In this case don't squash the reviewer's cleanup commit with the user's commit, so it remains clear exactly what was done and by whom.</p>
+
+<h2><a class="anchor" id="communication-pr-management" href="#communication-pr-management"></a>Communication &amp; PR Management</h2>
+
+<p>Try and capture all your review notes and issues in a single comment to avoid frustrating back-and-forth exchanges with the submitter.</p>
+
+<p>It can often make sense to wait a few hours before reviewing a freshly opened or updated PR to ensure the submitter has finished making their changes. New submissions often start with several changes and updates.</p>
+
+<p>Always add Gitea labels to indicate the status of the PR:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left;">label</th>
+      <th style="text-align:left;">usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left;">authentication pending</td>
+      <td style="text-align:left;">The submitter needs to sign the commit or verify authorization</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">needs confirmation</td>
+      <td style="text-align:left;">The request is technically correct, but clarification is required</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">needs work</td>
+      <td style="text-align:left;">The submitter must make changes to fix errors</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">needs consensus</td>
+      <td style="text-align:left;">The PR requires community approval on the mailing list</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">secondary review requested</td>
+      <td style="text-align:left;">Used when you need another reviewer to double-check a complex PR</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">cleanup</td>
+      <td style="text-align:left;">Designated for non-user, internal maintenance changes (like DN42-MNT)</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">blocked</td>
+      <td style="text-align:left;">Marks a PR to prevent other reviewers merging it</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2><a class="anchor" id="merging-prs" href="#merging-prs"></a>Merging PRs</h2>
+
+<p>PRs do not need to be updated to be merged. Changes are typically to independent objects so can be merged as long as there are no conflicts.</p>
+
+<p>Do not merge your own changes unless it's for an emergency fix. Even then, you should still try and obtain independent review via the #dn42-registry channel.</p>
+
+<h2><a class="anchor" id="getting-involved" href="#getting-involved"></a>Getting Involved</h2>
+
+<p>We constantly need new reviewers to help perform registry reviews and welcome any help; In 2026 the registry averaged ~6 new PRs a day. The key skill for reviewers is a keen eye for spotting details, particularly when looking for issues that evade the automation.</p>
+
+<p>Start by maintaining a presence in #dn42-registry, it's key to have communication between reviewers and the channel is a place to ask questions and get feedback. We also have bots that alert to #dn42-registry if there are problems.</p>
+
+<p>Anyone can comment on PRs so you don't need any special privileges or permission to make a start; the existing reviews will spot your contributions. We recommend new reviewers start by watching the PR queue and commenting on PRs as they come through to get the hang of it.</p>
+
+<p>Even if the PR is ok, leave a comment on the PR to show you've reviewed it, this way the other reviewers can spot that you've already seen it.</p>
+
+<p>Once you get a bit of experience with the process the admin will be able to add you to the registry-wranglers group so that you can can perform merges.</p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
@@ -280,13 +443,13 @@
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="internal/Tor.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="internal/RegistryReviewGuidelines.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="https://hist.dn42.wiki/gollum/rename/internal/Tor.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/internal/RegistryReviewGuidelines.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
