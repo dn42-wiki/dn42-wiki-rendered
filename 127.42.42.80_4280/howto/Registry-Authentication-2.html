@@ -171,8 +171,7 @@
 	  <div id="wiki-body" class="gollum-markdown-content">
 	    <div id="wiki-header" class="gollum-markdown-content">
 	      <div id="header-content" class="markdown-body">
-	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
-
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
 	      </div>
 	    </div>
 	    <div class="main-content clearfix container-lg">
@@ -264,16 +263,20 @@
 
 <p><strong>Note: Key recovery is a fallback mechanism</strong> You should look to review and improve your key backup process after completing this procedure.</p>
 
-<p>1) Ensure the email address listed in your <code>person</code> object is added to your Gitea account and is verified.
-2) Update your <code>mntner</code> object with your new public key(s).
-3) Sign the commit using one of the <strong>new</strong> keys.
-4) Push your branch and open a PR.
-5) Post a comment on the PR with the exact text:</p>
+<ol>
+  <li>Ensure the email address listed in your <code>person</code> object is added to your Gitea account and is verified.</li>
+  <li>Update your <code>mntner</code> object with your new public key(s).</li>
+  <li>Sign the commit using one of the <strong>new</strong> keys.</li>
+  <li>Push your branch and open a PR.</li>
+  <li>Post a comment on the PR with the exact text:</li>
+</ol>
 
 <pre class="highlight"><code>### DN42 Recovery</code></pre>
 
-<p>6) In the Gitea UI, request a re-review from the <em>pipeline</em> user to re-run the check.
-7) The <em>pipeline</em> will authorise the change if your verified Gitea email address matches an email in your <code>person</code> object.</p>
+<ol>
+  <li>In the Gitea UI, request a re-review from the <em>pipeline</em> user to re-run the check.</li>
+  <li>The <em>pipeline</em> will authorise the change if your verified Gitea email address matches an email in your <code>person</code> object.</li>
+</ol>
 
 <hr />
 
