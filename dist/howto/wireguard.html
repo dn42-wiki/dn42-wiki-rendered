@@ -351,6 +351,14 @@ Use <code>which ip</code> to get the full path to your ip binary.
 <p>You can add cron entries to periodically  "re-resolve" the DNS:
 </p><pre class="highlight"><code><span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> /path-to-the-script/reresolve-dns.sh</code></pre>
 
+<h2><a class="anchor" id="windows-client-note" href="#windows-client-note"></a>Windows client note</h2>
+
+<p>The official WireGuard for Windows client may reject configurations where multiple tunnels have overlapping <code>AllowedIPs</code> ranges. If you need such a setup, an unofficial fork that removes this restriction is available at <a href="https://github.com/TES286-org/wireguard-windows">https://github.com/TES286-org/wireguard-windows</a>.</p>
+
+<p>This is <strong>not</strong> official WireGuard or DN42 software and has not been independently audited. Use it at your own risk and review the code before deployment.</p>
+
+<p>For DN42, ensure the client does not install routes automatically; route selection should be managed by BGP or an external routing program. Do not use overlapping <code>AllowedIPs</code> unless you understand the data-plane and routing implications.</p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
