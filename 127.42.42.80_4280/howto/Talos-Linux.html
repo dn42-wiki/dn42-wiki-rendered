@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <meta name="MobileOptimized" content="width">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="../gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css" media="all">
+  <link rel="stylesheet" type="text/css" href="../gollum/assets/print-512498c368be0d3fb1ba105dfa84289ae48380ec9fcbef948bd4e23b0b095bfb.css" media="print">
+
+
+  <link rel="stylesheet" type="text/css" href="../custom.css" media="all">
+  
+
+  <script>
+  var criticMarkup = '';
+	var baseUrl = '';
+  var showLocalTime = false;
+	var uploadDest = 'uploads';
+	var perPageUploads = '';
+	if (perPageUploads == 'true') {
+	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
+	}
+	  var pageFullPath = 'howto/Talos-Linux.md';
+    var pageFormat   = 'markdown';
+
+  </script>
+  <script src="../gollum/assets/app-05adca32f8f4f3effe10f8f4cf26dfd6a419ba986bce60d3f51a97e4055d4113.js" type="text/javascript"></script>
+
+
+  
+  <script>
+  var mermaid_conf = {
+    startOnLoad: true,
+    securityLevel: 'sandbox'
+  };
+  </script>
+  
+
+
+  <script src="../gollum/assets/gollum.mermaid-ccc590b7d9655deec94c9975f25d74fbe38f703c927e26cf81169d63fea7cd50.js" type="text/javascript"></script>
+  <script>
+    mermaid.initialize(mermaid_conf);
+  </script>
+  
+  <title>Talos-Linux</title>
+</head>
+<body>
+<div class="container-lg clearfix">
+<div id="wiki-wrapper" class="page">
+<div id="head">
+	<nav class="TableObject
+            actions
+            border-bottom
+            border-md-0
+            p-2
+            pt-lg-4
+            px-lg-0
+            overflow-x-scroll">
+  <div class="TableObject-item hide-lg hide-xl">
+    <details class="details-reset details-overlay">
+      <summary class="btn btn-invisible" aria-haspopup="true">
+        <span aria-label="Open menu">☰</span>
+      </summary>
+    
+      <div class="SelectMenu mx-sm-2">
+        <div class="SelectMenu-modal">
+          <div class="SelectMenu-divider py-3">
+            <h2 class="h6">Current Page</h2>
+            <div>Talos-Linux</div>
+          </div>
+    
+            <a
+              class="SelectMenu-item"
+              href="http://127.42.42.80:4280/gollum/history/howto/Talos-Linux.md"
+              role="menuitem"
+            >
+              <span>History</span>
+            </a>
+    
+    
+          <div class="SelectMenu-divider py-3">
+            <h2 class="h6">Main Menu</h2>
+          </div>
+    
+          <div class="SelectMenu-list">
+            <a class="SelectMenu-item" role="menuitem" href="../index.html">
+              Home
+            </a>
+    
+              <a class="SelectMenu-item" role="menuitem" href="../gollum/overview.html">
+                Overview
+              </a>
+    
+              <a
+                class="SelectMenu-item"
+                href="../gollum/latest_changes.html"
+                role="menuitem"
+              >
+                Latest Changes
+              </a>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="TableObject-item hide-sm hide-md">
+    <button class="btn btn-sm" id="minibutton-home" 
+      onclick="window.location.href='../index.html';"
+    >
+      Home
+    </button>
+  </div>
+
+  <div
+    class="TableObject-item TableObject-item--primary px-2"
+    
+  >
+    <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
+    	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
+    </form>  </div>
+
+  <div class="TableObject-item hide-sm hide-md">
+    <div class="BtnGroup d-flex">
+        <button
+          class="btn BtnGroup-item btn-sm"
+          onclick="window.location.href='../gollum/overview.html';"
+          id="minibutton-overview"
+        >
+          Overview
+        </button>
+
+        <button
+          class="btn BtnGroup-item btn-sm"
+          onclick="window.location.href='../gollum/latest_changes.html';"
+          id="minibutton-latest-changes"
+        >
+          Latest Changes
+        </button>
+    </div>
+  </div>
+
+  <div class="TableObject-item px-2">
+    <div class="BtnGroup d-flex">
+        <button
+          class="btn BtnGroup-item btn-sm hide-sm hide-md"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/Talos-Linux.md/';"
+          id="minibutton-history"
+        >
+          History
+        </button>
+
+    </div>
+  </div>
+
+</nav>
+
+</div>
+
+<div id="wiki-content" class="px-2 px-lg-0">
+  <h1 class="header-title text-center text-md-left pt-4">
+    Talos-Linux
+  </h1>
+	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
+<li class="breadcrumb-item"><a href="../gollum/overview/howto/index.html">howto</a></li>
+</ol></nav></div>
+
+	<div class="has-header has-footer has-sidebar has-rightbar">
+	  <div id="wiki-body" class="gollum-markdown-content">
+	    <div id="wiki-header" class="gollum-markdown-content">
+	      <div id="header-content" class="markdown-body">
+	        <p><a href="../index.html" rel="nofollow"><img src="../dn42.png" alt="dn42" /></a></p>
+
+	      </div>
+	    </div>
+	    <div class="main-content clearfix container-lg">
+	      <div class="markdown-body  float-md-left col-md-9" >
+	        
+	        <h1><a class="anchor" id="talos-linux" href="#talos-linux"></a>Talos Linux</h1>
+
+<p>This guide sets up a DN42 router on a <a href="https://www.talos.dev/">Talos Linux</a> node, using WireGuard tunnels and BIRD. It covers what's specific to Talos; for BIRD itself, see the <a href="Bird2.html">Bird2</a> guide.</p>
+
+<p>Talos is different from a normal Linux distribution: there is no shell, no SSH and no package manager. You configure everything with YAML documents, sent to the node with <code>talosctl</code>. Software that isn't part of Talos, like BIRD, comes in as a <em>system extension</em> baked into the Talos image.</p>
+
+<p>Tested with Talos v1.15.0-alpha.2 and the <code>siderolabs/bird2</code> 2.18 extension.</p>
+
+<h2><a class="anchor" id="before-you-start" href="#before-you-start"></a>Before you start</h2>
+
+<p>You need:</p>
+
+<ul>
+  <li>A registered DN42 AS, prefix and ROA, see <a href="Getting-Started.html">Getting Started</a>. This guide uses <strong>AS4242421234</strong> and <strong>fd00:1234:5678::/48</strong> as examples; replace them with your own everywhere.</li>
+  <li>A Talos node you can manage with <code>talosctl</code>, with a public IPv6 address peers can reach.</li>
+  <li>
+<code>wg</code> (wireguard-tools) on your workstation, to generate keys.</li>
+  <li>At least one peer, see <a href="wireguard.html">Wireguard</a> for what to exchange with them.</li>
+</ul>
+
+<p>The steps:</p>
+
+<ol>
+  <li>Add BIRD to the Talos image</li>
+  <li>Create a WireGuard tunnel to your peer</li>
+  <li>Configure BIRD</li>
+  <li>Check that it works</li>
+  <li>Optional, for Kubernetes nodes: move DN42 into its own routing table (VRF)</li>
+</ol>
+
+<h2><a class="anchor" id="1-add-bird-to-the-talos-image" href="#1-add-bird-to-the-talos-image"></a>1. Add BIRD to the Talos image</h2>
+
+<p>Talos images are built by the <a href="https://factory.talos.dev/">Image Factory</a> from a <em>schematic</em> that lists the extensions. Create <code>schematic.yaml</code> (keep any extensions you already use):</p>
+
+<pre class="highlight"><code><span class="na">customization</span><span class="pi">:</span>
+  <span class="na">systemExtensions</span><span class="pi">:</span>
+    <span class="na">officialExtensions</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">siderolabs/bird2</span></code></pre>
+
+<p>Register it; the response contains the schematic ID:</p>
+
+<pre class="highlight"><code>curl -X POST --data-binary @schematic.yaml https://factory.talos.dev/schematics</code></pre>
+
+<p>Upgrade the node to an installer image built from that ID. This reboots the node. Use your Talos version, and the installer type that matches your node (<code>metal-installer</code> for bare metal):</p>
+
+<pre class="highlight"><code>talosctl -n &lt;node&gt; upgrade --image factory.talos.dev/metal-installer/&lt;schematic id&gt;:v1.15.0-alpha.2</code></pre>
+
+<p>After the reboot, <code>talosctl -n &lt;node&gt; get extensions</code> lists <code>bird2</code>. BIRD itself starts once it has a config (step 3).</p>
+
+<h2><a class="anchor" id="2-create-a-wireguard-tunnel" href="#2-create-a-wireguard-tunnel"></a>2. Create a WireGuard tunnel</h2>
+
+<p>Generate a key pair. Send the public key to your peer, together with your endpoint (<code>[&lt;node IPv6&gt;]:&lt;port&gt;</code>) and your link-local address:</p>
+
+<pre class="highlight"><code>wg genkey | tee private.key | wg pubkey &gt; public.key</code></pre>
+
+<p>Create <code>wg-example.yaml</code>, one per peer. The link-local addresses are agreed with the peer; WireGuard endpoints must be IP addresses, not hostnames.</p>
+
+<pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">WireguardConfig</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">wg-example</span>
+<span class="na">privateKey</span><span class="pi">:</span> <span class="s">&lt;contents of private.key&gt;</span>
+<span class="na">listenPort</span><span class="pi">:</span> <span class="m">21234</span>
+<span class="na">addresses</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">address</span><span class="pi">:</span> <span class="s">fe80::1234/64</span> <span class="c1"># your side of the tunnel</span>
+<span class="na">peers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">publicKey</span><span class="pi">:</span> <span class="s">&lt;peer public key&gt;</span>
+    <span class="na">endpoint</span><span class="pi">:</span> <span class="s2">"</span><span class="s">[2001:db8::1]:21234"</span> <span class="c1"># the peer's endpoint</span>
+    <span class="na">persistentKeepaliveInterval</span><span class="pi">:</span> <span class="s">25s</span>
+    <span class="na">allowedIPs</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">fe80::/10</span>
+      <span class="pi">-</span> <span class="s">fd00::/8</span>
+<span class="nn">---</span>
+<span class="c1"># Don't let the peer configure this node through router advertisements or redirects.</span>
+<span class="na">machine</span><span class="pi">:</span>
+  <span class="na">sysctls</span><span class="pi">:</span>
+    <span class="na">net.ipv6.conf.wg-example.accept_ra</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
+    <span class="na">net.ipv6.conf.wg-example.accept_redirects</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span></code></pre>
+
+<p>Apply it:</p>
+
+<pre class="highlight"><code>talosctl -n &lt;node&gt; patch machineconfig --patch @wg-example.yaml</code></pre>
+
+<p>The private key is now in your machine config. If you keep your config in git, encrypt it, for example with SOPS.</p>
+
+<p>Check the tunnel with <code>talosctl -n &lt;node&gt; get links wg-example</code>, and by pinging the peer's link-local address from your peer's side.</p>
+
+<h2><a class="anchor" id="3-configure-bird" href="#3-configure-bird"></a>3. Configure BIRD</h2>
+
+<p>BIRD's config is passed in an <code>ExtensionServiceConfig</code> document. The config below is a trimmed-down version of the one in the <a href="Bird2.html">Bird2</a> guide, which explains the filters and options in more detail. Create <code>bird.yaml</code>:</p>
+
+<pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ExtensionServiceConfig</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">bird2</span>
+<span class="na">configFiles</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/usr/local/etc/bird.conf</span>
+    <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+      <span class="s">define OWNAS = 4242421234;</span>
+      <span class="s">define OWNNETv6 = fd00:1234:5678::/48;</span>
+      <span class="s">define OWNNETSETv6 = [fd00:1234:5678::/48+];</span>
+
+      <span class="s"># Any unique IPv4 address. Use your DN42 IPv4 address if you have one.</span>
+      <span class="s">router id 10.12.34.1;</span>
+      <span class="s">log stderr all;</span>
+
+      <span class="s">protocol device {</span>
+        <span class="s">scan time 10;</span>
+      <span class="s">}</span>
+
+      <span class="s">function is_self_net_v6() -&gt; bool {</span>
+        <span class="s">return net ~ OWNNETSETv6;</span>
+      <span class="s">}</span>
+
+      <span class="s">function is_valid_network_v6() -&gt; bool {</span>
+        <span class="s">return net ~ [ fd00::/8{44,64} ];</span>
+      <span class="s">}</span>
+
+      <span class="s"># ROAs, see "ROA validation" below</span>
+      <span class="s">roa6 table dn42_roa6;</span>
+
+      <span class="s">protocol rpki rtr {</span>
+        <span class="s">roa6 { table dn42_roa6; };</span>
+        <span class="s">remote 2001:db8::8282 port 8282;</span>
+        <span class="s">refresh 600;</span>
+        <span class="s">retry 30;</span>
+        <span class="s">expire 7200;</span>
+      <span class="s">}</span>
+
+      <span class="s"># Announce your own prefix.</span>
+      <span class="s">protocol static {</span>
+        <span class="s">route OWNNETv6 unreachable;</span>
+        <span class="s">ipv6 {</span>
+          <span class="s">import all;</span>
+          <span class="s">export none;</span>
+        <span class="s">};</span>
+      <span class="s">}</span>
+
+      <span class="s"># Install learned routes into the kernel.</span>
+      <span class="s">protocol kernel {</span>
+        <span class="s">scan time 20;</span>
+        <span class="s">learn off;</span>
+        <span class="s">ipv6 {</span>
+          <span class="s">import none;</span>
+          <span class="s">export filter {</span>
+            <span class="s">if source = RTS_STATIC then reject;</span>
+            <span class="s">accept;</span>
+          <span class="s">};</span>
+        <span class="s">};</span>
+      <span class="s">}</span>
+
+      <span class="s">template bgp dnpeers {</span>
+        <span class="s">local as OWNAS;</span>
+        <span class="s">path metric on;</span>
+        <span class="s">ipv6 {</span>
+          <span class="s"># re-check received routes when the ROAs change</span>
+          <span class="s">import table on;</span>
+          <span class="s">import filter {</span>
+            <span class="s">if !is_valid_network_v6() || is_self_net_v6() then reject;</span>
+            <span class="s">if roa_check(dn42_roa6, net, bgp_path.last) != ROA_VALID then {</span>
+              <span class="s">print "[dn42] ROA check failed for ", net, " ASN ", bgp_path.last;</span>
+              <span class="s">reject;</span>
+            <span class="s">}</span>
+            <span class="s">accept;</span>
+          <span class="s">};</span>
+          <span class="s">export filter {</span>
+            <span class="s">if is_valid_network_v6() &amp;&amp; source ~ [RTS_STATIC, RTS_BGP] then accept;</span>
+            <span class="s">reject;</span>
+          <span class="s">};</span>
+          <span class="s">import limit 9000 action block;</span>
+        <span class="s">};</span>
+      <span class="s">}</span>
+
+      <span class="s"># One per peer: their link-local address and AS, over their tunnel.</span>
+      <span class="s">protocol bgp example from dnpeers {</span>
+        <span class="s">neighbor fe80::4321 as 4242424321;</span>
+        <span class="s">interface "wg-example";</span>
+      <span class="s">}</span></code></pre>
+
+<p>Apply it:</p>
+
+<pre class="highlight"><code>talosctl -n &lt;node&gt; patch machineconfig --patch @bird.yaml</code></pre>
+
+<p>BIRD can't reload its config: every change to this document restarts it, which briefly drops all BGP sessions.</p>
+
+<h3><a class="anchor" id="roa-validation" href="#roa-validation"></a>ROA validation</h3>
+
+<p>BIRD checks routes against the DN42 ROAs, which it fetches from an <em>RTR server</em> (<code>remote</code> in the <code>rpki</code> block). Talos can't run a cron job to download a ROA file, so run a small RTR server somewhere your node can reach, for example <a href="https://github.com/bgp/stayrtr">stayrtr</a> with the DN42 feed:</p>
+
+<pre class="highlight"><code>stayrtr -cache=https://dn42.burble.com/roa/dn42_roa_46.json -checktime=false</code></pre>
+
+<p>It listens on port 8282. Until BIRD has ROAs, every route fails the check and is rejected.</p>
+
+<h3><a class="anchor" id="reaching-dn42-from-your-lan" href="#reaching-dn42-from-your-lan"></a>Reaching DN42 from your LAN</h3>
+
+<p>Your LAN router needs a route for <code>fd00::/8</code> to the Talos node, and your LAN hosts need addresses from your DN42 prefix.</p>
+
+<h2><a class="anchor" id="4-check-that-it-works" href="#4-check-that-it-works"></a>4. Check that it works</h2>
+
+<pre class="highlight"><code>talosctl -n &lt;node&gt; service ext-bird2
+talosctl -n &lt;node&gt; logs ext-bird2</code></pre>
+
+<p>The service should be <code>Running</code>. The log shows rejected routes as <code>ROA check failed</code> lines, which is normal: not every route in DN42 has a valid ROA.</p>
+
+<p>For the full picture, use <code>birdc</code>. Its control socket is <code>/var/run/bird/bird.ctl</code> on the node. On a Kubernetes node, from a debug pod:</p>
+
+<pre class="highlight"><code>kubectl debug node/&lt;node&gt; -it --image=alpine --profile=sysadmin
+apk add bird2
+birdc -s /host/var/run/bird/bird.ctl show protocols</code></pre>
+
+<p>The BGP protocol should show <code>Established</code>.</p>
+
+<h2><a class="anchor" id="5-optional-a-vrf-on-kubernetes-nodes" href="#5-optional-a-vrf-on-kubernetes-nodes"></a>5. Optional: a VRF on Kubernetes nodes</h2>
+
+<p>With the setup above, DN42 routes go into the node's main routing table. That's fine on a dedicated router. On a Kubernetes node, the node and all its pods then reach DN42 directly. And because pod and service networks are often ULAs too (<code>fd00::/8</code>), a peer announcing an overlapping prefix could pull cluster traffic into a tunnel.</p>
+
+<p>A VRF gives DN42 its own routing table, so the node and its pods never see DN42 routes. It isn't sealed off: it has exactly two doors, and both lead to your LAN router.</p>
+
+<pre class="highlight"><code>LAN host
+  │  default route
+  ▼
+LAN router ── route fd00::/8 → Talos node
+  │
+  ▼  arrives on eth0
+Talos node ── rule: "came in on eth0, going to fd00::/8 → use the DN42 table"   ← way in
+  │
+  ▼  DN42 table: routes from BIRD
+wg-example ──► DN42
+
+reply from DN42
+  │
+  ▼  arrives on wg-example → DN42 table
+Talos node ── DN42 table: "your /48 → LAN router via eth0"                     ← way out
+  │
+  ▼
+LAN router ──► LAN host</code></pre>
+
+<p>For background, see the Linux kernel's <a href="https://docs.kernel.org/networking/vrf.html">VRF documentation</a>, Talos's <a href="https://docs.siderolabs.com/talos/v1.15/reference/configuration/network/vrfconfig">VRFConfig</a> and <a href="https://docs.siderolabs.com/talos/v1.15/reference/configuration/network/routingruleconfig">RoutingRuleConfig</a> references, and BIRD's <a href="https://bird.network.cz/?get_doc&amp;v=20&amp;f=bird-3.html#proto-vrf"><code>vrf</code> option</a>.</p>
+
+<p>Anything in the DN42 table that isn't your prefix or a DN42 route is dropped. So DN42 can't reach the node or its pods, and your LAN router's firewall sees all DN42 traffic in both directions. Pods on the node reach DN42 like any other LAN host: via the LAN router, which sends it back through the way in.</p>
+
+<p>Add these documents, replacing <code>eth0</code>, the router's link-local address and the pod range with yours. Talos only accepts table numbers 1–252.</p>
+
+<pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">VRFConfig</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">vrf-dn42</span>
+<span class="na">table</span><span class="pi">:</span> <span class="s2">"</span><span class="s">42"</span>
+<span class="na">links</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">wg-example</span> <span class="c1"># every tunnel</span>
+<span class="nn">---</span>
+<span class="c1"># Way out: your prefix goes back to the LAN router.</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">LinkConfig</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">eth0</span>
+<span class="na">routes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">destination</span><span class="pi">:</span> <span class="s">fd00:1234:5678::/48</span>
+    <span class="na">gateway</span><span class="pi">:</span> <span class="s">fe80::1</span> <span class="c1"># LAN router</span>
+    <span class="na">table</span><span class="pi">:</span> <span class="s2">"</span><span class="s">42"</span>
+<span class="nn">---</span>
+<span class="c1"># Way in: DN42 traffic from the LAN router uses the DN42 table...</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">RoutingRuleConfig</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">210"</span>
+<span class="na">iifName</span><span class="pi">:</span> <span class="s">eth0</span>
+<span class="na">dst</span><span class="pi">:</span> <span class="s">fd00::/8</span>
+<span class="na">table</span><span class="pi">:</span> <span class="s2">"</span><span class="s">42"</span>
+<span class="nn">---</span>
+<span class="c1"># ...except traffic for the cluster's own ULA ranges (lower number = checked first).</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">RoutingRuleConfig</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">200"</span>
+<span class="na">iifName</span><span class="pi">:</span> <span class="s">eth0</span>
+<span class="na">dst</span><span class="pi">:</span> <span class="s">fd10:1111:2222::/48</span> <span class="c1"># pod range</span>
+<span class="na">table</span><span class="pi">:</span> <span class="s">main</span>
+<span class="nn">---</span>
+<span class="c1"># Drop everything else in the DN42 table. Without this, lookups that miss it</span>
+<span class="c1"># fall through to the main table. Talos can't add "unreachable" routes to a</span>
+<span class="c1"># VRF table, so the default route points into a dummy link, which drops it.</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">DummyLinkConfig</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">dn42-null</span>
+<span class="na">routes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">gateway</span><span class="pi">:</span> <span class="s">fe80::1</span>
+    <span class="na">metric</span><span class="pi">:</span> <span class="m">4278198272</span>
+    <span class="na">table</span><span class="pi">:</span> <span class="s2">"</span><span class="s">42"</span></code></pre>
+
+<p>Then tell BIRD to use the VRF: add these lines to the <code>protocol kernel</code> block and to the <code>template bgp dnpeers</code> block, and reject the cluster ranges in the import filter.</p>
+
+<pre class="highlight"><code>protocol kernel {
+  vrf "vrf-dn42";
+  kernel table 42;
+  ...
+}
+
+template bgp dnpeers {
+  vrf "vrf-dn42";
+  ...
+}</code></pre>
+
+<pre class="highlight"><code># the cluster's pod and service ranges
+function is_cluster_net_v6() -&gt; bool {
+  return net ~ [ fd10:1111:2222::/48+, fd10:3333:4444::/112+ ];
+}
+
+  if !is_valid_network_v6() || is_self_net_v6() || is_cluster_net_v6() then reject;</code></pre>
+
+<p>Leave <code>net.ipv4.tcp_l3mdev_accept</code> and <code>udp_l3mdev_accept</code> at their default of <code>0</code>, so services on the node can't be reached from the VRF.</p>
+
+<h2><a class="anchor" id="why-not-talos-s-built-in-bgp" href="#why-not-talos-s-built-in-bgp"></a>Why not Talos's built-in BGP?</h2>
+
+<p>Talos has its own BGP support (<code>BGPInstanceConfig</code>), but it doesn't work for DN42 yet:</p>
+
+<ul>
+  <li>it has no route filters or ROA validation, so it accepts anything a peer sends (<a href="https://github.com/siderolabs/talos/issues/14252">siderolabs/talos#14252</a>);</li>
+  <li>it can't peer over a WireGuard tunnel. The tunnel itself is fine, but a neighbor is either a <code>link</code> or an <code>address</code>, not both like BIRD's <code>neighbor fe80::… interface "wg-…"</code>. With <code>link:</code> Talos waits for neighbor discovery, which WireGuard doesn't do; with a link-local <code>address:</code> the session comes up, but routes with a link-local next hop aren't installed.</li>
+</ul>
+
+	      </div>
+          <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
+	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
+	          <ul>
+  <li>
+<a href="../Home.html" rel="nofollow">Home</a>
+    <ul>
+      <li><a href="Getting-Started.html" rel="nofollow">Getting Started</a></li>
+      <li><a href="Registry-Authentication.html" rel="nofollow">Registry Authentication</a></li>
+      <li><a href="../Address-Space.html" rel="nofollow">Address Space</a></li>
+      <li><a href="BGP-communities.html" rel="nofollow">BGP communities</a></li>
+      <li><a href="../Interconnections.html" rel="nofollow">Interconnections</a></li>
+      <li><a href="../Policies.html" rel="nofollow">Policies</a></li>
+      <li><a href="../FAQ.html" rel="nofollow">FAQ</a></li>
+      <li><a href="../Links.html" rel="nofollow">Links</a></li>
+    </ul>
+  </li>
+  <li>How-To
+    <ul>
+      <li><a href="wireguard.html" rel="nofollow">Wireguard</a></li>
+      <li><a href="openvpn.html" rel="nofollow">Openvpn</a></li>
+      <li><a href="networksettings.html" rel="nofollow">Universal Network Requirements</a></li>
+      <li><a href="IPsec-with-PublicKeys.html" rel="nofollow">IPsec With Public Keys</a></li>
+      <li><a href="tinc.html" rel="nofollow">Tinc</a></li>
+      <li><a href="GRE-on-FreeBSD.html" rel="nofollow">GRE on FreeBSD</a></li>
+      <li><a href="GRE-on-OpenBSD.html" rel="nofollow">GRE on OpenBSD</a></li>
+      <li><a href="IPv6-Multicast.html" rel="nofollow">IPv6 Multicast (PIM-SM)</a></li>
+      <li><a href="multicast.html" rel="nofollow">SSM Multicast</a></li>
+      <li><a href="mpls.html" rel="nofollow">MPLS</a></li>
+      <li><a href="Bird2.html" rel="nofollow">Bird2</a></li>
+      <li><a href="frr.html" rel="nofollow">FRRouting</a></li>
+      <li><a href="OpenBGPD.html" rel="nofollow">OpenBGPD</a></li>
+      <li><a href="mikrotik.html" rel="nofollow">Mikrotik RouterOS</a></li>
+      <li><a href="EdgeOS-Config.html" rel="nofollow">EdgeRouter</a></li>
+      <li><a href="Static-routes-on-Windows.html" rel="nofollow">Static routes on Windows</a></li>
+      <li><a href="vyos1.4.html" rel="nofollow">VyOS</a></li>
+      <li><a href="nixos.html" rel="nofollow">NixOS</a></li>
+      <li><a href="GeoFeed.html" rel="nofollow">GeoFeed</a></li>
+      <li><a href="Telephony-Asterisk.html" rel="nofollow">Telephony (Asterisk)</a></li>
+    </ul>
+  </li>
+  <li>Services
+    <ul>
+      <li><a href="../services/IRC.html" rel="nofollow">IRC</a></li>
+      <li><a href="../services/Whois.html" rel="nofollow">Whois registry</a></li>
+      <li><a href="../services/dns/Overview.html" rel="nofollow">DNS</a></li>
+      <li><a href="../services/RPKI.html" rel="nofollow">ROA + RPKI</a></li>
+      <li><a href="../services/exchanges/IX-Collection.html" rel="nofollow">IX Collection</a></li>
+      <li><a href="../services/Clearnet-Domains.html" rel="nofollow">Public DNS</a></li>
+      <li><a href="../services/Looking-Glasses.html" rel="nofollow">Looking Glasses</a></li>
+      <li><a href="../services/Pingables.html" rel="nofollow">Pingables</a></li>
+      <li><a href="../services/Automatic-Peering.html" rel="nofollow">Automatic Peering</a></li>
+      <li><a href="../services/Distributed-Wiki.html" rel="nofollow">Distributed Wiki</a></li>
+      <li><a href="../services/ca/Certificate-Authority.html" rel="nofollow">Certificate Authority</a></li>
+      <li><a href="../services/Route-Collector.html" rel="nofollow">Route Collector</a></li>
+    </ul>
+  </li>
+  <li>Internal
+    <ul>
+      <li><a href="../internal/Internal-Services.html" rel="nofollow">Internal services</a></li>
+      <li><a href="../internal/APIs.html" rel="nofollow">APIs</a></li>
+      <li><a href="../internal/ShowAndTell.html" rel="nofollow">Show and Tell</a></li>
+    </ul>
+  </li>
+  <li>External Tools
+    <ul>
+      <li><a href="https://paste.dn42.us/" rel="nofollow">Paste Board</a></li>
+      <li><a href="https://git.dn42.dev/" rel="nofollow">Git Repositories</a></li>
+      <li><a href="https://git.dn42.dev/dn42/registry" rel="nofollow">Registry</a></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  <div id="wiki-footer" class="gollum-markdown-content my-2">
+	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
+	      <table>
+  <tbody>
+    <tr>
+      <td>Hosted by: <a href="mailto:dn42@burble.com" rel="nofollow">BURBLE-MNT</a>, <a href="mailto:nurtic-vibe@grmml.net" rel="nofollow">GRMML-MNT</a>, <a href="mailto:xuu@dn42.us" rel="nofollow">XUU-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:lare@lare.cc" rel="nofollow">LARE-MNT</a>, <a href="mailto:danny@saru.moe" rel="nofollow">SARU-MNT</a>, <a href="mailto:androw95220@gmail.com" rel="nofollow">ANDROW-MNT</a>, <a href="https://iedon.net/post/24" rel="nofollow">IEDON-MNT</a>, <a href="mailto:janeric@ortgies.it" rel="nofollow">JAN-MNT</a>, <a href="mailto:sess@sess.dn42" rel="nofollow">SESS-MNT</a>, <a href="mailto:nedifinita@ik.me" rel="nofollow">NEDIFINITA-MNT</a>
+</td>
+      <td>Accessible via: <a href="https://wiki.dn42/" rel="nofollow">dn42</a>, <a href="https://dn42.dev/" rel="nofollow">dn42.dev</a>, <a href="https://dn42.eu/" rel="nofollow">dn42.eu</a>, <a href="https://wiki.dn42.us/" rel="nofollow">wiki.dn42.us</a>, <a href="https://dn42.de/" rel="nofollow">dn42.de</a> (IPv6-only), <a href="https://dn42.cc/" rel="nofollow">dn42.cc</a> (wiki-ng), <a href="https://dn42.wiki/" rel="nofollow">dn42.wiki</a>, <a href="https://dn42.pp.ua/" rel="nofollow">dn42.pp.ua</a>, <a href="https://dn42.jp/" rel="nofollow">dn42.jp</a> (wiki-go), <a href="https://dn42.net/" rel="nofollow">dn42.net</a>, <a href="https://dn42.li/" rel="nofollow">dn42.li</a> (wiki-go), <a href="https://dn42.app/" rel="nofollow">dn42.app</a>
+</td>
+    </tr>
+  </tbody>
+</table>
+
+	    </div>
+	  </div>
+
+
+	</div>
+
+
+	<div id="footer" class="pt-4">
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/Talos-Linux.md">When was this page last modified?</a></p>
+	</div>
+
+
+</div>
+
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/Talos-Linux.md">
+  <input type="hidden" name="rename"/>
+  <input type="hidden" name="message"/>
+</form>
+
+</div>
+</div>
+</body>
+</html>
