@@ -178,7 +178,198 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <p>To quote from <a href="https://frrouting.org/">https://frrouting.org/</a>:</p>
+
+<blockquote>
+  <p>FRRouting (FRR) is a free and open source Internet routing protocol suite for Linux and Unix platforms. It implements BGP, OSPF, RIP, IS-IS, PIM, LDP, BFD, Babel, PBR, OpenFabric and VRRP, with alpha support for EIGRP and NHRP.</p>
+</blockquote>
+
+<p>It features a similar configuration style to Cisco IOS.</p>
+
+<h3><a class="anchor" id="installation" href="#installation"></a>Installation</h3>
+<p>Install the <code>frr</code> and <code>frr-pythontools</code> package on your favourite Linux/BSD distribution. For BGP RPKI support, also install <code>frr-rpki</code>. <em>Make sure you are using FRR version 8.5 or greater for IPv6 link local peerings.</em></p>
+
+<ul>
+  <li>More installation options: <a href="https://docs.frrouting.org/en/latest/installation.html">https://docs.frrouting.org/en/latest/installation.html</a>
+</li>
+  <li>releases: <a href="https://frrouting.org/release/">https://frrouting.org/release/</a>
+</li>
+</ul>
+
+<p>If your distribution doesn't have the latest FRR version, check the releases page. FRR supplies Debian packages, RPM packages and Snaps.</p>
+
+<h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
+
+<p>Important cofiguration files:</p>
+<ul>
+  <li>
+<code>/etc/frr/daemons</code>: daemons that will be started</li>
+  <li>
+<code>/etc/frr/vtysh.conf</code>: configuration for the VTY shell</li>
+  <li>
+<code>/etc/frr/frr.conf</code>: configuration for the daemons</li>
+  <li>
+<code>/etc/frr/${DAEMON}.conf</code>: configuration for a single daemon (deprecated)</li>
+</ul>
+
+<p>It this guide, only BGP will be set up using the shared <code>/etc/frr/frr.conf</code>.</p>
+
+<h3><a class="anchor" id="daemons" href="#daemons"></a>Daemons</h3>
+
+<p>First, setup <code>/etc/frr/daemons</code>. As stated previously. this file specifies which daemons will be started.</p>
+
+<pre class="highlight"><code><span class="gd">--- /etc/frr/daemons
+</span><span class="gi">+++ /etc/frr/daemons
+</span><span class="p">@@ -14,7 +14,7 @@</span>
+ #
+ # The watchfrr, zebra and staticd daemons are always started.
+ #
+<span class="gd">-bgpd=no
+</span><span class="gi">+bgpd=yes
+</span> ospfd=no
+ ospf6d=no
+ ripd=no</code></pre>
+
+<h3><a class="anchor" id="vty-shell" href="#vty-shell"></a>VTY shell</h3>
+
+<p>To use the VTY shell, <code>/etc/frr/vtysh.conf</code> needs to be set up. <em>The <code>hostname</code> and <code>banner motd</code> also need to be entered there manually to be persistant.</em></p>
+
+<pre class="highlight"><code>service integrated-vtysh-config</code></pre>
+
+<p>Unprivileged users need to be in the <code>frrvty</code> group to use <code>vtysh</code>.</p>
+
+<p>The VTY shell can be used to interact with running daemons and configure them. Changes made in the VTY shell can be written to <code>/etc/frr/frr.conf</code> using the <code>write</code> command. To enter configuration mode use the <code>configure</code> command. To get information about the available commands, press <code>?</code>.</p>
+
+<h3><a class="anchor" id="zebra" href="#zebra"></a>Zebra</h3>
+
+<p>Before configuring BGP, a few other things need to be set up. First, create a <a href="https://docs.frrouting.org/en/latest/filter.html#ip-prefix-list">prefix-list</a> for the dn42 prefixes. That will be used to filter out non-dn42 routes to be announced to BGP. For that, open <code>/etc/frr/frr.conf</code> or <code>vtysh</code> in configuration mode and add:</p>
+
+<pre class="highlight"><code>ip prefix-list dn42 seq 1 deny 172.22.166.0/24 le 32
+ip prefix-list dn42 seq 1001 permit 172.20.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1002 permit 172.21.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1003 permit 172.22.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1004 permit 172.23.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1100 permit 172.20.0.0/14 ge 21 le 29
+ip prefix-list dn42 seq 2001 permit 10.100.0.0/14 le 32
+ip prefix-list dn42 seq 2002 permit 10.127.0.0/16 le 32
+ip prefix-list dn42 seq 2003 permit 10.0.0.0/8 ge 15 le 24
+ip prefix-list dn42 seq 3001 permit 172.31.0.0/16 le 32
+ip prefix-list dn42 seq 9999 deny 0.0.0.0/0 le 32
+!
+ipv6 prefix-list dn42v6 seq 1001 permit fd00::/8 ge 44 le 64
+ipv6 prefix-list dn42v6 seq 9999 deny ::/0 le 128</code></pre>
+
+<p>This prefix list can be created yourself by following the instructions for Quagga in the <code>data/filter.txt</code> and <code>data/filter6.txt</code> files from the registry.</p>
+
+<p>Next create a <a href="https://docs.frrouting.org/en/latest/routemap.html">route-map</a>, which will be used for doing the actual filtering later.</p>
+
+<pre class="highlight"><code>route-map dn42 permit 5
+ match ip address prefix-list dn42
+ set src &lt;IPv4 address of the node&gt;
+exit
+!
+route-map dn42v6 permit 5
+ match ipv6 address prefix-list dn42v6
+ set src &lt;IPv6 address of the node&gt;
+exit</code></pre>
+
+<h3><a class="anchor" id="bgp" href="#bgp"></a>BGP</h3>
+
+<p>With the configuration of the daemons file and Zebra done, BGP can now be configured.</p>
+
+<pre class="highlight"><code>router bgp &lt;AS of the network&gt;
+ neighbor &lt;IPv4 peer address&gt; remote-as &lt;Peer AS&gt;
+ neighbor &lt;IPv6 peer address&gt; remote-as &lt;Peer AS&gt;
+ ! In case an IPv6 link local address is used to peer
+ neighbor &lt;IPv6 peer address&gt; interface &lt;Peer interface&gt;
+ !
+ address-family ipv4 unicast
+  network &lt;Your IPv4 subnet&gt;
+  neighbor &lt;IPv4 peer address&gt; activate
+  neighbor &lt;IPv4 peer address&gt; route-map dn42 in
+  neighbor &lt;IPv4 peer address&gt; route-map dn42 out
+ exit
+ !
+ address-family ipv6 unicast
+  network &lt;Your IPv6 subnet&gt;
+  neighbor &lt;IPv6 peer address&gt; activate
+  neighbor &lt;IPv6 peer address&gt; route-map dn42v6 in
+  neighbor &lt;IPv6 peer address&gt; route-map dn42v6 out
+ exit
+exit</code></pre>
+
+<p><strong>Note</strong>: to advertise your prefixes, you will also have to have the full prefix assigned to an interface on the system.</p>
+
+<p>With everything configured, the BGP session should come up. In the normal VTY shell mode the status of BGP peerings can be checked using the <code>show bgp summary</code> command.</p>
+
+<h3><a class="anchor" id="complete-configuration-example" href="#complete-configuration-example"></a>Complete configuration example</h3>
+
+<pre class="highlight"><code>router bgp &lt;Your AS here&gt;
+ neighbor &lt;Peer IPv4&gt; remote-as &lt;Peer AS&gt;
+ neighbor &lt;Peer IPv6&gt; remote-as &lt;Peer AS&gt;
+ ! In case an IPv6 link local address is used to peer
+ neighbor &lt;Peer IPv6&gt; interface &lt;Peer interface&gt;
+ !
+ address-family ipv4 unicast
+  network &lt;Your IPv4 subnet&gt;
+  neighbor &lt;IPv4 peer address&gt; activate
+  neighbor &lt;IPv4 peer address&gt; route-map dn42 in
+  neighbor &lt;IPv4 peer address&gt; route-map dn42 out
+ exit
+ !
+ address-family ipv6 unicast
+  network &lt;Your IPv6 subnet&gt;
+  neighbor &lt;IPv6 peer address&gt; activate
+  neighbor &lt;IPv6 peer address&gt; route-map dn42v6 in
+  neighbor &lt;IPv6 peer address&gt; route-map dn42v6 out
+ exit
+exit
+!
+ip prefix-list dn42 seq 1 deny 172.22.166.0/24 le 32
+ip prefix-list dn42 seq 1001 permit 172.20.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1002 permit 172.21.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1003 permit 172.22.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1004 permit 172.23.0.0/24 ge 28 le 32
+ip prefix-list dn42 seq 1100 permit 172.20.0.0/14 ge 21 le 29
+ip prefix-list dn42 seq 2001 permit 10.100.0.0/14 le 32
+ip prefix-list dn42 seq 2002 permit 10.127.0.0/16 le 32
+ip prefix-list dn42 seq 2003 permit 10.0.0.0/8 ge 15 le 24
+ip prefix-list dn42 seq 3001 permit 172.31.0.0/16 le 32
+ip prefix-list dn42 seq 9999 deny 0.0.0.0/0 le 32
+!
+ipv6 prefix-list dn42v6 seq 1001 permit fd00::/8 ge 44 le 64
+ipv6 prefix-list dn42v6 seq 9999 deny ::/0 le 128
+!
+route-map dn42 permit 5
+ match ip address prefix-list dn42
+ set src &lt;IPv4 address of the node&gt;
+exit
+!
+route-map dn42v6 permit 5
+ match ipv6 address prefix-list dn42v6
+ set src &lt;IPv6 address of the node&gt;
+exit</code></pre>
+
+<h2><a class="anchor" id="further-reading" href="#further-reading"></a>Further reading</h2>
+
+<h3><a class="anchor" id="general-things" href="#general-things"></a>General things</h3>
+
+<ul>
+  <li>FRR documentation: <a href="https://docs.frrouting.org/en/latest">https://docs.frrouting.org/en/latest</a>
+</li>
+  <li>FRR source code: <a href="https://github.com/frrouting/frr">https://github.com/frrouting/frr</a>
+</li>
+</ul>
+
+<h3><a class="anchor" id="configuration-tipps" href="#configuration-tipps"></a>Configuration tipps</h3>
+
+<ul>
+  <li>Use <a href="https://docs.frrouting.org/en/latest/bgp.html#peer-groups">peer groups</a> (<em>Strongly recommended to limit the work neede to add new peers or change general configuration for may peers.</em>)</li>
+  <li>
+<code>tab</code> and <code>?</code> are your best friends in the VTY shell</li>
+  <li>Use <code>find REGEX</code> in the VTY shell to find certain commands</li>
+</ul>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
