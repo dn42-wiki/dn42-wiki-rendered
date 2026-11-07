@@ -178,7 +178,641 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        <h1><a class="anchor" id="vyos-1-5-x-circinus" href="#vyos-1-5-x-circinus"></a>VyOS 1.5.x circinus</h1>
+
+<p>VyOS is an open source software router. It is feature rich and supports
+multiple deployment options such as physical hardware (old PCs) or a VPC/VM.</p>
+
+<p>VyOS offers three release channels:</p>
+
+<ul>
+  <li>
+<strong>Rolling release</strong> – bleeding-edge nightly builds with all the latest
+features (including WireGuard), but no stability guarantees: anything may
+change and experimental features can be added or removed at any time. Best
+for development and testing only.</li>
+  <li>
+<strong>VyOS Stream</strong> – a quarterly technology-preview / quality-gate on the way
+to the 1.5 (circinus) LTS. It carries most of the upcoming LTS features but
+is considerably more stable than the rolling release, since features are
+only backported once their design is settled. Stream images are named after
+their release year and month, e.g. <code>vyos-2026.03-generic-amd64.iso</code>.</li>
+  <li>
+<strong>LTS</strong> – the stable long-term-support release, available to subscribers
+(or via the no-cost subscription for those who qualify, or by building from
+source).</li>
+</ul>
+
+<p>This guide was written and tested on <strong>VyOS Stream (circinus), version
+2026.03</strong>.</p>
+
+<p>Rolling images: <a href="https://vyos.net/get/nightly-builds/">https://vyos.net/get/nightly-builds/</a><br />
+VyOS Stream images: <a href="https://vyos.net/get/stream/">https://vyos.net/get/stream/</a></p>
+
+<p>This guide uses the following example values throughout. Replace the
+<strong>operator-assigned</strong> ones with your own DN42 registry allocation; the
+<strong>DN42-wide</strong> ranges are fixed and must be left as-is.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Example value</th>
+      <th>Meaning</th>
+      <th>Change it?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>4242421234</code></td>
+      <td>
+<strong>Your</strong> ASN</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td><code>4242424242</code></td>
+      <td>
+<strong>Your peer's</strong> ASN</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td><code>172.20.20.0/27</code></td>
+      <td>
+<strong>Your assigned IPv4</strong> (<code>inetnum</code>)</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td><code>fd88:9deb:a69e::/48</code></td>
+      <td>
+<strong>Your assigned IPv6</strong> (<code>inet6num</code>)</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>
+<code>10.0.0.0/8</code>, <code>172.20.0.0/14</code>, <code>172.31.0.0/16</code>
+</td>
+      <td>Whole DN42 IPv4 space</td>
+      <td>No, leave as-is</td>
+    </tr>
+    <tr>
+      <td><code>fd00::/8</code></td>
+      <td>Whole DN42 IPv6 space</td>
+      <td>No, leave as-is</td>
+    </tr>
+    <tr>
+      <td>
+<code>172.20.0.53</code>, <code>172.23.0.53</code>
+</td>
+      <td>DN42 recursive resolvers</td>
+      <td>No, leave as-is</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2><a class="anchor" id="firewall" href="#firewall"></a>Firewall</h2>
+
+<h3><a class="anchor" id="firewall-baseline-stateful-global" href="#firewall-baseline-stateful-global"></a>Firewall Baseline (stateful global)</h3>
+
+<p>By default, VyOS performs <strong>stateless</strong> filtering: with no ruleset nothing is filtered, and once a drop-by-default ruleset is applied, return traffic of established sessions is <strong>not</strong> allowed back automatically. We enable stateful inspection globally so we don't have to repeat established/related rules in every ruleset.</p>
+
+<pre class="highlight"><code><span class="nb">set </span>firewall global-options state-policy established action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall global-options state-policy related action <span class="s1">'accept'</span></code></pre>
+
+<h3><a class="anchor" id="edge-accept-invalid" href="#edge-accept-invalid"></a>Edge: accept invalid</h3>
+
+<p>We also accept <code>invalid</code> packets on our network's edge. This should <strong>not</strong> become common practice elsewhere. It is specific to a DN42 BGP edge, where conntrack-untracked traffic (including BGP) can otherwise be wrongly classified as <code>invalid</code> and dropped.</p>
+
+<pre class="highlight"><code><span class="nb">set </span>firewall global-options state-policy invalid action <span class="s1">'accept'</span></code></pre>
+
+<h3><a class="anchor" id="per-wireguard-interface-rulesets" href="#per-wireguard-interface-rulesets"></a>Per-WireGuard-interface rulesets</h3>
+
+<p>These create <strong>in</strong> (transit) and <strong>local</strong> (to-the-router) baseline templates to be applied to every WireGuard interface facing a peer.</p>
+
+<p>Only the two <code>My-Assigned-Space-*</code> lines need editing to match your own registry prefixes; the <code>Allowed-Transit-*</code> ranges are the whole of DN42 and stay as-is.</p>
+
+<pre class="highlight"><code><span class="c"># --- Groups v4 ---</span>
+<span class="nb">set </span>firewall group network-group Allowed-Transit-v4 network <span class="s1">'10.0.0.0/8'</span>
+<span class="nb">set </span>firewall group network-group Allowed-Transit-v4 network <span class="s1">'172.20.0.0/14'</span>
+<span class="nb">set </span>firewall group network-group Allowed-Transit-v4 network <span class="s1">'172.31.0.0/16'</span>
+<span class="nb">set </span>firewall group network-group My-Assigned-Space-v4 network <span class="s1">'172.20.20.0/27'</span>
+
+<span class="c"># --- Groups v6 ---</span>
+<span class="nb">set </span>firewall group ipv6-network-group Allowed-Transit-v6 network <span class="s1">'fd00::/8'</span>
+<span class="nb">set </span>firewall group ipv6-network-group My-Assigned-Space-v6 network <span class="s1">'fd88:9deb:a69e::/48'</span>
+
+<span class="c"># --- Inbound / transit v4 ---</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 default-action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 default-log
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 rule 68 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 rule 68 description <span class="s1">'Block Traffic to Operator Assigned IP Space'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 rule 68 destination group network-group <span class="s1">'My-Assigned-Space-v4'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 rule 68 log
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 rule 70 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 rule 70 description <span class="s1">'Allow Peer Transit'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 rule 70 destination group network-group <span class="s1">'Allowed-Transit-v4'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 rule 70 <span class="nb">source </span>group network-group <span class="s1">'Allowed-Transit-v4'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 rule 99 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 rule 99 description <span class="s1">'Black Hole'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_In_v4 rule 99 log
+
+<span class="c"># --- Inbound / transit v6 ---</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 default-action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 default-log
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 rule 68 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 rule 68 description <span class="s1">'Block Traffic to Operator Assigned IP Space'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 rule 68 destination group network-group <span class="s1">'My-Assigned-Space-v6'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 rule 68 log
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 rule 70 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 rule 70 description <span class="s1">'Allow Peer Transit'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 rule 70 destination group network-group <span class="s1">'Allowed-Transit-v6'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 rule 70 <span class="nb">source </span>group network-group <span class="s1">'Allowed-Transit-v6'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 rule 99 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 rule 99 description <span class="s1">'Black Hole'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_In_v6 rule 99 log
+
+<span class="c"># --- Local / to the router v4 ---</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_Local_v4 default-action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_Local_v4 rule 50 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_Local_v4 rule 50 protocol <span class="s1">'icmp'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_Local_v4 rule 61 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_Local_v4 rule 61 description <span class="s1">'Allow BGP'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_Local_v4 rule 61 destination port <span class="s1">'179'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_Local_v4 rule 61 protocol <span class="s1">'tcp'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_Local_v4 rule 99 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_Local_v4 rule 99 description <span class="s1">'Black Hole'</span>
+<span class="nb">set </span>firewall ipv4 name Tunnels_Local_v4 rule 99 log
+
+<span class="c"># --- Local / to the router v6 ---</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_Local_v6 default-action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_Local_v6 rule 50 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_Local_v6 rule 50 protocol <span class="s1">'ipv6-icmp'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_Local_v6 rule 61 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_Local_v6 rule 61 description <span class="s1">'Allow BGP'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_Local_v6 rule 61 destination port <span class="s1">'179'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_Local_v6 rule 61 protocol <span class="s1">'tcp'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_Local_v6 rule 99 action <span class="s1">'drop'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_Local_v6 rule 99 description <span class="s1">'Black Hole'</span>
+<span class="nb">set </span>firewall ipv6 name Tunnels_Local_v6 rule 99 log</code></pre>
+
+<h2><a class="anchor" id="wireguard" href="#wireguard"></a>WireGuard</h2>
+
+<h3><a class="anchor" id="setup-keys" href="#setup-keys"></a>Setup Keys</h3>
+
+<p>You can generate one keypair and reuse it for every WireGuard peering, or generate a different one per peering.</p>
+
+<pre class="highlight"><code>generate pki wireguard key-pair
+
+<span class="c"># Output give public keys like: UcqcZsJvq1MlYgo3gObjaJ8FH+N7wkfV+EH3YDAMyRE=</span></code></pre>
+
+<p>To generate <strong>and install</strong> a unique keypair on an interface in one shot (from <code>configure</code> mode, top level):</p>
+
+<p>A WireGuard interface name on VyOS must be <code>wg</code> followed by digits only (letters are rejected, so <code>wgpeer</code> won't work). The name has no protocol meaning, but since interface names must be unique, the DN42 convention is to name each tunnel after the peer's ASN (for example <code>wg4242424242</code>, or a short form). That way the name tells you who's on the other end. Don't name a tunnel after your own ASN: it would collide the moment you add a second peer and wouldn't identify anything.</p>
+
+<pre class="highlight"><code>run generate pki wireguard key-pair <span class="nb">install </span>interface wg4242
+<span class="c"># 1 value(s) installed. Use "compare" to see pending changes, and "commit" to apply.</span>
+<span class="c"># Corresponding public-key to use on peer system is: 'UcqcZsJvq1MlYgo3gObjaJ8FH+N7wkfV+EH3YDAMyRE='</span></code></pre>
+
+<p>To retrieve the public key later (op-mode):</p>
+
+<pre class="highlight"><code>run show interfaces wireguard wg4242 public-key
+
+<span class="c"># Output example:</span>
+<span class="c"># UcqcZsJvq1MlYgo3gObjaJ8FH+N7wkfV+EH3YDAMyRE=</span></code></pre>
+
+<h3><a class="anchor" id="configure-the-peer-s-tunnel" href="#configure-the-peer-s-tunnel"></a>Configure the peer's tunnel</h3>
+
+<p>This example assumes your ASN is <code>4242421234</code> and your peer's ASN is <code>4242424242</code>.
+Interface naming follows the DN42 convention <code>wg&lt;peer-ASN-last-4-digits&gt;</code> -&gt; <code>wg4242</code>.</p>
+
+<pre class="highlight"><code><span class="nb">set </span>interfaces wireguard wg4242 description <span class="s1">'AS4242424242 - My Peer'</span>
+
+<span class="c"># DN42 port convention:</span>
+<span class="c">#   - YOUR listen port      = 2 + last 4 digits of your PEER's ASN  -&gt; 2 + 4242 = 24242</span>
+<span class="c">#   - the port you point to = 2 + last 4 digits of YOUR  ASN        -&gt; 2 + 1234 = 21234</span>
+<span class="nb">set </span>interfaces wireguard wg4242 port <span class="s1">'24242'</span>
+
+<span class="c"># NOTE: the private key is already installed by</span>
+<span class="c">#   'run generate pki wireguard key-pair install interface wg4242'</span>
+<span class="c"># Do NOT re-set it here, or you will overwrite your real key.</span>
+
+<span class="c"># Your link-local IPv6 (the one you give to the auto-peering portal).</span>
+<span class="c"># Arbitrary, but must be inside fe80::/64, e.g. derived from your ASN.</span>
+<span class="nb">set </span>interfaces wireguard wg4242 address <span class="s1">'fe80::1234/64'</span>
+
+<span class="c"># (No IPv4 on the tunnel: with extended-next-hop enabled, your DN42 IPv4</span>
+<span class="c">#  lives on the LAN interface instead, anchored by a blackhole route,</span>
+<span class="c">#  see the BGP prerequisites section below.)</span>
+
+<span class="c"># Your peer's clearnet endpoint, must be an IP literal, not a DNS name.</span>
+<span class="c"># Resolve the peer's FQDN first and use the resulting IP.</span>
+<span class="nb">set </span>interfaces wireguard wg4242 peer mypeer address <span class="s1">'&lt;peer endpoint IP&gt;'</span>
+<span class="nb">set </span>interfaces wireguard wg4242 peer mypeer port <span class="s1">'21234'</span>
+
+<span class="c"># Allow everything and rely on the firewall + BGP for control</span>
+<span class="nb">set </span>interfaces wireguard wg4242 peer mypeer allowed-ips <span class="s1">'0.0.0.0/0'</span>
+<span class="nb">set </span>interfaces wireguard wg4242 peer mypeer allowed-ips <span class="s1">'::/0'</span>
+
+<span class="c"># Your peer's WireGuard public key (from the auto-peering result)</span>
+<span class="nb">set </span>interfaces wireguard wg4242 peer mypeer public-key <span class="s1">'&lt;peer wireguard public key&gt;'</span>
+
+<span class="c"># Helps the BGP session come up reliably</span>
+<span class="nb">set </span>interfaces wireguard wg4242 peer mypeer persistent-keepalive <span class="s1">'60'</span>
+
+<span class="c"># Remove the auto-generated link-local so the BGP session sources from YOUR</span>
+<span class="c"># chosen link-local only. With two link-locals on the interface, BGP may source</span>
+<span class="c"># from the wrong one and the peer won't recognize the session.</span>
+<span class="nb">set </span>interfaces wireguard wg4242 ipv6 address no-default-link-local</code></pre>
+
+<p><strong>Placeholders to replace with your own values:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Placeholder</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>wg4242</code></td>
+      <td>interface name = <code>wg</code> + your peer's last 4 ASN digits</td>
+    </tr>
+    <tr>
+      <td><code>24242</code></td>
+      <td>your listen port = <code>2</code> + peer's last 4 ASN digits</td>
+    </tr>
+    <tr>
+      <td><code>fe80::1234/64</code></td>
+      <td>your link-local (the one you gave the portal)</td>
+    </tr>
+    <tr>
+      <td><code>&lt;peer endpoint IP&gt;</code></td>
+      <td>peer's clearnet endpoint, as an IP literal</td>
+    </tr>
+    <tr>
+      <td><code>21234</code></td>
+      <td>peer's port = <code>2</code> + your last 4 ASN digits</td>
+    </tr>
+    <tr>
+      <td><code>&lt;peer wireguard public key&gt;</code></td>
+      <td>from the auto-peering result</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><a class="anchor" id="apply-the-firewall-rulesets-to-the-tunnel" href="#apply-the-firewall-rulesets-to-the-tunnel"></a>Apply the firewall rulesets to the tunnel</h3>
+
+<pre class="highlight"><code><span class="c"># Group every DN42 peer tunnel together (add future wgXXXX interfaces here)</span>
+<span class="nb">set </span>firewall group interface-group DN42-Peers interface <span class="s1">'wg4242'</span>
+
+<span class="c"># Transit traffic (forward hook) -&gt; Tunnels_In_*</span>
+<span class="nb">set </span>firewall ipv4 forward filter rule 10 description <span class="s1">'DN42 peers transit'</span>
+<span class="nb">set </span>firewall ipv4 forward filter rule 10 action <span class="s1">'jump'</span>
+<span class="nb">set </span>firewall ipv4 forward filter rule 10 inbound-interface group <span class="s1">'DN42-Peers'</span>
+<span class="nb">set </span>firewall ipv4 forward filter rule 10 jump-target <span class="s1">'Tunnels_In_v4'</span>
+<span class="nb">set </span>firewall ipv6 forward filter rule 10 description <span class="s1">'DN42 peers transit'</span>
+<span class="nb">set </span>firewall ipv6 forward filter rule 10 action <span class="s1">'jump'</span>
+<span class="nb">set </span>firewall ipv6 forward filter rule 10 inbound-interface group <span class="s1">'DN42-Peers'</span>
+<span class="nb">set </span>firewall ipv6 forward filter rule 10 jump-target <span class="s1">'Tunnels_In_v6'</span>
+
+<span class="c"># Traffic to the router itself, e.g. BGP (input hook) -&gt; Tunnels_Local_*</span>
+<span class="nb">set </span>firewall ipv4 input filter rule 10 description <span class="s1">'DN42 peers to router'</span>
+<span class="nb">set </span>firewall ipv4 input filter rule 10 action <span class="s1">'jump'</span>
+<span class="nb">set </span>firewall ipv4 input filter rule 10 inbound-interface group <span class="s1">'DN42-Peers'</span>
+<span class="nb">set </span>firewall ipv4 input filter rule 10 jump-target <span class="s1">'Tunnels_Local_v4'</span>
+<span class="nb">set </span>firewall ipv6 input filter rule 10 description <span class="s1">'DN42 peers to router'</span>
+<span class="nb">set </span>firewall ipv6 input filter rule 10 action <span class="s1">'jump'</span>
+<span class="nb">set </span>firewall ipv6 input filter rule 10 inbound-interface group <span class="s1">'DN42-Peers'</span>
+<span class="nb">set </span>firewall ipv6 input filter rule 10 jump-target <span class="s1">'Tunnels_Local_v6'</span></code></pre>
+
+<p>You will also want a plain accept for your own LAN, both for traffic transiting the router and for traffic to the router itself:</p>
+
+<pre class="highlight"><code><span class="nb">set </span>firewall ipv4 forward filter rule 20 description <span class="s1">'LAN forward'</span>
+<span class="nb">set </span>firewall ipv4 forward filter rule 20 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv4 forward filter rule 20 inbound-interface name <span class="s1">'eth2'</span>
+<span class="nb">set </span>firewall ipv4 input filter rule 20 description <span class="s1">'LAN to router'</span>
+<span class="nb">set </span>firewall ipv4 input filter rule 20 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv4 input filter rule 20 inbound-interface name <span class="s1">'eth2'</span>
+<span class="nb">set </span>firewall ipv6 forward filter rule 20 description <span class="s1">'LAN forward v6'</span>
+<span class="nb">set </span>firewall ipv6 forward filter rule 20 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv6 forward filter rule 20 inbound-interface name <span class="s1">'eth2'</span>
+<span class="nb">set </span>firewall ipv6 input filter rule 20 description <span class="s1">'LAN to router v6'</span>
+<span class="nb">set </span>firewall ipv6 input filter rule 20 action <span class="s1">'accept'</span>
+<span class="nb">set </span>firewall ipv6 input filter rule 20 inbound-interface name <span class="s1">'eth2'</span></code></pre>
+
+<h2><a class="anchor" id="bgp" href="#bgp"></a>BGP</h2>
+
+<h3><a class="anchor" id="prerequisites-anchor-your-prefixes-blackhole-lan-address" href="#prerequisites-anchor-your-prefixes-blackhole-lan-address"></a>Prerequisites: anchor your prefixes (blackhole + LAN address)</h3>
+
+<p>BGP only advertises a prefix from a <code>network</code> statement if a route of the <strong>exact
+same length</strong> already exists in the routing table. Instead of a dummy interface,
+we anchor each registry prefix with a static <strong>blackhole</strong> route. A blackhole
+route is always present regardless of interface or tunnel state, so BGP keeps
+advertising your aggregate even when a link flaps.</p>
+
+<p>Your actual DN42 addresses live on your <strong>LAN-facing interface</strong>, where your
+clients and services sit. Traffic to real hosts follows the connected route;
+traffic to unused addresses in the range falls through to the blackhole and is
+dropped, so you never leak or loop packets for hosts that don't exist.</p>
+
+<pre class="highlight"><code><span class="c"># DN42 addresses on the LAN interface (adjust eth2 to your LAN NIC).</span>
+<span class="c"># The /27 gives you the IPv4 LAN; the /64 is one segment carved from your /48.</span>
+<span class="nb">set </span>interfaces ethernet eth2 description <span class="s1">'LAN services DN42'</span>
+<span class="nb">set </span>interfaces ethernet eth2 address <span class="s1">'172.20.20.1/27'</span>
+<span class="nb">set </span>interfaces ethernet eth2 address <span class="s1">'fd88:9deb:a69e:1::1/64'</span>
+
+<span class="c"># Always-up aggregate routes so BGP can advertise the exact registry prefixes,</span>
+<span class="c"># independent of any interface or tunnel state.</span>
+<span class="nb">set </span>protocols static route 172.20.20.0/27 blackhole
+<span class="nb">set </span>protocols static route6 fd88:9deb:a69e::/48 blackhole</code></pre>
+
+<p>Here the IPv4 LAN is a <code>/27</code> matching your <code>inetnum</code>, and the IPv6 <code>/48</code>
+blackhole matches your <code>inet6num</code> exactly, which is what the BGP <code>network</code>
+statements need. The <code>/64</code> on the LAN is just one usable segment of that <code>/48</code>
+for client autoconfiguration.</p>
+
+<p>Verify:</p>
+
+<pre class="highlight"><code>run show interfaces ethernet eth2
+run show ip route 172.20.20.0/27
+run show ipv6 route fd88:9deb:a69e::/48</code></pre>
+
+<h3><a class="anchor" id="initial-router-setup" href="#initial-router-setup"></a>Initial Router Setup</h3>
+
+<pre class="highlight"><code><span class="c"># Your ASN</span>
+<span class="nb">set </span>protocols bgp system-as <span class="s1">'4242421234'</span>
+
+<span class="c"># Advertise your EXACT registry prefixes (a more-specific subnet may be filtered by peers)</span>
+<span class="nb">set </span>protocols bgp address-family ipv4-unicast network <span class="s1">'172.20.20.0/27'</span>
+<span class="nb">set </span>protocols bgp address-family ipv6-unicast network <span class="s1">'fd88:9deb:a69e::/48'</span>
+
+<span class="c"># Router-id = your lowest DN42 IPv4</span>
+<span class="nb">set </span>protocols bgp parameters router-id <span class="s1">'172.20.20.1'</span></code></pre>
+
+<h3><a class="anchor" id="neighbor-mp-bgp-over-ipv6-link-local-extended-next-hop" href="#neighbor-mp-bgp-over-ipv6-link-local-extended-next-hop"></a>Neighbor: MP-BGP over IPv6 link-local + extended next-hop</h3>
+
+<p>One peer-group carries the address families, the extended-next-hop capability, and <code>remote-as external</code> (every DN42 peer is a different external AS).</p>
+
+<pre class="highlight"><code><span class="c"># Shared peer-group for all DN42 link-local MP-BGP peers</span>
+<span class="nb">set </span>protocols bgp peer-group dn42 remote-as <span class="s1">'external'</span>
+<span class="nb">set </span>protocols bgp peer-group dn42 address-family ipv4-unicast
+<span class="nb">set </span>protocols bgp peer-group dn42 address-family ipv6-unicast
+<span class="nb">set </span>protocols bgp peer-group dn42 capability extended-nexthop
+
+<span class="c"># The peer, addressed on the peer's link-local, scoped to the tunnel interface.</span>
+<span class="c"># Replace fe80::5678 with the link-local your peer's auto-peering portal gave you</span>
+<span class="c"># (this is the PEER's link-local, not yours).</span>
+<span class="nb">set </span>protocols bgp neighbor fe80::5678 interface source-interface <span class="s1">'wg4242'</span>
+<span class="nb">set </span>protocols bgp neighbor fe80::5678 peer-group <span class="s1">'dn42'</span></code></pre>
+
+<p>Address the peer's link-local <strong>explicitly</strong> as shown above. Avoid unnumbered
+peering (<code>neighbor wg4242 interface v6only</code>): unnumbered relies on the peer
+sending IPv6 Router Advertisements to auto-discover its link-local, and some
+peers (for example those running BIRD) do not send them, so the session stays
+<code>Idle</code> and never sends a single packet.</p>
+
+<p>Also, do not add <code>remote-as</code> on the neighbor when the peer-group already sets
+<code>remote-as external</code>; VyOS rejects it with <code>cannot override remote-as of
+peer-group</code>.</p>
+
+<h3><a class="anchor" id="verify" href="#verify"></a>Verify</h3>
+
+<pre class="highlight"><code>run show bgp summary          <span class="c"># both address families</span>
+run show bgp ipv4 summary
+run show bgp ipv6 summary</code></pre>
+
+<p>A healthy session shows a number (received prefixes) under <code>State/PfxRcd</code>, not <code>Connect</code>/<code>Active</code>:</p>
+
+<pre class="highlight"><span class="err">Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+fe80::5678      4 4242424242      1921      1850     1103    0    0 00:00:08         1097     1098 N/A</span></pre>
+
+<p>Once the session is <code>Established</code>, confirm end-to-end routing to DN42. Because the
+router has no DN42 IPv4 on the tunnel, source pings from your DN42 LAN address:</p>
+
+<pre class="highlight"><code>run ping 172.20.0.53 source-address 172.20.20.1 count 3
+run ping fd42:d42:d42:53::1 source-address fd88:9deb:a69e:1::1 count 3</code></pre>
+
+<p>A reply (with <code>ttl</code> &lt; 64, showing it crossed DN42 hops) confirms the extended-next-hop
+is working, IPv4 destinations resolved via an IPv6 next-hop over the tunnel.</p>
+
+<h2><a class="anchor" id="rpki-roa-filtering" href="#rpki-roa-filtering"></a>RPKI / ROA Filtering</h2>
+
+<p>On DN42, RPKI lets your router reject route announcements whose origin AS doesn't match the registry (likely hijacks). You run a small <strong>RTR cache</strong> that downloads the DN42 ROA table, and point VyOS at it.</p>
+
+<p>Cloudflare's GoRTR is archived; DN42 now uses <strong>StayRTR</strong> (<code>rpki/stayrtr</code>), a
+drop-in fork with the same flags, and the ROA file is still published by Burble.
+StayRTR has no <code>-verify</code> flag (GoRTR had one): a stray <code>-verify=false</code> makes the
+container exit immediately (<code>Exited (2)</code>) and just print its help. Valid StayRTR
+args: <code>-cache &lt;url&gt; -checktime=false [-bind :8082]</code>.</p>
+
+<h3><a class="anchor" id="option-a-run-stayrtr-as-a-container-on-vyos" href="#option-a-run-stayrtr-as-a-container-on-vyos"></a>Option A: Run StayRTR as a container on VyOS</h3>
+
+<pre class="highlight"><code><span class="c"># op-mode: pull the image</span>
+run add container image rpki/stayrtr</code></pre>
+
+<pre class="highlight"><code><span class="c"># config-mode: an internal-only network for the cache</span>
+<span class="nb">set </span>container network rpki prefix <span class="s1">'172.16.2.0/24'</span>
+
+<span class="c"># the StayRTR container, note: flags go in `arguments`, not `command`</span>
+<span class="nb">set </span>container name stayrtr image <span class="s1">'rpki/stayrtr'</span>
+<span class="nb">set </span>container name stayrtr arguments <span class="s1">'-cache https://dn42.burble.com/roa/dn42_roa_46.json -checktime=false -bind :8082'</span>
+<span class="nb">set </span>container name stayrtr network rpki address <span class="s1">'172.16.2.10'</span>
+<span class="nb">set </span>container name stayrtr restart <span class="s1">'on-failure'</span></code></pre>
+
+<h3><a class="anchor" id="option-b-run-stayrtr-on-a-separate-host-docker" href="#option-b-run-stayrtr-on-a-separate-host-docker"></a>Option B: Run StayRTR on a separate host (Docker)</h3>
+
+<pre class="highlight"><code>docker run <span class="nt">-d</span> <span class="nt">--name</span> dn42-rpki <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">-p</span> 8082:8082 <span class="se">\</span>
+  rpki/stayrtr <span class="nt">-cache</span> https://dn42.burble.com/roa/dn42_roa_46.json <span class="se">\</span>
+  <span class="nt">-checktime</span><span class="o">=</span><span class="nb">false</span> <span class="nt">-bind</span> :8082</code></pre>
+
+<h3><a class="anchor" id="point-vyos-at-the-cache" href="#point-vyos-at-the-cache"></a>Point VyOS at the cache</h3>
+
+<pre class="highlight"><code><span class="nb">set </span>protocols rpki cache 172.16.2.10 port <span class="s1">'8082'</span>
+<span class="nb">set </span>protocols rpki cache 172.16.2.10 preference <span class="s1">'1'</span></code></pre>
+
+<p><em>(Use the container IP <code>172.16.2.10</code> for Option A, or the separate host's IP for Option B.)</em></p>
+
+<p>Verify the cache is connected and the table is populated:</p>
+
+<pre class="highlight"><code>run show rpki cache-connection
+run show rpki prefix-table</code></pre>
+
+<p>After pointing VyOS at the cache, you may need to force FRR to (re)connect. Otherwise it may stay
+on "No connection" because it gave up while the container was starting:</p>
+
+<pre class="highlight"><code>run reset rpki</code></pre>
+
+<p>Then re-verify:</p>
+
+<pre class="highlight"><code>run show rpki cache-connection      <span class="c"># expect: (connected)</span>
+run show rpki prefix-table          <span class="c"># expect: thousands of entries</span></code></pre>
+
+<h3><a class="anchor" id="filtering-route-map-rpki-dn42-range-sanity-combined" href="#filtering-route-map-rpki-dn42-range-sanity-combined"></a>Filtering route-map (RPKI + DN42 range sanity, combined)</h3>
+
+<p>A single route-map does both jobs: drop RPKI-<code>invalid</code> prefixes <strong>and</strong> only accept prefixes that fall inside DN42's address space (a bogon guard RPKI alone doesn't give you).</p>
+
+<p>The <code>le '32'</code> on IPv4 is deliberate: DN42's recursive resolvers are announced as
+host routes (<code>172.20.0.53/32</code>, <code>172.23.0.53/32</code>). A stricter bound would silently
+drop every <code>/32</code>, so those resolvers never enter your table and DNS later fails
+for no obvious reason. Keep <code>le '32'</code> (and <code>le '64'</code> on IPv6) so host routes are
+accepted.</p>
+
+<pre class="highlight"><code><span class="c"># --- Prefix-lists: DN42's allocated ranges ---</span>
+<span class="nb">set </span>policy prefix-list DN42-v4 rule 10 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy prefix-list DN42-v4 rule 10 prefix <span class="s1">'172.20.0.0/14'</span>
+<span class="nb">set </span>policy prefix-list DN42-v4 rule 10 le <span class="s1">'32'</span>
+<span class="nb">set </span>policy prefix-list DN42-v4 rule 20 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy prefix-list DN42-v4 rule 20 prefix <span class="s1">'10.0.0.0/8'</span>
+<span class="nb">set </span>policy prefix-list DN42-v4 rule 20 le <span class="s1">'32'</span>
+
+<span class="nb">set </span>policy prefix-list6 DN42-v6 rule 10 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy prefix-list6 DN42-v6 rule 10 prefix <span class="s1">'fd00::/8'</span>
+<span class="nb">set </span>policy prefix-list6 DN42-v6 rule 10 le <span class="s1">'64'</span>
+
+<span class="c"># --- One combined filter, used both import and export ---</span>
+<span class="nb">set </span>policy route-map DN42-PEERING rule 5 action <span class="s1">'deny'</span>
+<span class="nb">set </span>policy route-map DN42-PEERING rule 5 description <span class="s1">'Reject RPKI invalid (possible hijack)'</span>
+<span class="nb">set </span>policy route-map DN42-PEERING rule 5 match rpki <span class="s1">'invalid'</span>
+<span class="nb">set </span>policy route-map DN42-PEERING rule 20 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy route-map DN42-PEERING rule 20 description <span class="s1">'Accept DN42 IPv4 ranges'</span>
+<span class="nb">set </span>policy route-map DN42-PEERING rule 20 match ip address prefix-list <span class="s1">'DN42-v4'</span>
+<span class="nb">set </span>policy route-map DN42-PEERING rule 21 action <span class="s1">'permit'</span>
+<span class="nb">set </span>policy route-map DN42-PEERING rule 21 description <span class="s1">'Accept DN42 IPv6 ranges'</span>
+<span class="nb">set </span>policy route-map DN42-PEERING rule 21 match ipv6 address prefix-list <span class="s1">'DN42-v6'</span>
+<span class="nb">set </span>policy route-map DN42-PEERING rule 99 action <span class="s1">'deny'</span>
+<span class="nb">set </span>policy route-map DN42-PEERING rule 99 description <span class="s1">'Drop everything else'</span></code></pre>
+
+<p>The same map works for both address families: a <code>match ip address</code> rule simply
+doesn't match IPv6 routes (and vice-versa), so each AF falls through to its own
+rule. The <code>le '32'</code> / <code>le '64'</code> also caps absurdly long prefixes; tighten or
+loosen to taste.</p>
+
+<h3><a class="anchor" id="apply-the-filter-to-the-peer-group-not-per-neighbor" href="#apply-the-filter-to-the-peer-group-not-per-neighbor"></a>Apply the filter to the peer-group (not per neighbor)</h3>
+
+<p>Because every DN42 peer shares the <code>dn42</code> peer-group, you apply the filter <strong>once</strong> and all peers inherit it:</p>
+
+<pre class="highlight"><code><span class="nb">set </span>protocols bgp peer-group dn42 address-family ipv4-unicast route-map import <span class="s1">'DN42-PEERING'</span>
+<span class="nb">set </span>protocols bgp peer-group dn42 address-family ipv4-unicast route-map <span class="nb">export</span> <span class="s1">'DN42-PEERING'</span>
+<span class="nb">set </span>protocols bgp peer-group dn42 address-family ipv6-unicast route-map import <span class="s1">'DN42-PEERING'</span>
+<span class="nb">set </span>protocols bgp peer-group dn42 address-family ipv6-unicast route-map <span class="nb">export</span> <span class="s1">'DN42-PEERING'</span>
+commit</code></pre>
+
+<h3><a class="anchor" id="apply-verify" href="#apply-verify"></a>Apply &amp; verify</h3>
+
+<p>Route-maps only affect new updates, so refresh the session, then check.</p>
+
+<pre class="highlight"><code>vtysh <span class="nt">-c</span> <span class="s2">"clear bgp * soft"</span>
+show bgp ipv4 summary
+show bgp ipv6 summary
+vtysh <span class="nt">-c</span> <span class="s2">"show bgp ipv4 unicast 172.20.0.0/14 longer-prefixes"</span>   <span class="c"># spot-check learned routes</span></code></pre>
+
+<p>Your <code>State/PfxRcd</code> count may drop slightly after filtering, that's the invalid/out-of-range prefixes being rejected, which is exactly the point.</p>
+
+<p>To inspect what a specific neighbor sent you before filtering (handy when a route
+you expect is missing), enable soft-reconfiguration inbound and look at the
+filtered routes:</p>
+
+<pre class="highlight"><code><span class="nb">set </span>protocols bgp neighbor fe80::5678 address-family ipv4-unicast soft-reconfiguration inbound
+commit</code></pre>
+
+<pre class="highlight"><code>vtysh <span class="nt">-c</span> <span class="s2">"show bgp ipv4 unicast neighbors fe80::5678 filtered-routes"</span></code></pre>
+
+<h2><a class="anchor" id="dns-resolution-resolving-dn42" href="#dns-resolution-resolving-dn42"></a>DNS Resolution (resolving <code>.dn42</code>)</h2>
+
+<p>Once routing works, you'll want to resolve DN42 names like <code>git.dn42</code>. DN42 runs
+recursive resolvers (for example <code>172.20.0.53</code> and <code>172.23.0.53</code>) that also
+resolve the clearnet, so they can serve as your only upstream if you want
+everything to go through DN42.</p>
+
+<p>We run a small DNS forwarder on the router itself. LAN clients query the router,
+and the router forwards to the DN42 resolvers.</p>
+
+<p>Two things to get right, both reflected in the config below:</p>
+
+<p>Queries the router generates itself leave through the WireGuard tunnel, but the
+kernel has no DN42 IPv4 on that interface, so by default it picks your public WAN
+IP as the source. The DN42 resolver then has nowhere to send its reply and the
+query times out. <code>source-address</code> forces the forwarder to source from your DN42
+LAN address.</p>
+
+<p>Use the <strong>global</strong> <code>name-server</code> form, not conditional <code>domain</code> forwarding.
+VyOS turns <code>domain</code> entries into pdns <code>forward-zones=</code> (RD=0), which asks the
+upstream only for what it is authoritative for. The DN42 resolvers are recursive,
+not authoritative for <code>.dn42</code>, so they answer <code>REFUSED</code>, surfaced to the client
+as <code>SERVFAIL</code>. Global <code>name-server</code> entries become <code>forward-zones-recurse</code>
+(RD=1, the <code>+</code> prefix in the generated zone file), which is what recursive
+upstreams expect. Since we want all DNS to go through DN42 anyway, the global
+form is both simpler and correct.</p>
+
+<h3><a class="anchor" id="config" href="#config"></a>Config</h3>
+
+<pre class="highlight"><code><span class="c"># Listen on the router's DN42 LAN address; only the LAN may query us</span>
+<span class="nb">set </span>service dns forwarding listen-address <span class="s1">'172.20.20.1'</span>
+<span class="nb">set </span>service dns forwarding allow-from <span class="s1">'172.20.20.0/27'</span>
+
+<span class="c"># Source outgoing queries from our DN42 address</span>
+<span class="nb">set </span>service dns forwarding source-address <span class="s1">'172.20.20.1'</span>
+
+<span class="c"># Global upstreams = DN42 recursive resolvers (no 'domain' entries).</span>
+<span class="c"># These resolve both .dn42 and the clearnet.</span>
+<span class="nb">set </span>service dns forwarding name-server <span class="s1">'172.20.0.53'</span>
+<span class="nb">set </span>service dns forwarding name-server <span class="s1">'172.23.0.53'</span>
+
+<span class="c"># DN42 resolvers are not DNSSEC-signed to the ICANN root; validation would</span>
+<span class="c"># SERVFAIL .dn42, so turn it off on the forwarder.</span>
+<span class="nb">set </span>service dns forwarding dnssec <span class="s1">'off'</span>
+commit</code></pre>
+
+<h3><a class="anchor" id="verify-1" href="#verify-1"></a>Verify</h3>
+
+<p>From the router, query your own forwarder explicitly (not the system resolver):</p>
+
+<pre class="highlight"><code>dig @172.20.20.1 git.dn42 A      <span class="c"># expect NOERROR + an answer</span>
+dig @172.20.20.1 example.com A   <span class="c"># clearnet must work too</span></code></pre>
+
+<p>If you get <code>SERVFAIL</code>, check the generated zone file: the <code>.dn42</code> upstream must be
+the catch-all <code>+.</code> line (recursive). A separate <code>dn42=</code> line without the <code>+</code>
+prefix means a stray <code>domain</code> entry slipped in and should be removed.</p>
+
+<pre class="highlight"><code><span class="nb">sudo cat</span> /run/pdns-recursor/recursor.forward-zones.conf
+<span class="c"># +.=172.20.0.53:53, 172.23.0.53:53     &lt;- good, recursive</span>
+<span class="c"># dn42=172.20.0.53:53, ...              &lt;- bad, non-recursive, remove the 'domain' entry</span></code></pre>
+
+<p>To confirm the source address is correct, capture an outgoing query; the source
+must be your DN42 address, not your public WAN IP:</p>
+
+<pre class="highlight"><code><span class="nb">sudo </span>tcpdump <span class="nt">-ni</span> any port 53 and host 172.20.0.53
+<span class="c"># 172.20.20.1.xxxxx &gt; 172.20.0.53.53   &lt;- good</span>
+<span class="c"># &lt;public IP&gt;.xxxxx &gt; 172.20.0.53.53   &lt;- bad, source-address not applied</span></code></pre>
+
+<h3><a class="anchor" id="hand-dns-to-lan-clients" href="#hand-dns-to-lan-clients"></a>Hand DNS to LAN clients</h3>
+
+<p>Point your DHCP clients at the forwarder and drop the clearnet resolvers (which
+don't know <code>.dn42</code>):</p>
+
+<pre class="highlight"><code><span class="nb">set </span>service dhcp-server shared-network-name LAN subnet 172.20.20.0/27 option name-server <span class="s1">'172.20.20.1'</span>
+commit</code></pre>
+
+<p>With a single peer, all DNS (clearnet included) now depends on that BGP session
+and the DN42 resolvers. If the peer drops, the LAN loses DNS entirely. Add a
+second peer (and ideally resolvers reachable over different paths) before relying
+on this, or keep one clearnet resolver lower in the list as a fallback, at the
+cost of it not resolving <code>.dn42</code>.</p>
+
+<h2><a class="anchor" id="credits" href="#credits"></a>Credits</h2>
+
+<p>This How-To has to be considered a work-in-progress by <strong>mathys-lopinto</strong>
+The doc was updated with the help of Claude AI.</p>
+
+<p>It's based on the original VyOS How-To made by <strong>Matwolf</strong> and <strong>bri</strong>: <a href="vyos1.4.html">How-To/vyos1.4.x</a>.</p>
+
+<p>The commands in this page have been adapted to be compatible with the new version of VyOS 1.5.x (circinus) and to include configurations for IPv6 (MP-BGP over link-local and extended next-hop).</p>
+
+<p>If you have any questions or suggestions please reach out.</p>
+
+<h2><a class="anchor" id="see-also" href="#see-also"></a>See also</h2>
+
+<p><a href="https://docs.vyos.io/en/latest/configuration/interfaces/wireguard.html">WireGuard</a> and <a href="https://docs.vyos.io/en/latest/configuration/protocols/bgp.html">BGP</a> in the official VyOS documentation.</p>
+
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
 	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
