@@ -351,6 +351,24 @@ in <code>dnsmasq.conf</code>.
           <span class="pi">-</span> <span class="s1">'</span><span class="s">fd42:5d71:219:0:216:3eff:fee8:c215'</span>  <span class="c1"># j.recursive-servers.dn42</span>
           <span class="pi">-</span> <span class="s1">'</span><span class="s">fd42:4242:2601:ac53::53'</span>             <span class="c1"># b.recursive-servers.dn42</span></code></pre>
 
+<h2><a class="anchor" id="dnsdist" href="#dnsdist"></a>dnsdist</h2>
+
+<p>Additional pool for <code>dnsdist.conf</code> (Lua format):</p>
+
+<pre class="highlight"><code><span class="c1">-- define pool with a0 and a3.recursive-servers.dn42</span>
+<span class="n">newServer</span><span class="p">({</span><span class="n">address</span><span class="o">=</span><span class="s2">"[fd42:d42:d42:54::1]:53"</span><span class="p">,</span> <span class="n">checkInterval</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">healthCheckMode</span><span class="o">=</span><span class="s1">'lazy'</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="s1">'dn42'</span><span class="p">})</span>
+<span class="n">newServer</span><span class="p">({</span><span class="n">address</span><span class="o">=</span><span class="s2">"[fd42:d42:d42:53::1]:53"</span><span class="p">,</span> <span class="n">checkInterval</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">healthCheckMode</span><span class="o">=</span><span class="s1">'lazy'</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="s1">'dn42'</span><span class="p">})</span>
+<span class="n">newServer</span><span class="p">({</span><span class="n">address</span><span class="o">=</span><span class="s2">"172.20.0.53:53"</span><span class="p">,</span> <span class="n">checkInterval</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">healthCheckMode</span><span class="o">=</span><span class="s1">'lazy'</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="s1">'dn42'</span><span class="p">})</span>
+<span class="n">newServer</span><span class="p">({</span><span class="n">address</span><span class="o">=</span><span class="s2">"172.23.0.53:53"</span><span class="p">,</span> <span class="n">checkInterval</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">healthCheckMode</span><span class="o">=</span><span class="s1">'lazy'</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="s1">'dn42'</span><span class="p">})</span>
+
+<span class="c1">-- query dn42 pool for *.dn42 and reverse zones</span>
+<span class="n">addAction</span><span class="p">(</span><span class="n">QNameSuffixRule</span><span class="p">(</span><span class="s2">"dn42."</span><span class="p">),</span> <span class="n">PoolAction</span><span class="p">(</span><span class="s2">"dn42"</span><span class="p">))</span>
+<span class="n">addAction</span><span class="p">(</span><span class="n">QNameSuffixRule</span><span class="p">(</span><span class="s2">"d.f.ip6.arpa."</span><span class="p">),</span> <span class="n">PoolAction</span><span class="p">(</span><span class="s2">"dn42"</span><span class="p">))</span>
+<span class="n">addAction</span><span class="p">(</span><span class="n">QNameSuffixRule</span><span class="p">(</span><span class="s2">"20.172.in-addr.arpa."</span><span class="p">),</span> <span class="n">PoolAction</span><span class="p">(</span><span class="s2">"dn42"</span><span class="p">))</span>
+<span class="n">addAction</span><span class="p">(</span><span class="n">QNameSuffixRule</span><span class="p">(</span><span class="s2">"21.172.in-addr.arpa."</span><span class="p">),</span> <span class="n">PoolAction</span><span class="p">(</span><span class="s2">"dn42"</span><span class="p">))</span>
+<span class="n">addAction</span><span class="p">(</span><span class="n">QNameSuffixRule</span><span class="p">(</span><span class="s2">"22.172.in-addr.arpa."</span><span class="p">),</span> <span class="n">PoolAction</span><span class="p">(</span><span class="s2">"dn42"</span><span class="p">))</span>
+<span class="n">addAction</span><span class="p">(</span><span class="n">QNameSuffixRule</span><span class="p">(</span><span class="s2">"23.172.in-addr.arpa."</span><span class="p">),</span> <span class="n">PoolAction</span><span class="p">(</span><span class="s2">"dn42"</span><span class="p">))</span></code></pre>
+
 <h2><a class="anchor" id="maradns" href="#maradns"></a>MaraDNS</h2>
 <p>Put this in your mararc:</p>
 
