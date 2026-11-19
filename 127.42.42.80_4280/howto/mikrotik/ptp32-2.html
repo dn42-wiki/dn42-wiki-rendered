@@ -22,7 +22,7 @@
 	if (perPageUploads == 'true') {
 	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
 	}
-	  var pageFullPath = 'howto/IPsecWithPublicKeys/OpenBSDExample.md';
+	  var pageFullPath = 'howto/mikrotik/ptp32.md';
     var pageFormat   = 'markdown';
 
   </script>
@@ -44,7 +44,7 @@
     mermaid.initialize(mermaid_conf);
   </script>
   
-  <title>OpenBSDExample</title>
+  <title>ptp32</title>
 </head>
 <body>
 <div class="container-lg clearfix">
@@ -68,12 +68,12 @@
         <div class="SelectMenu-modal">
           <div class="SelectMenu-divider py-3">
             <h2 class="h6">Current Page</h2>
-            <div>OpenBSDExample</div>
+            <div>ptp32</div>
           </div>
     
             <a
               class="SelectMenu-item"
-              href="http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/OpenBSDExample.md"
+              href="http://127.42.42.80:4280/gollum/history/howto/mikrotik/ptp32.md"
               role="menuitem"
             >
               <span>History</span>
@@ -146,7 +146,7 @@
     <div class="BtnGroup d-flex">
         <button
           class="btn BtnGroup-item btn-sm hide-sm hide-md"
-          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/OpenBSDExample.md/';"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/mikrotik/ptp32.md/';"
           id="minibutton-history"
         >
           History
@@ -161,11 +161,11 @@
 
 <div id="wiki-content" class="px-2 px-lg-0">
   <h1 class="header-title text-center text-md-left pt-4">
-    OpenBSDExample
+    ptp32
   </h1>
 	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
 <li class="breadcrumb-item"><a href="../../gollum/overview/howto/index.html">howto</a></li>
-<li class="breadcrumb-item"><a href="../../gollum/overview/howto/IPsecWithPublicKeys/index.html">IPsecWithPublicKeys</a></li>
+<li class="breadcrumb-item"><a href="../../gollum/overview/howto/mikrotik/index.html">mikrotik</a></li>
 </ol></nav></div>
 
 	<div class="has-header has-footer has-sidebar has-rightbar">
@@ -179,76 +179,64 @@
 	    <div class="main-content clearfix container-lg">
 	      <div class="markdown-body  float-md-left col-md-9" >
 	        
-	        <h1><a class="anchor" id="introduction" href="#introduction"></a>Introduction</h1>
-<p>Here be dragons. This section should cover the basics:</p>
-<ul>
-  <li>IKEv1</li>
-  <li>Three stages: Key distribution, IPSec setup, GRE setup</li>
-  <li>In theory, BGPd can set up IPSec flows itself, but we're not using that here because that prevents you from using another BGP daemon such as bird</li>
-  <li>Debugging</li>
-</ul>
+	        <h1><a class="anchor" id="how-to-setup-mikrotik-with-point-to-point-32-address-on-interfaces" href="#how-to-setup-mikrotik-with-point-to-point-32-address-on-interfaces"></a>How to setup Mikrotik with point-to-point /32 address on interfaces</h1>
 
-<h1><a class="anchor" id="key-generation-and-distribution" href="#key-generation-and-distribution"></a>Key generation and distribution</h1>
-<h2><a class="anchor" id="using-pre-generated-keys" href="#using-pre-generated-keys"></a>Using pre-generated keys</h2>
-<p>OpenBSD generates keys suitable for IPSec usage during installation. The public key can be found in <code>/etc/isakmpd/local.pub</code>.</p>
-
-<h2><a class="anchor" id="generating-your-own-keys" href="#generating-your-own-keys"></a>Generating your own keys</h2>
-<p>If you don't want to use a pre-generated key, refer to <a href="http://man.openbsd.org/isakmpd.8#X.509_AUTHENTICATION">isakmpd(8)</a>.</p>
-
-<h2><a class="anchor" id="distributing-keys" href="#distributing-keys"></a>Distributing keys</h2>
-<p>Send your public key to your peer, preferably digitally signed. A signature can be created with <code>gpg -sb -a local.pub</code> and checked with <code>gpg --verify local.pub.asc</code>. Since the key is not private, it can be transmitted in the open and on a public forum, such as a Pastebin service.</p>
-
-<p>Once your peer sent you their public key, put it under <code>/etc/isakmpd/pubkeys/fqdn</code>, <code>/etc/isakmpd/pubkeys/ipv4</code> or <code>/etc/isakmpd/pubkeys/ipv6</code>, depending on the ID type the peer is using. The key file should be named after the peer ID. For example, if your peer is <code>1.3.3.7</code>, you place their public key under <code>/etc/isakmpd/pubkeys/ipv4/1.3.3.7</code>.</p>
-
-<p>If your peer's public key is not in PEM format, you can use <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl">pubkey-converter</a> to convert between key formats.</p>
-
-<h1><a class="anchor" id="ipsec-setup" href="#ipsec-setup"></a>IPSec Setup</h1>
-<p>Change the value of the <code>isakmpd_flags</code> variable in <a href="http://man.openbsd.org/rc.conf.local.8"><code>/etc/rc.conf.local</code></a> to <code>"-K"</code>, or add the <code>"-K"</code> flag if you already have flags in there.</p>
-
-<p>Next, add the right flow parameters to <a href="http://man.openbsd.org/ipsec.conf.5"><code>/etc/ipsec.conf</code></a>. We are using the following parameters in this example:</p>
+<h2><a class="anchor" id="routeros-issues" href="#routeros-issues"></a>RouterOS issues</h2>
 
 <ul>
-  <li>Encryption: AES-128</li>
-  <li>Authentication hash: HMAC-SHA1</li>
-  <li>DH Group: <code>modp1536</code>
-</li>
-  <li>Phase 1 lifetime: 28800 seconds</li>
-  <li>Phase 2 lifetime: 3600 seconds</li>
-  <li>Peer address: 1.3.3.7</li>
-  <li>Local address: 3.4.5.6</li>
+  <li>RouterOS doesn't have direct Point-to-Point addresses.</li>
+  <li>BGP doesn't resolve the next-hop for their routes using a rescursive route that uses a interface as next-hop</li>
 </ul>
 
-<p>The configuration file should look like this:</p>
+<p>The long explanation about how mikrotik resolves recursive routes is documentated at <a href="https://wiki.mikrotik.com/wiki/Manual:IP/Route#Nexthop_lookup">Mikrotik's page</a>.</p>
 
-<pre class="highlight"><code><span class="n">mymachine</span> = <span class="s2">"3.4.5.6"</span>
-<span class="n">mypeer</span>    = <span class="s2">"1.3.3.7"</span>
-<span class="n">ike</span> <span class="n">esp</span> <span class="n">transport</span> <span class="n">proto</span> <span class="n">gre</span> <span class="n">from</span> $<span class="n">mymachine</span> <span class="n">to</span> $<span class="n">mypeer</span> \
-  <span class="n">main</span> <span class="n">auth</span> <span class="n">hmac</span>-<span class="n">sha1</span> <span class="n">enc</span> <span class="n">aes</span>-<span class="m">128</span> <span class="n">group</span> <span class="n">modp1536</span> <span class="n">lifetime</span> <span class="m">28800</span> \
-  <span class="n">quick</span> <span class="n">auth</span> <span class="n">hmac</span>-<span class="n">sha1</span> <span class="n">enc</span> <span class="n">aes</span>-<span class="m">128</span> <span class="n">group</span> <span class="n">modp1536</span> <span class="n">lifetime</span> <span class="m">3600</span></code></pre>
+<p>How can we workaround these issues? Simple. We setup a /32 on the Point-to-Point interface, we setup a direct route to the other peer (using the interface as next-hop for this route) and use bgp filters to change the next-hop interface.</p>
 
-<p>Load the configuration file into isakmpd: <code>ipsecctl -f /etc/ipsec.conf</code>. Once the connection is established, the IPSec flows can be listed with <code>ipsecctl -sa</code>:</p>
+<h2><a class="anchor" id="legend" href="#legend"></a>Legend</h2>
 
-<pre class="highlight"><code># ipsecctl -sa
-FLOWS:
-flow esp in proto gre from 1.3.3.7 to 3.4.5.6 peer 1.3.3.7 srcid 3.4.5.6/32 dstid 1.3.3.7/32 type use
-flow esp out proto gre from 3.4.5.6 to 1.3.3.7 peer 1.3.3.7 srcid 3.4.5.6/32 dstid 1.3.3.7/32 type require
+<ul>
+  <li>172.24.0.1 -&gt; Your /32 inside tunnel address</li>
+  <li>172.26.2.2 -&gt; Peer's /32 inside tunnel address.</li>
+  <li>gre-dn42-peer -&gt; This is the name of the interface</li>
+  <li>1.1.1.1 - peer external IP</li>
+  <li>2.2.2.2 - your external IP</li>
+  <li>bgp-dn42-peer-in -&gt; This is the name of the chain filter. You need to use a different chain per point to point link</li>
+</ul>
 
-SAD:
-esp transport from 1.3.3.7 to 3.4.5.6 spi 0xdeadbeef auth hmac-sha1 enc aes
-esp transport from 3.4.5.6 to 1.3.3.7 spi 0xf00df00d auth hmac-sha1 enc aes</code></pre>
+<h2><a class="anchor" id="setup" href="#setup"></a>Setup</h2>
 
-<h1><a class="anchor" id="gre-setup" href="#gre-setup"></a>GRE Setup</h1>
-<p>Next, we will set up the GRE device. The <a href="http://man.openbsd.org/gre.4">gre(4)</a> device encapsulates IPv4 and IPv6 traffic, which allows you to speak both address families over one tunnel if you only have native connectivity for one address family. The addresses configured onto the GRE device should come from a private address range that is not used anywhere in DN42, or a registered transfer net. For IPv6, you should use either ULAs or Link-Local addresses. In this example, we assume you are using 10.20.30.0/31 as the IPv4 transfer "net" (it has only two addresses, so calling it a network is a bit of an overstatement) and Link-Local addresses for IPv6.</p>
+<p>You create the GRE interface in the same way the <a href="../mikrotik.html">Mikrotik Guide</a> does.</p>
 
-<pre class="highlight"><code><span class="c"># ifconfig gre0 tunnel 3.4.5.6 1.3.3.7</span>
-<span class="c"># ifconfig gre0 inet 10.20.30.0 10.20.30.1 # reverse these on your peer's side</span>
-<span class="c"># ifconfig gre0 inet6 eui64</span></code></pre>
+<pre class="highlight"><code>/interface gre
+add allow-fast-path=no comment="DN42 somepeer" local-address=2.2.2.2 name=gre-dn42-peer \
+remote-address=1.1.1.1</code></pre>
 
-<p>These settings should also be added to <a href="http://man.openbsd.org/hostname.if.5"><code>/etc/hostname.gre0</code></a>, .i.e.</p>
+<p>Next you add the /32 address on the interface. You can install this address on a loop interface (on RouterOS this means an empty bridge) if you plan to use the same address over several GRE tunnels or other OpenVPN interfaces.</p>
 
-<pre class="highlight"><code><span class="n">tunnel</span> <span class="m">3</span>.<span class="m">4</span>.<span class="m">5</span>.<span class="m">6</span> <span class="m">1</span>.<span class="m">3</span>.<span class="m">3</span>.<span class="m">7</span>
-<span class="n">inet</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">0</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">1</span>
-<span class="n">inet6</span> <span class="n">eui64</span></code></pre>
+<pre class="highlight"><code>/ip address add address=172.24.0.1/32 interface=gre-dn42-peer</code></pre>
+
+<p>Next, we add the direct route as next-hop using the interface</p>
+
+<pre class="highlight"><code>/ip route add distance=1 dst-address=172.26.2.2/32 gateway=gre-dn42-peer pref-src=172.24.0.1</code></pre>
+
+<p>At this point, the ping with the peer should work. Also, the bgp session can be established, but the routes will not work. We need a input filter to fix the next-hop routes.</p>
+
+<pre class="highlight"><code>/routing filter add chain=bgp-dn42-peer-in protocol=bgp set-in-nexthop-direct=gre-dn42-peer</code></pre>
+
+<p>if you have other global input chain filters, you should add a jump in the same chain, like this:
+</p><pre class="highlight"><code>/routing filter add action=jump chain=bgp-dn42-peer-in protocol=bgp jump-target=bgp-global-dn42-input</code></pre>
+
+<p>If you haven't created the BGP session, create it now from the <a href="../mikrotik.html#how-to-connect-to-dn42-using-mikrotik-routeros_bgp">Mikrotik guide</a>. Change the peer input filter to use the chain we've just created:</p>
+
+<pre class="highlight"><code>/routing bgp peer set bgp-dn42-somename in-filter=bgp-dn42-peer-in</code></pre>
+
+<p>With this fix, all the routes will have set next-hop the GRE interface and there will be no need to use RouterOS' recursive route resolve.</p>
+
+<p>Check the routes with:
+</p><pre class="highlight"><code>/ip routes print detail where received-from=bgp-dn42-somename</code></pre>
+
+<p>There should an attribute like:
+</p><pre class="highlight"><code>gateway=gre-dn42-peer gateway-status=gre-dn42-peer reachable</code></pre>
 
 	      </div>
           <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
@@ -352,13 +340,13 @@ esp transport from 3.4.5.6 to 1.3.3.7 spi 0xf00df00d auth hmac-sha1 enc aes</cod
 
 
 	<div id="footer" class="pt-4">
-		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/IPsecWithPublicKeys/OpenBSDExample.md">When was this page last modified?</a></p>
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/mikrotik/ptp32.md">When was this page last modified?</a></p>
 	</div>
 
 
 </div>
 
-<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/IPsecWithPublicKeys/OpenBSDExample.md">
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/mikrotik/ptp32.md">
   <input type="hidden" name="rename"/>
   <input type="hidden" name="message"/>
 </form>
