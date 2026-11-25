@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <meta name="MobileOptimized" content="width">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="../../gollum/assets/app-e224b375d824f0171fc926d624dc0887bf453db83f485b1992bc0859c4110e3e.css" media="all">
+  <link rel="stylesheet" type="text/css" href="../../gollum/assets/print-512498c368be0d3fb1ba105dfa84289ae48380ec9fcbef948bd4e23b0b095bfb.css" media="print">
+
+
+  <link rel="stylesheet" type="text/css" href="../../custom.css" media="all">
+  
+
+  <script>
+  var criticMarkup = '';
+	var baseUrl = '';
+  var showLocalTime = false;
+	var uploadDest = 'uploads';
+	var perPageUploads = '';
+	if (perPageUploads == 'true') {
+	  uploadDest = uploadDest + window.location.pathname.replace(/.*gollum\/[-\w]+\//, "/").replace(/\.[^/.]+$/, "").replace(baseUrl, "")
+	}
+	  var pageFullPath = 'howto/IPsecWithPublicKeys/VyOSExample.md';
+    var pageFormat   = 'markdown';
+
+  </script>
+  <script src="../../gollum/assets/app-05adca32f8f4f3effe10f8f4cf26dfd6a419ba986bce60d3f51a97e4055d4113.js" type="text/javascript"></script>
+
+
+  
+  <script>
+  var mermaid_conf = {
+    startOnLoad: true,
+    securityLevel: 'sandbox'
+  };
+  </script>
+  
+
+
+  <script src="../../gollum/assets/gollum.mermaid-ccc590b7d9655deec94c9975f25d74fbe38f703c927e26cf81169d63fea7cd50.js" type="text/javascript"></script>
+  <script>
+    mermaid.initialize(mermaid_conf);
+  </script>
+  
+  <title>VyOSExample</title>
+</head>
+<body>
+<div class="container-lg clearfix">
+<div id="wiki-wrapper" class="page">
+<div id="head">
+	<nav class="TableObject
+            actions
+            border-bottom
+            border-md-0
+            p-2
+            pt-lg-4
+            px-lg-0
+            overflow-x-scroll">
+  <div class="TableObject-item hide-lg hide-xl">
+    <details class="details-reset details-overlay">
+      <summary class="btn btn-invisible" aria-haspopup="true">
+        <span aria-label="Open menu">☰</span>
+      </summary>
+    
+      <div class="SelectMenu mx-sm-2">
+        <div class="SelectMenu-modal">
+          <div class="SelectMenu-divider py-3">
+            <h2 class="h6">Current Page</h2>
+            <div>VyOSExample</div>
+          </div>
+    
+            <a
+              class="SelectMenu-item"
+              href="http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/VyOSExample.md"
+              role="menuitem"
+            >
+              <span>History</span>
+            </a>
+    
+    
+          <div class="SelectMenu-divider py-3">
+            <h2 class="h6">Main Menu</h2>
+          </div>
+    
+          <div class="SelectMenu-list">
+            <a class="SelectMenu-item" role="menuitem" href="../../index.html">
+              Home
+            </a>
+    
+              <a class="SelectMenu-item" role="menuitem" href="../../gollum/overview.html">
+                Overview
+              </a>
+    
+              <a
+                class="SelectMenu-item"
+                href="../../gollum/latest_changes.html"
+                role="menuitem"
+              >
+                Latest Changes
+              </a>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="TableObject-item hide-sm hide-md">
+    <button class="btn btn-sm" id="minibutton-home" 
+      onclick="window.location.href='../../index.html';"
+    >
+      Home
+    </button>
+  </div>
+
+  <div
+    class="TableObject-item TableObject-item--primary px-2"
+    
+  >
+    <form class="search-form" action="http://127.42.42.80:4280/gollum/search" method="get" id="search-form">
+    	<input type="text" class="form-control input-block input-sm" name="q" id="search-query" placeholder="Search" aria-label="Search site" autocomplete="off">
+    </form>  </div>
+
+  <div class="TableObject-item hide-sm hide-md">
+    <div class="BtnGroup d-flex">
+        <button
+          class="btn BtnGroup-item btn-sm"
+          onclick="window.location.href='../../gollum/overview.html';"
+          id="minibutton-overview"
+        >
+          Overview
+        </button>
+
+        <button
+          class="btn BtnGroup-item btn-sm"
+          onclick="window.location.href='../../gollum/latest_changes.html';"
+          id="minibutton-latest-changes"
+        >
+          Latest Changes
+        </button>
+    </div>
+  </div>
+
+  <div class="TableObject-item px-2">
+    <div class="BtnGroup d-flex">
+        <button
+          class="btn BtnGroup-item btn-sm hide-sm hide-md"
+          onclick="window.location.href='http://127.42.42.80:4280/gollum/history/howto/IPsecWithPublicKeys/VyOSExample.md/';"
+          id="minibutton-history"
+        >
+          History
+        </button>
+
+    </div>
+  </div>
+
+</nav>
+
+</div>
+
+<div id="wiki-content" class="px-2 px-lg-0">
+  <h1 class="header-title text-center text-md-left pt-4">
+    VyOSExample
+  </h1>
+	<div class="breadcrumb"><nav aria-label="Breadcrumb"><ol>
+<li class="breadcrumb-item"><a href="../../gollum/overview/howto/index.html">howto</a></li>
+<li class="breadcrumb-item"><a href="../../gollum/overview/howto/IPsecWithPublicKeys/index.html">IPsecWithPublicKeys</a></li>
+</ol></nav></div>
+
+	<div class="has-header has-footer has-sidebar has-rightbar">
+	  <div id="wiki-body" class="gollum-markdown-content">
+	    <div id="wiki-header" class="gollum-markdown-content">
+	      <div id="header-content" class="markdown-body">
+	        <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	      </div>
+	    </div>
+	    <div class="main-content clearfix container-lg">
+	      <div class="markdown-body  float-md-left col-md-9" >
+	        
+	        <h1><a class="anchor" id="ipsec-with-public-key-authentication-on-vyos-edgeos" href="#ipsec-with-public-key-authentication-on-vyos-edgeos"></a>IPsec with public key authentication on VyOS/EdgeOS</h1>
+<h2><a class="anchor" id="setup" href="#setup"></a>Setup</h2>
+<h3><a class="anchor" id="generate-an-rsa-keypair" href="#generate-an-rsa-keypair"></a>Generate an RSA keypair</h3>
+
+<pre class="highlight"><code>ubnt@ubnt:~<span class="nv">$ </span>generate vpn rsa-key bits 4096 random /dev/urandom
+Generating rsa-key to /config/ipsec.d/rsa-keys/localhost.key
+
+Your new <span class="nb">local </span>RSA key has been generated
+The public portion of the key is:
+
+0sAQPNdF370ZEbN+kZUJQ10qnBlZujrg39ujfk20ILTjELksOIdJw/4jiU1MfpqFDKuB/XxERwJQp2POsFyV/n76jAgxIYBfFYfuaBcIH1rdNQtDhCnkmWzlueRXGEsz0Af79n8TKyQ9otzNhJ2cPE1CWCJbKqbIUN3piviLgGlItWNeya+Tl3Oj3ZfEVwr1QOvUAw32+m4L8T9jf1vqSlOTHpRpxxPWBrLEzstk0FOcZISji2JBpDOCU8Kpyyf74JM+LxsOIHwmS15b6iFZR3U9KZLqbbd0dSy/cM8P4XjrwM5UMyRDjrLqvuA/K/33BgtnxdQR3e9DJoYH3Qr8eRgSkR+jHyq06LvgHkHbMvrEjUnc3n8bg+YfR4oyJpIWsKjfIXmN1Q51KzxAPIAww+YSYUYtamSsQsspVAtMIQqR4e0r1In1qyoSn8VCPlksNMWpqYHbSjDo5HJYoSwxf2epzMtCvhenn0OuiH0xlgzziA+wBi6txksTMvJYcPJYnBVR2NIBjkWftOfmkY+rKMozViGjyd6kB7C8lqd8W7Ha5Ds2WxIY22DM3HcYH/zTp9z2xbuMOsbIgib/Y12Kh0wHyCz0lzFvs+d6CZwinyIXNKB/Vo4iiwT5luL5mGqf3pZx4zB+30GYSs/6MaELRF9BxD7tfqYCkOLXUtxyZ4Pdl2sw<span class="o">==</span></code></pre>
+
+<h3><a class="anchor" id="exchange-public-keys-with-your-peer" href="#exchange-public-keys-with-your-peer"></a>Exchange public keys with your peer</h3>
+<ol>
+  <li>Display the public key. Send the key data portion to your peer.</li>
+</ol>
+
+<pre class="highlight"><code>ubnt@ubnt:~<span class="nv">$ </span>show vpn ike rsa-keys
+
+Local public key <span class="o">(</span>/config/ipsec.d/rsa-keys/localhost.key<span class="o">)</span>:
+
+0sAQPNdF370ZEbN+kZUJQ10qnBlZujrg39ujfk20ILTjELksOIdJw/4jiU1MfpqFDKuB/XxERwJQp2POsFyV/n76jAgxIYBfFYfuaBcIH1rdNQtDhCnkmWzlueRXGEsz0Af79n8TKyQ9otzNhJ2cPE1CWCJbKqbIUN3piviLgGlItWNeya+Tl3Oj3ZfEVwr1QOvUAw32+m4L8T9jf1vqSlOTHpRpxxPWBrLEzstk0FOcZISji2JBpDOCU8Kpyyf74JM+LxsOIHwmS15b6iFZR3U9KZLqbbd0dSy/cM8P4XjrwM5UMyRDjrLqvuA/K/33BgtnxdQR3e9DJoYH3Qr8eRgSkR+jHyq06LvgHkHbMvrEjUnc3n8bg+YfR4oyJpIWsKjfIXmN1Q51KzxAPIAww+YSYUYtamSsQsspVAtMIQqR4e0r1In1qyoSn8VCPlksNMWpqYHbSjDo5HJYoSwxf2epzMtCvhenn0OuiH0xlgzziA+wBi6txksTMvJYcPJYnBVR2NIBjkWftOfmkY+rKMozViGjyd6kB7C8lqd8W7Ha5Ds2WxIY22DM3HcYH/zTp9z2xbuMOsbIgib/Y12Kh0wHyCz0lzFvs+d6CZwinyIXNKB/Vo4iiwT5luL5mGqf3pZx4zB+30GYSs/6MaELRF9BxD7tfqYCkOLXUtxyZ4Pdl2sw<span class="o">==</span></code></pre>
+
+<ol>
+  <li>Convert your peer's public key to the Base64 RFC 3110 format using the <a href="https://dn42.us/git/user/ryan/pubkey-converter.git/plain/pubkey-converter.pl" title="Public key conversion script">pubkey-converter</a> script, if necessary.</li>
+</ol>
+
+<h2><a class="anchor" id="configuration" href="#configuration"></a>Configuration</h2>
+<h3><a class="anchor" id="configure-the-phase-1-ike-parameters" href="#configure-the-phase-1-ike-parameters"></a>Configure the phase 1 IKE parameters</h3>
+<p>In this example, we'll use the following settings:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left;">Key</th>
+      <th style="text-align:left;">Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left;">Encryption</td>
+      <td style="text-align:left;">AES-128</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">Hash</td>
+      <td style="text-align:left;">HMAC-SHA1</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">DH Group</td>
+      <td style="text-align:left;">5 (modp1536)</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">Lifetime</td>
+      <td style="text-align:left;">28800 seconds</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">Peer address</td>
+      <td style="text-align:left;">192.0.2.2</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">Local address</td>
+      <td style="text-align:left;">192.0.2.1</td>
+    </tr>
+  </tbody>
+</table>
+
+<ol>
+  <li>Add your peer's public key</li>
+</ol>
+
+<pre class="highlight"><code>vyos@vyos:~<span class="nv">$ </span>configure
+<span class="o">[</span>edit]
+vyos@vyos# <span class="nb">set </span>vpn rsa-keys rsa-key-name my-peer rsa-key 0sAwEAAb4ETtKRLxcFNty56regsR61pq7hQl3NnjwABL16wZXGynKxZlj11VbdqcNwaTaqHZLV4Xfy867nImSs0DD9Cko5LzWwyM1Ih4SB+rIjfmBt7nRUrilnYvfWAONG1CLTI2tXnM/miNqiY+PxlCiMPr1KrTJWBWOknqqhhL2dOBfp3Ryx1yRxDACFG4wgpwmndJOnmefnV6qZXWiOdoIsBsBqQKiDY0g2uI+S3KxK27JL3KZWcA2ehhvtxmq4vwcMXplYeedei3EEmWxtddAZCApXor9bkVoVp2io+a0D1ALevYMD5SIygu55Q888n5puYNry/cUjX20/F/YK+J9u2UExWewN4AIt/jMNm7nJNWpuFHfLX1V/igHrdGzoEM0E/i+nGz9CWTVTLoFUmkTjpt31FPmomSVEI7MbNXG7cpa+X55PWd1apheR52XJZPZfCnMf1DjilYbLMRG05RK8zI3QlX3UXHira0dq4OBZ+Aow+dGp+jLmwjgdBDnkQdVu0iP6bp+5/oz6mWvDQ65EVECAIXKR5zIsiKn9ZU18H+lp4xWMjiSw3Y+87Y5KeQPmX73Ygolow6VvtCBvX8CS4Plszn3i0Qp8184eLEWIY314Z8Z+HwBAjUv3MkqI93leokAjMbt23ttaJbWlWgG47BAJOEcWlMFkDNcZtOngUrzF</code></pre>
+
+<ol>
+  <li>Configure an ISAKMP policy</li>
+</ol>
+
+<pre class="highlight"><code><span class="o">[</span>edit]
+vyos@vyos# edit vpn ipsec ike-group FOO
+<span class="o">[</span>edit vpn ipsec ike-group FOO]
+vyos@vyos# <span class="nb">set </span>lifetime 28800
+<span class="o">[</span>edit vpn ipsec ike-group FOO]
+vyos@vyos# <span class="nb">set </span>proposal 1 encryption aes128
+<span class="o">[</span>edit vpn ipsec ike-group FOO]
+vyos@vyos# <span class="nb">set </span>proposal 1 <span class="nb">hash </span>sha1
+<span class="o">[</span>edit vpn ipsec ike-group FOO]
+vyos@vyos# <span class="nb">set </span>proposal 1 dh-group 5
+<span class="o">[</span>edit vpn ipsec ike-group FOO]
+vyos@vyos# commit</code></pre>
+
+<ol>
+  <li>Set your peer definition to use the public key</li>
+</ol>
+
+<pre class="highlight"><code><span class="o">[</span>edit vpn ipsec ike-group FOO]
+vyos@vyos# up
+<span class="o">[</span>edit vpn ipsec]
+vyos@vyos# edit site-to-site peer 192.0.2.2
+<span class="o">[</span>edit vpn ipsec site-to-site peer 192.0.2.2]
+vyos@vyos# <span class="nb">set </span>authentication mode rsa
+<span class="o">[</span>edit vpn ipsec site-to-site peer 192.0.2.2]
+vyos@vyos# <span class="nb">set </span>authentication rsa-key-name my-peer</code></pre>
+
+<ol>
+  <li>All done! Configure the phase 2 parameters as you otherwise would.</li>
+</ol>
+
+<h2><a class="anchor" id="full-gre-ipsec-example" href="#full-gre-ipsec-example"></a>Full GRE/IPsec example</h2>
+
+<pre class="highlight"><code><span class="n">interfaces</span> {
+    <span class="n">ethernet</span> <span class="n">eth0</span> {
+        <span class="n">address</span> <span class="m">192</span>.<span class="m">0</span>.<span class="m">2</span>.<span class="m">1</span>/<span class="m">30</span>
+        <span class="n">description</span> <span class="n">WAN</span>
+        <span class="n">duplex</span> <span class="n">auto</span>
+        <span class="n">speed</span> <span class="n">auto</span>
+    }
+    <span class="n">tunnel</span> <span class="n">tun0</span> {
+        <span class="n">address</span> <span class="m">10</span>.<span class="m">1</span>.<span class="m">2</span>.<span class="m">0</span>/<span class="m">31</span>
+        <span class="n">encapsulation</span> <span class="n">gre</span>
+        <span class="n">local</span>-<span class="n">ip</span> <span class="m">192</span>.<span class="m">0</span>.<span class="m">2</span>.<span class="m">1</span>
+        <span class="n">mtu</span> <span class="m">1400</span>
+        <span class="n">multicast</span> <span class="n">disable</span>
+        <span class="n">remote</span>-<span class="n">ip</span> <span class="m">192</span>.<span class="m">0</span>.<span class="m">2</span>.<span class="m">2</span>
+        <span class="n">ttl</span> <span class="m">255</span>
+    }
+}
+<span class="n">vpn</span> {
+    <span class="n">ipsec</span> {
+        <span class="n">esp</span>-<span class="n">group</span> <span class="n">BAR</span> {
+            <span class="n">compression</span> <span class="n">disable</span>
+            <span class="n">lifetime</span> <span class="m">3600</span>
+            <span class="n">mode</span> <span class="n">transport</span>
+            <span class="n">pfs</span> <span class="n">dh</span>-<span class="n">group5</span>
+            <span class="n">proposal</span> <span class="m">1</span> {
+                <span class="n">encryption</span> <span class="n">aes128</span>
+                <span class="n">hash</span> <span class="n">sha1</span>
+            }
+        }
+        <span class="n">ike</span>-<span class="n">group</span> <span class="n">FOO</span> {
+            <span class="n">lifetime</span> <span class="m">28800</span>
+            <span class="n">proposal</span> <span class="m">1</span> {
+                <span class="n">dh</span>-<span class="n">group</span> <span class="m">5</span>
+                <span class="n">encryption</span> <span class="n">aes128</span>
+                <span class="n">hash</span> <span class="n">sha1</span>
+            }
+        }
+        <span class="n">ipsec</span>-<span class="n">interfaces</span> {
+            <span class="n">interface</span> <span class="n">eth0</span>
+        }
+        <span class="n">site</span>-<span class="n">to</span>-<span class="n">site</span> {
+            <span class="n">peer</span> <span class="m">192</span>.<span class="m">0</span>.<span class="m">2</span>.<span class="m">2</span> {
+                <span class="n">authentication</span> {
+                    <span class="n">mode</span> <span class="n">rsa</span>
+                    <span class="n">rsa</span>-<span class="n">key</span>-<span class="n">name</span> <span class="n">my</span>-<span class="n">peer</span>
+                }
+                <span class="n">connection</span>-<span class="n">type</span> <span class="n">initiate</span>
+                <span class="n">default</span>-<span class="n">esp</span>-<span class="n">group</span> <span class="n">BAR</span>
+                <span class="n">ike</span>-<span class="n">group</span> <span class="n">FOO</span>
+                <span class="n">local</span>-<span class="n">ip</span> <span class="m">192</span>.<span class="m">0</span>.<span class="m">2</span>.<span class="m">1</span>
+                <span class="n">tunnel</span> <span class="m">0</span> {
+                    <span class="n">protocol</span> <span class="n">gre</span>
+                }
+            }
+        }
+    }
+    <span class="n">rsa</span>-<span class="n">keys</span> {
+        <span class="n">rsa</span>-<span class="n">key</span>-<span class="n">name</span> <span class="n">my</span>-<span class="n">peer</span> {
+            <span class="n">rsa</span>-<span class="n">key</span> <span class="m">0</span><span class="n">sAwEAAbsbRoUcgdm4A4Nm</span>+<span class="n">PLxWcW</span>+<span class="n">zFis7pkaJ0MkGVzM7VC8nmngkM</span>+<span class="n">W2zqZyQ4NUTBKKfGOUc4Ogi6gyhlzUnHdag9tDERIX</span>+<span class="n">BwlDO6G4arod9z9KqmJuX4AOYVjH5QlAPz7NDMAezVekGoVLPGdOAMPD6NN54ihLRH6V3if8AGoJRpiajhcgQipjeQnhH4QhsYK4XSjayGT1onQwA8nhy5kt4ofyqSale4Fl4166S9tCn4RKwtlJDjR6VIrg6op6Ip8</span>+<span class="n">ke2vjEHPJHj6qVsxfRgOk2d8pY8oPVt8ayc5F1z</span>+<span class="n">lqJ7R0fADfN</span>+<span class="n">AQSaBqOMmg5dHDFYWwgYkU5egdVKS7Oko6uNuUWsZ0VEnRoPZ4syJEUbiF5wGfaVBaaVLZYUlRLQCffB4JKzp</span>+<span class="n">JesVToCX6JYRfb4JYQWFCDeQfrqRZHM4r13h8MOWPn9cqXcP47RKJjzNp6595biUotmCbMHyy</span>/<span class="n">uveMWxK6vDzPQRkywqMMJE2qOyACmbMnSce9KlYhvma82Vd</span>+<span class="n">z</span>/<span class="m">9</span>/<span class="n">U9NEy0s5MaYNDn</span>+<span class="n">q</span>+<span class="n">KYT5My3NSv52F6sLVGrKxTk79tzUejZcoukJv</span>+<span class="n">gf51Epam4kVHzPIal</span>/<span class="n">khsfjZn6YCU2j5</span>+<span class="n">qcdRmzF</span>+<span class="n">SG5c2WicvEU2Gc4ratfYNEPxU5oArzHIhIz6x2nAF</span>+<span class="n">szcx</span>/<span class="n">x8GEyXPNHnxEboJB7ox</span>
+        }
+    }
+}</code></pre>
+
+	      </div>
+          <div id="wiki-sidebar" class="Box Box--condensed float-md-left col-md-3">
+	        <div id="sidebar-content" class="gollum-markdown-content markdown-body px-4">
+	          <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  <div id="wiki-footer" class="gollum-markdown-content my-2">
+	    <div id="footer-content" class="Box Box-condensed markdown-body px-4">
+	      <p class="gollum-error">Failed to render page: conflicting chdir during another chdir block</p>
+	    </div>
+	  </div>
+
+
+	</div>
+
+
+	<div id="footer" class="pt-4">
+		  <p id="last-edit"><div class="dotted-spinner hidden"></div> <a id="page-info-toggle" data-pagepath="howto/IPsecWithPublicKeys/VyOSExample.md">When was this page last modified?</a></p>
+	</div>
+
+
+</div>
+
+<form name="rename" method="POST" action="http://127.42.42.80:4280/gollum/rename/howto/IPsecWithPublicKeys/VyOSExample.md">
+  <input type="hidden" name="rename"/>
+  <input type="hidden" name="message"/>
+</form>
+
+</div>
+</div>
+</body>
+</html>
